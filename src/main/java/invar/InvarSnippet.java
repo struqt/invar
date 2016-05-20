@@ -2,13 +2,15 @@ package invar;
 
 import invar.model.InvarType;
 import invar.model.InvarType.TypeID;
-import java.io.InputStream;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 final public class InvarSnippet
 {
@@ -30,7 +32,7 @@ final public class InvarSnippet
     {
         this.context = ctx;
         this.writer = writer;
-        this.snippetPath = "/res/" + path;
+        this.snippetPath = "res/" + path;
         this.snippetDoc = getSnippetDoc(this.snippetPath, ctx);
         this.snippetMap = new LinkedHashMap<String,String>();
     }
@@ -183,22 +185,15 @@ final public class InvarSnippet
         snippetMap.put(key, code.toString());
     }
 
-    private Document getSnippetDoc (String langName, InvarContext ctx) throws Exception
+    private Document getSnippetDoc (String path, InvarContext ctx) throws Exception
     {
-        String path = langName;
-        InputStream res = getClass().getResourceAsStream(path);
-        if (res != null)
-        {
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(res);
-            if (!doc.hasChildNodes())
-                return null;
-            System.out.println("read  <- " + path);
-            return doc;
-        }
-        else
-        {
-            throw new Exception("File doesn't exist: " + path);
-        }
+        Document doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(new InputSource(new File(path).toURI().toURL().toString()));
+        if (!doc.hasChildNodes())
+            return null;
+        System.out.println("read  <- " + path);
+        return doc;
     }
 
     static public class Key

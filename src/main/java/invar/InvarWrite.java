@@ -6,11 +6,8 @@ import invar.model.InvarType.TypeID;
 import invar.model.TypeEnum;
 import invar.model.TypeProtocol;
 import invar.model.TypeStruct;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
+
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -221,34 +218,27 @@ abstract public class InvarWrite
 
     final public void exportFile (String resPath, String fileDir, String fileName)
     {
-        InputStream res = getClass().getResourceAsStream(resPath);
-        if (res != null)
+        byte[] bs;
+        try
         {
-            byte[] bs;
-            try
+            InputStream res = new FileInputStream(resPath);
+            int len = res.available();
+            bs = new byte[len];
+            res.read(bs);
+            char[] chars = getChars(bs);
+            StringBuilder s = new StringBuilder(len);
+            for (int i = 0; i < chars.length; i++)
             {
-                int len = res.available();
-                bs = new byte[len];
-                res.read(bs);
-                char[] chars = getChars(bs);
-                StringBuilder s = new StringBuilder(len);
-                for (int i = 0; i < chars.length; i++)
-                {
-                    char c = chars[i];
-                    if (c == '\0')
-                        break;
-                    s.append(c);
-                }
-                addExportFile(fileDir, fileName, s.toString());
+                char c = chars[i];
+                if (c == '\0')
+                    break;
+                s.append(c);
             }
-            catch (IOException e)
-            {
-                logErr(e.getMessage());
-            }
+            addExportFile(fileDir, fileName, s.toString());
         }
-        else
+        catch (IOException e)
         {
-            logErr("Export resource does not exist: " + resPath);
+            logErr(e.getMessage());
         }
     }
 
