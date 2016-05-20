@@ -1,8 +1,8 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
   xmlns:tns="invar.template" language="csharp">
-  <export resPath="res/csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs" />
-  <export resPath="res/csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs" />
+  <export resPath="/res/csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs" />
+  <export resPath="/res/csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs" />
 
   <!-- Redefine 14 Invar buildin types to adapt C# language -->
   <redefine>
@@ -107,7 +107,7 @@
     [#addImport(struct; imports; System.Text::StringBuilder)]
     [#addImport(struct; imports; System::String)]
     (#concat)
-    public sealed class (#name) : RushPacket
+    public sealed class (#name)
     {
     [#codeFields (struct; fields)]
     [#codeGetters(struct; fields)]
@@ -194,9 +194,8 @@
   <template key="read.import"><![CDATA[System.IO::BinaryReader]]></template>
   <template key="read.method.arg"><![CDATA[from_]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public override RushPacket Read(BinaryReader from_)
+    (#tab)public void Read(BinaryReader from_)
     (#tab){(#body)
-    (#tab)(#tab)return this;
     (#tab)} ]]></template>
   <template key="read.int8">  <![CDATA[ (#arg).ReadSByte()  ]]></template>
   <template key="read.int16"> <![CDATA[ (#arg).ReadInt16()  ]]></template>
@@ -237,8 +236,8 @@
   ]]></template>
   <template key="read.ref.any">   <![CDATA[ (#name) = (#body); ]]></template>
   <template key="read.ref.struct"><![CDATA[ (#body); ]]></template>
-  <template key="read.ref.vec">   <![CDATA[ (#name).Clear();(#brk)(#body) ]]></template>
-  <template key="read.ref.map">   <![CDATA[ (#name).Clear();(#brk)(#body) ]]></template>
+  <template key="read.ref.vec">   <![CDATA[ (#body) ]]></template>
+  <template key="read.ref.map">   <![CDATA[ (#body) ]]></template>
   <template key="read.ptr.string"><![CDATA[
     if ((#arg).ReadSByte() == (#byteyes)) {
     (#tab)(#name) = (#body);
@@ -257,7 +256,6 @@
     (#tab)if ((#name) == (#null)) {
     (#tab)(#tab)(#name) = new (#type)();
     (#tab)} else {
-    (#tab)(#tab)(#name).Clear();
     (#tab)}(#bodyindent)
     }
   ]]></template>
@@ -267,9 +265,8 @@
   <template key="write.import"><![CDATA[System.IO::BinaryWriter]]></template>
   <template key="write.method.arg"><![CDATA[dest]]></template>
   <template key="write.method"><![CDATA[
-    (#tab)public override RushPacket Write(BinaryWriter dest)
+    (#tab)public void Write(BinaryWriter dest)
     (#tab){(#body)
-    (#tab)(#tab)return this;
     (#tab)} ]]></template>
   <template key="write.any">   <![CDATA[ (#arg).Write((#name)) ]]></template>
   <template key="write.string">   <![CDATA[ 
