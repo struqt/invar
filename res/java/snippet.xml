@@ -1,8 +1,8 @@
-<?xml version="1.1" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
   xmlns:tns="invar.template" language="java">
-  <export resPath="/res/java/InvarReadData.txt" destDir="invar" destName="InvarReadData.java"/>
-  <export resPath="/res/java/InvarRule.txt" destDir="invar" destName="InvarRule.java"/>
+  <export resPath="res/java/InvarReadData.txt" destDir="invar" destName="InvarReadData.java"/>
+  <export resPath="res/java/InvarRule.txt" destDir="invar" destName="InvarRule.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
