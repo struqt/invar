@@ -1,40 +1,36 @@
 package invar.model;
 
 import invar.model.InvarType.TypeID;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class InvarPackage
-{
-    private final Boolean             needWrite;
-    private final String              nameReal;
-    private String                    name;
-    private File                      codeDir;
-    private HashMap<String,InvarType> typeMap;
+public class InvarPackage {
+    private final Boolean needWrite;
+    private final String nameReal;
+    private String name;
+    private File codeDir;
+    private HashMap<String, InvarType> typeMap;
 
-    public InvarPackage(String name, Boolean needWrite)
-    {
+    public InvarPackage(String name, Boolean needWrite) {
         this.name = name;
         this.nameReal = name;
         this.needWrite = needWrite;
-        this.typeMap = new HashMap<String,InvarType>();
+        this.typeMap = new HashMap<String, InvarType>();
     }
 
-    public void capitalizeNameHead (Boolean bool)
-    {
+    public void capitalizeNameHead(Boolean bool) {
         if (nameReal.length() <= 0)
             return;
-        if (!bool)
-        {
+        if (!bool) {
             name = nameReal;
             return;
         }
         String[] names = nameReal.split("\\.");
         name = "";
         int len = names.length;
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             String s = names[i];
             if (s.length() < 1)
                 continue;
@@ -45,32 +41,26 @@ public class InvarPackage
         }
     }
 
-    public String getName ()
-    {
+    public String getName() {
         return name;
     }
 
-    public void put (InvarType t)
-    {
+    public void put(InvarType t) {
         typeMap.put(t.getName(), t);
     }
 
-    public int size ()
-    {
+    public int size() {
         return typeMap.size();
     }
 
-    public InvarType getType (String name)
-    {
+    public InvarType getType(String name) {
         return typeMap.get(name);
     }
 
-    public InvarType getType (TypeID id)
-    {
+    public InvarType getType(TypeID id) {
         InvarType type = null;
         Iterator<String> i = typeMap.keySet().iterator();
-        while (i.hasNext())
-        {
+        while (i.hasNext()) {
             String key = i.next();
             type = typeMap.get(key);
             if (type.getId() == id)
@@ -79,12 +69,10 @@ public class InvarPackage
         return type;
     }
 
-    public void clearGhostTypes ()
-    {
+    public void clearGhostTypes() {
         InvarType type = null;
         Iterator<String> i = typeMap.keySet().iterator();
-        while (i.hasNext())
-        {
+        while (i.hasNext()) {
             String key = i.next();
             type = typeMap.get(key);
             if (type.getId() == TypeID.DIALECT)
@@ -92,29 +80,24 @@ public class InvarPackage
         }
     }
 
-    public Iterator<String> getTypeNames ()
-    {
+    public Iterator<String> getTypeNames() {
         return typeMap.keySet().iterator();
     }
 
-    public InvarPackage add (InvarType t)
-    {
+    public InvarPackage add(InvarType t) {
         typeMap.put(t.getName(), t);
         return this;
     }
 
-    public File getCodeDir ()
-    {
+    public File getCodeDir() {
         return codeDir;
     }
 
-    public void setCodeDir (File codeDir)
-    {
+    public void setCodeDir(File codeDir) {
         this.codeDir = codeDir;
     }
 
-    public Boolean getNeedWrite ()
-    {
+    public Boolean getNeedWrite() {
         return needWrite;
     }
 }

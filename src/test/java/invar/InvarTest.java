@@ -32,7 +32,7 @@ public class InvarTest extends TestCase {
                 "-cpp", prefix + "cpp/",
                 "-php", prefix + "php/",
                 "-csharp", prefix + "csharp/",
-                "-flash", prefix + "flash/",
+                //"-flash", prefix + "flash/",
         });
     }
 }

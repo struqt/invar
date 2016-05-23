@@ -6,28 +6,26 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class LexPattern
-{
-    public static final LexPattern       HIDDEN_0_N;
-    public static final LexPattern       HIDDEN_1_N;
-    public static final LexPattern       DOC;
-    public static final LexPattern       DOC_LINE;
+public final class LexPattern {
+    public static final LexPattern HIDDEN_0_N;
+    public static final LexPattern HIDDEN_1_N;
+    public static final LexPattern DOC;
+    public static final LexPattern DOC_LINE;
 
-    public static final LexPattern       LITERAL_FLOAT;
-    public static final LexPattern       LITERAL_INT;
-    public static final LexPattern       LITERAL_BOOL;
+    public static final LexPattern LITERAL_FLOAT;
+    public static final LexPattern LITERAL_INT;
+    public static final LexPattern LITERAL_BOOL;
 
-    public static final LexPattern       FILE_BLOCK;
-    public static final LexPattern       BLOCK_L;
-    public static final LexPattern       BLOCK_R;
-    public static final LexPattern       RULE_L;
-    public static final LexPattern       RULE_R;
+    public static final LexPattern FILE_BLOCK;
+    public static final LexPattern BLOCK_L;
+    public static final LexPattern BLOCK_R;
+    public static final LexPattern RULE_L;
+    public static final LexPattern RULE_R;
 
     public static final List<LexPattern> STRUCT;
     public static final List<LexPattern> FILE;
 
-    static
-    {
+    static {
 
         HIDDEN_1_N = new LexPattern(LexType.HIDDEN_CHARS, "[\t \r\n]+", 0);
         HIDDEN_0_N = new LexPattern(LexType.HIDDEN_CHARS, "[\t \r\n]+", 0).setOptional(true);
@@ -50,8 +48,7 @@ public final class LexPattern
 
     }
 
-    static
-    {
+    static {
         List<LexPattern> list = new ArrayList<LexPattern>();
 
         list.add(HIDDEN_0_N);
@@ -69,8 +66,7 @@ public final class LexPattern
         STRUCT = Collections.unmodifiableList(list);
     }
 
-    static
-    {
+    static {
         List<LexPattern> list = new ArrayList<LexPattern>();
 
         list.add(HIDDEN_0_N);
@@ -83,75 +79,62 @@ public final class LexPattern
         FILE = Collections.unmodifiableList(list);
     }
 
-    private final LexType                tokenType;
-    private final String                 staticText;
-    private final int                    sliceDelta = -1;
+    private final LexType tokenType;
+    private final String staticText;
+    private final int sliceDelta = -1;
 
-    private final Pattern                pattern;
-    private List<LexPattern>             children;     // if err, stop scanning
-    private List<LexPattern>             branches;     // if err, try another branch
+    private final Pattern pattern;
+    private List<LexPattern> children;     // if err, stop scanning
+    private List<LexPattern> branches;     // if err, try another branch
 
-    private boolean                      optional;
-    private boolean                      sliceHere;
+    private boolean optional;
+    private boolean sliceHere;
 
-    public LexPattern(LexType type, String regex)
-    {
+    public LexPattern(LexType type, String regex) {
         this(type, regex, 0);
     }
 
-    public LexPattern(LexType type, String regex, int flags)
-    {
+    public LexPattern(LexType type, String regex, int flags) {
         this.tokenType = type;
         this.pattern = Pattern.compile(regex, flags);
-        if ((flags & Pattern.LITERAL) == Pattern.LITERAL)
-        {
+        if ((flags & Pattern.LITERAL) == Pattern.LITERAL) {
             this.staticText = regex;
-        }
-        else
-        {
+        } else {
             this.staticText = null;
         }
     }
 
-    public int match (CharSequence input, int from, int dest)
-    {
+    public int match(CharSequence input, int from, int dest) {
         Matcher m = this.pattern.matcher(input);
         m.region(from, dest);
-        if (m.lookingAt())
-        {
+        if (m.lookingAt()) {
             return m.end();
         }
         return -1;
     }
 
-    public boolean isOptional ()
-    {
+    public boolean isOptional() {
         return optional;
     }
 
-    public LexPattern setOptional (boolean optional)
-    {
+    public LexPattern setOptional(boolean optional) {
         this.optional = optional;
         return this;
     }
 
-    public List<LexPattern> getChildren ()
-    {
+    public List<LexPattern> getChildren() {
         return children;
     }
 
-    public void setChildren (List<LexPattern> children)
-    {
+    public void setChildren(List<LexPattern> children) {
         this.children = children;
     }
 
-    public LexType getTokenType ()
-    {
+    public LexType getTokenType() {
         return tokenType;
     }
 
-    public int getSliceDelta ()
-    {
+    public int getSliceDelta() {
         return sliceDelta;
     }
 

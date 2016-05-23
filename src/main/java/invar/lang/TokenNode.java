@@ -1,115 +1,93 @@
 package invar.lang;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
-public class TokenNode
-{
-    private final String             name;
-    private final Map<String,String> attrs;
-    private final List<TokenNode>    children;
-    private String                   filePath;
-    private boolean                  isFrozen;
+public class TokenNode {
+    private final String name;
+    private final Map<String, String> attrs;
+    private final List<TokenNode> children;
+    private String filePath;
+    private boolean isFrozen;
 
-    public TokenNode()
-    {
+    public TokenNode() {
         this("R-O-O-T");
     }
 
-    public TokenNode(final String name)
-    {
+    public TokenNode(final String name) {
         this.name = name;
-        this.attrs = new LinkedHashMap<String,String>(8);
+        this.attrs = new LinkedHashMap<String, String>(8);
         this.children = new ArrayList<TokenNode>(24);
         this.isFrozen = false;
         this.filePath = null;
     }
 
-    public boolean hasAttr (String key)
-    {
+    public boolean hasAttr(String key) {
         return this.attrs.containsKey(key);
     }
 
-    public String getAttr (String key)
-    {
+    public String getAttr(String key) {
         return this.attrs.get(key);
     }
 
-    public String getName ()
-    {
+    public String getName() {
         return name;
     }
 
-    public String getFilePath ()
-    {
+    public String getFilePath() {
         return filePath;
     }
 
-    public void freeze ()
-    {
+    public void freeze() {
         if (this.isFrozen)
             return;
         this.isFrozen = true;
-        for (TokenNode n : this.children)
-        {
+        for (TokenNode n : this.children) {
             n.freeze();
         }
     }
 
-    public int numAttributes ()
-    {
+    public int numAttributes() {
         return this.attrs.size();
     }
 
-    public int numChildren ()
-    {
+    public int numChildren() {
         return this.children.size();
     }
 
-    public TokenNode getChild (int index)
-    {
+    public TokenNode getChild(int index) {
         return this.children.get(index);
     }
 
-    public void putAttr (String key, String val)
-    {
+    public void putAttr(String key, String val) {
         if (this.isFrozen)
             return;
         this.attrs.put(key, val);
     }
 
-    public void addChild (TokenNode n)
-    {
+    public void addChild(TokenNode n) {
         if (this.isFrozen)
             return;
         this.children.add(n);
     }
 
-    public void setFilePath (String filePath)
-    {
+    public void setFilePath(String filePath) {
         if (this.isFrozen)
             return;
         this.filePath = filePath;
     }
 
-    public String toStringXml ()
-    {
+    public String toStringXml() {
         return this.toStringXml(true);
     }
 
-    public String toStringXml (boolean withChildren)
-    {
+    public String toStringXml(boolean withChildren) {
         StringBuilder code = new StringBuilder();
         code.append('<');
         code.append(this.name);
-        Iterator<Entry<String,String>> iter = attrs.entrySet().iterator();
-        while (iter.hasNext())
-        {
-            Entry<String,String> e = iter.next();
+        Iterator<Entry<String, String>> iter = attrs.entrySet().iterator();
+        while (iter.hasNext()) {
+            Entry<String, String> e = iter.next();
             code.append(' ');
             code.append(e.getKey());
             code.append('=');
@@ -117,16 +95,12 @@ public class TokenNode
             code.append(e.getValue());
             code.append('"');
         }
-        if (!withChildren || this.children.size() <= 0)
-        {
+        if (!withChildren || this.children.size() <= 0) {
             code.append('/');
             code.append('>');
-        }
-        else
-        {
+        } else {
             code.append('>');
-            for (TokenNode n : this.children)
-            {
+            for (TokenNode n : this.children) {
                 code.append('\n');
                 code.append(n.toStringXml(withChildren));
             }

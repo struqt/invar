@@ -2,23 +2,22 @@ package invar;
 
 import invar.lang.xml.TokensFromXml;
 import invar.model.InvarType.TypeID;
+
 import java.util.Date;
 import java.util.TreeMap;
 
-final public class Invar
-{
-    static final String ARG_HELP        = "help";
-    static final String ARG_RULE_PATH   = "rule";
-    static final String ARG_RULE_DOM    = "rule.dom";
-    static final String ARG_XSD_PATH    = "xsd";
-    static final String ARG_JAVA_PATH   = "java";
-    static final String ARG_FLASH_PATH  = "flash";
+final public class Invar {
+    static final String ARG_HELP = "help";
+    static final String ARG_RULE_PATH = "rule";
+    static final String ARG_RULE_DOM = "rule.dom";
+    static final String ARG_XSD_PATH = "xsd";
+    static final String ARG_JAVA_PATH = "java";
+    static final String ARG_FLASH_PATH = "flash";
     static final String ARG_CSHARP_PATH = "csharp";
-    static final String ARG_CPP_PATH    = "cpp";
-    static final String ARG_PHP_PATH    = "php";
+    static final String ARG_CPP_PATH = "cpp";
+    static final String ARG_PHP_PATH = "php";
 
-    static public void main (String[] args)
-    {
+    static public void main(String[] args) {
         long startMS = System.currentTimeMillis();
         log("Invar start: " + new Date().toString() + " " + (Runtime.getRuntime().freeMemory() >> 20) + "MB");
 
@@ -32,71 +31,57 @@ final public class Invar
         a.addDefault(ARG_PHP_PATH, "code/php/");
         a.parseArguments(args);
 
-        if (a.has(ARG_HELP))
-        {
+        if (a.has(ARG_HELP)) {
             showHelp();
             return;
         }
 
-        TreeMap<TypeID,String> basics = makeTypeIdMap();
-        try
-        {
+        TreeMap<TypeID, String> basics = makeTypeIdMap();
+        try {
             InvarContext ctx = new InvarContext();
             ctx.addBuildInTypes(basics);
             ctx.setRuleDir(a.get(ARG_RULE_PATH));
             log("");
-            if (a.has(ARG_RULE_DOM))
-            {
+            if (a.has(ARG_RULE_DOM)) {
                 InvarReadRule.start(ctx, ".xml");
-            }
-            else
-            {
+            } else {
                 TokensFromXml.start(ctx);
             }
-            if (a.has(ARG_XSD_PATH))
-            {
+            if (a.has(ARG_XSD_PATH)) {
                 log("");
                 new InvarWriteXSD().write(ctx, basics, a.get(ARG_XSD_PATH));
             }
-            if (a.has(ARG_CSHARP_PATH))
-            {
+            if (a.has(ARG_CSHARP_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_CSHARP_PATH), "csharp/snippet.xml").write(".cs");
             }
-            if (a.has(ARG_JAVA_PATH))
-            {
+            if (a.has(ARG_JAVA_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_JAVA_PATH), "java/snippet.xml").write(".java");
             }
-            if (a.has(ARG_CPP_PATH))
-            {
+            if (a.has(ARG_CPP_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.h.xml").write(".h");
                 new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.cc.xml").write(".cpp", true);
             }
-            if (a.has(ARG_FLASH_PATH))
-            {
+            if (a.has(ARG_FLASH_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_FLASH_PATH), "flash/snippet.xml").write(".as");
             }
-            if (a.has(ARG_PHP_PATH))
-            {
+            if (a.has(ARG_PHP_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_PHP_PATH), "php/snippet.xml").write(".php");
             }
             long total = Runtime.getRuntime().totalMemory();
             long free = Runtime.getRuntime().freeMemory();
             log("\nInvar end: " + (System.currentTimeMillis() - startMS) + "ms, " + ((total - free) >> 20) + "/" + (total >> 20) + "MB");
-        }
-        catch (Throwable e)
-        {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
-    static public TreeMap<TypeID,String> makeTypeIdMap ()
-    {
-        TreeMap<TypeID,String> map = new TreeMap<TypeID,String>();
+    static public TreeMap<TypeID, String> makeTypeIdMap() {
+        TreeMap<TypeID, String> map = new TreeMap<TypeID, String>();
         map.put(TypeID.INT08, TypeID.INT08.getName());
         map.put(TypeID.INT16, TypeID.INT16.getName());
         map.put(TypeID.INT32, TypeID.INT32.getName());
@@ -114,8 +99,7 @@ final public class Invar
         return map;
     }
 
-    static void showHelp ()
-    {
+    static void showHelp() {
         StringBuilder s = new StringBuilder(256);
         s.append("\n");
         s.append("Description: ");
@@ -134,8 +118,7 @@ final public class Invar
         log(s);
     }
 
-    static void log (Object txt)
-    {
+    static void log(Object txt) {
         System.out.println(txt);
     }
 }

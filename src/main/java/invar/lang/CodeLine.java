@@ -1,16 +1,14 @@
 package invar.lang;
 
-final class CodeLine
-{
-    static public int          maxLines;
+final class CodeLine {
+    static public int maxLines;
 
     private final CharSequence code;    // source code file text content
-    private final int          index;   // line number
-    private final int          from;    // begin index of this line
-    private final int          dest;    // end index of this line
+    private final int index;   // line number
+    private final int from;    // begin index of this line
+    private final int dest;    // end index of this line
 
-    public CodeLine(int index, int iFrom, int iDest, final CodeFile file)
-    {
+    public CodeLine(int index, int iFrom, int iDest, final CodeFile file) {
         this.index = index;
         this.code = file.getCode();
         // [from, dest)
@@ -19,16 +17,14 @@ final class CodeLine
 
         int fromValid = this.from;
         int destValid = this.dest;
-        for (int i = fromValid; i < iDest; ++i)
-        {
+        for (int i = fromValid; i < iDest; ++i) {
             char c = code.charAt(i);
             if (isEmpty(c))
                 ++fromValid;
             else
                 break;
         }
-        for (int i = destValid - 1; i >= fromValid; --i)
-        {
+        for (int i = destValid - 1; i >= fromValid; --i) {
             char c = code.charAt(i);
             if (isEmpty(c))
                 --destValid;
@@ -37,28 +33,23 @@ final class CodeLine
         }
     }
 
-    public int numChars ()
-    {
+    public int numChars() {
         return dest - from;
     }
 
-    public char charAt (int i)
-    {
+    public char charAt(int i) {
         return code.charAt(from + i);
     }
 
-    public boolean validIndex (int i)
-    {
+    public boolean validIndex(int i) {
         return i >= 0 && i < numChars();
     }
 
-    public String toString ()
-    {
+    public String toString() {
         StringBuilder s = new StringBuilder(numChars() + 64);
         s.append('\n');
         s.append(index + 1);
-        if (true)
-        {
+        if (true) {
             int lenPad = String.valueOf(code.length() - 1).length();
             s.append(" | ");
             s.append("[");
@@ -68,40 +59,29 @@ final class CodeLine
             s.append(")");
         }
         s.append(" | ");
-        if (numChars() > 0)
-        {
+        if (numChars() > 0) {
             s.append(code.subSequence(from, dest));
         }
         return s.toString();
     }
 
-    static private boolean isEmpty (char c)
-    {
+    static private boolean isEmpty(char c) {
         return ' ' == c || '\t' == c;
     }
 
-    static private String stringPad (char pad, int len, String str, boolean alignLeft)
-    {
+    static private String stringPad(char pad, int len, String str, boolean alignLeft) {
         int delta = len - str.length();
-        if (delta <= 0)
-        {
+        if (delta <= 0) {
             return str;
-        }
-        else
-        {
+        } else {
             StringBuilder s = new StringBuilder(len);
-            if (alignLeft)
-            {
+            if (alignLeft) {
                 s.append(str);
-                for (int i = 0; i < delta; i++)
-                {
+                for (int i = 0; i < delta; i++) {
                     s.append(pad);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < delta; i++)
-                {
+            } else {
+                for (int i = 0; i < delta; i++) {
                     s.append(pad);
                 }
                 s.append(str);
