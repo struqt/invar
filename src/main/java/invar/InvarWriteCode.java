@@ -17,9 +17,9 @@ public final class InvarWriteCode extends InvarWrite {
     final private NestedCoder nestedCoder;
     final private TreeSet<String> fileIncludes;
 
-    public InvarWriteCode(InvarContext ctx, String dirRootPath, String snippetPath) throws Exception {
+    public InvarWriteCode(InvarContext ctx, String dirRootPath, String snippetPath, String snippetDir) throws Exception {
         super(ctx, dirRootPath);
-        this.snippet = new InvarSnippet(ctx, snippetPath, this);
+        this.snippet = new InvarSnippet(ctx, snippetDir, snippetPath, this);
         this.fileIncludes = new TreeSet<String>();
         this.nestedCoder = new NestedCoder();
 

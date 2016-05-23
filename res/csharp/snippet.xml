@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
   xmlns:tns="invar.template" language="csharp">
-  <export resPath="res/csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs" />
-  <export resPath="res/csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs" />
+  <export resPath="csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs" />
+  <export resPath="csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs" />
 
   <!-- Redefine 14 Invar buildin types to adapt C# language -->
   <redefine>

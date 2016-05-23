@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
   xmlns:tns="invar.template" language="cpp">
-  <export resPath="res/cpp/invar.codec.h" destDir="" destName="invar.codec.h" />
+  <export resPath="cpp/invar.codec.h" destDir="" destName="invar.codec.h" />
   <redefine>
     <int8 pack="std" type="int8_t" include="&lt;cstdint&gt;" initValue="-1" />
     <int16 pack="std" type="int16_t" include="&lt;cstdint&gt;" initValue="-1" />

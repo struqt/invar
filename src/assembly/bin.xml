@@ -46,9 +46,6 @@
                 <exclude>**/*.formatted</exclude>
             </excludes>
             <lineEnding>unix</lineEnding>
-            <!--
-            <fileMode>0755</fileMode>
-            -->
         </fileSet>
         <!--
         <fileSet>

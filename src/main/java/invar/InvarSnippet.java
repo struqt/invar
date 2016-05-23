@@ -20,6 +20,7 @@ final public class InvarSnippet {
 
     final private Document snippetDoc;
     final private HashMap<String, String> snippetMap;
+    final private String snippetDir;
     final private String snippetPath;
     final private InvarContext context;
     final private InvarWrite writer;
@@ -27,10 +28,11 @@ final public class InvarSnippet {
     //For C++ template "> >" issue in GCC
     private Boolean genericOverride = false;
 
-    public InvarSnippet(InvarContext ctx, String path, InvarWrite writer) throws Exception {
+    public InvarSnippet(InvarContext ctx, String dir, String path, InvarWrite writer) throws Exception {
         this.context = ctx;
         this.writer = writer;
-        this.snippetPath = "res/" + path;
+        this.snippetDir = dir;
+        this.snippetPath = dir + path;
         this.snippetDoc = getSnippetDoc(this.snippetPath, ctx);
         this.snippetMap = new LinkedHashMap<String, String>();
     }
@@ -130,7 +132,7 @@ final public class InvarSnippet {
     }
 
     private void buildExport(Node n) {
-        String resPath = getAttrOptional(n, "resPath");
+        String resPath = this.snippetDir + getAttrOptional(n, "resPath");
         String destDir = getAttrOptional(n, "destDir");
         String destName = getAttrOptional(n, "destName");
         writer.exportFile(resPath, destDir, destName);

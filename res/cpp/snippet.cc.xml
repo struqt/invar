@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
   xmlns:tns="invar.template" language="cpp">
-  <export resPath="res/cpp/invar.codec.cpp" destDir="" destName="invar.codec.cpp" />
+  <export resPath="cpp/invar.codec.cpp" destDir="" destName="invar.codec.cpp" />
   <redefine genericOverride="true" />
   <template key="include.self">        <![CDATA[true]]></template>
   <template key="pack.name.nested">    <![CDATA[true]]></template>

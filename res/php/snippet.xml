@@ -4,7 +4,7 @@
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
-  <export resPath="res/php/invar.codec.php" destDir="" destName="invar.codec.php" />
+  <export resPath="php/invar.codec.php" destDir="" destName="invar.codec.php" />
   <redefine>
     <int8 pack="php" type="int08" initValue="-1" />
     <int16 pack="php" type="int16" initValue="-1" />

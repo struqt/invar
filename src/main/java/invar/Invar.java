@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 final public class Invar {
     static final String ARG_HELP = "help";
+    static final String ARG_SNIPPET_PATH = "snippet";
     static final String ARG_RULE_PATH = "rule";
     static final String ARG_RULE_DOM = "rule.dom";
     static final String ARG_XSD_PATH = "xsd";
@@ -23,6 +24,7 @@ final public class Invar {
 
         InvarMainArgs a = new InvarMainArgs();
         a.addDefault(ARG_RULE_PATH, "rule/");
+        a.addDefault(ARG_SNIPPET_PATH, "res/");
         a.addDefault(ARG_XSD_PATH, "code/xsd/");
         a.addDefault(ARG_JAVA_PATH, "code/java/");
         a.addDefault(ARG_FLASH_PATH, "code/flash/");
@@ -53,24 +55,24 @@ final public class Invar {
             }
             if (a.has(ARG_CSHARP_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_CSHARP_PATH), "csharp/snippet.xml").write(".cs");
+                new InvarWriteCode(ctx, a.get(ARG_CSHARP_PATH), "csharp/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".cs");
             }
             if (a.has(ARG_JAVA_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_JAVA_PATH), "java/snippet.xml").write(".java");
+                new InvarWriteCode(ctx, a.get(ARG_JAVA_PATH), "java/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".java");
             }
             if (a.has(ARG_CPP_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.h.xml").write(".h");
-                new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.cc.xml").write(".cpp", true);
+                new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.h.xml", a.get(ARG_SNIPPET_PATH)).write(".h");
+                new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.cc.xml", a.get(ARG_SNIPPET_PATH)).write(".cpp", true);
             }
             if (a.has(ARG_FLASH_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_FLASH_PATH), "flash/snippet.xml").write(".as");
+                new InvarWriteCode(ctx, a.get(ARG_FLASH_PATH), "flash/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".as");
             }
             if (a.has(ARG_PHP_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_PHP_PATH), "php/snippet.xml").write(".php");
+                new InvarWriteCode(ctx, a.get(ARG_PHP_PATH), "php/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".php");
             }
             long total = Runtime.getRuntime().totalMemory();
             long free = Runtime.getRuntime().freeMemory();
