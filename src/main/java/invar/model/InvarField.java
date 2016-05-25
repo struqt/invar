@@ -30,6 +30,7 @@ public class InvarField {
     private int widthType = 1;
     private int widthKey = 1;
     private int widthDefault = 1;
+    private String codecRule = "";
 
     public InvarField(Integer index, InvarType type, String key, String comment, Boolean disableSetter) {
         this.index = index;
@@ -97,7 +98,8 @@ public class InvarField {
             String name = t.fullName(split);
             s = s.replaceFirst("\\?", name + t.getGeneric());
         }
-        return typeBasic.fullName(split) + s;
+        s = typeBasic.fullName(split) + s;
+        return s;
     }
 
     public String createFullNameRule(InvarContext ctx, String split) {
@@ -196,4 +198,28 @@ public class InvarField {
         return type.getId() == TypeID.MAP;
     }
 
+    public String getRule() {
+        if (null != codecRule && !"".equals(codecRule)) {
+            return codecRule;
+        }
+        StringBuilder sb = new StringBuilder(64);
+        makeCodecRule(type, sb);
+        for (InvarType t : generics) {
+            sb.append('-');
+            makeCodecRule(t, sb);
+        }
+        codecRule = sb.toString();
+        return codecRule;
+    }
+
+    static void makeCodecRule(InvarType t, StringBuilder sb) {
+        if (t instanceof TypeStruct) {
+            sb.append(t.fullName("."));
+        }
+        else if (t instanceof TypeEnum) {
+            sb.append(TypeID.INT32.getName());
+        } else {
+            sb.append(t.getId().getName());
+        }
+    }
 }

@@ -3,26 +3,26 @@ package invar.model;
 import java.util.regex.Matcher;
 
 public class InvarType {
-    static public enum TypeID {
-        INT08("int8"), INT16("int16"), INT32("int32"), INT64("int64"), //
-        UINT08("uint8"), UINT16("uint16"), UINT32("uint32"), UINT64("uint64"), //
-        FLOAT("float"), DOUBLE("double"), BOOL("bool"), ENUM("enum"), //
-        STRING("string", "", true, true), //
-        VEC("vec", "<?>", true, true), //
-        MAP("map", "<?,?>", true, true), //
-        STRUCT("struct", "", true, true), //
-        FUNC("func", "<?...>", true, false), //
-        DIALECT("~~~", "", true, false), //
+    public enum TypeID {
+        INT08("int8"), INT16("int16"), INT32("int32"), INT64("int64"),
+        UINT08("uint8"), UINT16("uint16"), UINT32("uint32"), UINT64("uint64"),
+        FLOAT("float"), DOUBLE("double"), BOOL("bool"), ENUM("enum"),
+        STRING("string", "", true, true),
+        VEC("vec", "<?>", true, true),
+        MAP("map", "<?,?>", true, true),
+        STRUCT("struct", "", true, true),
+        //FUNC("func", "<?...>", true, false),
+        DIALECT("~~~", "", true, false),
         PROTOCOL("protoc"), VOID("---");
 
-        private TypeID(String name) {
+        TypeID(String name) {
             this.name = name;
             this.generic = "";
             this.useRefer = false;
             this.nullable = false;
         }
 
-        private TypeID(String name, String generic, Boolean refer, Boolean nullable) {
+        TypeID(String name, String generic, Boolean refer, Boolean nullable) {
             this.name = name;
             this.generic = generic;
             this.useRefer = refer;
@@ -51,7 +51,6 @@ public class InvarType {
         final private Boolean nullable;
     }
 
-    ;
 
     private final TypeID id;
     private final InvarPackage pack;
@@ -61,7 +60,7 @@ public class InvarType {
     private TypeID realId;
     private InvarType redirect;
     private String generic;
-    private Boolean isConflict;
+    //private Boolean isConflict;
     private String initValue;
     private String codePath;
     private String codeName;
@@ -76,7 +75,7 @@ public class InvarType {
         this.codePath = "";
         this.codeName = name;
         this.isBuildin = isBuildin;
-        this.isConflict = false;
+        //this.isConflict = false;
     }
 
     final public String fullName(String splitter) {
@@ -130,14 +129,6 @@ public class InvarType {
 
     public void setRealId(TypeID realId) {
         this.realId = realId;
-    }
-
-    public Boolean getIsConflict() {
-        return isConflict;
-    }
-
-    public void setIsConflict(Boolean isConflict) {
-        this.isConflict = isConflict;
     }
 
     public String getCodePath() {

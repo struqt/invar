@@ -1,13 +1,19 @@
 package invar.model;
 
 import java.util.*;
+import java.util.zip.CRC32;
 
 public class TypeStruct extends InvarType {
+
     private InvarType superType;
     private HashMap<String, InvarField> fields;
     private String charset;
     private String alias;
     private String shortField;
+
+    private String codecRule = "";
+    private long codecRuleCRC32 = 0L;
+    private HashSet<TypeStruct> depends = new HashSet<TypeStruct>(16);
 
     public TypeStruct(String name, InvarPackage pack, String comment) {
         super(TypeID.STRUCT, name, pack, comment, false);
@@ -42,6 +48,15 @@ public class TypeStruct extends InvarType {
         if (shortField != null)
             f.setShortName(shortField + fields.size());
         fields.put(f.getKey(), f);
+
+        if (f.getType() != this && f.getType() instanceof TypeStruct) {
+            depends.add((TypeStruct) f.getType());
+        }
+        for (InvarType t : f.getGenerics()) {
+            if (t != this && t instanceof TypeStruct) {
+                depends.add((TypeStruct) t);
+            }
+        }
         return this;
     }
 
@@ -97,4 +112,52 @@ public class TypeStruct extends InvarType {
         this.shortField = shortField;
     }
 
+    public String getCodecRule() {
+        return codecRule;
+    }
+
+    public long getCodecRuleCRC32() {
+        return codecRuleCRC32;
+    }
+
+    public String codecRule() {
+        if (null != codecRule && !"".equals(codecRule)) {
+            //System.out.println(this.getName() + " ------------------> \n" + codecRule);
+            return codecRule;
+        }
+        StringBuilder sb = new StringBuilder(256);
+        sb.append(depends.size());
+        codecRuleFields(this, sb);
+        for (TypeStruct struct : depends) {
+            if (struct == this) {
+                continue;
+            }
+            sb.append('+');
+            codecRuleFields(struct, sb);
+        }
+        this.codecRule = sb.toString();
+        CRC32 crc = new CRC32();
+        crc.update(this.codecRule.getBytes());
+        this.codecRuleCRC32 = crc.getValue();
+        return this.codecRule;
+    }
+
+    static void codecRuleFields(TypeStruct t, StringBuilder sb) {
+        sb.append('@');
+        sb.append(t.fullName("."));
+        for (InvarField f : t.fields.values()) {
+            String rule;
+            if (f.getType().getId().equals(TypeID.ENUM)) {
+                rule = TypeID.INT32.getName();
+            } else {
+                rule = f.getRule();
+            }
+            if ("".equals(rule) || null == rule) {
+                rule = "?";
+            }
+            sb.append('/');
+            sb.append(rule);
+        }
+        sb.append('\n');
+    }
 }

@@ -95,6 +95,7 @@
     (#blank)
     final class (#name)
     {
+    (#tab)public const CRC32 = 0x[#codeCRC32(struct)];(#brk)
     [#codeFields (struct; fields)]
     [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)

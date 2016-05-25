@@ -35,6 +35,7 @@ public final class InvarWriteCode extends InvarWrite {
         funcPublish("operatorLess", TypeStruct.class);
         funcPublish("codeInits", TypeStruct.class, List.class);
         funcPublish("codeDeletes", List.class);
+        funcPublish("codeCRC32", TypeStruct.class);
         funcPublish("codeFields", TypeStruct.class, List.class);
         funcPublish("codeGetters", TypeStruct.class, List.class);
         funcPublish("codeSetters", TypeStruct.class, List.class);
@@ -175,6 +176,12 @@ public final class InvarWriteCode extends InvarWrite {
     public String codeLineDoc(List<InvarField> fields, Integer index) {
         InvarField f = fields.get(index);
         return makeDocLine(f.getComment());
+    }
+
+    public String codeCRC32(TypeStruct type) {
+        type.codecRule();
+        String crc = Long.toHexString(type.getCodecRuleCRC32()).toUpperCase();
+        return crc;
     }
 
     @Override

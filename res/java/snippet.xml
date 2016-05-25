@@ -119,6 +119,7 @@
     (#concat)
     final public class (#name)
     {
+    (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)];(#brk)
     [#codeFields (struct; fields)]
     [#codeGetters(struct; fields)]
     [#codeSetters(struct; fields)]
