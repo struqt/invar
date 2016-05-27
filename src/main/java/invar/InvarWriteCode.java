@@ -633,6 +633,7 @@ public final class InvarWriteCode extends InvarWrite {
             String s = snippetGet(key);
             s = replace(s, Token.Name, alias);
             s = replace(s, Token.Type, type.getName());
+            s = replace(s, Token.TypeFull, type.fullName("."));
 
             if (type instanceof TypeStruct)
                 meStruct.append(s);
@@ -924,8 +925,11 @@ public final class InvarWriteCode extends InvarWrite {
             if (empty.equals(snippetMet))
                 return empty;
             List<String> lines = new ArrayList<String>();
-            for (InvarField f : fs)
-                lines.addAll(makeField(f));
+            int len = fs.size();
+            for (int i = 0; i < len; i++) {
+                InvarField f = fs.get(i);
+                lines.addAll(makeField(f, i == 0));
+            }
             return makeCodeMethod(lines, type.getName(), snippetMet);
         }
 
@@ -933,7 +937,8 @@ public final class InvarWriteCode extends InvarWrite {
             indentLines(lines, methodIndentNum);
             StringBuilder body = new StringBuilder();
             for (String line : lines) {
-                body.append(br + line);
+                body.append(br);
+                body.append(line);
             }
             String s = snippet;
             s = replace(s, Token.Type, returnType);
@@ -944,11 +949,12 @@ public final class InvarWriteCode extends InvarWrite {
             return s;
         }
 
-        private List<String> makeField(InvarField f) {
+        private List<String> makeField(InvarField f, boolean isFirst) {
             String rule = createRule(f, getContext(), useFullName);
             TypeID type = f.getType().getRealId();
             List<String> lines = new ArrayList<String>();
             NestedParam params = makeParams(null, rule, f.getKey(), f.getRealKey(), empty);
+            params.isFirst = isFirst;
             makeGeneric(f, type, rule, params, lines);
             return lines;
         }
@@ -956,7 +962,7 @@ public final class InvarWriteCode extends InvarWrite {
         private void makeGeneric(InvarField f, TypeID type, String rule, NestedParam p, List<String> lines) {
             p.field = f;
             p.type = type;
-            String code = null;
+            String code;
             if (TypeID.VEC == type)
                 code = makeUnitVec(p, rule);
             else if (TypeID.MAP == type)
@@ -975,7 +981,7 @@ public final class InvarWriteCode extends InvarWrite {
             code = replace(code, Token.Invoke, invoke);
             if (p.isRoot()) {
                 String spec = empty;
-                String s = empty;
+                String s;
                 if (p.field.getUsePointer()) {
                     s = snippetTryGet(prefix + "ptr." + p.type.getName());
                     if (s.equals(empty))
@@ -987,10 +993,32 @@ public final class InvarWriteCode extends InvarWrite {
                         s = snippetTryGet(prefix + "ref.any");
                 }
                 if (!s.equals(empty)) {
+                    String s_head = snippetTryGet(prefix + "field.head." + p.type.getName());
+                    if (empty.equals(s_head)) {
+                        s_head = snippetTryGet(prefix + "field.head.any");
+                    }
+                    String s_tail = snippetTryGet(prefix + "field.tail." + p.type.getName());
+                    if (empty.equals(s_tail)) {
+                        s_tail = snippetTryGet(prefix + "field.tail.any");
+                    }
+                    String s_space = snippetTryGet(prefix + "field.space." + p.type.getName());
+                    if (empty.equals(s_space)) {
+                        s_space = snippetTryGet(prefix + "field.space.any");
+                    }
+                    if (!empty.equals(s_space) && !p.isFirst) {
+                        s_head = s_head + s_space;
+                    }
+                    if (!empty.equals(s_head)) {
+                        s = s_head + s;
+                    }
+                    if (!empty.equals(s_tail)) {
+                        s = s + s_tail;
+                    }
                     List<String> bodyLines = indentLines(code);
                     StringBuilder body = new StringBuilder();
                     for (String line : bodyLines) {
-                        body.append(br + line);
+                        body.append(br);
+                        body.append(line);
                     }
                     s = replace(s, Token.Body, code);
                     s = replace(s, Token.BodyIndent, body.toString());
@@ -1161,7 +1189,9 @@ public final class InvarWriteCode extends InvarWrite {
     } //class NestedCoder
 
     private final class NestedParam {
+
         private NestedParam parent = null;
+        private boolean isFirst = false;
         private Integer depth = 0;
         private InvarField field = null;
         private TypeID type = TypeID.VOID;

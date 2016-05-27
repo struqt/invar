@@ -70,9 +70,10 @@ public class TokenParser {
                 TypeEnum t = new TypeEnum(name, pack, comment);
                 addToPack(pack, t, n);
                 if (alias.equals("")) {
-                    t.setAlias(name);
-                    ctx.aliasAdd(t);
+                    alias = name;
                 }
+                t.setAlias(alias);
+                ctx.aliasAdd(t);
                 enumNodes.put(n, t);
             } else if (n.getName().equals("struct")) {
                 String name = getAttr(n, "name");
@@ -80,9 +81,10 @@ public class TokenParser {
                 TypeStruct t = new TypeStruct(name, pack, comment);
                 addToPack(pack, t, n);
                 if (alias.equals("")) {
-                    t.setAlias(name);
-                    ctx.aliasAdd(t);
+                    alias = name;
                 }
+                t.setAlias(alias);
+                ctx.aliasAdd(t);
                 structNodes.put(n, t);
                 t.setShortField(getAttrOptional(n, "short"));
             } else if (n.getName().equals("protoc")) {

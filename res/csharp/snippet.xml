@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
-  xmlns:tns="invar.template" language="csharp">
-  <export resPath="csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs" />
-  <export resPath="csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs" />
+          xmlns:tns="invar.template" language="csharp">
+
+  <export resPath="csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs"/>
+  <export resPath="csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs"/>
 
   <!-- Redefine 14 Invar buildin types to adapt C# language -->
   <redefine>
-    <int8 pack="System" type="SByte" initValue="-1" />
-    <int16 pack="System" type="Int16" initValue="-1" />
-    <int32 pack="System" type="Int32" initValue="-1" />
-    <int64 pack="System" type="Int64" initValue="-1" />
-    <uint8 pack="System" type="Byte" initValue="0" />
-    <uint16 pack="System" type="UInt16" initValue="0" />
-    <uint32 pack="System" type="UInt32" initValue="0" />
-    <uint64 pack="System" type="UInt64" initValue="0" />
-    <float pack="System" type="Single" initValue="0.0" />
-    <double pack="System" type="Double" initValue="0.00" />
-    <string pack="System" type="String" initValue="" />
-    <bool pack="System" type="Boolean" initValue="false" />
-    <vec pack="System.Collections.Generic" type="List" generic="&lt;?&gt;" />
-    <map pack="System.Collections.Generic" type="Dictionary" generic="&lt;?,?&gt;" />
-    <dialect pack="System.IO" type="BinaryReader" />
-    <dialect pack="System.IO" type="BinaryWriter" />
-    <dialect pack="System.Text" type="StringBuilder" />
-    <dialect pack="System.Text" type="Encoding" />
+    <int8 pack="System" type="SByte" initValue="-1"/>
+    <int16 pack="System" type="Int16" initValue="-1"/>
+    <int32 pack="System" type="Int32" initValue="-1"/>
+    <int64 pack="System" type="Int64" initValue="-1"/>
+    <uint8 pack="System" type="Byte" initValue="0"/>
+    <uint16 pack="System" type="UInt16" initValue="0"/>
+    <uint32 pack="System" type="UInt32" initValue="0"/>
+    <uint64 pack="System" type="UInt64" initValue="0"/>
+    <float pack="System" type="Single" initValue="0.0"/>
+    <double pack="System" type="Double" initValue="0.00"/>
+    <string pack="System" type="String" initValue=""/>
+    <bool pack="System" type="Boolean" initValue="false"/>
+    <vec pack="System.Collections.Generic" type="List" generic="&lt;?&gt;"/>
+    <map pack="System.Collections.Generic" type="Dictionary" generic="&lt;?,?&gt;"/>
+    <dialect pack="System.IO" type="BinaryReader"/>
+    <dialect pack="System.IO" type="BinaryWriter"/>
+    <dialect pack="System.Text" type="StringBuilder"/>
+    <dialect pack="System.Text" type="Encoding"/>
   </redefine>
 
   <!-- Common snippet -->
@@ -117,8 +118,9 @@
     [#codeNested (copy.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (read.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (write.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (tostr.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tophp.; useFullName; struct; fields; imports)](#brk)
     } //class: (#name)
   ]]></template>
   <template key="struct.meta"><![CDATA[ [Invar.InvarRule("(#type)", "(#name)")] ]]></template>
@@ -270,7 +272,7 @@
     (#tab){(#body)
     (#tab)} ]]></template>
   <template key="write.any">   <![CDATA[ (#arg).Write((#name)) ]]></template>
-  <template key="write.string">   <![CDATA[ 
+  <template key="write.string">   <![CDATA[
   byte[] (#name)Bytes = Encoding.UTF8.GetBytes((#name));
   (#arg).Write((#name)Bytes.Length);
   (#arg).Write((#name)Bytes)[#addImport(struct; imports; System.Text::Encoding)] ]]></template>
@@ -416,7 +418,7 @@
     (#tab)(#tab)return map;
     (#tab)}
   ]]></template>
-  <template key="runtime.alias.basic"><![CDATA[(#brk)(#tab)(#tab)map.Add("(#name)", typeof((#type)));]]></template>
+  <template key="runtime.alias.basic"><![CDATA[(#brk)(#tab)(#tab)map.Add("(#name)", typeof((#typefull)));]]></template>
   <template key="runtime.alias.list"><![CDATA[(#brk)(#tab)(#tab)map.Add("(#name)", typeof((#type)<>));]]></template>
   <template key="runtime.alias.map"><![CDATA[(#brk)(#tab)(#tab)map.Add("(#name)", typeof((#type)<,>));]]></template>
   <template key="runtime.body"><![CDATA[
@@ -438,4 +440,97 @@
     }
     }
   ]]></template>
+
+  <!-- Write data to PHP script -->
+  <template key="tophp.import">      <![CDATA[ System.Text::StringBuilder ]]></template>
+  <template key="tophp.method.arg">  <![CDATA[ s ]]></template>
+  <template key="tophp.method"><![CDATA[
+    (#tab)public StringBuilder ToStringPHP()
+    (#tab){
+    (#tab)(#tab)StringBuilder code = new StringBuilder();
+    (#tab)(#tab)code.Append("<?php "); (#tab)(#tab)code.Append("/* CRC32: 0x");
+    (#tab)(#tab)code.Append(CRC32.ToString("X2")); code.Append(" */"); code.Append('\\n');
+    (#tab)(#tab)code.Append('\\n'); code.Append("return ");
+    (#tab)(#tab)this.WritePHP(code); code.Append(';'); code.Append('\\n');
+    (#tab)(#tab)return code;
+    (#tab)}(#brk)
+    (#tab)public void WritePHP(StringBuilder s)
+    (#tab){
+    (#tab)(#tab)s.Append("array("); s.Append('\\n');
+    (#tab)(#tab)int offset = s.Length;(#body)
+    (#tab)(#tab)s.Append("/* "); s.Append(GetType().ToString()); s.Append(" */");
+    (#tab)(#tab)s.Append(")");
+    (#tab)} ]]></template>
+
+  <template key="tophp.any"> <![CDATA[ (#arg).Append((#name).ToString()) ]]></template>
+  <template key="tophp.enum">
+    <![CDATA[ (#arg).Append((int)(#name)); (#arg).Append("/*(#type)::"); (#arg).Append((#name).ToString()); (#arg).Append("*/") ]]></template>
+  <template key="tophp.string">
+    <![CDATA[ (#arg).Append("'"); (#arg).Append((#name).ToString()); (#arg).Append("'") ]]></template>
+  <template key="tophp.struct"><![CDATA[ (#name).WritePHP((#arg)) ]]></template>
+  <template key="tophp.vec.for"><![CDATA[
+    int (#name)Size = (null == (#name) ? 0 : (#name).Count);
+    if ((#name)Size > 0) {
+    (#tab)(#arg).Append("array("); (#arg).Append('\\n');
+    (#tab)int (#name)Idx = 0;
+    (#tab)foreach ((#typer) (#value) in (#name)) { /* vec.for: (#name) */
+    (#tab)++(#name)Idx;(#body)
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); (#arg).Append('\\n'); }
+    (#tab)}
+    (#tab)(#arg).Append("/* map size: "); (#arg).Append((#name).Count); (#arg).Append(" */"); (#arg).Append(")");
+    }
+  ]]></template>
+  <template key="tophp.map.for"><![CDATA[
+    int (#name)Size = (null == (#name) ? 0 : (#name).Count);
+    if ((#name)Size > 0) {
+    (#tab)(#arg).Append("array("); (#arg).Append('\\n');
+    (#tab)int (#name)Idx = 0;
+    (#tab)foreach (KeyValuePair<(#typer)> (#name)Iter in (#name)) { /* map.for: (#name) */
+    (#tab)++(#name)Idx;(#body)
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); (#arg).Append('\\n'); }
+    (#tab)}
+    (#tab)(#arg).Append("/* map size: "); (#arg).Append((#name).Count); (#arg).Append(" */"); (#arg).Append(")");
+    }
+  ]]></template>
+
+  <template key="tophp.ref.any"><![CDATA[ (#arg).Append("'(#name)'=>"); (#body);(#brk) ]]></template>
+  <template key="tophp.ref.vec | tophp.ref.map"><![CDATA[
+    if ((#name)Exsists) { (#arg).Append("'(#name)'=>"); }
+    (#body) ]]></template>
+
+  <template key="tophp.map.head.k">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Key; /* map.head.k */(#brk)]]></template>
+  <template key="tophp.map.head.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* map.head.k */(#brk)]]></template>
+
+  <template key="tophp.nest.n"><![CDATA[ (#body); ]]></template>
+  <template key="tophp.nest.k">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */(#brk)(#body); (#arg).Append("=>"); ]]></template>
+  <template key="tophp.nest.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* nest.v */(#brk)(#body); ]]></template>
+
+  <template key="tophp.ptr.string | tophp.ptr.struct"><![CDATA[
+    if ((#name) != (#null)) {
+    (#tab)(#body);
+    }
+  ]]></template>
+  <template key="tophp.ptr.vec | tophp.ptr.map"><![CDATA[
+    if ((#name) != (#null)) {(#bodyindent)
+    }
+  ]]></template>
+
+  <template key="tophp.field.head.vec | tophp.field.head.map"><![CDATA[
+    bool (#name)Exsists = (null != (#name) && (#name).Count > 0); /* field.head.[vec|map]: (#name) */
+  ]]></template>
+  <template key="tophp.field.space.any"><![CDATA[
+    if ((#arg).Length > offset) {
+    (#tab)(#arg).Append(','); (#arg).Append('\\n');
+    } /* field.space.any: (#name) */
+  ]]></template>
+  <template key="tophp.field.space.vec | tophp.field.space.map"><![CDATA[
+    if ((#name)Exsists && (#arg).Length > offset) {
+    (#tab)(#arg).Append(','); (#arg).Append('\\n');
+    } /* field.space.[vec|map]: (#name) */
+  ]]></template>
+
 </tns:root>
