@@ -10,7 +10,7 @@ final public class Invar {
     static final String ARG_HELP = "help";
     static final String ARG_SNIPPET_PATH = "snippet";
     static final String ARG_RULE_PATH = "rule";
-    static final String ARG_RULE_DOM = "rule.dom";
+    //static final String ARG_RULE_DOM = "rule.dom";
     static final String ARG_XSD_PATH = "xsd";
     static final String ARG_JAVA_PATH = "java";
     static final String ARG_FLASH_PATH = "flash";
@@ -44,11 +44,11 @@ final public class Invar {
             ctx.addBuildInTypes(basics);
             ctx.setRuleDir(a.get(ARG_RULE_PATH));
             log("");
-            if (a.has(ARG_RULE_DOM)) {
-                InvarReadRule.start(ctx, ".xml");
-            } else {
+            if (a.has(ARG_RULE_PATH)) {
                 TokensFromXml.start(ctx);
-            }
+            } //else {
+                //InvarReadRule.start(ctx, ".xml");
+            //}
             if (a.has(ARG_XSD_PATH)) {
                 log("");
                 new InvarWriteXSD().write(ctx, basics, a.get(ARG_XSD_PATH));

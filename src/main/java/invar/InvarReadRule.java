@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.*;
 
-final public class InvarReadRule {
+final public class InvarReadRule {/*
     static private String suffix;
 
     static public void start(InvarContext ctx, String suffix) throws Throwable {
@@ -428,5 +428,5 @@ final public class InvarReadRule {
         }
         code.append(" />");
         return code.toString();
-    }
+    }//*/
 }
