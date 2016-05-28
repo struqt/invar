@@ -114,13 +114,14 @@
     [#codeFields (struct; fields)]
     [#codeGetters(struct; fields)]
     [#codeSetters(struct; fields)]
-    [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (copy.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (read.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (write.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (tostr.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (tophp.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (reuse.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (copy.;   useFullName; struct; fields; imports)](#brk)
+    [#codeNested (read.;   useFullName; struct; fields; imports)](#brk)
+    [#codeNested (write.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tostr.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (toxml.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tojson.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tophp.;  useFullName; struct; fields; imports)](#brk)
     } //class: (#name)
   ]]></template>
   <template key="struct.meta"><![CDATA[ [Invar.InvarRule("(#type)", "(#name)")] ]]></template>
@@ -463,6 +464,7 @@
     (#tab)} ]]></template>
 
   <template key="tophp.any"> <![CDATA[ (#arg).Append((#name).ToString()) ]]></template>
+  <template key="tophp.bool"><![CDATA[ (#arg).Append((#name).ToString().ToLower()) ]]></template>
   <template key="tophp.enum">
     <![CDATA[ (#arg).Append((int)(#name)); (#arg).Append("/*(#type)::"); (#arg).Append((#name).ToString()); (#arg).Append("*/") ]]></template>
   <template key="tophp.string">
@@ -511,7 +513,7 @@
 
   <template key="tophp.ptr.string | tophp.ptr.struct"><![CDATA[
     if ((#name) != (#null)) {
-    (#tab)(#body);
+    (#tab)(#arg).Append("'(#name)'=>"); (#body);
     }
   ]]></template>
   <template key="tophp.ptr.vec | tophp.ptr.map"><![CDATA[
@@ -530,6 +532,96 @@
   <template key="tophp.field.space.vec | tophp.field.space.map"><![CDATA[
     if ((#name)Exsists && (#arg).Length > offset) {
     (#tab)(#arg).Append(','); (#arg).Append('\\n');
+    } /* field.space.[vec|map]: (#name) */
+  ]]></template>
+
+
+  <!-- Write data to JSON data format -->
+  <template key="tojson.import">      <![CDATA[ System.Text::StringBuilder ]]></template>
+  <template key="tojson.method.arg">  <![CDATA[ s ]]></template>
+  <template key="tojson.method"><![CDATA[
+    (#tab)public StringBuilder ToStringJSON()
+    (#tab){
+    (#tab)(#tab)StringBuilder code = new StringBuilder();
+    (#tab)(#tab)this.WriteJSON(code);
+    (#tab)(#tab)return code;
+    (#tab)}(#brk)
+    (#tab)public void WriteJSON(StringBuilder s)
+    (#tab){
+    (#tab)(#tab)s.Append("\\n{");
+    (#tab)(#tab)int offset = s.Length;(#body)
+    (#tab)(#tab)s.Append("}"); s.Append('\\n');
+    (#tab)} ]]></template>
+
+  <template key="tojson.any"> <![CDATA[ (#arg).Append((#name).ToString()) ]]></template>
+  <template key="tojson.enum"><![CDATA[ (#arg).Append((int)(#name)); ]]></template>
+  <template key="tojson.bool"><![CDATA[ (#arg).Append((#name).ToString().ToLower()) ]]></template>
+  <template key="tojson.string">
+    <![CDATA[ (#arg).Append("\\""); (#arg).Append((#name).ToString()); (#arg).Append("\\"") ]]></template>
+  <template key="tojson.struct"><![CDATA[ (#name).WriteJSON((#arg)) ]]></template>
+  <template key="tojson.vec.for"><![CDATA[
+    int (#name)Size = (null == (#name) ? 0 : (#name).Count);
+    if ((#name)Size > 0) {
+    (#tab)(#arg).Append("\\n["); /*(#arg).Append('\\n');*/
+    (#tab)int (#name)Idx = 0;
+    (#tab)foreach ((#typer) (#value) in (#name)) { /* vec.for: (#name) */
+    (#tab)++(#name)Idx;(#body)
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)}
+    (#tab)(#arg).Append("]");
+    }
+  ]]></template>
+  <template key="tojson.map.for"><![CDATA[
+    int (#name)Size = (null == (#name) ? 0 : (#name).Count);
+    if ((#name)Size > 0) {
+    (#tab)(#arg).Append("\\n{"); /*(#arg).Append('\\n');*/
+    (#tab)int (#name)Idx = 0;
+    (#tab)foreach (KeyValuePair<(#typer)> (#name)Iter in (#name)) { /* map.for: (#name) */
+    (#tab)++(#name)Idx;(#body)
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)}
+    (#tab)(#arg).Append("}");
+    }
+  ]]></template>
+
+  <template key="tojson.ref.any"><![CDATA[ (#arg).Append("\\"(#name)\\":"); (#body);(#brk) ]]></template>
+  <template key="tojson.ref.vec | tojson.ref.map"><![CDATA[
+    if ((#name)Exsists) { (#arg).Append("\\"(#name)\\":"); }
+    (#body) ]]></template>
+
+  <template key="tojson.map.head.k">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Key;(#brk)]]></template>
+  <template key="tojson.map.head.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value;(#brk)]]></template>
+
+  <template key="tojson.nest.n"><![CDATA[ (#body); ]]></template>
+  <template key="tojson.nest.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */
+    (#arg).Append("\\""); (#body); (#arg).Append("\\""); (#arg).Append(":"); ]]></template>
+  <template key="tojson.nest.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* nest.v */(#brk)(#body); ]]></template>
+
+  <template key="tojson.ptr.string | tojson.ptr.struct"><![CDATA[
+    if ((#name) != (#null)) {
+    (#tab)(#arg).Append("\\"(#name)\\":"); (#body);
+    }
+  ]]></template>
+  <template key="tojson.ptr.vec | tojson.ptr.map"><![CDATA[
+    if ((#name) != (#null)) {(#bodyindent)
+    }
+  ]]></template>
+
+  <template key="tojson.field.head.vec | tojson.field.head.map"><![CDATA[
+    bool (#name)Exsists = (null != (#name) && (#name).Count > 0); /* field.head.[vec|map]: (#name) */
+  ]]></template>
+  <template key="tojson.field.space.any"><![CDATA[
+    if ((#arg).Length > offset) {
+    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
+    } /* field.space.any: (#name) */
+  ]]></template>
+  <template key="tojson.field.space.vec | tojson.field.space.map"><![CDATA[
+    if ((#name)Exsists && (#arg).Length > offset) {
+    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
     } /* field.space.[vec|map]: (#name) */
   ]]></template>
 
