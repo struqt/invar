@@ -121,6 +121,7 @@
     [#codeNested (tostr.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (toxml.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (tojson.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tolua.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (tophp.;  useFullName; struct; fields; imports)](#brk)
     } //class: (#name)
   ]]></template>
@@ -449,7 +450,7 @@
     (#tab)public StringBuilder ToStringPHP()
     (#tab){
     (#tab)(#tab)StringBuilder code = new StringBuilder();
-    (#tab)(#tab)code.Append("<?php "); (#tab)(#tab)code.Append("/* CRC32: 0x");
+    (#tab)(#tab)code.Append("<?php "); code.Append("/* (#type).CRC32: 0x");
     (#tab)(#tab)code.Append(CRC32.ToString("X2")); code.Append(" */"); code.Append('\\n');
     (#tab)(#tab)code.Append('\\n'); code.Append("return ");
     (#tab)(#tab)this.WritePHP(code); code.Append(';'); code.Append('\\n');
@@ -624,5 +625,114 @@
     (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
     } /* field.space.[vec|map]: (#name) */
   ]]></template>
+
+
+  <!-- Write data to lua table -->
+  <template key="tolua.import">      <![CDATA[ System.Text::StringBuilder ]]></template>
+  <template key="tolua.method.arg">  <![CDATA[ s ]]></template>
+  <template key="tolua.method"><![CDATA[
+    (#tab)public StringBuilder ToStringLua()
+    (#tab){
+    (#tab)(#tab)StringBuilder code = new StringBuilder();
+    (#tab)(#tab)code.Append("-- (#type).CRC32: 0x");
+    (#tab)(#tab)code.Append(CRC32.ToString("X2")); code.Append(" --"); code.Append('\\n');
+    (#tab)(#tab)code.Append("local table=");
+    (#tab)(#tab)this.WriteLua(code); code.Append(";");
+    (#tab)(#tab)return code;
+    (#tab)}(#brk)
+    (#tab)public void WriteLua(StringBuilder s)
+    (#tab){
+    (#tab)(#tab)s.Append("\\n{");
+    (#tab)(#tab)int offset = s.Length;(#body)
+    (#tab)(#tab)s.Append("}"); s.Append('\\n');
+    (#tab)} ]]></template>
+
+  <template key="tolua.any"> <![CDATA[ (#arg).Append((#name).ToString()) ]]></template>
+  <template key="tolua.enum"><![CDATA[ (#arg).Append((int)(#name)); ]]></template>
+  <template key="tolua.bool"><![CDATA[ (#arg).Append((#name).ToString().ToLower()) ]]></template>
+  <template key="tolua.string">
+    <![CDATA[ (#arg).Append("\\""); (#arg).Append((#name).ToString()); (#arg).Append("\\"") ]]></template>
+  <template key="tolua.struct"><![CDATA[ (#name).WriteLua((#arg)) ]]></template>
+  <template key="tolua.vec.for"><![CDATA[
+    int (#name)Size = (null == (#name) ? 0 : (#name).Count);
+    if ((#name)Size > 0) {
+    (#tab)(#arg).Append("\\n{"); /*(#arg).Append('\\n');*/
+    (#tab)int (#name)Idx = 0;
+    (#tab)foreach ((#typer) (#value) in (#name)) { /* vec.for: (#name) */
+    (#tab)++(#name)Idx;(#body)
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)}
+    (#tab)(#arg).Append("}");
+    }
+  ]]></template>
+  <template key="tolua.map.for"><![CDATA[
+    int (#name)Size = (null == (#name) ? 0 : (#name).Count);
+    if ((#name)Size > 0) {
+    (#tab)(#arg).Append("\\n{"); /*(#arg).Append('\\n');*/
+    (#tab)int (#name)Idx = 0;
+    (#tab)foreach (KeyValuePair<(#typer)> (#name)Iter in (#name)) { /* map.for: (#name) */
+    (#tab)++(#name)Idx;(#body)
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)}
+    (#tab)(#arg).Append("}");
+    }
+  ]]></template>
+
+  <template key="tolua.ref.any"><![CDATA[ (#arg).Append("(#name)="); (#body);(#brk) ]]></template>
+  <template key="tolua.ref.vec | tolua.ref.map"><![CDATA[
+    if ((#name)Exsists) { (#arg).Append("(#name)="); }
+    (#body) ]]></template>
+
+  <template key="tolua.map.head.k">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Key;(#brk)]]></template>
+  <template key="tolua.map.head.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value;(#brk)]]></template>
+
+  <template key="tolua.nest.n"><![CDATA[ (#body); ]]></template>
+  <template key="tolua.nest.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */
+    (#body); (#arg).Append("="); ]]></template>
+  <template key="
+  tolua.nest.k.int8   |
+  tolua.nest.k.int16  |
+  tolua.nest.k.int32  |
+  tolua.nest.k.int64  |
+  tolua.nest.k.uint8  |
+  tolua.nest.k.uint16 |
+  tolua.nest.k.uint32 |
+  tolua.nest.k.uint64 |
+  tolua.nest.k.float  |
+  tolua.nest.k.double |
+  tolua.nest.k.enum
+  "><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */
+    (#arg).Append("["); (#body); (#arg).Append("]"); (#arg).Append("="); ]]></template>
+  <template key="tolua.nest.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* nest.v */(#brk)(#body); ]]></template>
+
+  <template key="tolua.ptr.string | tolua.ptr.struct"><![CDATA[
+    if ((#name) != (#null)) {
+    (#tab)(#arg).Append("(#name)="); (#body);
+    }
+  ]]></template>
+  <template key="tolua.ptr.vec | tolua.ptr.map"><![CDATA[
+    if ((#name) != (#null)) {(#bodyindent)
+    }
+  ]]></template>
+
+  <template key="tolua.field.head.vec | tolua.field.head.map"><![CDATA[
+    bool (#name)Exsists = (null != (#name) && (#name).Count > 0); /* field.head.[vec|map]: (#name) */
+  ]]></template>
+  <template key="tolua.field.space.any"><![CDATA[
+    if ((#arg).Length > offset) {
+    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
+    } /* field.space.any: (#name) */
+  ]]></template>
+  <template key="tolua.field.space.vec | tolua.field.space.map"><![CDATA[
+    if ((#name)Exsists && (#arg).Length > offset) {
+    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
+    } /* field.space.[vec|map]: (#name) */
+  ]]></template>
+
 
 </tns:root>
