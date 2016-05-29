@@ -27,6 +27,7 @@ xmlns:tns="invar.rule">
     <field name="usePtr" type="String" doc="使用指针" useptr="true"/>
     <field name="prev" type="Custom" doc="自身类型"/>
     <field name="next" type="Custom" doc="自身类型"/>
+    <field name="emptyDoc" type="String" doc=""/>
   </struct>
   
   <struct name="TestBasic" doc="基础类型">

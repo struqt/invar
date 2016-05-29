@@ -28,7 +28,9 @@
   </redefine>
 
   <!-- Common snippet -->
-  <template key="include.self">        <![CDATA[false]]></template>
+  <template key="include.self">            <![CDATA[false]]></template>
+  <template key="import.exclude.same.pack"><![CDATA[true]]></template>
+  <template key="import.exclude.conflict"> <![CDATA[true]]></template>
   <template key="pack.name.nested">    <![CDATA[false]]></template>
   <template key="file.name.lowercase"> <![CDATA[false]]></template>
   <template key="capitalize.pack.head"><![CDATA[true]]></template>
@@ -103,7 +105,7 @@
 		(#tab)(#name) = (#value),
 	]]></template>
   <template key="struct"><![CDATA[
-	[#addImport(struct; imports; System.IO::BinaryReader)]
+	  [#addImport(struct; imports; System.IO::BinaryReader)]
     [#addImport(struct; imports; System.IO::BinaryWriter)]
     [#addImport(struct; imports; System.Text::StringBuilder)]
     [#addImport(struct; imports; System::String)]
@@ -119,10 +121,10 @@
     [#codeNested (read.;   useFullName; struct; fields; imports)](#brk)
     [#codeNested (write.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (tostr.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (toxml.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (tojson.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (tolua.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (tophp.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (toxml.;  useFullName; struct; fields; imports)](#brk)
     } //class: (#name)
   ]]></template>
   <template key="struct.meta"><![CDATA[ [Invar.InvarRule("(#type)", "(#name)")] ]]></template>
@@ -450,55 +452,55 @@
     (#tab)public StringBuilder ToStringPHP()
     (#tab){
     (#tab)(#tab)StringBuilder code = new StringBuilder();
-    (#tab)(#tab)code.Append("<?php "); code.Append("/* (#type).CRC32: 0x");
-    (#tab)(#tab)code.Append(CRC32.ToString("X2")); code.Append(" */"); code.Append('\\n');
-    (#tab)(#tab)code.Append('\\n'); code.Append("return ");
-    (#tab)(#tab)this.WritePHP(code); code.Append(';'); code.Append('\\n');
+    (#tab)(#tab)code.Append("<?php ").Append("/* (#type).CRC32: 0x");
+    (#tab)(#tab)code.Append(CRC32.ToString("X2")).Append(" */").Append('\\n');
+    (#tab)(#tab)code.Append('\\n').Append("return ");
+    (#tab)(#tab)this.WritePHP(code); code.Append(';').Append('\\n');
     (#tab)(#tab)return code;
     (#tab)}(#brk)
     (#tab)public void WritePHP(StringBuilder s)
     (#tab){
-    (#tab)(#tab)s.Append("array("); s.Append('\\n');
+    (#tab)(#tab)s.Append("array").Append('(').Append('\\n');
     (#tab)(#tab)int offset = s.Length;(#body)
-    (#tab)(#tab)s.Append("/* "); s.Append(GetType().ToString()); s.Append(" */");
-    (#tab)(#tab)s.Append(")");
+    (#tab)(#tab)s.Append("/* ").Append(GetType().ToString()).Append(" */");
+    (#tab)(#tab)s.Append(')');
     (#tab)} ]]></template>
 
   <template key="tophp.any"> <![CDATA[ (#arg).Append((#name).ToString()) ]]></template>
   <template key="tophp.bool"><![CDATA[ (#arg).Append((#name).ToString().ToLower()) ]]></template>
-  <template key="tophp.enum">
-    <![CDATA[ (#arg).Append((int)(#name)); (#arg).Append("/*(#type)::"); (#arg).Append((#name).ToString()); (#arg).Append("*/") ]]></template>
-  <template key="tophp.string">
-    <![CDATA[ (#arg).Append("'"); (#arg).Append((#name).ToString()); (#arg).Append("'") ]]></template>
+  <template key="tophp.enum"><![CDATA[ (#arg).Append((int)(#name));
+    (#arg).Append("/*(#type)::").Append((#name).ToString()).Append("*/") ]]></template>
+  <template key="tophp.string"><![CDATA[ (#arg).Append('\\'').Append((#name).ToString()).Append('\\'') ]]></template>
   <template key="tophp.struct"><![CDATA[ (#name).WritePHP((#arg)) ]]></template>
   <template key="tophp.vec.for"><![CDATA[
     int (#name)Size = (null == (#name) ? 0 : (#name).Count);
     if ((#name)Size > 0) {
-    (#tab)(#arg).Append("array("); (#arg).Append('\\n');
+    (#tab)(#arg).Append("array").Append('(').Append('\\n');
     (#tab)int (#name)Idx = 0;
     (#tab)foreach ((#typer) (#value) in (#name)) { /* vec.for: (#name) */
     (#tab)++(#name)Idx;(#body)
-    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); (#arg).Append('\\n'); }
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(',').Append('\\n'); }
     (#tab)}
-    (#tab)(#arg).Append("/* map size: "); (#arg).Append((#name).Count); (#arg).Append(" */"); (#arg).Append(")");
+    (#tab)(#arg).Append("/* vec size: ").Append((#name).Count).Append(" */").Append(')');
     }
   ]]></template>
   <template key="tophp.map.for"><![CDATA[
     int (#name)Size = (null == (#name) ? 0 : (#name).Count);
     if ((#name)Size > 0) {
-    (#tab)(#arg).Append("array("); (#arg).Append('\\n');
+    (#tab)(#arg).Append("array").Append('(').Append('\\n');
     (#tab)int (#name)Idx = 0;
     (#tab)foreach (KeyValuePair<(#typer)> (#name)Iter in (#name)) { /* map.for: (#name) */
     (#tab)++(#name)Idx;(#body)
     (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); (#arg).Append('\\n'); }
     (#tab)}
-    (#tab)(#arg).Append("/* map size: "); (#arg).Append((#name).Count); (#arg).Append(" */"); (#arg).Append(")");
+    (#tab)(#arg).Append("/* map size: ").Append((#name).Count).Append(" */").Append(')');
     }
   ]]></template>
 
-  <template key="tophp.ref.any"><![CDATA[ (#arg).Append("'(#name)'=>"); (#body);(#brk) ]]></template>
+  <template key="tophp.ref.any"><![CDATA[
+    (#arg).Append('\\'').Append("(#name)").Append('\\'').Append("=>"); (#body); ]]></template>
   <template key="tophp.ref.vec | tophp.ref.map"><![CDATA[
-    if ((#name)Exsists) { (#arg).Append("'(#name)'=>"); }
+    if ((#name)Exsists) { (#arg).Append('\\'').Append("(#name)").Append('\\'').Append("=>"); }
     (#body) ]]></template>
 
   <template key="tophp.map.head.k">
@@ -507,14 +509,14 @@
     <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* map.head.k */(#brk)]]></template>
 
   <template key="tophp.nest.n"><![CDATA[ (#body); ]]></template>
-  <template key="tophp.nest.k">
-    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */(#brk)(#body); (#arg).Append("=>"); ]]></template>
-  <template key="tophp.nest.v">
-    <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* nest.v */(#brk)(#body); ]]></template>
+  <template key="tophp.nest.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */(#brk)(#body); (#arg).Append("=>"); ]]></template>
+  <template key="tophp.nest.v"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Value; /* nest.v */(#brk)(#body); ]]></template>
 
   <template key="tophp.ptr.string | tophp.ptr.struct"><![CDATA[
     if ((#name) != (#null)) {
-    (#tab)(#arg).Append("'(#name)'=>"); (#body);
+    (#tab)(#arg).Append('\\'').Append("(#name)").Append('\\'').Append("=>"); (#body);
     }
   ]]></template>
   <template key="tophp.ptr.vec | tophp.ptr.map"><![CDATA[
@@ -526,14 +528,12 @@
     bool (#name)Exsists = (null != (#name) && (#name).Count > 0); /* field.head.[vec|map]: (#name) */
   ]]></template>
   <template key="tophp.field.space.any"><![CDATA[
-    if ((#arg).Length > offset) {
-    (#tab)(#arg).Append(','); (#arg).Append('\\n');
-    } /* field.space.any: (#name) */
+    /* field.space.any: (#name) */
+    if ((#arg).Length > offset) { (#arg).Append(',').Append('\\n'); }
   ]]></template>
   <template key="tophp.field.space.vec | tophp.field.space.map"><![CDATA[
-    if ((#name)Exsists && (#arg).Length > offset) {
-    (#tab)(#arg).Append(','); (#arg).Append('\\n');
-    } /* field.space.[vec|map]: (#name) */
+    /* field.space.[vec|map]: (#name) */
+    if ((#name)Exsists && (#arg).Length > offset) { (#arg).Append(',').Append('\\n'); }
   ]]></template>
 
 
@@ -549,45 +549,45 @@
     (#tab)}(#brk)
     (#tab)public void WriteJSON(StringBuilder s)
     (#tab){
-    (#tab)(#tab)s.Append("\\n{");
+    (#tab)(#tab)s.Append('\\n').Append('{');
     (#tab)(#tab)int offset = s.Length;(#body)
-    (#tab)(#tab)s.Append("}"); s.Append('\\n');
+    (#tab)(#tab)s.Append('}').Append('\\n');
     (#tab)} ]]></template>
 
   <template key="tojson.any"> <![CDATA[ (#arg).Append((#name).ToString()) ]]></template>
   <template key="tojson.enum"><![CDATA[ (#arg).Append((int)(#name)); ]]></template>
   <template key="tojson.bool"><![CDATA[ (#arg).Append((#name).ToString().ToLower()) ]]></template>
-  <template key="tojson.string">
-    <![CDATA[ (#arg).Append("\\""); (#arg).Append((#name).ToString()); (#arg).Append("\\"") ]]></template>
+  <template key="tojson.string"><![CDATA[ (#arg).Append('"').Append((#name).ToString()).Append('"') ]]></template>
   <template key="tojson.struct"><![CDATA[ (#name).WriteJSON((#arg)) ]]></template>
   <template key="tojson.vec.for"><![CDATA[
     int (#name)Size = (null == (#name) ? 0 : (#name).Count);
     if ((#name)Size > 0) {
-    (#tab)(#arg).Append("\\n["); /*(#arg).Append('\\n');*/
+    (#tab)(#arg).Append('\\n').Append('[');
     (#tab)int (#name)Idx = 0;
     (#tab)foreach ((#typer) (#value) in (#name)) { /* vec.for: (#name) */
     (#tab)++(#name)Idx;(#body)
-    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); }
     (#tab)}
-    (#tab)(#arg).Append("]");
+    (#tab)(#arg).Append(']');
     }
   ]]></template>
   <template key="tojson.map.for"><![CDATA[
     int (#name)Size = (null == (#name) ? 0 : (#name).Count);
     if ((#name)Size > 0) {
-    (#tab)(#arg).Append("\\n{"); /*(#arg).Append('\\n');*/
+    (#tab)(#arg).Append('\\n').Append('{');
     (#tab)int (#name)Idx = 0;
     (#tab)foreach (KeyValuePair<(#typer)> (#name)Iter in (#name)) { /* map.for: (#name) */
     (#tab)++(#name)Idx;(#body)
-    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); }
     (#tab)}
-    (#tab)(#arg).Append("}");
+    (#tab)(#arg).Append('}');
     }
   ]]></template>
 
-  <template key="tojson.ref.any"><![CDATA[ (#arg).Append("\\"(#name)\\":"); (#body);(#brk) ]]></template>
+  <template key="tojson.ref.any"><![CDATA[
+    (#arg).Append('"').Append("(#name)").Append('"').Append(':'); (#body); ]]></template>
   <template key="tojson.ref.vec | tojson.ref.map"><![CDATA[
-    if ((#name)Exsists) { (#arg).Append("\\"(#name)\\":"); }
+    if ((#name)Exsists) { (#arg).Append('"').Append("(#name)").Append('"').Append(':'); }
     (#body) ]]></template>
 
   <template key="tojson.map.head.k">
@@ -598,13 +598,13 @@
   <template key="tojson.nest.n"><![CDATA[ (#body); ]]></template>
   <template key="tojson.nest.k"><![CDATA[
     (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */
-    (#arg).Append("\\""); (#body); (#arg).Append("\\""); (#arg).Append(":"); ]]></template>
+    (#arg).Append('"'); (#body); (#arg).Append('"').Append(':'); ]]></template>
   <template key="tojson.nest.v">
     <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* nest.v */(#brk)(#body); ]]></template>
 
   <template key="tojson.ptr.string | tojson.ptr.struct"><![CDATA[
     if ((#name) != (#null)) {
-    (#tab)(#arg).Append("\\"(#name)\\":"); (#body);
+    (#tab)(#arg).Append('"').Append("(#name)").Append('"').Append(':'); (#body);
     }
   ]]></template>
   <template key="tojson.ptr.vec | tojson.ptr.map"><![CDATA[
@@ -616,14 +616,12 @@
     bool (#name)Exsists = (null != (#name) && (#name).Count > 0); /* field.head.[vec|map]: (#name) */
   ]]></template>
   <template key="tojson.field.space.any"><![CDATA[
-    if ((#arg).Length > offset) {
-    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
-    } /* field.space.any: (#name) */
+    /* field.space.any: (#name) */
+    if ((#arg).Length > offset) { (#arg).Append(','); }
   ]]></template>
   <template key="tojson.field.space.vec | tojson.field.space.map"><![CDATA[
-    if ((#name)Exsists && (#arg).Length > offset) {
-    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
-    } /* field.space.[vec|map]: (#name) */
+    /* field.space.[vec|map]: (#name) */
+    if ((#name)Exsists && (#arg).Length > offset) { (#arg).Append(','); }
   ]]></template>
 
 
@@ -635,52 +633,51 @@
     (#tab){
     (#tab)(#tab)StringBuilder code = new StringBuilder();
     (#tab)(#tab)code.Append("-- (#type).CRC32: 0x");
-    (#tab)(#tab)code.Append(CRC32.ToString("X2")); code.Append(" --"); code.Append('\\n');
+    (#tab)(#tab)code.Append(CRC32.ToString("X2")).Append(" --").Append('\\n');
     (#tab)(#tab)code.Append("local table=");
-    (#tab)(#tab)this.WriteLua(code); code.Append(";");
+    (#tab)(#tab)this.WriteLua(code); code.Append(';');
     (#tab)(#tab)return code;
     (#tab)}(#brk)
     (#tab)public void WriteLua(StringBuilder s)
     (#tab){
-    (#tab)(#tab)s.Append("\\n{");
+    (#tab)(#tab)s.Append('\\n').Append('{');
     (#tab)(#tab)int offset = s.Length;(#body)
-    (#tab)(#tab)s.Append("}"); s.Append('\\n');
+    (#tab)(#tab)s.Append('}').Append('\\n');
     (#tab)} ]]></template>
 
   <template key="tolua.any"> <![CDATA[ (#arg).Append((#name).ToString()) ]]></template>
   <template key="tolua.enum"><![CDATA[ (#arg).Append((int)(#name)); ]]></template>
   <template key="tolua.bool"><![CDATA[ (#arg).Append((#name).ToString().ToLower()) ]]></template>
-  <template key="tolua.string">
-    <![CDATA[ (#arg).Append("\\""); (#arg).Append((#name).ToString()); (#arg).Append("\\"") ]]></template>
+  <template key="tolua.string"><![CDATA[ (#arg).Append('"').Append((#name).ToString()).Append('"') ]]></template>
   <template key="tolua.struct"><![CDATA[ (#name).WriteLua((#arg)) ]]></template>
   <template key="tolua.vec.for"><![CDATA[
     int (#name)Size = (null == (#name) ? 0 : (#name).Count);
     if ((#name)Size > 0) {
-    (#tab)(#arg).Append("\\n{"); /*(#arg).Append('\\n');*/
+    (#tab)(#arg).Append('\\n').Append('{');
     (#tab)int (#name)Idx = 0;
     (#tab)foreach ((#typer) (#value) in (#name)) { /* vec.for: (#name) */
     (#tab)++(#name)Idx;(#body)
-    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); }
+    (#tab)(#arg).Append('}');
     (#tab)}
-    (#tab)(#arg).Append("}");
     }
   ]]></template>
   <template key="tolua.map.for"><![CDATA[
     int (#name)Size = (null == (#name) ? 0 : (#name).Count);
     if ((#name)Size > 0) {
-    (#tab)(#arg).Append("\\n{"); /*(#arg).Append('\\n');*/
+    (#tab)(#arg).Append('\\n').Append('{');
     (#tab)int (#name)Idx = 0;
     (#tab)foreach (KeyValuePair<(#typer)> (#name)Iter in (#name)) { /* map.for: (#name) */
     (#tab)++(#name)Idx;(#body)
-    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); /*(#arg).Append('\\n');*/ }
+    (#tab)if ((#name)Idx != (#name)Size) { (#arg).Append(','); }
+    (#tab)(#arg).Append('}');
     (#tab)}
-    (#tab)(#arg).Append("}");
     }
   ]]></template>
 
-  <template key="tolua.ref.any"><![CDATA[ (#arg).Append("(#name)="); (#body);(#brk) ]]></template>
+  <template key="tolua.ref.any"><![CDATA[ (#arg).Append("(#name)").Append('='); (#body);(#brk) ]]></template>
   <template key="tolua.ref.vec | tolua.ref.map"><![CDATA[
-    if ((#name)Exsists) { (#arg).Append("(#name)="); }
+    if ((#name)Exsists) { (#arg).Append("(#name)").Append('='); }
     (#body) ]]></template>
 
   <template key="tolua.map.head.k">
@@ -691,7 +688,7 @@
   <template key="tolua.nest.n"><![CDATA[ (#body); ]]></template>
   <template key="tolua.nest.k"><![CDATA[
     (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */
-    (#body); (#arg).Append("="); ]]></template>
+    (#body); (#arg).Append('='); ]]></template>
   <template key="
   tolua.nest.k.int8   |
   tolua.nest.k.int16  |
@@ -706,13 +703,13 @@
   tolua.nest.k.enum
   "><![CDATA[
     (#type) (#name) = (#nameupper)Iter.Key; /* nest.k */
-    (#arg).Append("["); (#body); (#arg).Append("]"); (#arg).Append("="); ]]></template>
+    (#arg).Append('['); (#body); (#arg).Append(']').Append('='); ]]></template>
   <template key="tolua.nest.v">
     <![CDATA[ (#type) (#name) = (#nameupper)Iter.Value; /* nest.v */(#brk)(#body); ]]></template>
 
   <template key="tolua.ptr.string | tolua.ptr.struct"><![CDATA[
     if ((#name) != (#null)) {
-    (#tab)(#arg).Append("(#name)="); (#body);
+    (#tab)(#arg).Append("(#name)").Append('='); (#body);
     }
   ]]></template>
   <template key="tolua.ptr.vec | tolua.ptr.map"><![CDATA[
@@ -724,14 +721,12 @@
     bool (#name)Exsists = (null != (#name) && (#name).Count > 0); /* field.head.[vec|map]: (#name) */
   ]]></template>
   <template key="tolua.field.space.any"><![CDATA[
-    if ((#arg).Length > offset) {
-    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
-    } /* field.space.any: (#name) */
+    /* field.space.any: (#name) */
+    if ((#arg).Length > offset) { (#arg).Append(','); }
   ]]></template>
   <template key="tolua.field.space.vec | tolua.field.space.map"><![CDATA[
-    if ((#name)Exsists && (#arg).Length > offset) {
-    (#tab)(#arg).Append(','); /*(#arg).Append('\\n');*/
-    } /* field.space.[vec|map]: (#name) */
+    /* field.space.[vec|map]: (#name) */
+    if ((#name)Exsists && (#arg).Length > offset) { (#arg).Append(','); }
   ]]></template>
 
 
