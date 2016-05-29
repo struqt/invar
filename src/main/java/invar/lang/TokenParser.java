@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 public class TokenParser {
     private final static String STR_EMPTY = "";
-    private final static String SPLIT_GNERICS = "-";
+    private final static String SPLIT_GENERICS = "-";
     private final static String SPLIT_PACK_TYPE = "::";
 
     private final Map<String, InvarType> searchCache;
@@ -39,19 +39,13 @@ public class TokenParser {
     }
 
     public void parse(InvarContext ctx) throws Exception {
-        Iterator<Entry<TokenNode, TypeEnum>> ie = enumNodes.entrySet().iterator();
-        while (ie.hasNext()) {
-            Entry<TokenNode, TypeEnum> e = ie.next();
+        for (Entry<TokenNode, TypeEnum> e : enumNodes.entrySet()) {
             parseEnum(e.getKey(), e.getValue());
         }
-        Iterator<Entry<TokenNode, TypeStruct>> is = structNodes.entrySet().iterator();
-        while (is.hasNext()) {
-            Entry<TokenNode, TypeStruct> e = is.next();
+        for (Entry<TokenNode, TypeStruct> e : structNodes.entrySet()) {
             parseStruct(e.getKey(), e.getValue(), ctx);
         }
-        Iterator<Entry<TokenNode, TypeProtocol>> ip = protocNodes.entrySet().iterator();
-        while (ip.hasNext()) {
-            Entry<TokenNode, TypeProtocol> e = ip.next();
+        for (Entry<TokenNode, TypeProtocol> e : protocNodes.entrySet()) {
             parseProtoc(e.getKey(), e.getValue(), ctx);
         }
     }
@@ -87,6 +81,7 @@ public class TokenParser {
                 ctx.aliasAdd(t);
                 structNodes.put(n, t);
                 t.setShortField(getAttrOptional(n, "short"));
+                t.setNoHotfix(Boolean.parseBoolean(getAttrOptional(n, "nohotfix")));
             } else if (n.getName().equals("protoc")) {
                 String name = getAttr(n, "name");
                 String comment = getAttrOptional(n, "doc");
@@ -166,9 +161,10 @@ public class TokenParser {
             TypeID tid = typeMain.getId();
             boolean isStructSelf = (typeMain == tStruct);
             boolean useRef = tid.getUseRefer();
-            boolean usePtr = false;
-            boolean disableSetter = false;
-            InvarField field = new InvarField(i, typeMain, name, doc, disableSetter);
+            if (n.hasAttr("useref")) {
+                useRef = Boolean.parseBoolean(getAttrOptional(n, "useref"));
+            }
+            boolean disableSetter = Boolean.parseBoolean(getAttrOptional(n, "nosetter"));
             switch (tid) {
                 case VEC:
                 case MAP:
@@ -177,16 +173,15 @@ public class TokenParser {
                 default:
                     break;
             }
-            if (n.hasAttr("useref")) {
-                useRef = Boolean.parseBoolean(getAttrOptional(n, "useref"));
+            boolean usePtr = Boolean.parseBoolean(getAttrOptional(n, "useptr"));
+            usePtr = isStructSelf || typeMain.getId().getNullable() && usePtr;
+            if (usePtr) {
+                disableSetter = false;
             }
-            disableSetter = Boolean.parseBoolean(getAttrOptional(n, "nosetter"));
-            usePtr = Boolean.parseBoolean(getAttrOptional(n, "useptr"));
-
+            InvarField field = new InvarField(i, typeMain, name, doc, disableSetter);
             field.setDefault(deft);
             field.setUseReference(useRef);
-            field.setUsePointer(isStructSelf || typeMain.getId().getNullable() && usePtr);
-
+            field.setUsePointer(usePtr);
             if (tid == TypeID.VEC) {
                 if (types.size() < 1) {
                     types.addFirst(ctx.findBuildInType(TypeID.INT32));
@@ -198,21 +193,29 @@ public class TokenParser {
                 if (types.size() < 2) {
                     types.addFirst(ctx.findBuildInType(TypeID.INT32));
                 }
-            } else {
             }
             field.getGenerics().addAll(types);
+            tStruct.addField(field);
+        }
+        if (!tStruct.getNoHotfix()) {
+            InvarType typeBasic = ctx.findBuildInType(TypeID.MAP);
+            InvarField field = new InvarField(len, typeBasic, "hotfix", "", false);
+            field.getGenerics().add(ctx.findBuildInType(TypeID.STRING));
+            field.getGenerics().add(ctx.findBuildInType(TypeID.STRING));
+            field.setUsePointer(true);
             tStruct.addField(field);
         }
     }
 
     private LinkedList<InvarType> parseFieldType(String name, TokenNode n, InvarContext ctx) throws Exception {
         LinkedList<InvarType> ts = new LinkedList<InvarType>();
-        if (name.indexOf(SPLIT_GNERICS) > 0) {
-            String[] ss = name.split(SPLIT_GNERICS);
+        if (name.indexOf(SPLIT_GENERICS) > 0) {
+            String[] ss = name.split(SPLIT_GENERICS);
             for (String s : ss) {
                 ts.add(searchType(s, ctx, n));
             }
-        } else if (name.indexOf(SPLIT_GNERICS) == 0) {
+        } else if (name.indexOf(SPLIT_GENERICS) == 0) {
+            error(n, "Wrong generic format");
         } else {
             ts.add(searchType(name, ctx, n));
         }
@@ -225,9 +228,9 @@ public class TokenParser {
         }
         //System.out.println("TokenParser.searchType() --- " + name);
         String[] names = name.split(SPLIT_PACK_TYPE);
-        String typeName = null;
+        String typeName;
         InvarPackage typePack = null;
-        InvarType type = null;
+        InvarType type;
         if (names.length == 1) {
             typeName = names[0];
         } else if (names.length == 2) {
@@ -261,7 +264,6 @@ public class TokenParser {
                     }
                     throw new Exception(error(n,
                             "Find " + types.size() + " types. You should select one:" + s.toString()));
-                } else {
                 }
             }
         }
@@ -298,14 +300,7 @@ public class TokenParser {
 
     private String error(TokenNode node, String hint) {
         boolean withChildren = node.numAttributes() < 1;
-        StringBuilder s = new StringBuilder();
-        s.append("[ERROR] ");
-        s.append(hint);
-        s.append('\n');
-        s.append(node.toStringXml(withChildren));
-        s.append('\n');
-        s.append(node.getFilePath());
-        return s.toString();
+        return String.format("[ERROR] %s\n%s\n%s", hint, node.toStringXml(withChildren), node.getFilePath());
     }
 
     private void warn(TokenNode node, String hint) {

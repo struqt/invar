@@ -10,6 +10,7 @@ public class TypeStruct extends InvarType {
     private String charset;
     private String alias;
     private String shortField;
+    private Boolean noHotfix = false;
 
     private String codecRule = "";
     private long codecRuleCRC32 = 0L;
@@ -24,9 +25,7 @@ public class TypeStruct extends InvarType {
 
     public List<InvarField> listFields() {
         List<InvarField> list = new ArrayList<InvarField>();
-        Iterator<String> i = fields.keySet().iterator();
-        while (i.hasNext()) {
-            String key = i.next();
+        for (String key : fields.keySet()) {
             list.add(fields.get(key));
         }
         return list;
@@ -34,9 +33,7 @@ public class TypeStruct extends InvarType {
 
     public int maxLenKeys() {
         int len = 1;
-        Iterator<String> i = fields.keySet().iterator();
-        while (i.hasNext()) {
-            String key = i.next();
+        for (String key : fields.keySet()) {
             if (key.length() > len)
                 len = key.length();
         }
@@ -110,6 +107,14 @@ public class TypeStruct extends InvarType {
 
     public void setShortField(String shortField) {
         this.shortField = shortField;
+    }
+
+    public Boolean getNoHotfix() {
+        return noHotfix;
+    }
+
+    public void setNoHotfix(Boolean noHotfix) {
+        this.noHotfix = noHotfix;
     }
 
     public String getCodecRule() {
