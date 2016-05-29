@@ -14,9 +14,10 @@ final public class InvarContext {
     private final InvarPackage packBuildIn;
     private final HashMap<String, InvarPackage> packAll;
     private final HashMap<String, InvarType> typeWithAlias;
-    private String structRootAlias = "root";
-    private TypeStruct structRoot;
     private String ruleDir;
+    private TypeStruct structRoot;
+    private TypeStruct structProtoc2S;
+    private TypeStruct structProtoc2C;
 
     public InvarContext() throws Exception {
         typeWithAlias = new LinkedHashMap<String, InvarType>();
@@ -160,8 +161,15 @@ final public class InvarContext {
 
     public void aliasAdd(TypeStruct type) {
         typeWithAlias.put(type.getAlias(), type);
-        if (type.getAlias().equals(structRootAlias))
+        if (type.getAlias().equals("root")) {
             structRoot = type;
+        }
+        if (type.getAlias().equals("protoc2S")) {
+            structProtoc2S = type;
+        }
+        if (type.getAlias().equals("protoc2C")) {
+            structProtoc2C= type;
+        }
     }
 
     public InvarType aliasGet(String alias) {
@@ -176,8 +184,12 @@ final public class InvarContext {
         return structRoot;
     }
 
-    public String getStructRootAlias() {
-        return structRootAlias;
+    public TypeStruct getStructProtoc2S() {
+        return structProtoc2S;
+    }
+
+    public TypeStruct getStructProtoc2C() {
+        return structProtoc2C;
     }
 
     public void setRuleDir(String path) {

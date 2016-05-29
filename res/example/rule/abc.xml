@@ -46,17 +46,6 @@ xmlns:tns="invar.rule">
     <field name="enumValue" type="Gender" doc="枚举值"/>
     <field name="enumDeft" type="Gender" doc="枚举值制定默认值" value="Gender.MALE"/>
   </struct>
-  
-  <protoc name="TestProtoc" doc="">
-    <server>
-      <field name="info" type="Info" doc=""/>
-    </server>
-    <client>
-      <field name="gender" type="Gender" doc=""/>
-      <field name="info" type="Info" doc=""/>
-      <field name="message" type="String" doc=""/>
-    </client>
-  </protoc>
 
   <struct name="Info" short="f" doc="Test comments">
     <field name="key" value="123" type="Int32" doc=""/>

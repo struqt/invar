@@ -116,10 +116,10 @@ abstract public class InvarWrite {
                 } else if (TypeID.PROTOCOL == type.getId()) {
                     TypeProtocol t = (TypeProtocol) type;
                     if (t.hasClient()) {
-                        structs.add(t.getClient());
+                        this.codeOneStruct(t.getClient(), suffix, files);
                     }
                     if (t.hasServer()) {
-                        structs.add(t.getServer());
+                        this.codeOneStruct(t.getServer(), suffix, files);
                     }
                     continue;
                 } else {
@@ -127,22 +127,22 @@ abstract public class InvarWrite {
                     continue;
                 }
                 if (!onePackOneFile) {
+                    if (enums.size() <= 0 && structs.size() <= 0) {
+                        continue;
+                    }
                     String fileName = type.getCodeName() + suffix;
                     String filePath = type.getCodePath();
                     if (lowerFileName) {
                         fileName = fileName.toLowerCase();
                         filePath = filePath.toLowerCase();
                     }
-                    if (enums.size() > 0 || structs.size() > 0) {
-                        String text = codeOneFile(pack.getName(), filePath, enums, structs);
-                        if (text.length() > 0) {
-                            File codeFile = new File(codeDir, fileName);
-                            files.put(codeFile, text);
-                        }
+                    String text = codeOneFile(pack.getName(), filePath, enums, structs);
+                    if (text.length() > 0) {
+                        File codeFile = new File(codeDir, fileName);
+                        files.put(codeFile, text);
                     }
                     enums.clear();
                     structs.clear();
-
                 }
             } // while (iTypeName.hasNext())
             if (onePackOneFile) {
@@ -200,10 +200,22 @@ abstract public class InvarWrite {
         }
     }
 
-    protected HashMap<File, String> makeProtocFile(String string) {
-        //TODO make a protocol interface code
-        HashMap<File, String> files = new HashMap<File, String>();
-        return files;
+    private void codeOneStruct(TypeStruct type, String suffix, HashMap<File, String> files) {
+        String fileName = type.getCodeName() + suffix;
+        String filePath = type.getCodePath();
+        if (lowerFileName) {
+            fileName = fileName.toLowerCase();
+            filePath = filePath.toLowerCase();
+        }
+        InvarPackage pack = type.getPack();
+        File codeDir = pack.getCodeDir();
+        List<TypeStruct> ss = new ArrayList<TypeStruct>();
+        ss.add(type);
+        String text = codeOneFile(pack.getName(), filePath, null, ss);
+        if (text.length() > 0) {
+            File codeFile = new File(codeDir, fileName);
+            files.put(codeFile, text);
+        }
     }
 
     private void makeFlattenDirs() throws Exception {

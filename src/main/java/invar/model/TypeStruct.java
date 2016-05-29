@@ -16,11 +16,17 @@ public class TypeStruct extends InvarType {
     private long codecRuleCRC32 = 0L;
     private HashSet<TypeStruct> depends = new HashSet<TypeStruct>(16);
 
+    private TypeProtocol protoc;
+
     public TypeStruct(String name, InvarPackage pack, String comment) {
         super(TypeID.STRUCT, name, pack, comment, false);
         fields = new LinkedHashMap<String, InvarField>();
         setCharset("UTF-8");
         setAlias("");
+    }
+
+    public int numFields() {
+        return fields.size();
     }
 
     public List<InvarField> listFields() {
@@ -123,6 +129,14 @@ public class TypeStruct extends InvarType {
 
     public long getCodecRuleCRC32() {
         return codecRuleCRC32;
+    }
+
+    public TypeProtocol getProtoc() {
+        return protoc;
+    }
+
+    public void setProtoc(TypeProtocol protoc) {
+        this.protoc = protoc;
     }
 
     public String codecRule() {

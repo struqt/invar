@@ -83,9 +83,10 @@ public class TokenParser {
                 t.setShortField(getAttrOptional(n, "short"));
                 t.setNoHotfix(Boolean.parseBoolean(getAttrOptional(n, "nohotfix")));
             } else if (n.getName().equals("protoc")) {
+                Integer id = Integer.parseInt(getAttr(n, "id")) & 0xFFFF;
                 String name = getAttr(n, "name");
                 String comment = getAttrOptional(n, "doc");
-                TypeProtocol t = new TypeProtocol(name, pack, comment);
+                TypeProtocol t = new TypeProtocol(id, name, pack, comment);
                 addToPack(pack, t, n);
                 protocNodes.put(n, t);
             } else {
@@ -143,6 +144,22 @@ public class TokenParser {
     }
 
     private void parseStruct(TokenNode node, TypeStruct tStruct, InvarContext ctx) throws Exception {
+        if (tStruct.getProtoc() != null) {
+            AddProtocIdField(tStruct, ctx);
+            AddProtocCRC32Field(tStruct, ctx);
+            TypeStruct t2s = ctx.getStructProtoc2S();
+            if (t2s != null && tStruct == tStruct.getProtoc().getClient()) {
+                InvarField field = makeAutoAddField(tStruct, t2s, t2s.getAlias(), t2s.getComment(), false);
+                field.setUsePointer(true);
+                tStruct.addField(field);
+            }
+            TypeStruct t2c = ctx.getStructProtoc2C();
+            if (t2c != null && tStruct == tStruct.getProtoc().getServer()) {
+                InvarField field = makeAutoAddField(tStruct, t2c, t2c.getAlias(), t2c.getComment(), false);
+                field.setUsePointer(true);
+                tStruct.addField(field);
+            }
+        }
         int len = node.numChildren();
         for (int i = 0; i < len; i++) {
             TokenNode n = node.getChild(i);
@@ -178,7 +195,7 @@ public class TokenParser {
             if (usePtr) {
                 disableSetter = false;
             }
-            InvarField field = new InvarField(i, typeMain, name, doc, disableSetter);
+            InvarField field = new InvarField(tStruct.numFields(), typeMain, name, doc, disableSetter);
             field.setDefault(deft);
             field.setUseReference(useRef);
             field.setUsePointer(usePtr);
@@ -199,12 +216,41 @@ public class TokenParser {
         }
         if (!tStruct.getNoHotfix()) {
             InvarType typeBasic = ctx.findBuildInType(TypeID.MAP);
-            InvarField field = new InvarField(len, typeBasic, "hotfix", "", false);
+            InvarField field = makeAutoAddField(tStruct, typeBasic, "hotfix", "Hotfix", false);
             field.getGenerics().add(ctx.findBuildInType(TypeID.STRING));
             field.getGenerics().add(ctx.findBuildInType(TypeID.STRING));
             field.setUsePointer(true);
             tStruct.addField(field);
         }
+    }
+
+    private InvarField makeAutoAddField(
+            TypeStruct struct, InvarType typeBasic, String name, String doc, Boolean noSetter) {
+        return new InvarField(struct.numFields(), typeBasic, name, "[AutoAdd] " + doc, noSetter);
+    }
+
+    private void AddProtocIdField(TypeStruct t, InvarContext ctx) throws Exception {
+        TypeProtocol protoc = t.getProtoc();
+        Integer id = 0;
+        if (t == protoc.getClient()) {
+            id = protoc.getClientId();
+        } else if (t == protoc.getServer()) {
+            id = protoc.getServerId();
+        }
+        if (id == 0) {
+            return;
+        }
+        InvarType typeBasic = ctx.findBuildInType(TypeID.UINT16);
+        InvarField field = makeAutoAddField(t, typeBasic, "protocId", "ProtocolID", true);
+        field.setDefault(id.toString());
+        t.addField(field);
+    }
+
+    private void AddProtocCRC32Field(TypeStruct t, InvarContext ctx) throws Exception {
+        InvarType typeBasic = ctx.findBuildInType(TypeID.UINT32);
+        InvarField field = makeAutoAddField(t, typeBasic, "protocCRC", "Protocol CRC32", true);
+        field.setDefault("CRC32");
+        t.addField(field);
     }
 
     private LinkedList<InvarType> parseFieldType(String name, TokenNode n, InvarContext ctx) throws Exception {

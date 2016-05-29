@@ -210,7 +210,7 @@ public final class InvarWriteCode extends InvarWrite {
         if (body.equals(empty)) {
             return empty;
         }
-        if (enums.size() > 0) {
+        if (enums != null && enums.size() > 0) {
             String codePath = getContext().findBuildInType(TypeID.INT32).getRedirect().getCodePath();
             fileIncludes.add(codePath);
         }
@@ -266,7 +266,6 @@ public final class InvarWriteCode extends InvarWrite {
             InvarPackage pack = context.getPack(iPack.next());
             if (context.isBuildInPack(pack))
                 continue;
-
             String name = pack.getName();
             Iterator<String> iType = pack.getTypeNames();
             while (iType.hasNext()) {
@@ -280,7 +279,6 @@ public final class InvarWriteCode extends InvarWrite {
                 }
                 String split = snippetTryGet(Key.FILE_INCLUDE + ".split", "/");
                 String path = flattenCodeDir ? name : type.fullName(split);
-                //path = dirPrefix + path;
                 path = (path + suffix);
                 switch (type.getId()) {
                     case ENUM:
@@ -291,9 +289,13 @@ public final class InvarWriteCode extends InvarWrite {
                         resetCodePath(type, path, name, merge);
                         TypeProtocol t = (TypeProtocol) type;
                         if (t.hasClient()) {
+                            name = codeName(t.getClient());
+                            path = codePath(t.getClient()) + suffix;
                             resetCodePath(t.getClient(), path, name, merge);
                         }
                         if (t.hasServer()) {
+                            name = codeName(t.getServer());
+                            path = codePath(t.getServer()) + suffix;
                             resetCodePath(t.getServer(), path, name, merge);
                         }
                         break;
@@ -302,6 +304,23 @@ public final class InvarWriteCode extends InvarWrite {
                 }
             }
         }
+    }
+
+    private String codeName(TypeStruct t) {
+        String name = null;
+        if (!onePackOneFile) {
+            name = t.getName();
+            if (flattenCodeDir) {
+                name = t.fullName("_");
+            }
+        }
+        t.setCodeName(name);
+        return name;
+    }
+
+    private String codePath(TypeStruct t) {
+        String split = snippetTryGet(Key.FILE_INCLUDE + ".split", "/");
+        return flattenCodeDir ? t.getCodeName() : t.fullName(split);
     }
 
     private void resetCodePath(InvarType type, String path, String name, Boolean merge) {
@@ -313,7 +332,7 @@ public final class InvarWriteCode extends InvarWrite {
     String codeOneFileBody(List<TypeEnum> enums, List<TypeStruct> structs, TreeSet<String> imps) {
         StringBuilder codeEnums = new StringBuilder();
         StringBuilder codeStructs = new StringBuilder();
-        if (!snippetTryGet(Key.ENUM).equals(empty)) {
+        if (enums != null && !snippetTryGet(Key.ENUM).equals(empty)) {
             for (TypeEnum type : enums) {
                 String s = snippetGet(Key.ENUM);
                 if (!s.contains("body"))

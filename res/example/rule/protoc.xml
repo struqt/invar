@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:package name="test.protoc"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="invar.rule rule.xsd"
+xmlns:tns="invar.rule">
+
+  <struct name="Protoc2S" doc="客户端请求的公共数据" alias="protoc2S_">
+    <field name="sessionId" type="String" doc="会话Id"/>
+  </struct>
+
+  <struct name="Protoc2C" doc="服务端响应的公共数据" alias="protoc2C_">
+  </struct>
+  
+  <protoc name="TestProtoc" id="65535" doc="协议测试">
+    <client>
+      <field name="gender" type="Gender" doc="性别"/>
+      <field name="message" type="String" doc="消息"/>
+    </client>
+    <server>
+      <field name="info" type="Info" doc="数据"/>
+    </server>
+  </protoc>
+
+</tns:package>
