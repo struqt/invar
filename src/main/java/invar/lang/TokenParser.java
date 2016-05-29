@@ -137,7 +137,7 @@ public class TokenParser {
             parseStruct(nClient, t.getClient(), ctx);
             t.setNoClient(false);
         }
-        if (nClient != null) {
+        if (nServer != null) {
             parseStruct(nServer, t.getServer(), ctx);
             t.setNoServer(false);
         }
