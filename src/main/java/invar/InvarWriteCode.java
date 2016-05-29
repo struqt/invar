@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class InvarWriteCode extends InvarWrite {
+
     final private InvarSnippet snippet;
     final private HashMap<String, Method> mapInvoke;
     final private Pattern patternInvoke;
@@ -105,9 +106,7 @@ public final class InvarWriteCode extends InvarWrite {
 
     public StringBuilder codeGetters(TypeStruct struct, List<InvarField> fields) {
         StringBuilder code = new StringBuilder();
-        Iterator<InvarField> i = fields.iterator();
-        while (i.hasNext()) {
-            InvarField f = i.next();
+        for (InvarField f : fields) {
             code.append(makeStructGetter(f, struct));
         }
         return code;
@@ -115,9 +114,7 @@ public final class InvarWriteCode extends InvarWrite {
 
     public StringBuilder codeSetters(TypeStruct struct, List<InvarField> fields) {
         StringBuilder code = new StringBuilder();
-        int len = fields.size();
-        for (int i = 0; i < len; i++) {
-            InvarField f = fields.get(i);
+        for (InvarField f : fields) {
             code.append(makeStructSetter(f, struct));
         }
         return code;
@@ -130,9 +127,7 @@ public final class InvarWriteCode extends InvarWrite {
 
     public StringBuilder codeFields(TypeStruct struct, List<InvarField> fields) {
         StringBuilder code = new StringBuilder();
-        Iterator<InvarField> i = fields.iterator();
-        while (i.hasNext()) {
-            InvarField f = i.next();
+        for (InvarField f : fields) {
             code.append(makeStructField(f, struct));
         }
         return code;
@@ -150,9 +145,7 @@ public final class InvarWriteCode extends InvarWrite {
 
     public StringBuilder codeDeletes(List<InvarField> fields) {
         StringBuilder code = new StringBuilder();
-        Iterator<InvarField> i = fields.iterator();
-        while (i.hasNext()) {
-            InvarField f = i.next();
+        for (InvarField f : fields) {
             if (!f.getUsePointer())
                 continue;
             String s = snippetTryGet("struct.field.del");
@@ -180,8 +173,7 @@ public final class InvarWriteCode extends InvarWrite {
 
     public String codeCRC32(TypeStruct type) {
         type.codecRule();
-        String crc = Long.toHexString(type.getCodecRuleCRC32()).toUpperCase();
-        return crc;
+        return Long.toHexString(type.getCodecRuleCRC32()).toUpperCase();
     }
 
     @Override
@@ -192,8 +184,9 @@ public final class InvarWriteCode extends InvarWrite {
         super.packNameReset(c, Boolean.parseBoolean(snippetTryGet("capitalize.pack.head")));
         String k = "method.indent.num";
         methodIndentNum = 1;
-        if (!snippetTryGet(k).equals(empty))
+        if (!snippetTryGet(k).equals(empty)) {
             methodIndentNum = Integer.parseInt(snippetTryGet(k));
+        }
         packNameNested = Boolean.parseBoolean(snippetTryGet("pack.name.nested"));
         useFullName = Boolean.parseBoolean(snippetTryGet("use.full.type.name"));
         includeSelf = Boolean.parseBoolean(snippetTryGet("include.self"));
@@ -224,8 +217,11 @@ public final class InvarWriteCode extends InvarWrite {
         String[] names;
         names = packName.split(dotToken);
         String relatives = empty;
-        for (int i = 0; i < names.length; i++) {
+        int len = names.length;
+        int i = 0;
+        while (i < len) {
             relatives += "../";
+            ++i;
         }
         StringBuilder includes = new StringBuilder();
         Iterator<String> iter = fileIncludes.descendingIterator();
@@ -243,9 +239,7 @@ public final class InvarWriteCode extends InvarWrite {
 
         List<String> packNames = new LinkedList<String>();
         if (packNameNested) {
-
-            for (String n : names)
-                packNames.add(n);
+            Collections.addAll(packNames, names);
         } else {
             packNames.add(packName);
         }
@@ -261,6 +255,7 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Define, ifndef);
         s = replace(s, Token.Pack, codeOneFilePack(packNames, body));
         s = replace(s, Token.Includes, includes.toString());
+        s = replace(s, Token.Import, makeImorts(imps));
         return s;
     }
 
@@ -277,7 +272,7 @@ public final class InvarWriteCode extends InvarWrite {
             while (iType.hasNext()) {
                 String typeName = iType.next();
                 InvarType type = pack.getType(typeName);
-                if (onePackOneFile == false) {
+                if (!onePackOneFile) {
                     name = typeName;
                     if (flattenCodeDir) {
                         name = type.fullName("_");
@@ -321,7 +316,7 @@ public final class InvarWriteCode extends InvarWrite {
         if (!snippetTryGet(Key.ENUM).equals(empty)) {
             for (TypeEnum type : enums) {
                 String s = snippetGet(Key.ENUM);
-                if (s.indexOf("body") < 0)
+                if (!s.contains("body"))
                     continue;
                 String body = makeEnumBlock(type);
                 s = replace(s, Token.Name, type.getName());
@@ -392,10 +387,8 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     protected String makeDoc(String comment) {
-        if (comment == null || comment.equals(empty))
-            return empty;
         String s = snippetGet(Key.DOC);
-        s = replace(s, Token.Doc, comment);
+        s = replace(s, Token.Doc, comment == null ? empty : comment);
         return s;
     }
 
@@ -453,9 +446,7 @@ public final class InvarWriteCode extends InvarWrite {
                 impsCheckAdd(imps, typeGene.getRedirect(), type);
             }
         }
-        Iterator<InvarField> i = fs.iterator();
-        while (i.hasNext()) {
-            InvarField f = i.next();
+        for (InvarField f : fs) {
             f.setWidthType(widthType);
             f.setWidthKey(widthName);
             f.setWidthDefault(widthDeft);
@@ -471,7 +462,7 @@ public final class InvarWriteCode extends InvarWrite {
         args.put("lenStruct", type.getName().length());
         args.put("lenFieldType", widthType);
         args.put("lenFieldName", widthName);
-        args.put("env", args);
+        //args.put("env", args);
         s = funcEvalAll(s, args);
         return s;
     }
@@ -479,7 +470,7 @@ public final class InvarWriteCode extends InvarWrite {
     private StringBuilder buildCodeLines(List<String> lines) {
         StringBuilder codes = new StringBuilder();
         for (String line : lines) {
-            codes.append(br + line);
+            codes.append(br).append(line);
         }
         return codes;
     }
@@ -564,8 +555,7 @@ public final class InvarWriteCode extends InvarWrite {
 
     private String makeStructFieldInit(InvarField f, Boolean ignorePointer) {
         if (f.getUsePointer() && !ignorePointer) {
-            String s = snippetGet(Key.POINTER_NULL);
-            return s;
+            return snippetGet(Key.POINTER_NULL);
         }
         InvarType type = f.getType();
         String s = snippet.tryGet("init." + type.getRealId().getName(), null);
@@ -583,7 +573,7 @@ public final class InvarWriteCode extends InvarWrite {
                 s = replace(s, Token.Type, f.getTypeFormatted());
                 break;
             case ENUM:
-                String name = empty;
+                String name;
                 String option = empty;
                 if (!deft.equals(empty)) {
                     String[] texts = deft.split(dotToken);
@@ -622,7 +612,7 @@ public final class InvarWriteCode extends InvarWrite {
             InvarType type = getContext().aliasGet(alias);
             impsCheckAdd(imps, type, null);
 
-            String key = null;
+            String key;
             if (TypeID.VEC == type.getRealId())
                 key = Key.RUNTIME_ALIAS_VEC;
             else if (TypeID.MAP == type.getRealId())
@@ -642,11 +632,9 @@ public final class InvarWriteCode extends InvarWrite {
             else
                 meBasic.append(s);
         }
-        StringBuilder body = new StringBuilder();
-        body.append(makeRuntimeAliasFunc("aliasBasic", meBasic.toString()));
-        body.append(makeRuntimeAliasFunc("aliasEnum", meEnums.toString()));
-        body.append(makeRuntimeAliasFunc("aliasStruct", meStruct.toString()));
-        return body.toString();
+        return makeRuntimeAliasFunc("aliasBasic", meBasic.toString())
+                + makeRuntimeAliasFunc("aliasEnum", meEnums.toString())
+                + makeRuntimeAliasFunc("aliasStruct", meStruct.toString());
     }
 
     private String makeRuntimeAliasFunc(String name, String block) {
@@ -781,7 +769,7 @@ public final class InvarWriteCode extends InvarWrite {
         String s = getGenericOverride(typeBasic);
         for (InvarType t : f.getGenerics()) {
             t = t.getRedirect();
-            String forShort = null;
+            String forShort;
             if (t.getRealId() == TypeID.VEC || t.getRealId() == TypeID.MAP)
                 forShort = t.getName();
             else {
@@ -870,7 +858,7 @@ public final class InvarWriteCode extends InvarWrite {
                 }
                 Class<?> t = types[i];
                 if (t.equals(String.class))
-                    params[i] = arg.toString();
+                    params[i] = arg;
                 else if (t.equals(Byte.class))
                     params[i] = Byte.parseByte(arg);
                 else if (t.equals(Short.class))
@@ -1096,8 +1084,7 @@ public final class InvarWriteCode extends InvarWrite {
             NestedParam pVal = makeParams(p, ruleV, nameVal, nameVal, ".n");
             String body = empty;
             body += makeUnitGeneric(TypeID.VEC, ruleV, pVal);
-            String block = makeUnitIter(TypeID.VEC.getName(), body, p, pVal, null);
-            return block;
+            return makeUnitIter(TypeID.VEC.getName(), body, p, pVal, null);
         }
 
         private String makeUnitMap(NestedParam p, String rule) {
@@ -1107,6 +1094,7 @@ public final class InvarWriteCode extends InvarWrite {
             }
             String r = ruleRight(rule);
             String[] R = r.split(",");
+            assert (R.length == 2);
             String ruleK = R[0];
             String ruleV = R[1];
             String nameKey = "k" + p.depth;

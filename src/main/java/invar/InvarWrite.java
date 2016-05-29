@@ -116,17 +116,17 @@ abstract public class InvarWrite {
                 } else if (TypeID.PROTOCOL == type.getId()) {
                     TypeProtocol t = (TypeProtocol) type;
                     if (t.hasClient()) {
-                        //structs.add(t.getClient());
+                        structs.add(t.getClient());
                     }
                     if (t.hasServer()) {
-                        //structs.add(t.getServer());
+                        structs.add(t.getServer());
                     }
                     continue;
                 } else {
                     // do nothing
                     continue;
                 }
-                if (onePackOneFile == false) {
+                if (!onePackOneFile) {
                     String fileName = type.getCodeName() + suffix;
                     String filePath = type.getCodePath();
                     if (lowerFileName) {
@@ -145,7 +145,7 @@ abstract public class InvarWrite {
 
                 }
             } // while (iTypeName.hasNext())
-            if (onePackOneFile == true) {
+            if (onePackOneFile) {
                 String fileName = pack.getName() + suffix;
                 String filePath = dirPrefix + fileName + suffix;
                 if (lowerFileName) {
@@ -184,11 +184,12 @@ abstract public class InvarWrite {
             InputStream res = new FileInputStream(resPath);
             int len = res.available();
             bs = new byte[len];
-            res.read(bs);
+            if (res.read(bs) == -1) {
+                return;
+            }
             char[] chars = getChars(bs);
             StringBuilder s = new StringBuilder(len);
-            for (int i = 0; i < chars.length; i++) {
-                char c = chars[i];
+            for (char c : chars) {
                 if (c == '\0')
                     break;
                 s.append(c);
@@ -236,8 +237,7 @@ abstract public class InvarWrite {
     private String makeDirs(String packName) {
         String path = packName.replace('.', '/') + '/';
         File dir = new File(dirRoot, path);
-        if (!dir.exists()) {
-            dir.mkdirs();
+        if (!dir.exists() && dir.mkdirs()) {
             File packDir = new File(dirRoot, path);
             log("mkdir -> " + packDir.getAbsolutePath());
             return path;
@@ -250,19 +250,23 @@ abstract public class InvarWrite {
         File oldFile[] = delfolder.listFiles();
         if (oldFile == null)
             return;
-        for (int i = 0; i < oldFile.length; i++) {
-            if (oldFile[i].isDirectory())
-                deleteDirs(dir + oldFile[i].getName() + "//");
-            oldFile[i].delete();
+        for (File anOldFile : oldFile) {
+            if (anOldFile.isDirectory()) {
+                deleteDirs(dir + anOldFile.getName() + "//");
+            } else {
+                if (!anOldFile.delete()) {
+                    logErr("Delete failed: " + anOldFile);
+                }
+            }
         }
-        delfolder.delete();
+        if (!delfolder.delete()) {
+            logErr("Delete failed: " + dir);
+        }
     }
 
     private void writeFiles(HashMap<File, String> files) throws IOException {
         parseExportFiles(files);
-        Iterator<File> i = files.keySet().iterator();
-        while (i.hasNext()) {
-            File file = i.next();
+        for (File file : files.keySet()) {
             String content = files.get(file);
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             writer.write(content == null ? "" : content);
@@ -272,9 +276,7 @@ abstract public class InvarWrite {
     }
 
     private void parseExportFiles(HashMap<File, String> files) throws IOException {
-        Iterator<String> i = exports.keySet().iterator();
-        while (i.hasNext()) {
-            String key = i.next();
+        for (String key : exports.keySet()) {
             String[] rule = key.split(ruleTypeSplit);
             if (rule.length != 2) {
                 throw new IOException("Export file failed: " + key);
@@ -308,7 +310,7 @@ abstract public class InvarWrite {
                         nameR = (namePack + ruleTypeSplit) + nameR;
                     s.append(fixedLen(32, nameR));
                     s.append(fixedLen(32, typeR.getCodePath()));
-                    s.append(whiteSpace + typeR.getInitValue());
+                    s.append(whiteSpace).append(typeR.getInitValue());
                     //s.append(whiteSpace + type.getInitValue());
                 }
                 s.append("\n");
@@ -372,7 +374,7 @@ abstract public class InvarWrite {
 
     final protected String ruleLeft(String rule) {
         String name = rule;
-        if (rule.indexOf(GENERIC_LEFT) >= 0) {
+        if (rule.contains(GENERIC_LEFT)) {
             name = rule.substring(0, rule.indexOf(GENERIC_LEFT));
         }
         return name;
@@ -384,7 +386,7 @@ abstract public class InvarWrite {
         if (iBegin > 0 && iEnd > iBegin) {
             return rule.substring(iBegin, iEnd);
         }
-        return null;
+        return empty;
     }
 
     final protected InvarType findType(InvarContext ctx, String fullName) {
