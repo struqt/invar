@@ -164,37 +164,39 @@
     } ]]></template>
 
   <!-- CopyFrom Method -->
-  <template key="copy.method.arg"><![CDATA[from]]></template>
-  <template key="copy.method"><![CDATA[ (#tab)public (#type) Copy ((#type) from)
+  <template key="copy.method.arg"><![CDATA[ from_ ]]></template>
+  <template key="copy.method"><![CDATA[ (#tab)public (#type) Copy((#type) from_)
     (#tab){
-      (#tab)(#tab)if (this == from || from == (#null)) {
+      (#tab)(#tab)if ((#null) == from_ || this == from_) {
       (#tab)(#tab)(#tab)return this;
       (#tab)(#tab)}(#body)
       (#tab)(#tab)return this;
     (#tab)} //(#type)::Copy(...)]]></template>
-  <template key="copy.ref.any"><![CDATA[ (#name) = (#body); ]]></template>
-  <template key="copy.ref.vec|copy.ref.map"><![CDATA[ (#name).Clear();
-    (#body); ]]></template>
-  <template key="copy.ptr.any"><![CDATA[ (#name) = (#body);  ]]></template>
+  <template key="copy.ref.any"><![CDATA[ this.(#name) = (#body); ]]></template>
+  <template key="copy.ref.struct"><![CDATA[ this.(#name).Copy((#body)); ]]></template>
+  <template key="copy.ref.vec|copy.ref.map"><![CDATA[ this.(#name).Clear();
+    (#body) ]]></template>
+  <template key="copy.ptr.any"><![CDATA[ this.(#name) = (#body);  ]]></template>
   <template key="copy.ptr.struct"><![CDATA[
-    if ((#arg).(#name) != (#null)) {
-    (#tab)(#name).Copy((#body));
+    if ((#null) == (#arg).(#name)) {
+    (#tab)this.(#name) = null;
     } else {
-    (#tab)(#name) = (#null);
+    (#tab)if ((#null) == this.(#name)) { this.(#name) = new (#type)(); }
+    (#tab)this.(#name).Copy((#body));
     }
   ]]></template>
-  <template key="copy.ptr.vec|copy.ptr.map"><![CDATA[
-    if ((#arg).(#name) != (#null)) {
-    (#tab)(#name).Clear();
-    (#tab)(#body);
+  <template key="copy.ptr.vec | copy.ptr.map"><![CDATA[
+    if ((#null) == (#arg).(#name)) {
+    (#tab)this.(#name) = null;
     } else {
-    (#tab)(#name) = (#null);
+    (#tab)if ((#null) == this.(#name)) { this.(#name) = new (#type)(); }
+    (#tab)else { this.(#name).Clear(); }(#bodyindent)
     }
   ]]></template>
   <template key="copy.any"><![CDATA[ (#arg).(#name) ]]></template>
-  <template key="copy.vec"><![CDATA[ (#name).AddRange((#arg).(#name)) ]]></template>
+  <template key="copy.vec"><![CDATA[ this.(#name).AddRange((#arg).(#name)); ]]></template>
   <template key="copy.map"><![CDATA[ foreach (var (#name)Iter in (#arg).(#name)) {
-    (#tab)(#name).Add((#name)Iter.Key, (#name)Iter.Value);
+    (#tab)this.(#name).Add((#name)Iter.Key, (#name)Iter.Value);
     } ]]></template>
 
   <!-- Read bytes from a Stream -->
