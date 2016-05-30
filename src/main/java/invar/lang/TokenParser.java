@@ -145,8 +145,8 @@ public class TokenParser {
 
     private void parseStruct(TokenNode node, TypeStruct tStruct, InvarContext ctx) throws Exception {
         if (tStruct.getProtoc() != null) {
-            AddProtocIdField(tStruct, ctx);
             AddProtocCRC32Field(tStruct, ctx);
+            AddProtocIdField(tStruct, ctx);
             TypeStruct t2s = ctx.getStructProtoc2S();
             if (t2s != null && tStruct == tStruct.getProtoc().getClient()) {
                 InvarField field = makeAutoAddField(tStruct, t2s, t2s.getAlias(), t2s.getComment(), false);
@@ -195,7 +195,7 @@ public class TokenParser {
             if (usePtr) {
                 disableSetter = false;
             }
-            InvarField field = new InvarField(tStruct.numFields(), typeMain, name, doc, disableSetter);
+            InvarField field = new InvarField(tStruct.numFields(), typeMain, name, doc, disableSetter, false);
             field.setDefault(deft);
             field.setUseReference(useRef);
             field.setUsePointer(usePtr);
@@ -226,7 +226,7 @@ public class TokenParser {
 
     private InvarField makeAutoAddField(
             TypeStruct struct, InvarType typeBasic, String name, String doc, Boolean noSetter) {
-        return new InvarField(struct.numFields(), typeBasic, name, "[AutoAdd] " + doc, noSetter);
+        return new InvarField(struct.numFields(), typeBasic, name, "[AutoAdd] " + doc, noSetter, true);
     }
 
     private void AddProtocIdField(TypeStruct t, InvarContext ctx) throws Exception {

@@ -200,12 +200,12 @@
     } ]]></template>
 
   <!-- Read bytes from a Stream -->
-  <template key="read.import"><![CDATA[System.IO::BinaryReader]]></template>
-  <template key="read.method.arg"><![CDATA[from_]]></template>
+  <template key="read.import"><![CDATA[ System.IO::BinaryReader,System.Text::Encoding,System::Enum ]]></template>
+  <template key="read.method.arg"><![CDATA[ r ]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public void Read(BinaryReader from_)
+    (#tab)public void Read(BinaryReader r)
     (#tab){(#body)
-    (#tab)} ]]></template>
+    (#tab)} //(#type)::Read(...) ]]></template>
   <template key="read.int8">  <![CDATA[ (#arg).ReadSByte()  ]]></template>
   <template key="read.int16"> <![CDATA[ (#arg).ReadInt16()  ]]></template>
   <template key="read.int32"> <![CDATA[ (#arg).ReadInt32()  ]]></template>
@@ -222,20 +222,20 @@
   <template key="read.struct"><![CDATA[ (#name).Read((#arg)) ]]></template>
   <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[ (#type) (#name) = (#body); ]]></template>
   <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
-    (#type) (#name) = new (#type)();(#brk)(#body); ]]></template>
+    (#type) (#name) = new (#type)();
+    (#body);
+  ]]></template>
   <template key="read.vec.head">  <![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
   <template key="read.vec.for"><![CDATA[
     (#sizetype) (#len) = (#arg).ReadUInt32();
-    for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++)
-    {(#body)
+    for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++) {(#body)
     (#tab)(#name).Add((#value));
     }
   ]]></template>
   <template key="read.map.head"> <![CDATA[(#type) (#name) = new (#type)(); //read.map.head(#brk)]]></template>
   <template key="read.map.for"><![CDATA[
     (#sizetype) (#len) = (#arg).ReadUInt32();
-    for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++)
-    {(#body)
+    for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++) {(#body)
     (#tab)if (!(#name).ContainsKey((#key))) {
     (#tab)(#tab)(#name).Add((#key), (#value));
     (#tab)} else {
@@ -243,30 +243,36 @@
     (#tab)}
     }
   ]]></template>
-  <template key="read.ref.any">   <![CDATA[ (#name) = (#body); ]]></template>
-  <template key="read.ref.struct"><![CDATA[ (#body); ]]></template>
-  <template key="read.ref.vec">   <![CDATA[ (#body) ]]></template>
-  <template key="read.ref.map">   <![CDATA[ (#body) ]]></template>
+  <template key="read.ref.any">   <![CDATA[ this.(#name) = (#body); ]]></template>
+  <template key="read.ref.struct"><![CDATA[ this.(#body); ]]></template>
+  <template key="read.ref.vec | read.ref.map"><![CDATA[ (#body) ]]></template>
   <template key="read.ptr.string"><![CDATA[
-    if ((#arg).ReadSByte() == (#byteyes)) {
-    (#tab)(#name) = (#body);
+    sbyte (#name)Exists = (#arg).ReadSByte();
+    if ((#byteyes) == (#name)Exists) {
+    (#tab)this.(#name) = (#body);
     }
+    else if ((#bytenon) == (#name)Exists) { this.(#name) = (#null); }
+    else { throw new IOException("The value of '(#name)Exists' is invalid.", 996); }
   ]]></template>
   <template key="read.ptr.struct"><![CDATA[
-    if ((#arg).ReadSByte() == (#byteyes)) {
-    (#tab)if ((#name) == (#null)) {
-    (#tab)(#tab)(#name) = new (#type)();
-    (#tab)}
-    (#tab)(#body);
+    sbyte (#name)Exists = (#arg).ReadSByte();
+    if ((#byteyes) == (#name)Exists) {
+    (#tab)if (this.(#name) == (#null)) { (#name) = new (#type)(); }
+    (#tab)this.(#body);
     }
+    else if ((#bytenon) == (#name)Exists) { this.(#name) = (#null); }
+    else { throw new IOException("The value of '(#name)Exists' is invalid.", 997); }
   ]]></template>
-  <template key="read.ptr.vec|read.ptr.map"><![CDATA[
-    if ((#arg).ReadSByte() == (#byteyes)) {
-    (#tab)if ((#name) == (#null)) {
-    (#tab)(#tab)(#name) = new (#type)();
-    (#tab)} else {
-    (#tab)}(#bodyindent)
+  <template key="read.ptr.vec | read.ptr.map"><![CDATA[
+    sbyte (#name)Exists = (#arg).ReadSByte();
+    if ((#byteyes) == (#name)Exists) {
+    (#tab)if (this.(#name) == (#null)) { this.(#name) = new (#type)(); }(#bodyindent)
     }
+    else if ((#bytenon) == (#name)Exists) { this.(#name) = (#null); }
+    else { throw new IOException("The value of '(#name)Exists' is invalid.", 998); }
+  ]]></template>
+  <template key="read.special.protocCRC"><![CDATA[
+    (#brk)if (CRC32 != this.(#name)) { throw new IOException("CRC32 is mismatched.", 999); }
   ]]></template>
 
 

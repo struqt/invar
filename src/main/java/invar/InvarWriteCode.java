@@ -1021,6 +1021,12 @@ public final class InvarWriteCode extends InvarWrite {
                     if (!empty.equals(s_tail)) {
                         s = s + s_tail;
                     }
+                    if (p.field.isSpecial()){
+                        String s_special = snippetTryGet(prefix + "special." + p.field.getKey());
+                        if (!empty.equals(s_special)) {
+                            s = s + s_special;
+                        }
+                    }
                     List<String> bodyLines = indentLines(code);
                     StringBuilder body = new StringBuilder();
                     for (String line : bodyLines) {
@@ -1036,6 +1042,7 @@ public final class InvarWriteCode extends InvarWrite {
                     s = replace(s, Token.Split, snippetTryGet(Key.REFER_INVOKE));
                     s = replace(s, Token.Specifier, spec);
                     s = replace(s, Token.Default, makeStructFieldInit(p.field, true));
+                    s = replace(s, Token.Index, p.field.getIndex().toString());
                     lines.addAll(indentLines(s));
                     return;
                 }

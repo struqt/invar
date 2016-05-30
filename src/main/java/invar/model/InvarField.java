@@ -19,6 +19,7 @@ public class InvarField {
     private final String comment;
 
     private final Boolean disableSetter;
+    private final Boolean isSpecial;
     private final Integer index;
 
     private Boolean useReference = false;
@@ -32,13 +33,14 @@ public class InvarField {
     private int widthDefault = 1;
     private String codecRule = "";
 
-    public InvarField(Integer index, InvarType type, String key, String comment, Boolean disableSetter) {
+    public InvarField(Integer index, InvarType type, String key, String comment, Boolean disableSetter, Boolean special) {
         this.index = index;
         this.type = type;
         this.generics = new LinkedList<InvarType>();
         this.key = key;
         this.comment = comment;
 
+        this.isSpecial = special;
         this.disableSetter = disableSetter;
         this.setDefault("");
     }
@@ -198,6 +200,10 @@ public class InvarField {
         return type.getId() == TypeID.MAP;
     }
 
+    public Boolean isSpecial() {
+        return isSpecial;
+    }
+
     public String getRule() {
         if (null != codecRule && !"".equals(codecRule)) {
             return codecRule;
@@ -215,8 +221,7 @@ public class InvarField {
     static void makeCodecRule(InvarType t, StringBuilder sb) {
         if (t instanceof TypeStruct) {
             sb.append(t.fullName("."));
-        }
-        else if (t instanceof TypeEnum) {
+        } else if (t instanceof TypeEnum) {
             sb.append(TypeID.INT32.getName());
         } else {
             sb.append(t.getId().getName());
