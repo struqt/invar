@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:package name="test.protoc"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="invar.rule rule.xsd"
-xmlns:tns="invar.rule">
+<tns:package
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="invar.rule rule.xsd"
+    xmlns:tns="invar.rule"
+    name="test.protoc">
 
-  <struct name="Protoc2S" doc="客户端请求的公共数据" alias="protoc2S_">
+  <struct name="Protoc2S" doc="客户端请求的公共数据" alias="protoc2S">
     <field name="sessionId" type="String" doc="会话Id"/>
   </struct>
-
-  <struct name="Protoc2C" doc="服务端响应的公共数据" alias="protoc2C_">
+  <struct name="Protoc2C" doc="服务端响应的公共数据" alias="protoc2C">
   </struct>
-  
-  <protoc name="TestProtoc" id="65535" doc="协议测试">
+
+
+  <protoc name="TestUserLogin" id="65532" doc="客户端请求,服务端响应">
     <client>
-      <field name="gender" type="Gender" doc="性别"/>
-      <field name="message" type="String" doc="消息"/>
+      <field name="userId" type="Int64" doc=""/>
+      <field name="platform" type="String" doc=""/>
     </client>
     <server>
-      <field name="info" type="Info" doc="数据"/>
+      <field name="userId" type="String" doc=""/>
+      <field name="userName" type="String" doc=""/>
+      <field name="roles" type="Vec-Int32" doc=""/>
     </server>
   </protoc>
+
+  <protoc name="TestServerTime" id="65535" doc="服务器通知客户端">
+    <server>
+      <field name="time" type="Int64" doc="现在时间"/>
+    </server>
+  </protoc>
+
+  <protoc name="TestUserLocation" id="65534" doc="客户端通知服务端">
+    <client>
+      <field name="x" type="Float" doc="坐标X"/>
+      <field name="y" type="Float" doc="坐标Y"/>
+    </client>
+  </protoc>
+
+  <protoc name="TestHeartBeat" id="65533" doc="服务端请求,客户端响应">
+    <server/>
+    <client/>
+  </protoc>
+
 
 </tns:package>

@@ -114,39 +114,47 @@ public class TokenParser {
     private void parseProtoc(TokenNode node, TypeProtocol t, InvarContext ctx) throws Exception {
         TokenNode nClient = null;
         TokenNode nServer = null;
+        List<String> nodes = new ArrayList<String>(2);
         String pName = node.getName();
         int len = node.numChildren();
         for (int i = 0; i < len; i++) {
             TokenNode n = node.getChild(i);
             if (n.getName().equals("client")) {
-                if (nClient == null)
+                if (nClient == null) {
                     nClient = n;
-                else
+                    nodes.add("client");
+                } else {
                     throw new Exception(error(node, "Repeated client in protocol '" + pName + "'"));
+                }
             } else if (n.getName().equals("server")) {
-                if (nServer == null)
+                if (nServer == null) {
                     nServer = n;
-                else
+                    nodes.add("server");
+                } else {
                     throw new Exception(error(node, "Repeated server in protocol '" + pName + "'"));
+                }
             } else {
                 throw new Exception(error(node, "Invalid element in protocol '" + pName + "'"));
             }
 
         }
+        t.reset(nodes);
         if (nClient != null) {
             parseStruct(nClient, t.getClient(), ctx);
-            t.setNoClient(false);
         }
         if (nServer != null) {
             parseStruct(nServer, t.getServer(), ctx);
-            t.setNoServer(false);
         }
     }
 
     private void parseStruct(TokenNode node, TypeStruct tStruct, InvarContext ctx) throws Exception {
         if (tStruct.getProtoc() != null) {
-            AddProtocCRC32Field(tStruct, ctx);
+            TypeProtocol tProtoc = tStruct.getProtoc();
             AddProtocIdField(tStruct, ctx);
+            if (tStruct == tProtoc.getResponse()) {
+                AddProtocErrField(tStruct, ctx);
+            }
+            AddProtocCRC32Field(tStruct, ctx);
             TypeStruct t2s = ctx.getStructProtoc2S();
             if (t2s != null && tStruct == tStruct.getProtoc().getClient()) {
                 InvarField field = makeAutoAddField(tStruct, t2s, t2s.getAlias(), t2s.getComment(), false);
@@ -229,6 +237,13 @@ public class TokenParser {
         return new InvarField(struct.numFields(), typeBasic, name, "[AutoAdd] " + doc, noSetter, true);
     }
 
+    private void AddProtocCRC32Field(TypeStruct t, InvarContext ctx) throws Exception {
+        InvarType typeBasic = ctx.findBuildInType(TypeID.UINT32);
+        InvarField field = makeAutoAddField(t, typeBasic, "protocCRC", "Protocol CRC32", true);
+        field.setDefault("CRC32");
+        t.addField(field);
+    }
+
     private void AddProtocIdField(TypeStruct t, InvarContext ctx) throws Exception {
         TypeProtocol protoc = t.getProtoc();
         Integer id = 0;
@@ -246,10 +261,10 @@ public class TokenParser {
         t.addField(field);
     }
 
-    private void AddProtocCRC32Field(TypeStruct t, InvarContext ctx) throws Exception {
-        InvarType typeBasic = ctx.findBuildInType(TypeID.UINT32);
-        InvarField field = makeAutoAddField(t, typeBasic, "protocCRC", "Protocol CRC32", true);
-        field.setDefault("CRC32");
+    private void AddProtocErrField(TypeStruct t, InvarContext ctx) throws Exception {
+        InvarType typeBasic = ctx.findBuildInType(TypeID.UINT16);
+        InvarField field = makeAutoAddField(t, typeBasic, "protocError", "Protocol error code", true);
+        field.setDefault("0");
         t.addField(field);
     }
 

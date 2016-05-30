@@ -252,7 +252,7 @@
     (#tab)this.(#name) = (#body);
     }
     else if ((#bytenon) == (#name)Exists) { this.(#name) = (#null); }
-    else { throw new IOException("The value of '(#name)Exists' is invalid.", 996); }
+    else { throw new IOException("Protoc read error: The value of '(#name)Exists' is invalid.", 996); }
   ]]></template>
   <template key="read.ptr.struct"><![CDATA[
     sbyte (#name)Exists = (#arg).ReadSByte();
@@ -261,7 +261,7 @@
     (#tab)this.(#body);
     }
     else if ((#bytenon) == (#name)Exists) { this.(#name) = (#null); }
-    else { throw new IOException("The value of '(#name)Exists' is invalid.", 997); }
+    else { throw new IOException("Protoc read error: The value of '(#name)Exists' is invalid.", 997); }
   ]]></template>
   <template key="read.ptr.vec | read.ptr.map"><![CDATA[
     sbyte (#name)Exists = (#arg).ReadSByte();
@@ -269,10 +269,15 @@
     (#tab)if (this.(#name) == (#null)) { this.(#name) = new (#type)(); }(#bodyindent)
     }
     else if ((#bytenon) == (#name)Exists) { this.(#name) = (#null); }
-    else { throw new IOException("The value of '(#name)Exists' is invalid.", 998); }
+    else { throw new IOException("Protoc read error: The value of '(#name)Exists' is invalid.", 998); }
+  ]]></template>
+  <template key="read.special.protocError"><![CDATA[
+    (#brk)if (this.(#name) != 0) {
+    (#tab)throw new IOException("Protoc read error: The code is " + this.(#name), this.(#name));
+    }
   ]]></template>
   <template key="read.special.protocCRC"><![CDATA[
-    (#brk)if (CRC32 != this.(#name)) { throw new IOException("CRC32 is mismatched.", 999); }
+    (#brk)if (CRC32 != this.(#name)) { throw new IOException("Protoc read error: CRC32 is mismatched.", 999); }
   ]]></template>
 
 
@@ -324,6 +329,9 @@
     } else {
     (#tab)(#arg).Write((#bytenon));
     }
+  ]]></template>
+  <template key="write.special.protocError"><![CDATA[
+    (#brk)if (this.(#name) != 0) { return; }
   ]]></template>
 
   <!-- To XML String -->
