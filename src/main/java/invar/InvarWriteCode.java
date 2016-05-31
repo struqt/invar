@@ -1021,20 +1021,14 @@ public final class InvarWriteCode extends InvarWrite {
                     if (!empty.equals(s_tail)) {
                         s = s + s_tail;
                     }
-                    if (p.field.isSpecial()){
-                        String s_special = snippetTryGet(prefix + "special." + p.field.getKey());
+                    if (p.field.isSpecial()) {
+                        String s_special = snippetTryGet(prefix + "special." + p.field.getRealKey());
                         if (!empty.equals(s_special)) {
                             s = s + s_special;
                         }
                     }
-                    List<String> bodyLines = indentLines(code);
-                    StringBuilder body = new StringBuilder();
-                    for (String line : bodyLines) {
-                        body.append(br);
-                        body.append(line);
-                    }
                     s = replace(s, Token.Body, code);
-                    s = replace(s, Token.BodyIndent, body.toString());
+                    s = replace(s, Token.BodyIndent, makeBodyIndent(code));
                     s = replace(s, Token.Type, p.rule);
                     s = replace(s, Token.Name, p.name);
                     s = replace(s, Token.NameReal, p.nameReal);
@@ -1048,6 +1042,19 @@ public final class InvarWriteCode extends InvarWrite {
                 }
             }
             lines.addAll(indentLines(code));
+        }
+
+        private String makeBodyIndent(String code) {
+            List<String> bodyLines = indentLines(code);
+            StringBuilder body = new StringBuilder();
+            int len = bodyLines.size();
+            for (String line : bodyLines) {
+                if (empty.equals(line.trim())) {
+                    continue;
+                }
+                body.append(br).append(line);
+            }
+            return body.toString();
         }
 
         private String makeBasicExpr(NestedParam p, TypeID t) {
@@ -1095,7 +1102,7 @@ public final class InvarWriteCode extends InvarWrite {
                 }
                 s = replace(s, Token.SpecUpper, specUpper);
                 s = replace(s, Token.TypeUpper, p.parent.rule);
-                s = replace(s, Token.NameUpper, p.parent.name);
+                s = replace(s, Token.NameUpper, p.parent.nameReal);
             }
             return s;
         }
@@ -1152,6 +1159,7 @@ public final class InvarWriteCode extends InvarWrite {
             String iName = upperHeadChar(p.nameReal);
             String sizeType = getContext().findBuildInType(this.sizeType).getRedirect().getName();
             s = replace(s, Token.Body, body);
+            s = replace(s, Token.BodyIndent, makeBodyIndent(body));
             s = replace(s, Token.SizeType, sizeType);
             s = replace(s, Token.Size, "len" + iName);
             s = replace(s, Token.Index, "i" + iName);
@@ -1170,7 +1178,7 @@ public final class InvarWriteCode extends InvarWrite {
                 }
                 s = replace(s, Token.SpecUpper, specUpper);
                 s = replace(s, Token.TypeUpper, p.parent.rule);
-                s = replace(s, Token.NameUpper, p.parent.name);
+                s = replace(s, Token.NameUpper, p.parent.nameReal);
                 s = replace(s, Token.IndexUpper, "i" + upperHeadChar(p.parent.name));
             }
             return s;
