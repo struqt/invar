@@ -538,7 +538,7 @@
     }
   ]]></template>
   <template key="tophp.ptr.vec | tophp.ptr.map"><![CDATA[
-    if ((#name) != (#null)) {(#bodyindent)
+    if ((#namer)Exsists) {(#bodyindent)
     }
   ]]></template>
 
@@ -625,7 +625,7 @@
     }
   ]]></template>
   <template key="tojson.ptr.vec | tojson.ptr.map"><![CDATA[
-    if ((#name) != (#null)) {(#bodyindent)
+    if ((#namer)Exsists) {(#bodyindent)
     }
   ]]></template>
 
@@ -730,7 +730,7 @@
     }
   ]]></template>
   <template key="tolua.ptr.vec | tolua.ptr.map"><![CDATA[
-    if ((#name) != (#null)) {(#bodyindent)
+    if ((#namer)Exsists) {(#bodyindent)
     }
   ]]></template>
 
