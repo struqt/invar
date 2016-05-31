@@ -1,11 +1,32 @@
 package invar.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class TypeProtocol extends InvarType {
 
-    static private HashSet<Integer> ids = new HashSet<Integer>(512);
+    static private HashSet<Integer> ids = new HashSet<Integer>(1024);
+    static private HashMap<Integer, TypeStruct> mapClients = new HashMap<Integer, TypeStruct>(512);
+    static private HashMap<Integer, TypeStruct> mapServers = new HashMap<Integer, TypeStruct>(512);
+
+    static public Iterator<Integer> clientIds() {
+        return mapClients.keySet().iterator();
+    }
+
+    static public Iterator<Integer> serverIds() {
+        return mapServers.keySet().iterator();
+    }
+
+    static public TypeStruct findClient(Integer key) {
+        return mapClients.get(key);
+    }
+
+    static public TypeStruct findServer(Integer key) {
+        return mapServers.get(key);
+    }
+
 
     private final Integer clientId;
     private final Integer serverId;
@@ -79,11 +100,13 @@ public class TypeProtocol extends InvarType {
             suffix += "2S";
             client = new TypeStruct(getName() + suffix, getPack(), getComment());
             client.setProtoc(this);
+            mapClients.put(clientId, client);
             return client;
         } else if ("server".equals(node)) {
             suffix += "2C";
             server = new TypeStruct(getName() + suffix, getPack(), getComment());
             server.setProtoc(this);
+            mapServers.put(serverId, server);
             return server;
         } else {
             return null;

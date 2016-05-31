@@ -128,7 +128,14 @@ public final class InvarWriteCode extends InvarWrite {
     public StringBuilder codeFields(TypeStruct struct, List<InvarField> fields) {
         StringBuilder code = new StringBuilder();
         for (InvarField f : fields) {
-            code.append(makeStructField(f, struct));
+            if (f.isSpecial() && "protocCRC".equals(f.getRealKey())) {
+                /* Special fix for PHP */
+                String deft = snippet.tryGet("struct.field.crc", null);
+                if (deft != null) {
+                    f.setDefault(deft);
+                }
+            }
+            code.append(makeStructField(f));
         }
         return code;
     }
@@ -138,7 +145,7 @@ public final class InvarWriteCode extends InvarWrite {
         Iterator<InvarField> i = fields.iterator();
         while (i.hasNext()) {
             InvarField f = i.next();
-            code.append(makeConstructorField(f, struct, i.hasNext()));
+            code.append(makeConstructorField(f, i.hasNext()));
         }
         return code;
     }
@@ -214,49 +221,7 @@ public final class InvarWriteCode extends InvarWrite {
             String codePath = getContext().findBuildInType(TypeID.INT32).getRedirect().getCodePath();
             fileIncludes.add(codePath);
         }
-        String[] names;
-        names = packName.split(dotToken);
-        String relatives = empty;
-        int len = names.length;
-        int i = 0;
-        while (i < len) {
-            relatives += "../";
-            ++i;
-        }
-        StringBuilder includes = new StringBuilder();
-        Iterator<String> iter = fileIncludes.descendingIterator();
-        while (iter.hasNext()) {
-            String inc = iter.next();
-            String s = snippetTryGet(Key.FILE_INCLUDE);
-            if (s.equals(empty))
-                continue;
-            if (inc.equals(empty))
-                continue;
-            s = replace(s, Token.Name, inc);
-            s = replace(s, Token.NameUpper, relatives);
-            includes.append(s);
-        }
-
-        List<String> packNames = new LinkedList<String>();
-        if (packNameNested) {
-            Collections.addAll(packNames, names);
-        } else {
-            packNames.add(packName);
-        }
-
-        String ifndef = filePath;
-        ifndef = ifndef.toUpperCase();
-        ifndef = replace(ifndef, "\"", empty);
-        ifndef = replace(ifndef, "//", "_");
-        ifndef = replace(ifndef, "/", "_");
-        ifndef = replace(ifndef, dotToken, "_");
-        String s = snippet.tryGet(Key.FILE,
-                "//Error: No template named '" + Key.FILE + "' in " + snippet.getSnippetPath());
-        s = replace(s, Token.Define, ifndef);
-        s = replace(s, Token.Pack, codeOneFilePack(packNames, body));
-        s = replace(s, Token.Includes, includes.toString());
-        s = replace(s, Token.Import, makeImorts(imps));
-        return s;
+        return codeOneFileWrap(packName, filePath, body, imps);
     }
 
     @Override
@@ -329,6 +294,52 @@ public final class InvarWriteCode extends InvarWrite {
             type.setCodePath(path);
     }
 
+    private String codeOneFileWrap(String packName, String filePath, String body, TreeSet<String> imps) {
+        String[] names;
+        names = packName.split(dotToken);
+        String relatives = empty;
+        int len = names.length;
+        int i = 0;
+        while (i < len) {
+            relatives += "../";
+            ++i;
+        }
+        StringBuilder includes = new StringBuilder();
+        Iterator<String> iter = fileIncludes.descendingIterator();
+        while (iter.hasNext()) {
+            String inc = iter.next();
+            String s = snippetTryGet(Key.FILE_INCLUDE);
+            if (s.equals(empty))
+                continue;
+            if (inc.equals(empty))
+                continue;
+            s = replace(s, Token.Name, inc);
+            s = replace(s, Token.NameUpper, relatives);
+            includes.append(s);
+        }
+
+        List<String> packNames = new LinkedList<String>();
+        if (packNameNested) {
+            Collections.addAll(packNames, names);
+        } else {
+            packNames.add(packName);
+        }
+
+        String ifndef = filePath;
+        ifndef = ifndef.toUpperCase();
+        ifndef = replace(ifndef, "\"", empty);
+        ifndef = replace(ifndef, "//", "_");
+        ifndef = replace(ifndef, "/", "_");
+        ifndef = replace(ifndef, dotToken, "_");
+        String s = snippet.tryGet(Key.FILE,
+                "//Error: No template named '" + Key.FILE + "' in " + snippet.getSnippetPath());
+        s = replace(s, Token.Define, ifndef);
+        s = replace(s, Token.Pack, codeOneFilePack(packNames, body));
+        s = replace(s, Token.Includes, includes.toString());
+        s = replace(s, Token.Import, makeImorts(imps));
+        return s;
+    }
+
     String codeOneFileBody(List<TypeEnum> enums, List<TypeStruct> structs, TreeSet<String> imps) {
         StringBuilder codeEnums = new StringBuilder();
         StringBuilder codeStructs = new StringBuilder();
@@ -392,8 +403,17 @@ public final class InvarWriteCode extends InvarWrite {
             return;
         String fileDir = snippetGet(Key.RUNTIME_PACK);
         TreeSet<String> imps = new TreeSet<String>();
-        String s = makeRuntimeBlock(imps);
+        String body = makeRuntimeBlock(imps);
+
+        String s = snippet.tryGet(Key.FILE_BODY,
+                "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
         s = replace(s, Token.Import, makeImorts(imps));
+        s = replace(s, Token.Enums, empty);
+        s = replace(s, Token.Structs, body);
+        s = replace(s, "[\n|\r\n]*" + Token.Concat, empty);
+
+        s = codeOneFileWrap(fileDir, fileDir + typeName + suffix, s, imps);
+
         addExportFile(fileDir, typeName + suffix, s);
     }
 
@@ -504,18 +524,19 @@ public final class InvarWriteCode extends InvarWrite {
         return code;
     }
 
-    private String makeConstructorField(InvarField f, TypeStruct type, Boolean hasNext) {
+    private String makeConstructorField(InvarField f, Boolean hasNext) {
         if (snippetTryGet(Key.CONSTRUCT_FIELD).equals(empty))
             return empty;
         String s = snippetGet(Key.CONSTRUCT_FIELD);
         s = replace(s, Token.Name, fixedLen(f.getWidthKey(), f.getKey()));
         s = replace(s, Token.Value, f.getDeftFormatted());
-        if (hasNext)
+        if (hasNext) {
             s += snippetGet(Key.CONSTRUCT_FIELD_SPLIT);
+        }
         return s;
     }
 
-    private StringBuilder makeStructField(InvarField f, TypeStruct struct) {
+    private StringBuilder makeStructField(InvarField f) {
         StringBuilder code = new StringBuilder();
         String spec = f.getUsePointer() ? snippetTryGet(Key.POINTER_SPEC) : whiteSpace;
         String s = snippetGet(Key.STRUCT_FIELD);
@@ -616,12 +637,16 @@ public final class InvarWriteCode extends InvarWrite {
 
     private String makeRuntimeBlock(TreeSet<String> imps) {
         String s = snippetGet(Key.RUNTIME_BODY);
-        String block = makeRuntimeAliasBlock(imps);
+        String block = makeRuntimeProtocBlock(imps);
+        if (!empty.equals(snippetGet(Key.RUNTIME_ALIAS))) {
+            block += makeRuntimeAliasBlock(imps);
+        }
         s = replace(s, Token.Body, block);
         return s;
     }
 
     private String makeRuntimeAliasBlock(TreeSet<String> imps) {
+        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
         StringBuilder meBasic = new StringBuilder();
         StringBuilder meEnums = new StringBuilder();
         StringBuilder meStruct = new StringBuilder();
@@ -642,7 +667,7 @@ public final class InvarWriteCode extends InvarWrite {
             String s = snippetGet(key);
             s = replace(s, Token.Name, alias);
             s = replace(s, Token.Type, type.getName());
-            s = replace(s, Token.TypeFull, type.fullName("."));
+            s = replace(s, Token.TypeFull, type.fullName(split));
 
             if (type instanceof TypeStruct)
                 meStruct.append(s);
@@ -660,6 +685,59 @@ public final class InvarWriteCode extends InvarWrite {
         String s = snippetGet(Key.RUNTIME_ALIAS);
         s = replace(s, Token.Name, name);
         s = replace(s, Token.Body, block);
+        return s;
+    }
+
+    private String makeRuntimeProtocBlock(TreeSet<String> imps) {
+
+        String name2c = snippetTryGet(Key.RUNTIME_PROTOC_2C);
+        String name2s = snippetTryGet(Key.RUNTIME_PROTOC_2S);
+        String result = empty;
+        if (!empty.equals(name2c)) {
+            result += makeRuntimeProtocFunc(name2c, imps, TypeProtocol.serverIds(), true, false);
+        }
+        if (!empty.equals(name2s)) {
+            result += makeRuntimeProtocFunc(name2s, imps, TypeProtocol.clientIds(), false, true);
+        }
+        return result;
+    }
+
+    private String makeRuntimeProtocFunc(
+            String name, TreeSet<String> imps, Iterator<Integer> protocIds, Boolean isServer, Boolean isClient) {
+        if (isClient && isServer) {
+            return empty;
+        }
+        if (!isClient && !isServer) {
+            return empty;
+        }
+        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_ADD))) {
+            return empty;
+        }
+        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_M))) {
+            return empty;
+        }
+        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
+        StringBuilder block = new StringBuilder();
+        while (protocIds.hasNext()) {
+            Integer id = protocIds.next();
+            TypeStruct tStruct;
+            if (isClient) {
+                tStruct = TypeProtocol.findClient(id);
+            } else {
+                tStruct = TypeProtocol.findServer(id);
+            }
+            if (tStruct == null) {
+                continue;
+            }
+            impsCheckAdd(imps, tStruct, null);
+            String s = snippetGet(Key.RUNTIME_PROTOC_ADD);
+            s = replace(s, Token.Name, id.toString());
+            s = replace(s, Token.TypeFull, tStruct.fullName(split));
+            block.append(s);
+        }
+        String s = snippetGet(Key.RUNTIME_PROTOC_M);
+        s = replace(s, Token.Name, name);
+        s = replace(s, Token.Body, block.toString());
         return s;
     }
 
@@ -1047,7 +1125,6 @@ public final class InvarWriteCode extends InvarWrite {
         private String makeBodyIndent(String code) {
             List<String> bodyLines = indentLines(code);
             StringBuilder body = new StringBuilder();
-            int len = bodyLines.size();
             for (String line : bodyLines) {
                 if (empty.equals(line.trim())) {
                     continue;
@@ -1057,7 +1134,7 @@ public final class InvarWriteCode extends InvarWrite {
             return body.toString();
         }
 
-        private String makeBasicExpr(NestedParam p, TypeID t) {
+        private String makeBasicExpr(TypeID t) {
             String s = snippetTryGet(prefix + t.getName());
             if (s.equals(empty)) {
                 s = snippetGet(prefix + "any");
@@ -1072,7 +1149,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (!p.isRoot()) {
                 return empty;
             }
-            String body = makeBasicExpr(p, t);
+            String body = makeBasicExpr(t);
             String spec = empty;
             if (p.field.getUsePointer()) {
                 spec = snippetGet(Key.POINTER_SPEC);
@@ -1089,7 +1166,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (s.equals(empty)) {
                 s = snippetGet(prefix + "nest" + p.tag);
             }
-            s = replace(s, Token.Body, makeBasicExpr(p, t));
+            s = replace(s, Token.Body, makeBasicExpr(t));
             s = replace(s, Token.Split, "_");
             s = replace(s, Token.Specifier, empty);
             s = replace(s, Token.Type, p.rule);
@@ -1116,7 +1193,7 @@ public final class InvarWriteCode extends InvarWrite {
             String nameVal = "n" + p.depth;
             NestedParam pVal = makeParams(p, ruleV, nameVal, nameVal, ".n");
             String body = empty;
-            body += makeUnitGeneric(TypeID.VEC, ruleV, pVal);
+            body += makeUnitGeneric(ruleV, pVal);
             return makeUnitIter(TypeID.VEC.getName(), body, p, pVal, null);
         }
 
@@ -1135,12 +1212,12 @@ public final class InvarWriteCode extends InvarWrite {
             NestedParam pKey = makeParams(p, ruleK, nameKey, nameKey, ".k");
             NestedParam pVal = makeParams(p, ruleV, nameVal, nameVal, ".v");
             String body = empty;
-            body += makeUnitGeneric(TypeID.MAP, ruleK, pKey);
-            body += makeUnitGeneric(TypeID.MAP, ruleV, pVal);
+            body += makeUnitGeneric(ruleK, pKey);
+            body += makeUnitGeneric(ruleV, pVal);
             return makeUnitIter(TypeID.MAP.getName(), body, p, pVal, pKey);
         }
 
-        private String makeUnitGeneric(TypeID id, String rule, NestedParam p) {
+        private String makeUnitGeneric(String rule, NestedParam p) {
             String L = ruleLeft(rule);
             InvarType t = getTypeByShort(L);
             if (t == null) {

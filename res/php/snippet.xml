@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
-  xmlns:tns="invar.template" language="php">
+<tns:root
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="php">
 
-  <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
-  <export resPath="php/invar.codec.php" destDir="" destName="invar.codec.php" />
+  <export resPath="php/invar.codec.php" destDir="" destName="invar/invar.codec.php"/>
+
+  <!-- Redefine 14 Invar buildin types to adapt PHP language -->
   <redefine>
-    <int8 pack="php" type="int08" initValue="-1" />
-    <int16 pack="php" type="int16" initValue="-1" />
-    <int32 pack="php" type="int32" initValue="-1" />
-    <int64 pack="php" type="int64" initValue="-1" />
-    <uint8 pack="php" type="uint08" initValue="0" />
-    <uint16 pack="php" type="uint16" initValue="0" />
-    <uint32 pack="php" type="uint32" initValue="0" />
-    <uint64 pack="php" type="uint32" initValue="0" />
-    <float pack="php" type="float32" initValue="0.0" />
-    <double pack="php" type="float64" initValue="0.00" />
-    <string pack="php" type="string" initValue="" />
-    <bool pack="php" type="boolean" initValue="FALSE" />
-    <vec pack="php" type="list" generic="&lt;?&gt;" initValue="" />
-    <map pack="php" type="dict" generic="&lt;?,?&gt;" initValue="" />
-    <dialect pack="invar" type="BinaryWriter" include="invar.codec.php" />
-    <dialect pack="invar" type="BinaryReader" include="invar.codec.php" />
+    <int8 pack="php" type="int08" initValue="-1"/>
+    <int16 pack="php" type="int16" initValue="-1"/>
+    <int32 pack="php" type="int32" initValue="-1"/>
+    <int64 pack="php" type="int64" initValue="-1"/>
+    <uint8 pack="php" type="uint08" initValue="0"/>
+    <uint16 pack="php" type="uint16" initValue="0"/>
+    <uint32 pack="php" type="uint32" initValue="0"/>
+    <uint64 pack="php" type="uint32" initValue="0"/>
+    <float pack="php" type="float32" initValue="0.0"/>
+    <double pack="php" type="float64" initValue="0.00"/>
+    <string pack="php" type="string" initValue=""/>
+    <bool pack="php" type="boolean" initValue="FALSE"/>
+    <vec pack="php" type="list" generic="&lt;?&gt;" initValue=""/>
+    <map pack="php" type="dict" generic="&lt;?,?&gt;" initValue=""/>
+    <dialect pack="invar" type="BinaryWriter" include="invar/invar.codec.php"/>
+    <dialect pack="invar" type="BinaryReader" include="invar/invar.codec.php"/>
   </redefine>
   <template key="trace.all.types">     <![CDATA[false]]></template>
   <template key="include.self">        <![CDATA[false]]></template>
@@ -58,6 +60,8 @@
   <template key="import.exclude.packs"><![CDATA[php]]></template>
   <template key="doc">     <![CDATA[ /** (#doc) */    ]]></template>
   <template key="doc.line"><![CDATA[ (#space)//(#doc) ]]></template>
+  <template key="struct.field.prefix"><![CDATA[ this-> ]]></template>
+  <template key="struct.field.crc"><![CDATA[ self::CRC32 ]]></template>
 
   <template key="file"><![CDATA[
     <?php
@@ -95,7 +99,7 @@
     (#blank)
     final class (#name)
     {
-    (#tab)public const CRC32 = 0x[#codeCRC32(struct)];(#brk)
+    (#tab)const CRC32 = 0x[#codeCRC32(struct)];(#brk)
     [#codeFields (struct; fields)]
     [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
@@ -108,8 +112,6 @@
     [#codeSetters(struct; fields)]
     }
 	]]></template>
-  <template key="struct.meta"><![CDATA[@invar.InvarRule(T="(#type)", S="f(#index)")]]></template>
-  <template key="struct.field.prefix"><![CDATA[this->]]></template>
   <template key="struct.field"><![CDATA[
     (#tab)private \$[#clampLen(lenFieldName; 16; (#name) )];
     (#concat)[#codeLineDoc(fields; (#index))]
@@ -127,16 +129,20 @@
   <template key="ctor.method"><![CDATA[ (#tab)function __construct()
     (#tab){(#body)
     (#tab)} //construct() ]]></template>
-  <template key="ctor.any | ctor.vec | ctor.map"><![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
-  <template key="ctor.ptr.any">                  <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
+  <template key="ctor.any | ctor.vec | ctor.map">
+    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
+  <template key="ctor.ptr.any">
+    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
   <template key="ctor.ref.any">                  <![CDATA[ (#body); ]]></template>
 
   <!-- Method Reuse -->
   <template key="reuse.method"><![CDATA[ (#tab)public function reuse()
     (#tab){(#body)
     (#tab)} //reuse() ]]></template>
-  <template key="reuse.any | reuse.vec | reuse.map"><![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
-  <template key="reuse.ptr.any">                    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
+  <template key="reuse.any | reuse.vec | reuse.map">
+    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
+  <template key="reuse.ptr.any">
+    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
   <template key="reuse.ref.any">                    <![CDATA[ (#body); ]]></template>
 
   <!-- CopyFrom Method -->
@@ -380,6 +386,32 @@
       (#tab)\$result .= 'null';
     } ]]></template>
 
+  <template key="runtime.pack"><![CDATA[ invar ]]></template>
+  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.type.split"><![CDATA[ \\ ]]></template>
+  <template key="runtime.body"><![CDATA[
+    final class InvarRuntime
+    {
+    (#body)
+    } //class InvarRuntime
+    (#blank)
+    /*
+    (#blank)
+    $map = InvarRuntime::makeProtocMap4Server();
+    var_dump(new $map[65533]);
+    (#blank)
+    //*/
+  ]]></template>
+  <template key="runtime.protoc.client"><![CDATA[ makeProtocMap4Server ]]></template>
+  <template key="runtime.protoc.server"><![CDATA[ makeProtocMap4Client ]]></template>
+  <template key="runtime.protoc.add"><![CDATA[ (#brk)(#tab)(#tab)$map[(#name)] = '(#typefull)'; ]]></template>
+  <template key="runtime.protoc.method"><![CDATA[
+    (#tab)static public function (#name)()
+    (#tab){
+    (#tab)(#tab)$map = array();(#body)
+    (#tab)(#tab)return $map;
+    (#tab)}
+  ]]></template>
 
   <!-- -->
 </tns:root>

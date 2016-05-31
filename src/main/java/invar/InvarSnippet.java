@@ -207,6 +207,11 @@ final public class InvarSnippet {
         final static public String RUNTIME_ALIAS_BASIC = "runtime.alias.basic";
         final static public String RUNTIME_ALIAS_VEC = "runtime.alias.list";
         final static public String RUNTIME_ALIAS_MAP = "runtime.alias.map";
+        final static public String RUNTIME_TYPE_SPLIT = "runtime.type.split";
+        final static public String RUNTIME_PROTOC_2S = "runtime.protoc.client";
+        final static public String RUNTIME_PROTOC_2C = "runtime.protoc.server";
+        final static public String RUNTIME_PROTOC_M = "runtime.protoc.method";
+        final static public String RUNTIME_PROTOC_ADD = "runtime.protoc.add";
 
         final static public String ENUM = "enum";
         final static public String ENUM_FIELD = "enum.field";
