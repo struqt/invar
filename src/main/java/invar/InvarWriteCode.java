@@ -399,22 +399,25 @@ public final class InvarWriteCode extends InvarWrite {
     @Override
     protected void codeRuntime(String suffix) {
         String typeName = snippetTryGet(Key.RUNTIME_NAME);
-        if (empty.equals(typeName))
+        if (empty.equals(typeName)) {
             return;
+        }
+        String fileName = snippetTryGet(Key.RUNTIME_FILE, null);
+        if (fileName == null) {
+            fileName = typeName;
+        }
+        fileName = fileName + suffix;
         String fileDir = snippetGet(Key.RUNTIME_PACK);
         TreeSet<String> imps = new TreeSet<String>();
         String body = makeRuntimeBlock(imps);
-
         String s = snippet.tryGet(Key.FILE_BODY,
                 "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
         s = replace(s, Token.Import, makeImorts(imps));
         s = replace(s, Token.Enums, empty);
         s = replace(s, Token.Structs, body);
         s = replace(s, "[\n|\r\n]*" + Token.Concat, empty);
-
-        s = codeOneFileWrap(fileDir, fileDir + typeName + suffix, s, imps);
-
-        addExportFile(fileDir, typeName + suffix, s);
+        s = codeOneFileWrap(fileDir, fileDir + fileName, s, imps);
+        addExportFile(fileDir, fileName, s);
     }
 
     protected String makeDocLine(String comment) {
@@ -637,8 +640,13 @@ public final class InvarWriteCode extends InvarWrite {
 
     private String makeRuntimeBlock(TreeSet<String> imps) {
         String s = snippetGet(Key.RUNTIME_BODY);
-        String block = makeRuntimeProtocBlock(imps);
-        if (!empty.equals(snippetGet(Key.RUNTIME_ALIAS))) {
+        String block = empty;
+        block += makeRuntimeProtocHandleBlock(imps);
+        block += makeRuntimeProtocBlock(imps);
+        if (!empty.equals(snippetTryGet(Key.RUNTIME_PROTOC_REQ))) {
+            block += makeRuntimeProtocReqBlock(imps);
+        }
+        if (!empty.equals(snippetTryGet(Key.RUNTIME_ALIAS))) {
             block += makeRuntimeAliasBlock(imps);
         }
         s = replace(s, Token.Body, block);
@@ -688,8 +696,44 @@ public final class InvarWriteCode extends InvarWrite {
         return s;
     }
 
-    private String makeRuntimeProtocBlock(TreeSet<String> imps) {
+    private String makeRuntimeProtocReqBlock(TreeSet<String> imps) {
+        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_REQ_ITEM))) {
+            return empty;
+        }
+        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_REQ_M))) {
+            return empty;
+        }
+        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
+        StringBuilder block = new StringBuilder();
+        Iterator<String> i = getContext().getPackNames();
+        while (i.hasNext()) {
+            InvarPackage pack = getContext().getPack(i.next());
+            Iterator<String> iTypeName = pack.getTypeNames();
+            while (iTypeName.hasNext()) {
+                String typeName = iTypeName.next();
+                InvarType type = pack.getType(typeName);
+                if (!(type instanceof TypeProtocol)) {
+                    continue;
+                }
+                TypeProtocol protoc = (TypeProtocol) type;
+                if (protoc.getRequest() == null || protoc.getResponse() == null) {
+                    continue;
+                }
+                impsCheckAdd(imps, protoc.getRequest(), null);
+                impsCheckAdd(imps, protoc.getResponse(), null);
+                String s = snippetGet(Key.RUNTIME_PROTOC_REQ_ITEM);
+                s = replace(s, Token.Key, protoc.getRequest().fullName(split));
+                s = replace(s, Token.Value, protoc.getResponse().fullName(split));
+                block.append(s);
+            }
+        }
+        String s = snippetGet(Key.RUNTIME_PROTOC_REQ_M);
+        s = replace(s, Token.Name, snippetGet(Key.RUNTIME_PROTOC_REQ));
+        s = replace(s, Token.Body, block.toString());
+        return s;
+    }
 
+    private String makeRuntimeProtocBlock(TreeSet<String> imps) {
         String name2c = snippetTryGet(Key.RUNTIME_PROTOC_2C);
         String name2s = snippetTryGet(Key.RUNTIME_PROTOC_2S);
         String result = empty;
@@ -732,6 +776,7 @@ public final class InvarWriteCode extends InvarWrite {
             impsCheckAdd(imps, tStruct, null);
             String s = snippetGet(Key.RUNTIME_PROTOC_ADD);
             s = replace(s, Token.Name, id.toString());
+            s = replace(s, Token.Type, tStruct.getName());
             s = replace(s, Token.TypeFull, tStruct.fullName(split));
             block.append(s);
         }
@@ -740,6 +785,63 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Body, block.toString());
         return s;
     }
+
+    private String makeRuntimeProtocHandleBlock(TreeSet<String> imps) {
+        String name2c = snippetTryGet(Key.RUNTIME_PROTOC_HANDLE_2C);
+        String name2s = snippetTryGet(Key.RUNTIME_PROTOC_HANDLE_2S);
+        String result = empty;
+        if (!empty.equals(name2c)) {
+            result += makeRuntimeProtocHandleFunc(Key.RUNTIME_PROTOC_HANDLE_2C, imps, TypeProtocol.serverIds(), true, false);
+        }
+        if (!empty.equals(name2s)) {
+            result += makeRuntimeProtocHandleFunc(Key.RUNTIME_PROTOC_HANDLE_2S, imps, TypeProtocol.clientIds(), false, true);
+        }
+        return result;
+    }
+
+    private String makeRuntimeProtocHandleFunc(
+            String key, TreeSet<String> imps, Iterator<Integer> protocIds, Boolean isServer, Boolean isClient) {
+        if (isClient && isServer) {
+            return empty;
+        }
+        if (!isClient && !isServer) {
+            return empty;
+        }
+        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_HANDLE_ITEM))) {
+            return empty;
+        }
+        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_HANDLE_M))) {
+            return empty;
+        }
+        String name = snippetGet(key);
+        String invoke = snippetGet(key + ".read");
+        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
+        StringBuilder block = new StringBuilder();
+        while (protocIds.hasNext()) {
+            Integer id = protocIds.next();
+            TypeStruct tStruct;
+            if (isClient) {
+                tStruct = TypeProtocol.findClient(id);
+            } else {
+                tStruct = TypeProtocol.findServer(id);
+            }
+            if (tStruct == null) {
+                continue;
+            }
+            impsCheckAdd(imps, tStruct, null);
+            String s = snippetGet(Key.RUNTIME_PROTOC_HANDLE_ITEM);
+            s = replace(s, Token.Name, id.toString());
+            s = replace(s, Token.Type, tStruct.getName());
+            s = replace(s, Token.TypeFull, tStruct.fullName(split));
+            block.append(s);
+        }
+        String s = snippetGet(Key.RUNTIME_PROTOC_HANDLE_M);
+        s = replace(s, Token.Name, name);
+        s = replace(s, Token.Body, block.toString());
+        s = replace(s, Token.Invoke, invoke);
+        return s;
+    }
+
 
     protected String makeImorts(TreeSet<String> imps) {
         if (imps == null || imps.size() == 0) {

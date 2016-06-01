@@ -200,6 +200,7 @@ final public class InvarSnippet {
         final static public String CODE_FOREACH = "code.foreach";
         final static public String CODE_FORI = "code.fori";
 
+        final static public String RUNTIME_FILE = "runtime.file";
         final static public String RUNTIME_PACK = "runtime.pack";
         final static public String RUNTIME_NAME = "runtime.name";
         final static public String RUNTIME_BODY = "runtime.body";
@@ -212,6 +213,14 @@ final public class InvarSnippet {
         final static public String RUNTIME_PROTOC_2C = "runtime.protoc.server";
         final static public String RUNTIME_PROTOC_M = "runtime.protoc.method";
         final static public String RUNTIME_PROTOC_ADD = "runtime.protoc.add";
+        final static public String RUNTIME_PROTOC_REQ = "runtime.protoc.req";
+        final static public String RUNTIME_PROTOC_REQ_ITEM = "runtime.protoc.req.item";
+        final static public String RUNTIME_PROTOC_REQ_M = "runtime.protoc.req.method";
+        final static public String RUNTIME_PROTOC_HANDLE_2S = "runtime.protoc.handle.client";
+        final static public String RUNTIME_PROTOC_HANDLE_2C = "runtime.protoc.handle.server";
+        final static public String RUNTIME_PROTOC_HANDLE_ITEM = "runtime.protoc.handle.item";
+        final static public String RUNTIME_PROTOC_HANDLE_M = "runtime.protoc.handle.method";
+
 
         final static public String ENUM = "enum";
         final static public String ENUM_FIELD = "enum.field";

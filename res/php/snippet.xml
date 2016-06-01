@@ -181,6 +181,7 @@
   <template key="read.method"><![CDATA[
     (#tab)public function read (&\$bytes_)
     (#tab){(#body)
+    (#tab)(#tab)return \$this;
     (#tab)}]]></template>
   <template key="read.int8">  <![CDATA[ (#arg)->readInt08()  ]]></template>
   <template key="read.int16"> <![CDATA[ (#arg)->readInt16()  ]]></template>
@@ -235,6 +236,14 @@
     if ((#arg)->readInt08() == (#byteyes)) {
     (#tab)\$(#name) = array();(#bodyindent)
     }
+  ]]></template>
+  <template key="read.special.protocError"><![CDATA[
+    (#brk)if (\$(#name) != 0) {
+    (#tab)throw new \\Exception('Protoc read error: The code is ' + \$(#name), \$(#name));
+    }
+  ]]></template>
+  <template key="read.special.protocCRC"><![CDATA[
+    (#brk)if (self::CRC32 != \$(#name)) { throw new \\Exception('Protoc read error: CRC32 is mismatched.', 999); }
   ]]></template>
 
 
@@ -386,31 +395,74 @@
       (#tab)\$result .= 'null';
     } ]]></template>
 
+  <template key="runtime.file"><![CDATA[ invar.runtime ]]></template>
   <template key="runtime.pack"><![CDATA[ invar ]]></template>
   <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
-  <template key="runtime.type.split"><![CDATA[ \\ ]]></template>
+  <template key="runtime.type.split"><![CDATA[ \ ]]></template>
   <template key="runtime.body"><![CDATA[
-    final class InvarRuntime
-    {
+    final class InvarRuntime {
     (#body)
     } //class InvarRuntime
-    (#blank)
-    /*
-    (#blank)
-    $map = InvarRuntime::makeProtocMap4Server();
-    var_dump(new $map[65533]);
-    (#blank)
-    //*/
   ]]></template>
-  <template key="runtime.protoc.client"><![CDATA[ makeProtocMap4Server ]]></template>
-  <template key="runtime.protoc.server"><![CDATA[ makeProtocMap4Client ]]></template>
-  <template key="runtime.protoc.add"><![CDATA[ (#brk)(#tab)(#tab)$map[(#name)] = '(#typefull)'; ]]></template>
+  <template key="runtime.protoc.client"><![CDATA[ ReadProtoc4Server ]]></template>
+  <template key="runtime.protoc.server"><![CDATA[ ReadProtoc4Client ]]></template>
+  <template key="runtime.protoc.add"><![CDATA[
+    (#brk)(#tab)(#tab)case (#name): return (new (#type))->read($decoder); ]]></template>
   <template key="runtime.protoc.method"><![CDATA[
-    (#tab)static public function (#name)()
-    (#tab){
-    (#tab)(#tab)$map = array();(#body)
-    (#tab)(#tab)return $map;
+    (#blank)
+    static public function (#name) (&$bytes)
+    {
+    (#tab)$decoder = new BinaryReader($bytes);
+    (#tab)$id = $decoder->peekUInt16();
+    (#tab)switch ($id) {(#body)
+    (#tab)(#tab)default: break;
     (#tab)}
+    (#tab)return null;
+    }
+  ]]></template>
+  <template key="runtime.protoc.req"><![CDATA[ MakeResponse ]]></template>
+  <template key="runtime.protoc.req.item"><![CDATA[
+    (#brk)(#tab)(#tab)case '(#key)': return '(#value)'; ]]></template>
+  <template key="runtime.protoc.req.method"><![CDATA[
+    (#blank)
+    static public function (#name) ($req)
+    {
+    (#tab)switch (get_class($req)) {(#body)
+    (#tab)(#tab)default: break;
+    (#tab)}
+    (#tab)return null;
+    }
+  ]]></template>
+  <template key="runtime.protoc.handle.client"><![CDATA[ HandleProtoc4Server ]]></template>
+  <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtoc4Client ]]></template>
+  <template key="runtime.protoc.handle.client.read"><![CDATA[ self::ReadProtoc4Server($bytes) ]]></template>
+  <template key="runtime.protoc.handle.server.read"><![CDATA[ self::ReadProtoc4Client($bytes) ]]></template>
+  <template key="runtime.protoc.handle.item"><![CDATA[
+    (#brk)(#tab)(#tab)case (#name): $handler = 'Handle(#type)'; break; ]]></template>
+  <template key="runtime.protoc.handle.method"><![CDATA[
+    (#blank)
+    static public function (#name) (&$bytes)
+    {
+    (#tab)$decoder = new BinaryReader($bytes);
+    (#tab)$id = $decoder->peekUInt16();
+    (#tab)$handler = null;
+    (#tab)switch ($id) {(#body)
+    (#tab)(#tab)default: break;
+    (#tab)}
+    (#tab)if (is_null($handler)) { return 400; }
+    (#tab)if (!function_exists($handler)) { return 503; }
+    (#tab)$req = (#invoke);
+    (#tab)if (is_null($req)) { return 401; }
+    (#tab)$Cls = self::MakeResponse($req);
+    (#tab)if (is_null($Cls)) {
+    (#tab)(#tab)$handler($req);
+    (#tab)}
+    (#tab)else {
+    (#tab)(#tab)$resp = new $Cls;
+    (#tab)(#tab)$handler($req, $resp);
+    (#tab)}
+    (#tab)return 0;
+    }
   ]]></template>
 
   <!-- -->
