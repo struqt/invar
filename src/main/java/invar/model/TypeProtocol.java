@@ -27,7 +27,7 @@ public class TypeProtocol extends InvarType {
         return mapServers.get(key);
     }
 
-
+    //private final Integer protocId;
     private final Integer clientId;
     private final Integer serverId;
     private TypeStruct server;
@@ -37,11 +37,21 @@ public class TypeProtocol extends InvarType {
 
     public TypeProtocol(Integer id, String name, InvarPackage pack, String comment) {
         super(TypeID.PROTOCOL, name, pack, comment, false);
+
         if (ids.contains(id)) {
             throw new RuntimeException("Repeated protocol id: " + id);
         }
+        //this.protocId = id;
+        /*
+        if ((id & 0x01) == 1) {
+            this.clientId = id;
+            this.serverId = id + 1;
+        } else {
+            this.clientId = id - 1;
+            this.serverId = id;
+        }//*/
         this.clientId = id;
-        this.serverId = id/* +1 */;
+        this.serverId = id;
         ids.add(this.clientId);
         ids.add(this.serverId);
     }
@@ -57,7 +67,6 @@ public class TypeProtocol extends InvarType {
             response = this.resetByName(nodes.get(1), "R");
         }
     }
-
 
     public TypeStruct getClient() {
         return client;
@@ -89,10 +98,6 @@ public class TypeProtocol extends InvarType {
 
     public Integer getServerId() {
         return serverId;
-    }
-
-    public Boolean isNotify() {
-        return hasServer() || hasClient();
     }
 
     private TypeStruct resetByName(String node, String suffix) {

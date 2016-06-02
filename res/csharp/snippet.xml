@@ -5,6 +5,7 @@
 
   <export resPath="csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs"/>
   <export resPath="csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs"/>
+  <export resPath="csharp/ProtocHandler.cs" destDir="Invar" destName="ProtocHandler.cs"/>
 
   <!-- Redefine 14 Invar buildin types to adapt C# language -->
   <redefine>
@@ -71,11 +72,11 @@
 
   <template key="file.pack"><![CDATA[
 	namespace (#name) {
-    (#body)} //namespace: (#name)]]></template>
+  (#blank)
+  (#body)} //namespace: (#name)]]></template>
 
   <template key="file.body"><![CDATA[
     (#import)(#enums)(#structs)]]></template>
-
 
   <template key="doc"><![CDATA[/// (#doc).]]></template>
   <template key="doc.line"><![CDATA[ (#space)//(#doc).]]></template>
@@ -424,47 +425,6 @@
     if ((#name) != (#null)) { result.Append((#body)); }
     else { result.Append("null"); } ]]></template>
 
-  <template key="runtime.pack"><![CDATA[ Invar ]]></template>
-  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
-  <template key="runtime.type.split"><![CDATA[ . ]]></template>
-  <template key="runtime.protoc.client"><![CDATA[ MakeProtocMap4Server ]]></template>
-  <template key="runtime.protoc.server"><![CDATA[ MakeProtocMap4Client ]]></template>
-  <template key="runtime.protoc.method"><![CDATA[
-    (#tab)static public Dictionary<UInt16,Type> (#name) ()
-    (#tab){
-    (#tab)(#tab)Dictionary<UInt16,Type> map = new Dictionary<UInt16,Type>();(#body)
-    (#tab)(#tab)return map;
-    (#tab)}
-  ]]></template>
-  <template key="runtime.protoc.add"><![CDATA[ (#brk)(#tab)(#tab)map.Add((#name), typeof((#typefull))); ]]></template>
-  <template key="runtime.alias"><![CDATA[
-    (#tab)static private Dictionary<String,Type> (#name) ()
-    (#tab){
-    (#tab)(#tab)Dictionary<String,Type> map = new Dictionary<String,Type>();(#body)
-    (#tab)(#tab)return map;
-    (#tab)}
-  ]]></template>
-  <template key="runtime.alias.basic"><![CDATA[(#brk)(#tab)(#tab)map.Add("(#name)", typeof((#typefull)));]]></template>
-  <template key="runtime.alias.list"><![CDATA[(#brk)(#tab)(#tab)map.Add("(#name)", typeof((#type)<>));]]></template>
-  <template key="runtime.alias.map"><![CDATA[(#brk)(#tab)(#tab)map.Add("(#name)", typeof((#type)<,>));]]></template>
-
-
-  <template key="runtime.body"><![CDATA[
-    public sealed class InvarRuntime
-    {
-    (#tab)static public InvarReadData MakeXmlReader ()
-    (#tab){
-    (#tab)(#tab)if (InvarReadData.AliasBasics == null) {
-    (#tab)(#tab)(#tab)InvarReadData.AliasBasics = aliasBasic ();
-    (#tab)(#tab)(#tab)InvarReadData.AliasEnums = aliasEnum ();
-    (#tab)(#tab)(#tab)InvarReadData.AliasStructs = aliasStruct ();
-    (#tab)(#tab)}
-    (#tab)(#tab) return new InvarReadData ();
-    (#tab)}
-    (#body)
-    }
-  ]]></template>
-
   <!-- Write data to PHP script -->
   <template key="tophp.import">      <![CDATA[ System.Text::StringBuilder ]]></template>
   <template key="tophp.method.arg">  <![CDATA[ s ]]></template>
@@ -747,6 +707,72 @@
     /* field.space.[vec|map]: (#namer) */
     if ((#namer)Exsists && (#arg).Length > offset) { (#arg).Append(','); }
   ]]></template>
+
+
+  <!-- Write InvarRuntime file -->
+  <template key="runtime.pack"><![CDATA[ Invar ]]></template>
+  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.type.split"><![CDATA[ . ]]></template>
+  <template key="runtime.body"><![CDATA[
+    (#blank)
+    public sealed class InvarRuntime {
+    (#blank)
+    static public InvarReadData MakeXmlReader()
+    {
+    (#tab)if (InvarReadData.AliasBasics == null) {
+    (#tab)(#tab)InvarReadData.AliasBasics = aliasBasic ();
+    (#tab)(#tab)InvarReadData.AliasEnums = aliasEnum ();
+    (#tab)(#tab)InvarReadData.AliasStructs = aliasStruct ();
+    (#tab)}
+    (#tab) return new InvarReadData ();
+    }
+    (#body)
+    static public UInt16 PeekProtocId(System.IO.BinaryReader r)
+    {
+    (#tab)long p = r.BaseStream.Position;
+    (#tab)UInt16 id = r.ReadUInt16();
+    (#tab)r.BaseStream.Position = p;
+    (#tab)return id;
+    }
+    (#blank)
+    } //class: InvarRuntime
+  ]]></template>
+
+  <template key="runtime.protoc.handle.client"><![CDATA[ HandleProtocAsServer ]]></template>
+  <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtocAsClient ]]></template>
+  <template key="runtime.protoc.handle.notify"><![CDATA[ (#blank)
+    (#tab)case (#key): /* (#doc) */
+    (#tab){ var (#name) = new (#type)(); (#name).Read(r); RecvNotify<(#type)>.Raise((#name)); return; } ]]></template>
+  <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
+    (#tab)case (#key): /* (#doc) */
+    (#tab){ var (#name) = new (#type)(); (#name).Read(r); RecvResponse<(#type)>.Raise((#name)); return; } ]]></template>
+  <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
+    (#tab)case (#key): /* (#doc) */
+    (#tab){ var (#name) = new (#req)(); (#name).Read(r); RecvRequest<(#req),(#resp)>.Raise((#name), new (#resp)()); return; } ]]></template>
+  <template key="runtime.protoc.handle.method"><![CDATA[
+    (#blank)
+    static public void (#name) (System.IO.BinaryReader r)
+    {
+    (#tab)long p = r.BaseStream.Position;
+    (#tab)UInt16 id = r.ReadUInt16();
+    (#tab)r.BaseStream.Position = p;
+    (#tab)switch (id) {(#body)
+    (#tab)default: throw new Exception("Unsupported protocol id: " + id);
+    (#tab)}
+    } // (#name)(...)
+  ]]></template>
+
+  <template key="runtime.alias"><![CDATA[
+    (#blank)
+    static private Dictionary<String,Type> (#name)()
+    {
+    (#tab)Dictionary<String,Type> map = new Dictionary<String,Type>();(#body)
+    (#tab)return map;
+    }
+  ]]></template>
+  <template key="runtime.alias.basic"><![CDATA[(#brk)(#tab)map.Add("(#name)", typeof((#typefull)));]]></template>
+  <template key="runtime.alias.list"> <![CDATA[(#brk)(#tab)map.Add("(#name)", typeof((#type)<>));]]></template>
+  <template key="runtime.alias.map">  <![CDATA[(#brk)(#tab)map.Add("(#name)", typeof((#type)<,>));]]></template>
 
 
 </tns:root>

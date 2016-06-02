@@ -209,6 +209,7 @@ final public class InvarSnippet {
         final static public String RUNTIME_ALIAS_VEC = "runtime.alias.list";
         final static public String RUNTIME_ALIAS_MAP = "runtime.alias.map";
         final static public String RUNTIME_TYPE_SPLIT = "runtime.type.split";
+        ///*
         final static public String RUNTIME_PROTOC_2S = "runtime.protoc.client";
         final static public String RUNTIME_PROTOC_2C = "runtime.protoc.server";
         final static public String RUNTIME_PROTOC_M = "runtime.protoc.method";
@@ -216,10 +217,13 @@ final public class InvarSnippet {
         final static public String RUNTIME_PROTOC_REQ = "runtime.protoc.req";
         final static public String RUNTIME_PROTOC_REQ_ITEM = "runtime.protoc.req.item";
         final static public String RUNTIME_PROTOC_REQ_M = "runtime.protoc.req.method";
+        //*/
         final static public String RUNTIME_PROTOC_HANDLE_2S = "runtime.protoc.handle.client";
         final static public String RUNTIME_PROTOC_HANDLE_2C = "runtime.protoc.handle.server";
-        final static public String RUNTIME_PROTOC_HANDLE_ITEM = "runtime.protoc.handle.item";
         final static public String RUNTIME_PROTOC_HANDLE_M = "runtime.protoc.handle.method";
+        final static public String RUNTIME_PROTOC_HANDLE_NTF = "runtime.protoc.handle.notify";
+        final static public String RUNTIME_PROTOC_HANDLE_RESP = "runtime.protoc.handle.response";
+        final static public String RUNTIME_PROTOC_HANDLE_REQ = "runtime.protoc.handle.request";
 
 
         final static public String ENUM = "enum";
@@ -276,6 +280,8 @@ final public class InvarSnippet {
         final static String TypeUpper = wrapToken("typeupper");
         final static String RuleRight = wrapToken("typer");
         final static String NameReal = wrapToken("namer");
+        final static String Request = wrapToken("req");
+        final static String Response = wrapToken("resp");
 
         final static String wrapToken(String name) {
             return "\\(#" + name + "\\)";
