@@ -506,6 +506,7 @@ public final class InvarWriteCode extends InvarWrite {
         args.put("lenFieldName", widthName);
         //args.put("env", args);
         s = funcEvalAll(s, args);
+        s = replace(s, Token.Debug, type.getCodecRule());
         return s;
     }
 

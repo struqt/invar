@@ -244,6 +244,7 @@ final public class InvarSnippet {
         final static String ByteNull = wrapToken("bytenon");
         final static String ByteNotNull = wrapToken("byteyes");
         final static String Doc = wrapToken("doc");
+        final static String Debug = wrapToken("debug");
 
         final static String Define = wrapToken("define");
         final static String Pack = wrapToken("pack");
