@@ -642,11 +642,7 @@ public final class InvarWriteCode extends InvarWrite {
     private String makeRuntimeBlock(TreeSet<String> imps) {
         String s = snippetGet(Key.RUNTIME_BODY);
         String block = empty;
-        if (!empty.equals(snippetTryGet(Key.RUNTIME_PROTOC_REQ))) {
-            block += makeRuntimeProtocReqBlock(imps);
-        }
         block += makeRuntimeProtocHandleBlock(imps);
-        block += makeRuntimeProtocBlock(imps);
         if (!empty.equals(snippetTryGet(Key.RUNTIME_ALIAS))) {
             block += makeRuntimeAliasBlock(imps);
         }
@@ -694,101 +690,6 @@ public final class InvarWriteCode extends InvarWrite {
         String s = snippetGet(Key.RUNTIME_ALIAS);
         s = replace(s, Token.Name, name);
         s = replace(s, Token.Body, block);
-        return s;
-    }
-
-    private String makeRuntimeProtocReqBlock(TreeSet<String> imps) {
-        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_REQ_ITEM))) {
-            return empty;
-        }
-        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_REQ_M))) {
-            return empty;
-        }
-        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
-        StringBuilder block = new StringBuilder();
-        Iterator<String> i = getContext().getPackNames();
-        while (i.hasNext()) {
-            InvarPackage pack = getContext().getPack(i.next());
-            Iterator<String> iTypeName = pack.getTypeNames();
-            while (iTypeName.hasNext()) {
-                String typeName = iTypeName.next();
-                InvarType type = pack.getType(typeName);
-                if (!(type instanceof TypeProtocol)) {
-                    continue;
-                }
-                TypeProtocol protoc = (TypeProtocol) type;
-                if (protoc.getRequest() == null || protoc.getResponse() == null) {
-                    continue;
-                }
-                impsCheckAdd(imps, protoc.getRequest(), null);
-                impsCheckAdd(imps, protoc.getResponse(), null);
-                String s = snippetGet(Key.RUNTIME_PROTOC_REQ_ITEM);
-                TypeStruct req = protoc.getRequest();
-                TypeStruct resp = protoc.getResponse();
-                s = replace(s, Token.Name, protoc.getClientId().toString());
-                s = replace(s, Token.Key, req.fullName(split));
-                s = replace(s, Token.Value, resp.getName());
-                s = replace(s, Token.Type, resp.getName());
-                s = replace(s, Token.TypeFull, resp.fullName(split));
-                block.append(s);
-            }
-        }
-        String s = snippetGet(Key.RUNTIME_PROTOC_REQ_M);
-        s = replace(s, Token.Name, snippetGet(Key.RUNTIME_PROTOC_REQ));
-        s = replace(s, Token.Body, block.toString());
-        return s;
-    }
-
-    private String makeRuntimeProtocBlock(TreeSet<String> imps) {
-        String name2c = snippetTryGet(Key.RUNTIME_PROTOC_2C);
-        String name2s = snippetTryGet(Key.RUNTIME_PROTOC_2S);
-        String result = empty;
-        if (!empty.equals(name2c)) {
-            result += makeRuntimeProtocFunc(name2c, imps, TypeProtocol.serverIds(), true, false);
-        }
-        if (!empty.equals(name2s)) {
-            result += makeRuntimeProtocFunc(name2s, imps, TypeProtocol.clientIds(), false, true);
-        }
-        return result;
-    }
-
-    private String makeRuntimeProtocFunc(
-            String name, TreeSet<String> imps, Iterator<Integer> protocIds, Boolean isServer, Boolean isClient) {
-        if (isClient && isServer) {
-            return empty;
-        }
-        if (!isClient && !isServer) {
-            return empty;
-        }
-        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_ADD))) {
-            return empty;
-        }
-        if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_M))) {
-            return empty;
-        }
-        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
-        StringBuilder block = new StringBuilder();
-        while (protocIds.hasNext()) {
-            Integer id = protocIds.next();
-            TypeStruct tStruct;
-            if (isClient) {
-                tStruct = TypeProtocol.findClient(id);
-            } else {
-                tStruct = TypeProtocol.findServer(id);
-            }
-            if (tStruct == null) {
-                continue;
-            }
-            impsCheckAdd(imps, tStruct, null);
-            String s = snippetGet(Key.RUNTIME_PROTOC_ADD);
-            s = replace(s, Token.Name, id.toString());
-            s = replace(s, Token.Type, tStruct.getName());
-            s = replace(s, Token.TypeFull, tStruct.fullName(split));
-            block.append(s);
-        }
-        String s = snippetGet(Key.RUNTIME_PROTOC_M);
-        s = replace(s, Token.Name, name);
-        s = replace(s, Token.Body, block.toString());
         return s;
     }
 
