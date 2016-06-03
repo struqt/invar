@@ -146,13 +146,17 @@ public class TypeStruct extends InvarType {
         }
         StringBuilder sb = new StringBuilder(256);
         sb.append(depends.size());
-        codecRuleFields(this, sb);
+        sb.append(codecRuleFields(this));
+        TreeSet<String> deps = new TreeSet<String>();
         for (TypeStruct struct : depends) {
             if (struct == this) {
                 continue;
             }
+            deps.add(codecRuleFields(struct));
+        }
+        for (String dep : deps) {
             sb.append('+');
-            codecRuleFields(struct, sb);
+            sb.append(dep);
         }
         this.codecRule = sb.toString();
         CRC32 crc = new CRC32();
@@ -161,7 +165,9 @@ public class TypeStruct extends InvarType {
         return this.codecRule;
     }
 
-    static void codecRuleFields(TypeStruct t, StringBuilder sb) {
+    static String codecRuleFields(TypeStruct t) {
+        final int max = 98;
+        StringBuilder sb = new StringBuilder();
         sb.append('@');
         sb.append(t.fullName("."));
         for (InvarField f : t.fields.values()) {
@@ -178,5 +184,18 @@ public class TypeStruct extends InvarType {
             sb.append(rule);
         }
         sb.append('\n');
+        int offset = -1;
+        int len = sb.length();
+        StringBuilder code = new StringBuilder(len + 24);
+        for (int i = 0; i < len; i++) {
+            char c = sb.charAt(i);
+            code.append(c);
+            offset++;
+            if (offset == max) {
+                code.append('\n').append(' ').append(' ');
+                offset = 0;
+            }
+        }
+        return code.toString();
     }
 }
