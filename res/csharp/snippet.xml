@@ -335,68 +335,81 @@
 
   <!-- To XML String -->
   <template key="toxml.import"><![CDATA[]]></template>
-  <template key="toxml.method.arg"><![CDATA[name]]></template>
-  <template key="toxml.method"><![CDATA[ (#tab)public String ToStringXml(String name)
+  <template key="toxml.method.arg"><![CDATA[ s ]]></template>
+  <template key="toxml.method"><![CDATA[
+    (#tab)public StringBuilder ToStringXML()
     (#tab){
-    (#tab)(#tab)StringBuilder result = new StringBuilder();
-    (#tab)(#tab)StringBuilder attrs  = new StringBuilder();
-    (#tab)(#tab)StringBuilder nodes  = new StringBuilder();(#body)
-    (#tab)(#tab)result.Append("<"); result.Append(name); result.Append(attrs);
+    (#tab)(#tab)StringBuilder code = new StringBuilder();
+    (#tab)(#tab)code.Append("<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>");
+    (#tab)(#tab)code.Append('\\n').Append("<!-- ").Append("(#type)").Append(".CRC32: 0x");
+    (#tab)(#tab)code.Append(CRC32.ToString("X2")).Append(" -->");
+    (#tab)(#tab)this.WriteXML(code, "(#type)");
+    (#tab)(#tab)return code;
+    (#tab)}
+    (#blank)
+    (#tab)public void WriteXML(StringBuilder s, String name)
+    (#tab){
+    (#tab)(#tab)StringBuilder attrs = new StringBuilder();
+    (#tab)(#tab)StringBuilder nodes = new StringBuilder();(#body)
+    (#tab)(#tab)s.Append('\\n').Append('<').Append(name).Append(attrs);
     (#tab)(#tab)if (nodes.Length == 0) {
-    (#tab)(#tab)(#tab)result.Append("/>");
+    (#tab)(#tab)(#tab)s.Append('/').Append('>');
     (#tab)(#tab)} else {
-    (#tab)(#tab)(#tab)result.Append(">");
-    (#tab)(#tab)(#tab)result.Append(nodes);
-    (#tab)(#tab)(#tab)result.Append("</"); result.Append(name); result.Append(">");
+    (#tab)(#tab)(#tab)s.Append('>').Append(nodes);
+    (#tab)(#tab)(#tab)s.Append('<').Append('/').Append(name).Append('>');
     (#tab)(#tab)}
-    (#tab)(#tab)return result.ToString();
-    (#tab)} //(#type)::ToStringXml(String name) ]]></template>
+    (#tab)} //(#type)::WriteXML(...) ]]></template>
   <template key="toxml.any">   <![CDATA[ (#name).ToString() ]]></template>
   <template key="toxml.string"><![CDATA[ (#name) ]]></template>
-  <template key="toxml.struct"><![CDATA[ (#name).ToStringXml("(#namer)") ]]></template>
-  <template key="toxml.nest.n.struct"><![CDATA[ nodes.Append((#body)); ]]></template>
+  <template key="toxml.struct"><![CDATA[ (#name).WriteXML(nodes, "(#namer)") ]]></template>
+  <template key="toxml.nest.n.struct"><![CDATA[ (#body); ]]></template>
   <template key="toxml.nest.k.struct"><![CDATA[ (#type) (#name) = (#nameupper)Iter.Key;
-    nodes.Append((#body)); ]]></template>
+    (#body); ]]></template>
   <template key="toxml.nest.v.struct"><![CDATA[ (#type) (#name) = (#nameupper)Iter.Value;
-    nodes.Append((#body)); ]]></template>
+    (#body); ]]></template>
   <template key="toxml.nest.n"><![CDATA[
-    nodes.Append("<(#namer) value=\\"");
+    nodes.Append('<').Append("(#namer)").Append(' ').Append("value").Append('=').Append('"');
     nodes.Append((#body));
-    nodes.Append("\\">"); ]]></template>
-  <template key="toxml.nest.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.Key;
-    nodes.Append("<(#namer) value=\\"");
+    nodes.Append('"').Append('/').Append('>');
+  ]]></template>
+  <template key="toxml.nest.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Key;
+    nodes.Append('<').Append("(#namer)").Append(' ').Append("value").Append('=').Append('"');
     nodes.Append((#body));
-    nodes.Append("\\">"); ]]></template>
-  <template key="toxml.nest.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.Value;
-    nodes.Append("<(#namer) value=\\"");
+    nodes.Append('"').Append('/').Append('>');
+  ]]></template>
+  <template key="toxml.nest.v"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Value;
+    nodes.Append('<').Append("(#namer)").Append(' ').Append("value").Append('=').Append('"');
     nodes.Append((#body));
-    nodes.Append("\\">"); ]]></template>
+    nodes.Append('"').Append('/').Append('>');
+  ]]></template>
   <template key="toxml.vec.head"><![CDATA[]]></template>
   <template key="toxml.vec.for"><![CDATA[
-    nodes.Append("<(#namer)>");
+    nodes.Append('\\n').Append('<').Append("(#namer)").Append('>');
     foreach ((#typer) (#value) in (#name)) {(#body)
     }
-    nodes.Append("</(#namer)>");
+    nodes.Append('<').Append('/').Append("(#namer)").Append('>');
   ]]></template>
   <template key="toxml.map.head.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.Key;(#brk)]]></template>
   <template key="toxml.map.head.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.Value;(#brk)]]></template>
   <template key="toxml.map.for"><![CDATA[
-    nodes.Append("<(#namer)>");
-    foreach (KeyValuePair<(#typer)> (#namer)Iter in (#name)) {(#body)
+    nodes.Append('\\n').Append('<').Append("(#namer)").Append('>');
+    foreach (KeyValuePair<(#typer)> (#namer)Iter in (#name)) {
+    (#tab)nodes.Append('\\n');(#body)
     }
-    nodes.Append("</(#namer)>");
+    nodes.Append('<').Append('/').Append("(#namer)").Append('>');
   ]]></template>
-  <template key="toxml.ref.any"><![CDATA[ attrs.Append(" (#name)=\\"");
-    attrs.Append((#body)); attrs.Append("\\""); ]]></template>
-  <template key="toxml.ref.struct"><![CDATA[ nodes.Append((#body)); ]]></template>
+  <template key="toxml.ref.any"><![CDATA[
+    attrs.Append(' ').Append("(#namer)").Append('=').Append('"').Append((#body)).Append('"'); ]]></template>
+  <template key="toxml.ref.struct"><![CDATA[ (#body); ]]></template>
   <template key="toxml.ref.vec | toxml.ref.map"><![CDATA[ if ((#name).Count > 0) {(#bodyindent)
     }]]></template>
   <template key="toxml.ptr.any"><![CDATA[ if ((#name) != (#null)) {
-    (#tab)attrs.Append(" (#name)=\\"");
-    (#tab)attrs.Append((#body)); attrs.Append("\\"");
+    (#tab)attrs.Append(' ').Append("(#namer)").Append('=').Append('"').Append((#body)).Append('"');
     }]]></template>
   <template key="toxml.ptr.struct"><![CDATA[ if ((#name) != (#null)) {
-    (#tab)nodes.Append((#body));
+    (#tab)(#body);
     }]]></template>
   <template key="toxml.ptr.vec | toxml.ptr.map"><![CDATA[
     (#concat)if ((#name) != (#null) && (#name).Count > 0) {(#bodyindent)
