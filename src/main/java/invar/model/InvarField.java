@@ -74,11 +74,16 @@ public class InvarField {
         return deftFormatted;
     }
 
-    public String makeTypeFormatted(InvarContext ctx, String split, Boolean fullName) {
+    public String makeTypeFormatted(InvarContext ctx, String split, Boolean fullName, Boolean head) {
         InvarType t = type.getRedirect();
         String tName = t.getName();
-        if (fullName || ctx.findTypes(t.getName(), true).size() > 1)
+        boolean conflict = ctx.findTypes(t.getName(), true).size() > 1;
+        if (fullName || conflict) {
             tName = t.fullName(split);
+            if (head) {
+                tName = split + tName;
+            }
+        }
         typeFormatted = tName + evalGenerics(ctx, t, split, fullName);
         typeFormatted = typeFormatted.trim();
         return typeFormatted;

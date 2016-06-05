@@ -195,6 +195,7 @@ public final class InvarWriteCode extends InvarWrite {
             methodIndentNum = Integer.parseInt(snippetTryGet(k));
         }
         packNameNested = Boolean.parseBoolean(snippetTryGet("pack.name.nested"));
+        packHeadPrefix = Boolean.parseBoolean(snippetTryGet("pack.head.prefix"));
         useFullName = Boolean.parseBoolean(snippetTryGet("use.full.type.name"));
         includeSelf = Boolean.parseBoolean(snippetTryGet("include.self"));
         impExcludeConflict = Boolean.parseBoolean(snippetTryGet("import.exclude.conflict"));
@@ -475,7 +476,7 @@ public final class InvarWriteCode extends InvarWrite {
         int widthName = 1;
         int widthDeft = 1;
         for (InvarField f : fs) {
-            f.makeTypeFormatted(getContext(), snippetGet(Key.IMPORT_SPLIT), useFullName);
+            f.makeTypeFormatted(getContext(), snippetGet(Key.IMPORT_SPLIT), useFullName, packHeadPrefix);
             f.setDeftFormatted(makeStructFieldInit(f, false));
 
             if (f.getDeftFormatted().length() > widthDeft)
@@ -619,7 +620,8 @@ public final class InvarWriteCode extends InvarWrite {
             case STRUCT:
             case VEC:
             case MAP:
-                s = replace(s, Token.Type, f.getTypeFormatted());
+                String t = f.getTypeFormatted();
+                s = replace(s, Token.Type, Matcher.quoteReplacement(t));
                 break;
             case ENUM:
                 String name;

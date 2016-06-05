@@ -34,6 +34,7 @@
   <template key="one.pack.one.file">   <![CDATA[false]]></template>
   <template key="code.dir.flatten">    <![CDATA[false]]></template>
   <template key="code.dir.prefix">     <![CDATA[]]></template>
+  <template key="pack.head.prefix">    <![CDATA[ true ]]></template>
   <template key="refer.spec">    <![CDATA[&]]></template>
   <template key="refer.invoke">  <![CDATA[.]]></template>
   <template key="refer.copy">    <![CDATA[(#name) = (#arg);]]></template>

@@ -79,7 +79,8 @@ public class InvarType {
     }
 
     final public String fullName(String splitter) {
-        String packName = pack.getName().replaceAll("\\.", Matcher.quoteReplacement(splitter));
+        String packName = pack.getName();
+        packName = packName.replaceAll("\\.", Matcher.quoteReplacement(splitter));
         return !isBuildin() && !packName.equals("") ? packName + splitter + name : name;
     }
 

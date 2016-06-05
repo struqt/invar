@@ -41,6 +41,7 @@ abstract public class InvarWrite {
     Boolean onePackOneFile = false;
     Boolean lowerFileName = false;
     Boolean packNameNested = false;
+    Boolean packHeadPrefix = false;
     Boolean useFullName = false;
     Boolean includeSelf = false;
     Boolean impExcludeConflict = false;
