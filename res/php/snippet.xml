@@ -222,7 +222,7 @@
     \$(#namer)Exists = (#arg)->readInt08();
     if ((#byteyes) == \$(#namer)Exists) { \$(#name) = (#body); }
     else if ((#bytenon) == \$(#namer)Exists) { \$(#name) = (#null); }
-    else { throw new \\Exception('Protoc read error: The value of \'\$(#namer)Exists\' is invalid.', 496); }
+    else { throw new \\Exception('Protoc read error: The value of \' . \$(#namer)Exists\ . ' is invalid.', 496); }
   ]]></template>
   <template key="read.ptr.struct"><![CDATA[
     \$(#namer)Exists = (#arg)->readInt08();
@@ -231,7 +231,7 @@
     (#tab)(#body);
     }
     else if ((#bytenon) == \$(#namer)Exists) { \$(#name) = (#null); }
-    else { throw new \\Exception('Protoc read error: The value of \'\$(#namer)Exists\' is invalid.', 497); }
+    else { throw new \\Exception('Protoc read error: The value of \' . \$(#namer)Exists . \' is invalid.', 497); }
   ]]></template>
   <template key="read.ptr.vec | read.ptr.map"><![CDATA[
     \$(#namer)Exists = (#arg)->readInt08();
@@ -239,7 +239,7 @@
     (#tab)if (\$(#name) == (#null)) { \$(#name) = array(); }(#bodyindent)
     }
     else if ((#bytenon) == \$(#namer)Exists) { \$(#name) = (#null); }
-    else { throw new \\Exception('Protoc read error: The value of \'\$(#namer)Exists\' is invalid.', 498); }
+    else { throw new \\Exception('Protoc read error: The value of \' . \$(#namer)Exists . \' is invalid.', 498); }
   ]]></template>
   <template key="read.special.protocCRC"><![CDATA[
     (#brk)if (self::CRC32 != \$(#name)) { throw new \\Exception('Protoc read error: CRC32 is mismatched', 499); }
