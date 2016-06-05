@@ -7,7 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InvarField {
+
     private static String prefix = null;
+
+    public static String getPrefix() {
+        return prefix;
+    }
 
     public static void setPrefix(String prefix) {
         InvarField.prefix = prefix;

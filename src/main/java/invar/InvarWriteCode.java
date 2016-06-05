@@ -221,7 +221,9 @@ public final class InvarWriteCode extends InvarWrite {
             String codePath = getContext().findBuildInType(TypeID.INT32).getRedirect().getCodePath();
             fileIncludes.add(codePath);
         }
-        return codeOneFileWrap(packName, filePath, body, imps);
+        String code = codeOneFileWrap(packName, filePath, body, imps);
+        code = code.replaceAll("\\n{3,}", "\n\n");
+        return code;
     }
 
     @Override
@@ -504,6 +506,9 @@ public final class InvarWriteCode extends InvarWrite {
         args.put("lenStruct", type.getName().length());
         args.put("lenFieldType", widthType);
         args.put("lenFieldName", widthName);
+        if (InvarField.getPrefix() != null) {
+            args.put("lenFieldNameR", widthName - InvarField.getPrefix().length());
+        }
         //args.put("env", args);
         s = funcEvalAll(s, args);
         s = replace(s, Token.Debug, type.getCodecRule());
