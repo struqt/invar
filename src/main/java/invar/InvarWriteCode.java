@@ -1071,6 +1071,7 @@ public final class InvarWriteCode extends InvarWrite {
             s = replace(s, Token.NullPtr, snippetTryGet(Key.POINTER_NULL));
             s = replace(s, Token.ByteNull, snippetTryGet("byte.non"));
             s = replace(s, Token.ByteNotNull, snippetTryGet("byte.yes"));
+            s = replace(s, Token.Argument, snippetArg);
             return s;
         }
 
@@ -1102,7 +1103,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (p.isRoot() && p.field.getUsePointer()) {
                 invoke = snippetTryGet(Key.POINTER_INVOKE);
             }
-            code = replace(code, Token.Argument, snippetArg);
+            //code = replace(code, Token.Argument, snippetArg);
             code = replace(code, Token.Invoke, invoke);
             if (p.isRoot()) {
                 String spec = empty;

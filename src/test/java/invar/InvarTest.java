@@ -25,7 +25,7 @@ public class InvarTest extends TestCase {
      * Rigourous Test :-)
      */
     public void testInvarMain() {
-        final String prefix = "target/test-example-gen/";
+        final String prefix = "target/example-code-gen/";
         Invar.main(new String[]{"-rule", "res/example/rule/",
                 "-xsd", prefix + "xsd/",
                 "-java", prefix + "java/",

@@ -31,14 +31,14 @@ xmlns:tns="invar.rule">
   </struct>
   
   <struct name="TestBasic" doc="基础类型">
-  	<field name="numberi08" type="Int8" doc="有符号的8位整数"/>
-    <field name="numberi16" type="Int16" doc="有符号的16位整数"/>
-    <field name="numberi32" type="Int32" value="123" doc="有符号的32位整数"/>
-    <field name="numberi64" type="Int64" doc="有符号的64位整数"/>
-    <field name="numberu08" type="Uint8" doc="无符号的8位整数"/>
-    <field name="numberu16" type="Uint16" doc="无符号的16位整数"/>
-    <field name="numberu32" type="Uint32" doc="无符号的32位整数"/>
-    <field name="numberu64" type="Uint64" doc="无符号的64位整数"/>
+  	<field name="numberI08" type="Int8" doc="有符号的8位整数"/>
+    <field name="numberI16" type="Int16" doc="有符号的16位整数"/>
+    <field name="numberI32" type="Int32" value="123" doc="有符号的32位整数"/>
+    <field name="numberI64" type="Int64" doc="有符号的64位整数"/>
+    <field name="numberU08" type="Uint8" doc="无符号的8位整数"/>
+    <field name="numberU16" type="Uint16" doc="无符号的16位整数"/>
+    <field name="numberU32" type="Uint32" doc="无符号的32位整数"/>
+    <field name="numberU64" type="Uint64" doc="无符号的64位整数"/>
     <field name="numberSingle" type="Float" value="3.14" doc="单精度浮点小数"/>
     <field name="numberDouble" type="Double" doc="双精度浮点小数"/>
     <field name="boolValue" type="Bool" doc="布尔值"/>
