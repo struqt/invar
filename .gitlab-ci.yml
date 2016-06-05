@@ -1,6 +1,5 @@
-before_script:
-  - apt-get update && sudo apt-get install maven3
+image: maven:3-jdk-7
 
-mvn_package:
+package:
   script:
     - mvn clean package
