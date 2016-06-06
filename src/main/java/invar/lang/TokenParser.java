@@ -263,7 +263,7 @@ public class TokenParser {
 
     private void AddProtocErrField(TypeStruct t, InvarContext ctx) throws Exception {
         InvarType typeBasic = ctx.findBuildInType(TypeID.UINT16);
-        InvarField field = makeAutoAddField(t, typeBasic, "protocError", "Protocol error code", true);
+        InvarField field = makeAutoAddField(t, typeBasic, "protocError", "Protocol error code", false);
         field.setDefault("0");
         t.addField(field);
     }
