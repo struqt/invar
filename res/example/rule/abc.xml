@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:package name="test.abc"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="invar.rule rule.xsd"
-xmlns:tns="invar.rule">
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="invar.rule rule.xsd"
+             xmlns:tns="invar.rule">
 
   <struct name="Conflict" doc="名字冲突的类型">
     <field name="key" type="Gender" doc=""/>
     <field name="text" type="String" doc=""/>
     <field name="bytes" type="Vec-Int8" doc=""/>
   </struct>
-  
+
   <enum name="Gender" doc="性别的枚举类型">
     <option name="NONE" value="-1" doc=""/>
     <option name="MALE" value="10" doc="Enum male"/>
     <option name="FEMALE" value="20" doc="Enum female"/>
   </enum>
-  
+
   <struct name="Custom" doc="自定义类型" nohotfix="true">
-  	<field name="x" type="Gender" doc="枚举值"/>
+    <field name="x" type="Gender" doc="枚举值"/>
     <field name="test" type="TestBasic" doc="其他类型"/>
-  	<field name="xyz" type="test.xyz::Conflict" doc="同名的类型"/>
-  	<field name="abc" type="test.abc::Conflict" doc="同名的类型"/>
+    <field name="xyz" type="test.xyz::Conflict" doc="同名的类型"/>
+    <field name="abc" type="test.abc::Conflict" doc="同名的类型"/>
     <field name="children" type="Vec-Custom" doc="自身类型容器"/>
     <field name="noSetter" type="Int32" doc="屏蔽Setter" nosetter="true" deprecated="true"/>
     <field name="useRef" type="String" doc="使用引用" useref="true"/>
@@ -29,20 +29,20 @@ xmlns:tns="invar.rule">
     <field name="next" type="Custom" doc="自身类型"/>
     <field name="emptyDoc" type="String" doc=""/>
   </struct>
-  
+
   <struct name="TestBasic" doc="基础类型">
-  	<field name="numberI08" type="Int8" doc="有符号的8位整数"/>
-    <field name="numberI16" type="Int16" doc="有符号的16位整数"/>
-    <field name="numberI32" type="Int32" value="123" doc="有符号的32位整数"/>
-    <field name="numberI64" type="Int64" doc="有符号的64位整数"/>
-    <field name="numberU08" type="Uint8" doc="无符号的8位整数"/>
-    <field name="numberU16" type="Uint16" doc="无符号的16位整数"/>
-    <field name="numberU32" type="Uint32" doc="无符号的32位整数"/>
-    <field name="numberU64" type="Uint64" doc="无符号的64位整数"/>
-    <field name="numberSingle" type="Float" value="3.14" doc="单精度浮点小数"/>
-    <field name="numberDouble" type="Double" doc="双精度浮点小数"/>
+    <field name="numberI08" type="Int8" doc="有符号的8位整数" value="-128"/>
+    <field name="numberI16" type="Int16" doc="有符号的16位整数" value="-32768"/>
+    <field name="numberI32" type="Int32" doc="有符号的32位整数" value="-2147483648"/>
+    <field name="numberI64" type="Int64" doc="有符号的64位整数" value="-9223372036854774808"/>
+    <field name="numberU08" type="Uint8" doc="无符号的8位整数" value="255"/>
+    <field name="numberU16" type="Uint16" doc="无符号的16位整数" value="65535"/>
+    <field name="numberU32" type="Uint32" doc="无符号的32位整数" value="4294967295"/>
+    <field name="numberU64" type="Uint64" doc="无符号的64位整数" value="18446744073709551615"/>
+    <field name="numberSingle" type="Float" doc="单精度浮点小数" value="3.14159"/>
+    <field name="numberDouble" type="Double" doc="双精度浮点小数" value="3.1415926"/>
     <field name="boolValue" type="Bool" doc="布尔值"/>
-    <field name="stringValue" type="String" value="hello" doc="字符串"/>
+    <field name="stringValue" type="String" doc="字符串" value="hello世界"/>
     <field name="enumValue" type="Gender" doc="枚举值"/>
     <field name="enumDeft" type="Gender" doc="枚举值制定默认值" value="Gender.MALE"/>
   </struct>
@@ -66,7 +66,7 @@ xmlns:tns="invar.rule">
     <field name="next" type="Info" doc=""/>
     <field name="conflict" type="test.abc::Conflict" doc=""/>
     <field name="conflicts" type="Vec-test.xyz::Conflict" doc=""/>
-    <field name="numbers" type="Vec-Double" doc=""/>    
+    <field name="numbers" type="Vec-Double" doc=""/>
     <field name="mapInfoG" type="Map-Info-Gender" doc=""/>
     <field name="mapGenderInfo" type="Map-Gender-Info" doc=""/>
     <field name="mapDouble" type="Map-Double" doc=""/>

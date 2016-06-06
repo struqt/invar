@@ -1053,7 +1053,7 @@ public final class InvarWriteCode extends InvarWrite {
             int len = fs.size();
             for (int i = 0; i < len; i++) {
                 InvarField f = fs.get(i);
-                lines.addAll(makeField(f, i == 0));
+                lines.addAll(makeField(f, i == 0, i == len - 1));
             }
             return makeCodeMethod(lines, type.getName(), snippetMet);
         }
@@ -1075,12 +1075,13 @@ public final class InvarWriteCode extends InvarWrite {
             return s;
         }
 
-        private List<String> makeField(InvarField f, boolean isFirst) {
+        private List<String> makeField(InvarField f, boolean isFirst, boolean isLast) {
             String rule = createRule(f, getContext(), useFullName);
             TypeID type = f.getType().getRealId();
             List<String> lines = new ArrayList<String>();
             NestedParam params = makeParams(null, rule, f.getKey(), f.getRealKey(), empty);
             params.isFirst = isFirst;
+            params.isLast = isLast;
             makeGeneric(f, type, rule, params, lines);
             return lines;
         }
@@ -1140,6 +1141,9 @@ public final class InvarWriteCode extends InvarWrite {
                     if (!empty.equals(s_tail)) {
                         s = s + s_tail;
                     }
+                    //if (!empty.equals(s_space) && !p.isLast) {
+                    //    s = s + s_space;
+                    //}
                     if (p.field.isSpecial()) {
                         String s_special = snippetTryGet(prefix + "special." + p.field.getRealKey());
                         if (!empty.equals(s_special)) {
@@ -1332,6 +1336,7 @@ public final class InvarWriteCode extends InvarWrite {
 
         private NestedParam parent = null;
         private boolean isFirst = false;
+        private boolean isLast = false;
         private Integer depth = 0;
         private InvarField field = null;
         private TypeID type = TypeID.VOID;

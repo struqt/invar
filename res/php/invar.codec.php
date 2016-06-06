@@ -7,26 +7,61 @@
 
 namespace invar;
 
-final class BinaryWriter
+abstract class BinaryWriter
 {
 	static public function writeInt08($v, &$bytes) {
+	    if ($v < -128 || $v > 127) {
+	        throw new \Exception ('Out of range Int8 [-128,127]: ' . $v);
+	    }
 		$bytes .= pack ( 'c', $v );
 	}
 	static public function writeInt16($v, &$bytes) {
+        if ($v < -32768 || $v > 32767) {
+            throw new \Exception ('Out of range Int16 [-32768,32767]: ' . $v);
+        }
 		$bytes .= pack ( 'v', $v ); // big endian 'n'
 	}
 	static public function writeInt32($v, &$bytes) {
+	    if ($v < -2147483648 || $v > 2147483647) {
+            throw new \Exception ('Out of range Int32 [-2147483648,2147483647]: ' . $v);
+        }
 		$bytes .= pack ( 'V', $v ); // big endian 'N'
 	}
+	static public function writeInt64($v, &$bytes) {
+        if ($v < -9223372036854774808 || $v > 9223372036854774807) {
+            throw new \Exception ('Out of range Int64 [-9223372036854774808,9223372036854774807]: ' . $v);
+        }
+        $hi = $v >> 32;
+        $lo = $v & 0x00000000ffffffff;
+        $bytes .= pack ( 'VV', $lo, $hi );
+    }
 	static public function writeUInt08($v, &$bytes) {
+	    if ($v < 0 || $v > 255) {
+            throw new \Exception ('Out of range UInt8 [0,255]: ' . $v);
+        }
 		$bytes .= pack ( 'c', $v );
 	}
 	static public function writeUInt16($v, &$bytes) {
+	    if ($v < 0 || $v > 65535) {
+            throw new \Exception ('Out of range UInt16 [0,65535]: ' . $v);
+        }
 		$bytes .= pack ( 'v', $v );
 	}
 	static public function writeUInt32($v, &$bytes) {
+		if ($v < 0 || $v > 4294967295) {
+            throw new \Exception ('Out of range UInt32 [0,4294967295]: ' . $v);
+        }
 		$bytes .= pack ( 'V', $v );
 	}
+	static public function writeUInt64($v, &$bytes) {
+        //FIXME var_dump(0xFFFFFFFFFFFFFFFF); // float
+        if ($v < 0 || $v > 18446744073709551615) {
+            throw new \Exception ('Out of range UInt64 [0,18446744073709551615]: ' . $v);
+        }
+        $hi = $v >> 32;
+        $lo = $v & 0x00000000ffffffff;
+        $bytes .= pack ( 'VV', $lo, $hi );
+    }
 	static public function writeFloat32($v, &$bytes) {
 		// float (machine dependent size and representation)
 		$bytes .= pack ( 'f', $v );
@@ -40,16 +75,6 @@ final class BinaryWriter
 	}
 	static public function writeUTF($v, &$bytes) {
 		$bytes .= pack ( 'VA*', strlen ( $v ), $v );
-	}
-	static public function writeInt64($v, &$bytes) {
-		$hi = $v >> 32;
-		$lo = $v & 0x00000000ffffffff;
-		$bytes .= pack ( 'VV', $lo, $hi );
-	}
-	static public function writeUInt64($v, &$bytes) {
-		$hi = $v >> 32;
-		$lo = $v & 0x00000000ffffffff;
-		$bytes .= pack ( 'VV', $lo, $hi );
 	}
 }
 
@@ -108,7 +133,7 @@ final class BinaryReader
 		$this->bytesPos ++;
 		$sign = ($b4 >> 7) == 0 ? 1 : - 1;
 		$bits = ($b4 << 24) | ($b3 << 16) | ($b2 << 8) | $b1;
-		return $sign < 0 ? (~ ($bits - 1)) * $sign : $bits;
+		return $sign < 0 ? ((~ ($bits - 1)) & 0xFFFFFFFF) * $sign : $bits;
 	}
 	public function readUInt08() {
 		$this->checkAvailable ( 1 );
@@ -165,85 +190,34 @@ final class BinaryReader
 		return $a [1];
 	}
 	public function readFloat32() {
-		// IEEE 754-1985
-		/* s（sign 1）；e（exponent 8）；m（mantissa 23）-127 */
-		$bits = $this->readUInt32 ();
-		$s = ($bits >> 31) == 0 ? 1 : - 1;
-		$e = ($bits >> 23) & 0xff;
-		$m23 = ($bits & 0x0007ffff);
-		if ($m23 == 0) {
-			if ($e == 0) { // +0, -0
-				return 0;
-			} else if ($e == 0x7f) { // +1, -1
-				return 1 * $s;
-			} else if ($e == 0xff) { // +∞, -∞
-				return INF * $s;
-			} else {
-			}
-		} else {
-			if ($e == 0xff) { // NaN
-				return NAN;
-			}
-			if ($e == 0) { // Denormalized
-				$e = $e + 1;
-			} else { // Normalized
-			}
-		}
-		$m = 1.0;
-		$val = 0.0;
-		for($i = - 23; $i < 0; ++ $i) {
-			$val = ($m23 & 0x01) == 0 ? 0 : pow ( 2, i );
-			$m += $val;
-			$m23 = $m23 >> 1;
-		}
-		return $s * $m * pow ( 2, $e - 127 );
-		// $bits = $this->readUInt32 ();
-		// $s = ($bits >> 31) == 0 ? 1 : - 1;
-		// $e = ($bits >> 23) & 0xff;
-		// $m = ($e == 0) ? ($bits & 0x007fffff) << 1 : ($bits & 0x007fffff) | 0x00800000;
-		// return $s * $m * pow ( 2, $e - 150 );
+	    $this->checkAvailable ( 4 );
+        $packed = substr ( $this->data, $this->bytesPos - 1, 4 );
+        list ( $v ) = array_values ( unpack ( 'f', $packed ) );
+        $this->bytesPos += 4;
+	    return $v;
 	}
 	public function readFloat64() {
-		// IEEE 754-1985
-		/* s（sign 1）；e（exponent 11）；m（mantissa 52）-1023 */
-		$lo = $this->readUInt32 ();
-		$hi = $this->readUInt32 ();
-		$s = ($hi >> 31) == 0 ? 1 : - 1;
-		$e = ($hi >> 20) & 0x07ff;
-		$m20 = ($hi & 0x000fffff);
-		$m32 = $lo;
-		if ($e == 0 && $m20 == 0 && $m32 == 0) {
-			return $s * 0;
-		}
-		if ($m20 == 0 && $m32 == 0) {
-			if ($e == 0)
-				return 0 * $s; // +0, -0
-			else if ($e == 0x03ff)
-				return 1 * $s; // +1, -1
-		} else {
-			if ($e == 0) { // Denormalized
-				$e = $e + 1;
-			} else { // Normalized
-			}
-		}
-		$m = 1.0;
-		$val = 0.0;
-		for($i = - 32; $i < 0; ++ $i) {
-			$val = ($m32 & 0x01) == 0 ? 0 : pow ( 2, i );
-			$m += $val;
-			$m32 = $m32 >> 1;
-		}
-		for($i = - 52; $i < - 32; ++ $i) {
-			$val = ($m20 & 0x01) == 0 ? 0 : pow ( 2, i );
-			$m += $val;
-			$m20 = $m20 >> 1;
-		}
-		return $s * $m * pow ( 2, $e - 1023 );
-	}
-	public function peekUInt16() {
+        $this->checkAvailable ( 8 );
+        $packed = substr ( $this->data, $this->bytesPos - 1, 8 );
+        list ( $v ) = array_values ( unpack ( 'd', $packed ) );
+        $this->bytesPos += 8;
+        return $v;
+    }
+    public function peekUInt16() {
         $this->checkAvailable ( 2 );
         $b1 = $this->bytes [$this->bytesPos];
         $b2 = $this->bytes [$this->bytesPos + 1];
         return ($b2 << 8) | $b1;
     }
+    public function peekInt32() {
+        $this->checkAvailable ( 4 );
+        $b1 = $this->bytes [$this->bytesPos];
+        $b2 = $this->bytes [$this->bytesPos + 1];
+        $b3 = $this->bytes [$this->bytesPos + 2];
+        $b4 = $this->bytes [$this->bytesPos + 3];
+        $sign = ($b4 >> 7) == 0 ? 1 : - 1;
+        $bits = ($b4 << 24) | ($b3 << 16) | ($b2 << 8) | $b1;
+        return $sign < 0 ? ((~ ($bits - 1)) & 0xFFFFFFFF) * $sign : $bits;
+    }
+
 }

@@ -14,7 +14,7 @@ public class InvarPackage {
     private HashMap<String, InvarType> typeMap;
 
     public InvarPackage(String name, Boolean needWrite) {
-        this.name = name.toLowerCase();
+        this.name = needWrite ? name.toLowerCase() : name;
         this.nameReal = this.name;
         this.needWrite = needWrite;
         this.typeMap = new HashMap<String, InvarType>();

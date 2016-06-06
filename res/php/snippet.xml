@@ -46,21 +46,21 @@
   <template key="byte.yes">      <![CDATA[0x01]]></template>
   <template key="byte.non">      <![CDATA[0x00]]></template>
 
-  <template key="init.any">    <![CDATA[ (#deft)    ]]></template>
-  <template key="init.string"> <![CDATA[ '(#deft)'  ]]></template>
-  <template key="init.struct"> <![CDATA[ new (#type)]]></template>
-  <template key="init.enum">   <![CDATA[ (#type)::(#name)]]></template>
+  <template key="init.any">    <![CDATA[ (#deft)     ]]></template>
+  <template key="init.string"> <![CDATA[ '(#deft)'   ]]></template>
+  <template key="init.struct"> <![CDATA[ new (#type) ]]></template>
+  <template key="init.enum">   <![CDATA[ (#type)::(#name) ]]></template>
   <template key="init.vec">    <![CDATA[ array() ]]></template>
   <template key="init.map">    <![CDATA[ array() ]]></template>
 
-  <template key="import"><![CDATA[use \(#body);(#brk)]]></template>
-  <template key="import.body"><![CDATA[(#pack)(#name)]]></template>
-  <template key="import.split"><![CDATA[\]]></template>
+  <template key="import"><![CDATA[ use \(#body);(#brk) ]]></template>
+  <template key="import.body"><![CDATA[ (#pack)(#name) ]]></template>
+  <template key="import.split"><![CDATA[ \ ]]></template>
   <template key="import.exclude.conflict"><![CDATA[true]]></template>
   <template key="import.exclude.same.pack"><![CDATA[true]]></template>
   <template key="import.exclude.packs"><![CDATA[php]]></template>
   <template key="doc">     <![CDATA[ /** (#doc) */    ]]></template>
-  <template key="doc.line"><![CDATA[ (#space)//(#doc) ]]></template>
+  <template key="doc.line"><![CDATA[ (#space)// (#doc) ]]></template>
   <template key="struct.field.prefix"><![CDATA[ this-> ]]></template>
   <template key="struct.field.crc"><![CDATA[ self::CRC32 ]]></template>
 
@@ -75,8 +75,8 @@
     (#pack) ]]></template>
   <template key="file.include">      <![CDATA[ require_once dirname(__FILE__) . (#name);(#brk) ]]></template>
   <template key="file.include.wrap"> <![CDATA[ '/(#nameupper)(#value)' ]]></template>
-  <template key="file.include.split"><![CDATA[/]]></template>
-  <template key="file.pack.split"><![CDATA[\]]></template>
+  <template key="file.include.split"><![CDATA[ / ]]></template>
+  <template key="file.pack.split">   <![CDATA[ \ ]]></template>
   <template key="file.pack"><![CDATA[
 	namespace (#name);
     (#blank)
@@ -89,7 +89,8 @@
   <template key="enum.field"><![CDATA[
     (#tab)const (#name) = (#value);(#doc)
   ]]></template>
-  <template key="enum"><![CDATA[ (#concat)final class (#name)
+  <template key="enum"><![CDATA[
+    abstract class (#name)
     {
     (#body)}
   ]]></template>
@@ -100,66 +101,68 @@
     (#blank)
     final class (#name)
     {
-    (#tab)const CRC32 = 0x[#codeCRC32(struct)];(#brk)
+    (#tab)const CRC32 = 0x[#codeCRC32(struct)];
+    (#blank)
+    (#tab)static public function &CreateFromBytes (& $str)
+    (#tab){
+    (#tab)(#tab)$o = new (#name);
+    (#tab)(#tab)$o->read(new BinaryReader($str));
+    (#tab)(#tab)return $o;
+    (#tab)}
+    (#blank)
     [#codeFields (struct; fields)]
     [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (write.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (read.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (copy.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (tostr.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (read.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (write.; useFullName; struct; fields; imports)](#brk)
     [#codeGetters(struct; fields)]
     [#codeSetters(struct; fields)]
+    [#codeNested (tostr.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tojson.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
     }
 	]]></template>
+  <template key="struct.meta"><![CDATA[ (#name) (#type) ]]></template>
   <template key="struct.field"><![CDATA[
-    (#tab)private \$[#clampLen(lenFieldName; 16; (#name) )];
-    (#concat)[#codeLineDoc(fields; (#index))]
+    (#tab)private \$[#clampLen(lenFieldNameR; 18; (#name) )] ;
+    (#concat)/* [#codeMetaData(fields; (#index))]
+    (#concat)[#codeLineDoc(fields; (#index))] */
   ]]></template>
   <template key="struct.setter"><![CDATA[
+    (#blank)
     (#tab)[#codeDoc(fields; (#index))]
     (#tab)public function set[#upperHeadChar( (#namer) )](\$value) { \$(#name) = \$value; return \$this; }
   ]]></template>
   <template key="struct.getter"><![CDATA[
+    (#blank)
     (#tab)[#codeDoc(fields; (#index))]
-    (#tab)public function (#spec) get[#upperHeadChar( (#namer) )]() { return \$(#name); }
+    (#tab)public function(#spec)get[#upperHeadChar( (#namer) )]() { return \$(#name); }
   ]]></template>
 
   <!-- Method Construct -->
-  <template key="ctor.method"><![CDATA[ (#tab)function __construct()
+  <template key="ctor.method"><![CDATA[
+    (#tab)function __construct()
     (#tab){(#body)
-    (#tab)} //construct() ]]></template>
-  <template key="ctor.any | ctor.vec | ctor.map">
-    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
-  <template key="ctor.ptr.any">
-    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
-  <template key="ctor.ref.any">                  <![CDATA[ (#body); ]]></template>
-
-  <!-- Method Reuse -->
-  <template key="reuse.method"><![CDATA[ (#tab)public function reuse()
-    (#tab){(#body)
-    (#tab)} //reuse() ]]></template>
-  <template key="reuse.any | reuse.vec | reuse.map">
-    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
-  <template key="reuse.ptr.any">
-    <![CDATA[ \$[#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
-  <template key="reuse.ref.any">                    <![CDATA[ (#body); ]]></template>
+    (#tab)}
+    (#tab)/* End of constructor() */ ]]></template>
+  <template key="ctor.any | ctor.vec | ctor.map"><![CDATA[
+    \$[#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
+  <template key="ctor.ptr.any"><![CDATA[
+    \$[#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
+  <template key="ctor.ref.any"><![CDATA[ (#body); ]]></template>
 
   <!-- CopyFrom Method -->
-  <template key="copy.method.arg"><![CDATA[\$from]]></template>
-  <template key="copy.method"><![CDATA[ (#tab)public function copy (\$from)
+  <template key="copy.method.arg"><![CDATA[ \$from ]]></template>
+  <template key="copy.method"><![CDATA[ (#tab)public function &copy (& \$from)
     (#tab){
       (#tab)(#tab)if (\$this == \$from || \$from == (#null)) {
       (#tab)(#tab)(#tab)return this;
       (#tab)(#tab)}(#body)
       (#tab)(#tab)return \$this;
-    (#tab)} //copy(...)]]></template>
+    (#tab)}
+    (#tab)/* End of copy(...) */ ]]></template>
   <template key="copy.any"><![CDATA[ (#arg)->(#namer) ]]></template>
-  <template key="copy.vec | copy.map"><![CDATA[ array_merge(\$(#name), (#arg)->(#namer)) ]]></template>
   <template key="copy.ref.any"><![CDATA[ \$(#name) = (#body); ]]></template>
-  <template key="copy.ref.vec|copy.ref.map"><![CDATA[ \$(#name) = array();
-    (#body); ]]></template>
   <template key="copy.ptr.any"><![CDATA[ \$(#name) = (#body);  ]]></template>
   <template key="copy.ptr.struct"><![CDATA[
     if ((#arg)->(#namer) != (#null)) {
@@ -168,7 +171,14 @@
     (#tab)\$(#name) = (#null);
     }
   ]]></template>
-  <template key="copy.ptr.vec|copy.ptr.map"><![CDATA[
+  <template key="copy.vec | copy.map"><![CDATA[ \$(#name) = array_merge((#arg)->(#namer)) ]]></template>
+  <template key="copy.ref.vec | copy.ref.map"><![CDATA[
+    if ((#arg)->(#namer) != (#null)) {
+    (#tab)(#body);
+    } else {
+    (#tab)\$(#name) = array();
+    } ]]></template>
+  <template key="copy.ptr.vec | copy.ptr.map"><![CDATA[
     if ((#arg)->(#namer) != (#null)) {
     (#tab)\$(#name) = array();
     (#tab)(#body);
@@ -178,12 +188,14 @@
   ]]></template>
 
   <!-- Read bytes from a Stream -->
-  <template key="read.method.arg"><![CDATA[\$bytes_]]></template>
+  <template key="read.method.arg"><![CDATA[ \$r ]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public function read (&\$bytes_)
+    (#tab)public function &read (& \$r)
     (#tab){(#body)
     (#tab)(#tab)return \$this;
-    (#tab)}]]></template>
+    (#tab)}
+    (#tab)/* End of read(...) */
+  ]]></template>
   <template key="read.int8">  <![CDATA[ (#arg)->readInt08()  ]]></template>
   <template key="read.int16"> <![CDATA[ (#arg)->readInt16()  ]]></template>
   <template key="read.int32"> <![CDATA[ (#arg)->readInt32()  ]]></template>
@@ -197,7 +209,7 @@
   <template key="read.string"><![CDATA[ (#arg)->readUTF()    ]]></template>
   <template key="read.bool">  <![CDATA[ (#arg)->readBoolean()]]></template>
   <template key="read.enum">  <![CDATA[ (#arg)->readInt32()  ]]></template>
-  <template key="read.struct"><![CDATA[ \$(#name)->read(\$bytes_) ]]></template>
+  <template key="read.struct"><![CDATA[ \$(#name)->read((#arg)) ]]></template>
   <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[ \$(#name) = (#body); ]]></template>
   <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
     \$(#name) = new (#type)();(#brk)(#body); ]]></template>
@@ -253,11 +265,12 @@
 
 
   <!-- Write bytes to a Stream -->
-  <template key="write.method.arg"><![CDATA[\$bytes_]]></template>
-  <template key="write.method"><![CDATA[ (#tab)public function write (&\$bytes_)
+  <template key="write.method.arg"><![CDATA[ \$str ]]></template>
+  <template key="write.method"><![CDATA[ (#tab)public function write (& \$str)
     (#tab){(#body)
-    (#tab)(#tab)return \$bytes_;
-    (#tab)} //(#type)::write() ]]></template>
+    (#tab)}
+    (#tab)/* End of write(...) */
+  ]]></template>
   <template key="write.int8">  <![CDATA[ BinaryWriter::writeInt08(\$(#name), (#arg))  ]]></template>
   <template key="write.int16"> <![CDATA[ BinaryWriter::writeInt16(\$(#name), (#arg))  ]]></template>
   <template key="write.int32"> <![CDATA[ BinaryWriter::writeInt32(\$(#name), (#arg))  ]]></template>
@@ -301,104 +314,182 @@
     (#tab)BinaryWriter::writeInt08((#bytenon), (#arg));
     }
   ]]></template>
+  <template key="write.special.protocError"><![CDATA[
+    (#brk)if (\$(#name) != 0) { return; }
+  ]]></template>
+
+  <!-- To String -->
+  <template key="tostr.method.arg"><![CDATA[ \$s ]]></template>
+  <template key="tostr.method"><![CDATA[ (#tab)public function &toString()
+    (#tab){
+    (#tab)(#tab)(#arg)  = '{'; (#arg) .= get_class(\$this);(#body)
+    (#tab)(#tab)(#arg) .= '}';
+    (#tab)(#tab)return (#arg);
+    (#tab)}
+    (#tab)/* End of toString() */
+  ]]></template>
+  <template key="tostr.any">   <![CDATA[ (#arg) .= \$(#name) ]]></template>
+  <template key="tostr.bool">  <![CDATA[ (#arg) .= \$(#name) == TRUE ? 'True' : 'False' ]]></template>
+  <template key="tostr.struct"><![CDATA[ (#arg) .= '<'; (#arg) .= '(#type)'; (#arg) .= '>' ]]></template>
+  <template key="tostr.vec">   <![CDATA[ (#arg) .= '('; (#arg) .= count(\$(#name)); (#arg) .= ')' ]]></template>
+  <template key="tostr.map">   <![CDATA[ (#arg) .= '['; (#arg) .= count(\$(#name)); (#arg) .= ']' ]]></template>
+  <template key="tostr.string"><![CDATA[ (#arg) .= '"'; (#arg) .= \$(#name); (#arg) .= '"' ]]></template>
+  <template key="tostr.ref.any"><![CDATA[
+    (#arg) .= ','; (#arg) .= '(#namer)'; (#arg) .= ':';
+    (#body); ]]></template>
+  <template key="tostr.ptr.any"><![CDATA[
+    (#arg) .= ','; (#arg) .= '(#namer)'; (#arg) .= ':';
+    if (isset(\$(#name))) { (#body); }
+    else { (#arg) .= 'null'; }
+  ]]></template>
+
+  <!-- Write data to JSON data format -->
+  <template key="tojson.method.arg">  <![CDATA[ \$s ]]></template>
+  <template key="tojson.method"><![CDATA[
+    (#tab)public function &toStringJSON()
+    (#tab){
+    (#tab)(#tab)\$code = '';
+    (#tab)(#tab)\$this->writeJSON(\$code);
+    (#tab)(#tab)return \$code;
+    (#tab)}(#brk)
+    (#tab)public function writeJSON(& (#arg))
+    (#tab){
+    (#tab)(#tab)(#arg) .= "\\n"; (#arg) .= '{';(#body)
+    (#tab)(#tab)(#arg) .= '}'; (#arg) .= "\\n";
+    (#tab)}
+    (#tab)/* End of writeJSON(...) */
+  ]]></template>
+  <template key="tojson.any">   <![CDATA[ (#arg) .= \$(#name) ]]></template>
+  <template key="tojson.float"> <![CDATA[ (#arg) .= number_format(\$(#name), 6, '.', '') ]]></template>
+  <template key="tojson.bool">  <![CDATA[ (#arg) .= \$(#name) ? "true" : "false" ]]></template>
+  <template key="tojson.string"><![CDATA[ (#arg) .= '"'; (#arg) .= \$(#name); (#arg) .= '"' ]]></template>
+  <template key="tojson.struct"><![CDATA[ \$(#name)->writeJSON((#arg)) ]]></template>
+  <template key="tojson.nest.n | tojson.nest.k | tojson.nest.v"><![CDATA[ (#body); ]]></template>
+  <template key="tojson.vec.for"><![CDATA[
+    \$(#namer)Size = (!isset(\$(#name)) ? 0 : count(\$(#name)));
+    (#arg) .= "\\n"; (#arg) .= '[';
+    \$(#namer)Idx = 0;
+    foreach (\$(#name) as &\$(#value)) {(#body)
+    (#tab)++\$(#namer)Idx;
+    (#tab)if (\$(#namer)Idx != \$(#namer)Size) { (#arg) .= ','; }
+    }
+    (#arg) .= ']';
+  ]]></template>
+  <template key="tojson.map.for"><![CDATA[
+    \$(#namer)Size = (!isset(\$(#name)) ? 0 : count(\$(#name)));
+    (#arg) .= "\\n"; (#arg) .= '{';
+    \$(#namer)Idx = 0;
+    foreach (\$(#name) as \$(#key) => &\$(#value)) {(#body)
+    (#tab)++\$(#namer)Idx;
+    (#tab)if ((#namer)Idx != \$(#namer)Size) { (#arg) .= ','; }
+    }
+    (#arg) .= '}';
+  ]]></template>
+
+  <template key="tojson.ref.any"><![CDATA[
+    (#arg) .= '"'; (#arg) .= '(#namer)'; (#arg) .= '"'; (#arg) .= ':'; \$comma = ',';
+    (#body); ]]></template>
+  <template key="tojson.ref.string | tojson.ref.struct | tojson.ptr.string | tojson.ptr.struct"><![CDATA[
+    if (\$(#namer)Exists) {
+    (#tab)(#arg) .= '"'; (#arg) .= '(#namer)'; (#arg) .= '"'; (#arg) .= ':'; \$comma = ',';
+    (#tab)(#body);
+    }
+  ]]></template>
+  <template key="tojson.ptr.vec | tojson.ptr.map | tojson.ref.vec | tojson.ref.map"><![CDATA[
+    if (\$(#namer)Exists) {
+    (#tab)(#arg) .= '"'; (#arg) .= '(#namer)'; (#arg) .= '"'; (#arg) .= ':'; \$comma = ',';(#bodyindent)
+    }
+  ]]></template>
+
+  <template key="tojson.field.head.string"><![CDATA[
+    \$(#namer)Exists = !empty(\$(#name));
+  ]]></template>
+  <template key="tojson.field.head.struct"><![CDATA[
+    \$(#namer)Exists = isset(\$(#name));
+  ]]></template>
+  <template key="tojson.field.head.vec | tojson.field.head.map"><![CDATA[
+    \$(#namer)Exists = (isset(\$(#name)) && count(\$(#name)) > 0);
+  ]]></template>
+
+  <template key="tojson.field.space.any"><![CDATA[
+    if (!empty(\$comma)) { (#arg) .= \$comma; \$comma = ''; }
+  ]]></template>
+  <template key="tojson.field.space.struct | tojson.field.space.map |
+                 tojson.field.space.string | tojson.field.space.vec"><![CDATA[
+    if (!empty(\$comma) && \$(#namer)Exists) { (#arg) .= \$comma; \$comma = ''; }
+  ]]></template>
 
 
   <!-- To XML String -->
-  <template key="toxml.method.arg"><![CDATA[$name_]]></template>
-  <template key="toxml.method"><![CDATA[ (#tab)public function toStringXml (\$name_)
+  <template key="toxml.method.arg"><![CDATA[ \$s ]]></template>
+  <template key="toxml.method"><![CDATA[
+    (#tab)public function &toStringXML()
     (#tab){
-    (#tab)(#tab)\$result = '';
-    (#tab)(#tab)\$attrs  = '';
-    (#tab)(#tab)\$nodes  = '';(#body)
-    (#tab)(#tab)\$result .= '<';
-    (#tab)(#tab)\$result .= \$name_;
-    (#tab)(#tab)\$result .= \$attrs;
-    (#tab)(#tab)if (count(\$nodes) == 0) {
-    (#tab)(#tab)(#tab)\$result .= '/>';
+    (#tab)(#tab)\$code  = '<?xml version="1.0" encoding="UTF-8"?>';
+    (#tab)(#tab)\$code .= "\\n"; \$code .= '<!-- '; \$code .= '(#type)'; \$code .= '.CRC32: 0x';
+    (#tab)(#tab)\$code .= strtoupper(dechex(self::CRC32)); \$code .= ' -->';
+    (#tab)(#tab)\$code .= "\\n"; \$this->writeXML(\$code, '(#type)');
+    (#tab)(#tab)return \$code;
+    (#tab)}(#brk)
+    (#tab)public function writeXML (& (#arg), \$name)
+    (#tab){
+    (#tab)(#tab)\$attrs = ''; \$nodes = '';(#body)
+    (#tab)(#tab)(#arg) .= '<';
+    (#tab)(#tab)(#arg) .= \$name;
+    (#tab)(#tab)(#arg) .= \$attrs;
+    (#tab)(#tab)if (strlen(\$nodes) == 0) {
+    (#tab)(#tab)(#tab)(#arg) .= '/>';
     (#tab)(#tab)} else {
-    (#tab)(#tab)(#tab)\$result .= '>';
-    (#tab)(#tab)(#tab)\$result .= \$nodes;
-    (#tab)(#tab)(#tab)\$result .= '</';
-    (#tab)(#tab)(#tab)\$result .= \$name_;
-    (#tab)(#tab)(#tab)\$result .= '>';
+    (#tab)(#tab)(#tab)(#arg) .= '>'; (#arg) .= \$nodes;
+    (#tab)(#tab)(#tab)(#arg) .= '</'; (#arg) .= \$name; (#arg) .= '>';
     (#tab)(#tab)}
-    (#tab)(#tab)return \$result;
-    (#tab)} //(#type)::toStringXml(\$name_) ]]></template>
-  <template key="toxml.any">   <![CDATA[ (#name) ]]></template>
-  <template key="toxml.struct"><![CDATA[ \$(#name)->toStringXml('(#namer)') ]]></template>
-  <template key="toxml.nest.n.struct"><![CDATA[ \$nodes .= (#body); ]]></template>
-  <template key="toxml.nest.k.struct"><![CDATA[
-    \$nodes .= (#body); ]]></template>
-  <template key="toxml.nest.v.struct"><![CDATA[
-    \$nodes .= (#body); ]]></template>
-  <template key="toxml.nest.n"><![CDATA[
-    \$nodes .= '<(#namer) value="';
-    \$nodes .= \$(#body);
-    \$nodes .= '">'; ]]></template>
-  <template key="toxml.nest.k"><![CDATA[
-    \$nodes .= '<(#namer) value="';
-    \$nodes .= \$(#body);
-    \$nodes .= '">'; ]]></template>
-  <template key="toxml.nest.v"><![CDATA[
-    \$nodes .= '<(#namer) value="';
-    \$nodes .= \$(#body);
-    \$nodes .= '">'; ]]></template>
+    (#tab)}
+    (#tab)/* End of writeXML(...) */
+  ]]></template>
+  <template key="toxml.any">   <![CDATA[ \$(#name) ]]></template>
+  <template key="toxml.float"> <![CDATA[ number_format(\$(#name), 6, '.', '') ]]></template>
+  <template key="toxml.bool">  <![CDATA[ \$(#name) ? "true" : "false" ]]></template>
+  <template key="toxml.struct"><![CDATA[ \$(#name)->writeXML(\$nodes, '(#namer)') ]]></template>
+  <template key="toxml.nest.n.struct | toxml.nest.k.struct | toxml.nest.v.struct"><![CDATA[ (#body); ]]></template>
+  <template key="toxml.nest.n | toxml.nest.k | toxml.nest.v"><![CDATA[
+    \$nodes .= '<'; \$nodes .= '(#namer)'; \$nodes .= ' ';
+    \$nodes .= 'value'; \$nodes .= '='; \$nodes .= '"';
+    \$nodes .= \$(#body); \$nodes .= '"';  \$nodes .= '/>';
+  ]]></template>
   <template key="toxml.vec.head"><![CDATA[]]></template>
   <template key="toxml.vec.for"><![CDATA[
-    \$nodes .= '<(#namer)>';
+    \$nodes .= '<'; \$nodes .= '(#namer)'; \$nodes .= '>';
     foreach (\$(#name) as &\$(#value)) {(#body)
     }
-    \$nodes .= '</(#namer)>';
+    \$nodes .= '</'; \$nodes .= '(#namer)'; \$nodes .= '>';
   ]]></template>
   <template key="toxml.map.head.k"><![CDATA[]]></template>
   <template key="toxml.map.head.v"><![CDATA[]]></template>
   <template key="toxml.map.for"><![CDATA[
-    \$nodes .= ('<(#namer)>');
+    \$nodes .= '<'; \$nodes .= '(#namer)'; \$nodes .= '>';
     foreach (\$(#name) as \$(#key) => &\$(#value)) {(#body)
     }
-    \$nodes .= '</(#namer)>';
+    \$nodes .= '</'; \$nodes .= '(#namer)'; \$nodes .= '>';
   ]]></template>
-  <template key="toxml.ref.any"><![CDATA[ \$attrs .= ' (#namer)="';
-    \$attrs .= \$(#body);
-    \$attrs .= '"'; ]]></template>
-  <template key="toxml.ref.struct"><![CDATA[ \$nodes .= (#body); ]]></template>
+  <template key="toxml.ref.any"><![CDATA[
+    \$attrs .= ' '; \$attrs .= '(#namer)'; \$attrs .= '=';
+    \$attrs .= '"'; \$attrs .= (#body); \$attrs .= '"';
+  ]]></template>
+  <template key="toxml.ref.struct"><![CDATA[ (#body); ]]></template>
   <template key="toxml.ref.vec | toxml.ref.map"><![CDATA[ if (count(\$(#name)) > 0) {(#bodyindent)
     }]]></template>
-  <template key="toxml.ptr.any"><![CDATA[ if (\$(#name) != (#null)) {
+  <template key="toxml.ptr.any"><![CDATA[ if (isset(\$(#name))) {
     (#tab)\$attrs .= ' (#namer)="';
     (#tab)\$attrs .= \$(#body);
     (#tab)\$attrs .= '"';
     }]]></template>
-  <template key="toxml.ptr.struct"><![CDATA[ if (\$(#name) != (#null)) {
-    (#tab)\$nodes .= (#body);
+  <template key="toxml.ptr.struct"><![CDATA[ if (isset(\$(#name))) {
+    (#tab)(#body);
     }]]></template>
   <template key="toxml.ptr.vec | toxml.ptr.map"><![CDATA[
-    (#concat)if (\$(#name) != (#null) && count(\$(#name)) > 0) {(#bodyindent)
+    (#concat)if (isset(\$(#name)) && count(\$(#name)) > 0) {(#bodyindent)
     }]]></template>
 
-
-  <!-- To String -->
-  <template key="tostr.method"><![CDATA[ (#tab)public function toString ()
-    (#tab){
-    (#tab)(#tab)\$result  = '{ ';
-    (#tab)(#tab)\$result .= get_class(\$this);(#body)
-    (#tab)(#tab)\$result .= ' }';
-    (#tab)(#tab)return \$result;
-    (#tab)} //(#type)::toString() ]]></template>
-  <template key="tostr.any">   <![CDATA[ \$(#name) ]]></template>
-  <template key="tostr.bool">  <![CDATA[ \$(#name) == TRUE ? 'True' : 'False' ]]></template>
-  <template key="tostr.struct"><![CDATA[ '<(#type)>' ]]></template>
-  <template key="tostr.vec">   <![CDATA[ '(' . count(\$(#name)) . ')' ]]></template>
-  <template key="tostr.map">   <![CDATA[ '[' . count(\$(#name)) . ']' ]]></template>
-  <template key="tostr.string"><![CDATA[ '"' . \$(#name) . '"' ]]></template>
-  <template key="tostr.ref.any"><![CDATA[ \$result .= ', (#namer):';
-    \$result .= (#body); ]]></template>
-  <template key="tostr.ptr.any"><![CDATA[ \$result .= ', (#namer):';
-    if (\$(#name) != (#null)) {
-      (#tab)\$result .= (#body);
-    } else {
-      (#tab)\$result .= 'null';
-    } ]]></template>
 
   <template key="runtime.file"><![CDATA[ invar.runtime ]]></template>
   <template key="runtime.pack"><![CDATA[ invar ]]></template>
