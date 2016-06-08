@@ -5,6 +5,7 @@
 
   <export resPath="csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs"/>
   <export resPath="csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs"/>
+  <export resPath="csharp/InvarCodec.cs" destDir="Invar" destName="InvarCodec.cs"/>
   <export resPath="csharp/ProtocHandler.cs" destDir="Invar" destName="ProtocHandler.cs"/>
 
   <!-- Redefine 14 Invar buildin types to adapt C# language -->
@@ -106,6 +107,10 @@
     (#blank)
     (#doc)
     public sealed class (#name)
+    : Invar.BinaryDecode
+    , Invar.BinaryEncode
+    , Invar.JSONEncode
+    , Invar.XMLEncode
     {
     (#tab)public const uint CRC32 = 0x[#codeCRC32(struct)];(#brk)
     [#codeFields (struct; fields)]
