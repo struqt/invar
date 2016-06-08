@@ -12,7 +12,7 @@
   </struct>
 
 
-  <protoc name="TestUserLogin" id="65532" doc="客户端请求,服务端响应">
+  <protoc name="TestUserLogin" id="65528" doc="客户端请求,服务端响应">
     <client>
       <field name="userId" type="Int64" doc=""/>
       <field name="platform" type="String" doc=""/>
@@ -24,20 +24,20 @@
     </server>
   </protoc>
 
-  <protoc name="TestServerTime" id="65535" doc="服务器通知客户端">
+  <protoc name="TestServerTime" id="65530" doc="服务器通知客户端">
     <server>
       <field name="time" type="Int64" doc="现在时间"/>
     </server>
   </protoc>
 
-  <protoc name="TestUserLocation" id="65534" doc="客户端通知服务端">
+  <protoc name="TestUserLocation" id="65532" doc="客户端通知服务端">
     <client>
       <field name="x" type="Float" doc="坐标X"/>
       <field name="y" type="Float" doc="坐标Y"/>
     </client>
   </protoc>
 
-  <protoc name="TestHeartBeat" id="65533" doc="服务端请求,客户端响应">
+  <protoc name="TestHeartBeat" id="65534" doc="服务端请求,客户端响应">
     <server/>
     <client/>
   </protoc>

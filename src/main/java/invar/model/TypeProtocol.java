@@ -42,7 +42,7 @@ public class TypeProtocol extends InvarType {
             throw new RuntimeException("Repeated protocol id: " + id);
         }
         //this.protocId = id;
-        /*
+        ///*
         if ((id & 0x01) == 1) {
             this.clientId = id;
             this.serverId = id + 1;
@@ -50,8 +50,10 @@ public class TypeProtocol extends InvarType {
             this.clientId = id - 1;
             this.serverId = id;
         }//*/
+        /*
         this.clientId = id;
         this.serverId = id;
+        //*/
         ids.add(this.clientId);
         ids.add(this.serverId);
     }
