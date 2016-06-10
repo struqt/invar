@@ -74,7 +74,7 @@ abstract public class InvarWrite {
             dir += dirPrefix;
         }
         File file = new File(dir);
-        if (file.exists()) {
+        if (!merge && file.exists()) {
             deleteDirs(dir);
         }
         this.dirRoot = file;
@@ -87,11 +87,11 @@ abstract public class InvarWrite {
                 makePackageDirs();
 
             resetCodePathes(merge, suffix);
-            startWritting(suffix);
+            startWriting(suffix);
         }
     }
 
-    private void startWritting(String suffix) throws Exception {
+    private void startWriting(String suffix) throws Exception {
         if (traceAllTypes)
             System.out.println("\n\n" + dumpTypeAll().toString());
         HashMap<File, String> files = new LinkedHashMap<File, String>();
