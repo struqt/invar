@@ -17,6 +17,7 @@ final public class Invar {
     static final String ARG_CSHARP_PATH = "csharp";
     static final String ARG_CPP_PATH = "cpp";
     static final String ARG_PHP_PATH = "php";
+    static final String ARG_OBJC_PATH = "objc";
 
     static public void main(String[] args) {
         long startMS = System.currentTimeMillis();
@@ -31,6 +32,7 @@ final public class Invar {
         a.addDefault(ARG_CSHARP_PATH, "code/csharp/");
         a.addDefault(ARG_CPP_PATH, "code/cpp/");
         a.addDefault(ARG_PHP_PATH, "code/php/");
+        a.addDefault(ARG_OBJC_PATH, "code/objc/");
         a.parseArguments(args);
 
         if (a.has(ARG_HELP)) {
@@ -61,18 +63,23 @@ final public class Invar {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_JAVA_PATH), "java/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".java");
             }
+            if (a.has(ARG_OBJC_PATH)) {
+                log("");
+                new InvarWriteCode(ctx, a.get(ARG_OBJC_PATH), "objc/snippet.h.xml", a.get(ARG_SNIPPET_PATH)).write(".h");
+                new InvarWriteCode(ctx, a.get(ARG_OBJC_PATH), "objc/snippet.m.xml", a.get(ARG_SNIPPET_PATH)).write(".m", true);
+            }
             if (a.has(ARG_CPP_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.h.xml", a.get(ARG_SNIPPET_PATH)).write(".h");
                 new InvarWriteCode(ctx, a.get(ARG_CPP_PATH), "cpp/snippet.cc.xml", a.get(ARG_SNIPPET_PATH)).write(".cpp", true);
             }
-            if (a.has(ARG_FLASH_PATH)) {
-                log("");
-                new InvarWriteCode(ctx, a.get(ARG_FLASH_PATH), "flash/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".as");
-            }
             if (a.has(ARG_PHP_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_PHP_PATH), "php/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".php");
+            }
+            if (a.has(ARG_FLASH_PATH)) {
+                log("");
+                new InvarWriteCode(ctx, a.get(ARG_FLASH_PATH), "flash/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".as");
             }
             long total = Runtime.getRuntime().totalMemory();
             long free = Runtime.getRuntime().freeMemory();

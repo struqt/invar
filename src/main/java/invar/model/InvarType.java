@@ -1,5 +1,6 @@
 package invar.model;
 
+import java.util.HashSet;
 import java.util.regex.Matcher;
 
 public class InvarType {
@@ -51,6 +52,7 @@ public class InvarType {
         final private Boolean nullable;
     }
 
+    static private final HashSet<String> typeNames = new HashSet<String>(512);
 
     private final TypeID id;
     private final InvarPackage pack;
@@ -60,10 +62,11 @@ public class InvarType {
     private TypeID realId;
     private InvarType redirect;
     private String generic;
-    //private Boolean isConflict;
+    private Boolean isConflict;
     private String initValue;
     private String codePath;
     private String codeName;
+    private String uniqueName;
 
     public InvarType(TypeID id, String name, InvarPackage pack, String comment, Boolean isBuildin) {
         this.id = id;
@@ -75,7 +78,13 @@ public class InvarType {
         this.codePath = "";
         this.codeName = name;
         this.isBuildin = isBuildin;
-        //this.isConflict = false;
+        if (typeNames.contains(name)) {
+            this.isConflict = true;
+            this.uniqueName = pack.getName().replaceAll("\\.", "_") + "_" + name;
+        } else {
+            this.isConflict = false;
+            typeNames.add(name);
+        }
     }
 
     final public String fullName(String splitter) {
@@ -94,6 +103,14 @@ public class InvarType {
 
     final public String getName() {
         return name;
+    }
+
+    final public Boolean getConflict() {
+        return isConflict;
+    }
+
+    final public String getUniqueName() {
+        return uniqueName;
     }
 
     final public String getComment() {

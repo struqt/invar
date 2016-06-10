@@ -206,6 +206,7 @@ public final class InvarWriteCode extends InvarWrite {
         onePackOneFile = (Boolean.parseBoolean(snippetTryGet("one.pack.one.file")));
         flattenCodeDir = (Boolean.parseBoolean(snippetTryGet("code.dir.flatten")));
         traceAllTypes = (Boolean.parseBoolean(snippetTryGet("trace.all.types")));
+        uniqueTypeName = (Boolean.parseBoolean(snippetTryGet("unique.type.name")));
         InvarField.setPrefix(snippet.tryGet("struct.field.prefix", null));
         return true;
     }
@@ -432,6 +433,8 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     protected String makeDoc(String comment) {
+        if (comment == null || comment.equals(empty))
+            return empty;
         String s = snippetGet(Key.DOC);
         s = replace(s, Token.Doc, comment == null ? empty : comment);
         return s;
@@ -476,7 +479,7 @@ public final class InvarWriteCode extends InvarWrite {
         int widthName = 1;
         int widthDeft = 1;
         for (InvarField f : fs) {
-            f.makeTypeFormatted(getContext(), snippetGet(Key.IMPORT_SPLIT), useFullName, packHeadPrefix);
+            makeTypeFormatted(getContext(), f, snippetGet(Key.IMPORT_SPLIT), useFullName, packHeadPrefix);
             f.setDeftFormatted(makeStructFieldInit(f, false));
 
             if (f.getDeftFormatted().length() > widthDeft)
@@ -497,7 +500,7 @@ public final class InvarWriteCode extends InvarWrite {
             f.setWidthDefault(widthDeft);
         }
         String s = snippetGet(Key.STRUCT);
-        s = replace(s, Token.Name, type.getName());
+        s = replace(s, Token.Name, getUniqueTypeName(type));
         s = replace(s, Token.Doc, makeDoc(type.getComment()));
         HashMap<String, Object> args = new HashMap<String, Object>();
         args.put("struct", type);
@@ -567,7 +570,7 @@ public final class InvarWriteCode extends InvarWrite {
             return code;
         String sConst = snippetTryGet(Key.REFER_CONST) + whiteSpace;
         String s = snippetGet(Key.STRUCT_SETTER);
-        s = replace(s, Token.TypeUpper, struct.getName());
+        s = replace(s, Token.TypeUpper, getUniqueTypeName(struct));
         s = replace(s, Token.Type, f.getTypeFormatted());
         s = replace(s, Token.Mark, snippetTryGet("ptr.mark." + f.getType().getRealId().getName(), whiteSpace));
         s = replace(s, Token.Specifier, makeStructFieldSpec(f, empty));
@@ -585,7 +588,7 @@ public final class InvarWriteCode extends InvarWrite {
         String sConst = snippetTryGet("refer.const") + whiteSpace;
         StringBuilder code = new StringBuilder();
         String s = snippetGet(Key.STRUCT_GETTER);
-        s = replace(s, Token.TypeUpper, struct.getName());
+        s = replace(s, Token.TypeUpper, getUniqueTypeName(struct));
         s = replace(s, Token.Type, f.getTypeFormatted());
         s = replace(s, Token.Mark, snippetTryGet("ptr.mark." + f.getType().getRealId().getName(), whiteSpace));
         s = replace(s, Token.Specifier, makeStructFieldSpec(f, whiteSpace + whiteSpace));
@@ -823,6 +826,30 @@ public final class InvarWriteCode extends InvarWrite {
             }
             return code.toString();
         }
+    }
+
+    private String makeTypeFormatted(InvarContext ctx, InvarField f, String split, Boolean fullName, Boolean head) {
+        InvarType t = f.getType().getRedirect();
+        String tName = t.getName();
+        boolean conflict = t.getConflict();
+        if (conflict) {
+            tName = getUniqueTypeName(t);
+        } else {
+            if (fullName) {
+                tName = t.fullName(split);
+                if (head) {
+                    tName = split + tName;
+                }
+            }
+        }
+        return f.makeTypeFormatted(ctx, split, fullName, tName);
+    }
+
+    private String getUniqueTypeName(InvarType t) {
+        if (!uniqueTypeName) {
+            return t.getName();
+        }
+        return t.getConflict() ? t.getUniqueName() : t.getName();
     }
 
     void impsCheckAdd(TreeSet<String> imps, InvarType t, TypeStruct struct) {

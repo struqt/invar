@@ -28,10 +28,11 @@ public class InvarTest extends TestCase {
         final String prefix = "target/example-code-gen/";
         Invar.main(new String[]{"-rule", "res/example/rule/",
                 "-xsd", prefix + "xsd/",
+                "-csharp", prefix + "csharp/",
                 "-java", prefix + "java/",
+                "-objc", prefix + "objc/",
                 "-cpp", prefix + "cpp/",
                 "-php", prefix + "php/",
-                "-csharp", prefix + "csharp/",
                 //"-flash", prefix + "flash/",
         });
     }
