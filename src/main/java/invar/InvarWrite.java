@@ -116,13 +116,22 @@ abstract public class InvarWrite {
                     structs.add(t);
                 } else if (TypeID.PROTOCOL == type.getId()) {
                     TypeProtocol t = (TypeProtocol) type;
-                    if (t.hasClient()) {
-                        this.codeOneStruct(t.getClient(), suffix, files);
+                    if (onePackOneFile) {
+                        if (t.hasClient()) {
+                            structs.add(t.getClient());
+                        }
+                        if (t.hasServer()) {
+                            structs.add(t.getServer());
+                        }
+                    } else {
+                        if (t.hasClient()) {
+                            this.codeOneStruct(t.getClient(), suffix, files);
+                        }
+                        if (t.hasServer()) {
+                            this.codeOneStruct(t.getServer(), suffix, files);
+                        }
+                        continue;
                     }
-                    if (t.hasServer()) {
-                        this.codeOneStruct(t.getServer(), suffix, files);
-                    }
-                    continue;
                 } else {
                     // do nothing
                     continue;
