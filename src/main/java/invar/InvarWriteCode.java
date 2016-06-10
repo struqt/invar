@@ -551,8 +551,10 @@ public final class InvarWriteCode extends InvarWrite {
         String spec = f.getUsePointer() ? snippetTryGet(Key.POINTER_SPEC) : whiteSpace;
         String s = snippetGet(Key.STRUCT_FIELD);
         s = replace(s, Token.Type, f.getTypeFormatted());
+        s = replace(s, Token.Mark, snippetTryGet("ptr.mark." + f.getType().getRealId().getName(), whiteSpace));
         s = replace(s, Token.Specifier, spec);
-        s = replace(s, Token.Name, f.getRealKey());
+        s = replace(s, Token.Name, f.getKey());
+        s = replace(s, Token.NameReal, f.getRealKey());
         s = replace(s, Token.Value, f.getDeftFormatted());
         s = replace(s, Token.Index, f.getIndex().toString());
         code.append(s);
@@ -567,6 +569,7 @@ public final class InvarWriteCode extends InvarWrite {
         String s = snippetGet(Key.STRUCT_SETTER);
         s = replace(s, Token.TypeUpper, struct.getName());
         s = replace(s, Token.Type, f.getTypeFormatted());
+        s = replace(s, Token.Mark, snippetTryGet("ptr.mark." + f.getType().getRealId().getName(), whiteSpace));
         s = replace(s, Token.Specifier, makeStructFieldSpec(f, empty));
         s = replace(s, Token.Name, f.getKey());
         s = replace(s, Token.NameReal, f.getRealKey());
@@ -584,6 +587,7 @@ public final class InvarWriteCode extends InvarWrite {
         String s = snippetGet(Key.STRUCT_GETTER);
         s = replace(s, Token.TypeUpper, struct.getName());
         s = replace(s, Token.Type, f.getTypeFormatted());
+        s = replace(s, Token.Mark, snippetTryGet("ptr.mark." + f.getType().getRealId().getName(), whiteSpace));
         s = replace(s, Token.Specifier, makeStructFieldSpec(f, whiteSpace + whiteSpace));
         s = replace(s, Token.Name, f.getKey());
         s = replace(s, Token.NameReal, f.getRealKey());

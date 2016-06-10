@@ -262,6 +262,7 @@ final public class InvarSnippet {
         final static String Split = wrapToken("split");
         final static String Index = wrapToken("index");
         final static String IndexUpper = wrapToken("indexupper");
+        final static String Mark = wrapToken("mark");
         final static String Specifier = wrapToken("spec");
         final static String SpecUpper = wrapToken("specupper");
         final static String Name = wrapToken("name");
