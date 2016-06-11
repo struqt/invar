@@ -13,22 +13,15 @@
   <template key="trace.all.types">     <![CDATA[ false ]]></template>
   <template key="unique.type.name">    <![CDATA[ true  ]]></template>
   <template key="one.pack.one.file">   <![CDATA[ false ]]></template>
-  <template key="include.self">        <![CDATA[ false ]]></template>
-  <template key="code.dir.prefix">     <![CDATA[  ]]></template>
-
   <template key="include.self">        <![CDATA[ true  ]]></template>
   <template key="pack.name.nested">    <![CDATA[ true  ]]></template>
-  <template key="code.dir.flatten">    <![CDATA[ true ]]></template>
+  <template key="code.dir.flatten">    <![CDATA[ true  ]]></template>
   <template key="file.name.lowercase"> <![CDATA[ false ]]></template>
+  <template key="no.generic.type">     <![CDATA[ true  ]]></template>
   <template key="method.indent.num">   <![CDATA[ 0     ]]></template>
+  <template key="code.dir.prefix">     <![CDATA[  ]]></template>
 
-  <template key="refer.copy">    <![CDATA[(#name) = (#arg);]]></template>
-  <template key="refer.const">   <![CDATA[const]]></template>
-  <template key="pointer.null">  <![CDATA[ nil ]]></template>
-  <template key="pointer.copy">  <![CDATA[CheckSet< (#type) > ((#name), (#arg));]]></template>
-  <template key="byte.yes">    <![CDATA[static_cast<int8_t>(0x01)]]></template>
-  <template key="byte.non">    <![CDATA[static_cast<int8_t>(0x00)]]></template>
-
+  <!-- Common snippet -->
   <template key="init.any">   <![CDATA[ (#deft)    ]]></template>
   <template key="init.int64"> <![CDATA[ (#deft)L   ]]></template>
   <template key="init.uint64"><![CDATA[ (#deft)UL  ]]></template>
@@ -38,6 +31,14 @@
   <template key="init.struct"><![CDATA[ [[(#type) alloc] init] ]]></template>
   <template key="init.vec">   <![CDATA[ [[NSMutableArray alloc] init] ]]></template>
   <template key="init.map">   <![CDATA[ [[NSMutableDictionary alloc] init] ]]></template>
+  <template key="byte.yes">    <![CDATA[ 0x01 ]]></template>
+  <template key="byte.non">    <![CDATA[ 0x00 ]]></template>
+  <template key="doc">         <![CDATA[/* (#doc). */]]></template>
+  <template key="doc.line">    <![CDATA[// (#doc).]]></template>
+  <template key="import.split"><![CDATA[ _ ]]></template>
+  <template key="pointer.null">  <![CDATA[ nil ]]></template>
+  <template key="ptr.mark.string | ptr.mark.vec |
+                 ptr.mark.struct | ptr.mark.map"><![CDATA[ * ]]></template>
 
   <template key="file"><![CDATA[
 	//*==---------------------------*  Obj-C  *--------------------------------===//
@@ -54,21 +55,6 @@
   <template key="file.body"><![CDATA[
 	(#blank)
 	(#structs)]]></template>
-
-  <!-- Common snippet -->
-  <template key="doc">         <![CDATA[/* (#doc). */]]></template>
-  <template key="doc.line">    <![CDATA[// (#doc).]]></template>
-
-  <template key="import">      <![CDATA[ ]]></template>
-  <template key="import.body"> <![CDATA[ ]]></template>
-  <template key="import.split"><![CDATA[ :: ]]></template>
-
-  <template key="code.invoker"><![CDATA[.]]></template>
-  <template key="code.assignment"><![CDATA[(#type)(#name) = (#value);(#brk)]]></template>
-  <template key="code.definition"><![CDATA[(#type)(#name);(#brk)]]></template>
-  <template key="ptr.mark.string | ptr.mark.vec |
-                 ptr.mark.struct | ptr.mark.map"><![CDATA[ * ]]></template>
-
   <template key="struct.meta"><![CDATA[ /* (#name) (#type) */ ]]></template>
   <template key="struct.field.self"><![CDATA[ & ]]></template>
   <template key="struct.field.prefix"><![CDATA[ _ ]]></template>
@@ -94,10 +80,13 @@
     (#blank)
     static const uint32_t CRC32 = 0x[#codeCRC32(struct)];
     (#blank)
-    [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (ctor.;  useFullName; struct; fields; imports)]
+    (#blank)
     [#codeGetters(struct; fields)]
     (#blank)
     [#codeSetters(struct; fields)]
+    (#blank)
+    [#codeNested (read.;  useFullName; struct; fields; imports)]
     @end /* @implementation (#name) */
 	]]></template>
 
@@ -129,6 +118,100 @@
   <template key="ctor.ptr.any"><![CDATA[
     [#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
   <template key="ctor.ref.any"><![CDATA[ (#body); ]]></template>
+
+  <!-- Method Read -->
+  <template key="read.import"><![CDATA[ ::DataReader ]]></template>
+  <template key="read.method.arg"><![CDATA[ r ]]></template>
+  <template key="read.method"><![CDATA[
+    - (int32_t) read: (DataReader *)r
+    {
+    (#tab)boolean_t eof = false;(#body)
+    (#tab)return 0;
+    }
+    /* (#type)::read(...) */ ]]></template>
+  <template key="read.int8">  <![CDATA[ [(#arg) readInt8:&eof]   ]]></template>
+  <template key="read.int16"> <![CDATA[ [(#arg) readInt16:&eof]  ]]></template>
+  <template key="read.int32"> <![CDATA[ [(#arg) readInt32:&eof]  ]]></template>
+  <template key="read.int64"> <![CDATA[ [(#arg) readInt64:&eof]  ]]></template>
+  <template key="read.uint8"> <![CDATA[ [(#arg) readUInt8:&eof]  ]]></template>
+  <template key="read.uint16"><![CDATA[ [(#arg) readUInt16:&eof] ]]></template>
+  <template key="read.uint32"><![CDATA[ [(#arg) readUInt32:&eof] ]]></template>
+  <template key="read.uint64"><![CDATA[ [(#arg) readUInt64:&eof] ]]></template>
+  <template key="read.float"> <![CDATA[ [(#arg) readFloat:&eof]  ]]></template>
+  <template key="read.double"><![CDATA[ [(#arg) readDouble:&eof] ]]></template>
+  <template key="read.string"><![CDATA[ [(#arg) readString:&eof] ]]></template>
+  <template key="read.bool">  <![CDATA[ [(#arg) readBool:&eof]   ]]></template>
+  <template key="read.enum">  <![CDATA[ ((#type))[(#arg) readInt32:&eof]  ]]></template>
+  <template key="read.struct"><![CDATA[ int32_t (#namer)Err = [(#name) read:(#arg)]    ]]></template>
+  <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[ (#type) (#name) = (#body); ]]></template>
+  <template key="read.nest.n.float|read.nest.k.float|read.nest.v.float"><![CDATA[
+    NSNumber *(#name) = @((#body)); ]]></template>
+  <template key="read.nest.n.double|read.nest.k.double|read.nest.v.double"><![CDATA[
+    NSNumber *(#name) = @((#body)); ]]></template>
+  <template key="read.nest.n.string|read.nest.k.string|read.nest.v.string"><![CDATA[
+    (#type) *(#name) = (#body); ]]></template>
+  <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
+    (#type) *(#name) = [[(#type) alloc] init];
+    (#body); if ((#namer)Err != 0) { return (#namer)Err; }
+  ]]></template>
+  <template key="read.vec.head">  <![CDATA[ (#typel) *(#name) = [[(#typel) alloc] init]; //read.vec.head(#brk) ]]></template>
+  <template key="read.vec.for"><![CDATA[
+    (#sizetype) (#len) = [(#arg) readUInt32:&eof];
+    for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++) {(#body)
+    (#tab)[(#name) addObject:(#value)];
+    }
+  ]]></template>
+  <template key="read.map.head"> <![CDATA[ (#typel) *(#name) = [[(#typel) alloc] init]; //read.map.head(#brk)]]></template>
+  <template key="read.map.for"><![CDATA[
+    (#sizetype) (#len) = [(#arg) readUInt32:&eof];
+    for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++) {(#body)
+    (#tab)[(#name) setObject:(#value) forKey:(#key)];
+    }
+  ]]></template>
+  <template key="read.ref.any">   <![CDATA[ (#name) = (#body); ]]></template>
+  <template key="read.ref.struct"><![CDATA[ (#body); ]]></template>
+  <template key="read.ref.vec | read.ref.map"><![CDATA[ (#body) ]]></template>
+  <template key="read.ptr.string"><![CDATA[
+    int8_t (#namer)Exists = [(#arg) readInt8:&eof];
+    if ((#byteyes) == (#namer)Exists) {
+    (#tab)(#name) = (#body);
+    }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
+    else { return 496; }
+  ]]></template>
+  <template key="read.ptr.struct"><![CDATA[
+    int8_t (#namer)Exists = [(#arg) readInt8:&eof];
+    if ((#byteyes) == (#namer)Exists) {
+    (#tab)if ((#name) == (#null)) { (#name) = [[(#type) alloc] init]; }
+    (#tab)(#body); if ((#namer)Err != 0) { return (#namer)Err; }
+    }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
+    else { return 497; }
+  ]]></template>
+  <template key="read.ptr.vec | read.ptr.map"><![CDATA[
+    int8_t (#namer)Exists = [(#arg) readInt8:&eof];
+    if ((#byteyes) == (#namer)Exists) {
+    (#tab)if ((#name) == (#null)) { (#name) = [[(#typel) alloc] init]; }(#bodyindent)
+    }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
+    else { return 498; }
+  ]]></template>
+  <template key="read.field.tail.any"><![CDATA[
+    (#space)if (eof) { return 495; }
+  ]]></template>
+  <template key="read.field.tail.struct"><![CDATA[
+    (#space)if ((#namer)Err != 0) { return (#namer)Err; }
+  ]]></template>
+  <template key="read.field.tail.struct.ptr | read.field.tail.vec | read.field.tail.map"><![CDATA[
+    (#blank)
+  ]]></template>
+
+  <template key="read.special.protocCRC"><![CDATA[
+    if (CRC32 != (#name)) { return 499; }
+  ]]></template>
+  <template key="read.special.protocError"><![CDATA[
+    if ((#name) != 0) { return (#name); }
+  ]]></template>
 
 
 </tns:root>

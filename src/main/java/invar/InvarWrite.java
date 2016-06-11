@@ -38,6 +38,7 @@ abstract public class InvarWrite {
     String dirPrefix = empty;
     Boolean traceAllTypes = false;
     Boolean uniqueTypeName = false;
+    Boolean noGenericType = false;
     Boolean flattenCodeDir = false;
     Boolean onePackOneFile = false;
     Boolean lowerFileName = false;

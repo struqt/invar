@@ -16,12 +16,12 @@
     <uint16 pack="" type="uint16_t" include="" initValue="0"/>
     <uint32 pack="" type="uint32_t" include="" initValue="0"/>
     <uint64 pack="" type="uint64_t" include="" initValue="0"/>
-    <float pack="" type="float_t" initValue="0.0"/>
-    <double pack="" type="double_t" initValue="0.00"/>
+    <float pack="" type="float_t" include="&lt;Foundation/NSValue.h&gt;" initValue="0.0"/>
+    <double pack="" type="double_t" include="&lt;Foundation/NSValue.h&gt;" initValue="0.00"/>
     <bool pack="" type="boolean_t" initValue="false"/>
     <string pack="" type="NSString" include="&lt;Foundation/NSString.h&gt;"/>
-    <vec pack="" type="NSMutableArray" generic="" include="&lt;Foundation/NSArray.h&gt;"/>
-    <map pack="" type="NSMutableDictionary" generic="" include="&lt;Foundation/NSDictionary.h&gt;"/>
+    <vec pack="" type="NSMutableArray" generic="&lt;?&gt;" include="&lt;Foundation/NSArray.h&gt;"/>
+    <map pack="" type="NSMutableDictionary" generic="&lt;?,?&gt;" include="&lt;Foundation/NSDictionary.h&gt;"/>
     <dialect pack="" type="DataWriter" include="DataWriter.h"/>
     <dialect pack="" type="DataReader" include="DataReader.h"/>
   </redefine>
@@ -35,6 +35,7 @@
   <template key="pack.name.nested">    <![CDATA[ false ]]></template>
   <template key="file.name.lowercase"> <![CDATA[ false ]]></template>
   <template key="code.dir.flatten">    <![CDATA[ true ]]></template>
+  <template key="no.generic.type">     <![CDATA[ true  ]]></template>
   <template key="method.indent.num">   <![CDATA[ 0     ]]></template>
 
   <!-- Common snippet -->
@@ -81,6 +82,7 @@
     @interface (#name) : NSObject
     (#blank)
     - (instancetype) init;
+    - (int32_t) read: (DataReader *)r;
     (#blank)
     [#codeGetters(struct; fields)]
     (#blank)

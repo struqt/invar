@@ -74,8 +74,11 @@ public class InvarField {
         return deftFormatted;
     }
 
-    public String makeTypeFormatted(InvarContext ctx, String split, Boolean fullName, String tName) {
-        typeFormatted = tName + evalGenerics(ctx, type.getRedirect(), split, fullName);
+    public String makeTypeFormatted(InvarContext ctx, String split, Boolean fullName, String tName, Boolean noGenerics) {
+        typeFormatted = tName;
+        if (!noGenerics) {
+            typeFormatted += evalGenerics(ctx, type.getRedirect(), split, fullName);
+        }
         typeFormatted = typeFormatted.trim();
         return typeFormatted;
     }

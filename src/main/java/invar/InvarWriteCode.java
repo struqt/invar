@@ -207,6 +207,7 @@ public final class InvarWriteCode extends InvarWrite {
         flattenCodeDir = (Boolean.parseBoolean(snippetTryGet("code.dir.flatten")));
         traceAllTypes = (Boolean.parseBoolean(snippetTryGet("trace.all.types")));
         uniqueTypeName = (Boolean.parseBoolean(snippetTryGet("unique.type.name")));
+        noGenericType = (Boolean.parseBoolean(snippetTryGet("no.generic.type")));
         InvarField.setPrefix(snippet.tryGet("struct.field.prefix", null));
         return true;
     }
@@ -792,6 +793,9 @@ public final class InvarWriteCode extends InvarWrite {
         if (imps == null || imps.size() == 0) {
             return empty;
         } else {
+            if (null == snippetTryGet(Key.IMPORT, null)) {
+                return empty;
+            }
             TreeSet<String> lines = new TreeSet<String>();
             for (String key : imps) {
                 if (key.equals(empty))
@@ -842,7 +846,7 @@ public final class InvarWriteCode extends InvarWrite {
                 }
             }
         }
-        return f.makeTypeFormatted(ctx, split, fullName, tName);
+        return f.makeTypeFormatted(ctx, split, fullName, tName, noGenericType);
     }
 
     private String getUniqueTypeName(InvarType t) {
@@ -941,7 +945,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (t.getRealId() == TypeID.VEC || t.getRealId() == TypeID.MAP)
                 forShort = t.getName();
             else {
-                if (ctx.findTypes(t.getName()).size() > 1 || useFullName)
+                if (/*ctx.findTypes(t.getName()).size() > 1 ||*/useFullName)
                     forShort = t.fullName(split);
                 else
                     forShort = t.getName();
@@ -1155,7 +1159,11 @@ public final class InvarWriteCode extends InvarWrite {
                     if (empty.equals(s_head)) {
                         s_head = snippetTryGet(prefix + "field.head.any");
                     }
-                    String s_tail = snippetTryGet(prefix + "field.tail." + p.type.getName());
+                    String tailKey = "field.tail." + p.type.getName();
+                    if (p.field.getUsePointer()) {
+                        tailKey += ".ptr";
+                    }
+                    String s_tail = snippetTryGet(prefix + tailKey);
                     if (empty.equals(s_tail)) {
                         s_tail = snippetTryGet(prefix + "field.tail.any");
                     }
@@ -1184,6 +1192,7 @@ public final class InvarWriteCode extends InvarWrite {
                     s = replace(s, Token.Body, code);
                     s = replace(s, Token.BodyIndent, makeBodyIndent(code));
                     s = replace(s, Token.Type, p.rule);
+                    s = replace(s, Token.RuleLeft, ruleLeft(p.rule));
                     s = replace(s, Token.Name, p.name);
                     s = replace(s, Token.NameReal, p.nameReal);
                     s = replace(s, Token.Argument, snippetArg);
@@ -1228,7 +1237,7 @@ public final class InvarWriteCode extends InvarWrite {
             String body = makeBasicExpr(t);
             String spec = empty;
             if (p.field.getUsePointer()) {
-                spec = snippetGet(Key.POINTER_SPEC);
+                spec = snippetTryGet(Key.POINTER_SPEC);
             }
             body = replace(body, Token.Specifier, spec);
             body = replace(body, Token.Type, p.rule);
@@ -1251,7 +1260,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (p.parent != null) {
                 String specUpper = empty;
                 if (p.parent.isRoot() && p.field.getUsePointer()) {
-                    specUpper = snippetGet(Key.POINTER_SPEC);
+                    specUpper = snippetTryGet(Key.POINTER_SPEC);
                 }
                 s = replace(s, Token.SpecUpper, specUpper);
                 s = replace(s, Token.TypeUpper, p.parent.rule);
@@ -1317,6 +1326,7 @@ public final class InvarWriteCode extends InvarWrite {
             s = replace(s, Token.Size, "len" + iName);
             s = replace(s, Token.Index, "i" + iName);
             s = replace(s, Token.Type, p.rule);
+            s = replace(s, Token.RuleLeft, ruleLeft(p.rule));
             s = replace(s, Token.RuleRight, ruleRight(p.rule));
             s = replace(s, Token.Name, p.name);
             s = replace(s, Token.NameReal, p.nameReal);
@@ -1327,7 +1337,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (p.parent != null && p.parent.type != TypeID.VOID) {
                 String specUpper = empty;
                 if (p.parent.isRoot() && p.field.getUsePointer()) {
-                    specUpper = snippetGet(Key.POINTER_SPEC);
+                    specUpper = snippetTryGet(Key.POINTER_SPEC);
                 }
                 s = replace(s, Token.SpecUpper, specUpper);
                 s = replace(s, Token.TypeUpper, p.parent.rule);

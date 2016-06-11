@@ -270,6 +270,7 @@ final public class InvarSnippet {
         final static String Type = wrapToken("type");
         final static String TypeFull = wrapToken("typefull");
         final static String TypeUpper = wrapToken("typeupper");
+        final static String RuleLeft = wrapToken("typel");
         final static String RuleRight = wrapToken("typer");
         final static String NameReal = wrapToken("namer");
         final static String Request = wrapToken("req");
