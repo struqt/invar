@@ -342,6 +342,8 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Pack, codeOneFilePack(packNames, body));
         s = replace(s, Token.Includes, includes.toString());
         s = replace(s, Token.Import, makeImorts(imps));
+        s = replace(s, "[\r|\n]*" + Token.Concat, empty);
+        s = replace(s, "[\\s]*" + Token.ConcatAll, empty);
         return s;
     }
 
@@ -376,7 +378,6 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Import, makeImorts(imps));
         s = replace(s, Token.Enums, blockEnums);
         s = replace(s, Token.Structs, blockStructs);
-        s = replace(s, "[\n|\r\n]*" + Token.Concat, empty);
         return s;
     }
 
@@ -420,7 +421,6 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Import, makeImorts(imps));
         s = replace(s, Token.Enums, empty);
         s = replace(s, Token.Structs, body);
-        s = replace(s, "[\n|\r\n]*" + Token.Concat, empty);
         s = codeOneFileWrap(fileDir, fileDir + fileName, s, imps);
         addExportFile(fileDir, fileName, s);
     }
@@ -863,11 +863,11 @@ public final class InvarWriteCode extends InvarWrite {
                 include = include.toLowerCase();
 
             String s = include;
-            if (t.getRealId() == TypeID.STRUCT || t.getRealId() == TypeID.DIALECT || t.getRealId() == TypeID.ENUM) {
+            if (!s.startsWith("<")) {
+                //if (t.getRealId() == TypeID.STRUCT || t.getRealId() == TypeID.DIALECT || t.getRealId() == TypeID.ENUM) {
                 s = snippetTryGet(Key.FILE_INCLUDE + ".wrap", include);
                 s = replace(s, Token.Value, include);
             }
-
             if (includeSelf) {
                 if (t == struct)
                     fileIncludes.add(s);
@@ -1097,6 +1097,9 @@ public final class InvarWriteCode extends InvarWrite {
             indentLines(lines, methodIndentNum);
             StringBuilder body = new StringBuilder();
             for (String line : lines) {
+                if (line.trim().equals(empty)) {
+                    continue;
+                }
                 body.append(br);
                 body.append(line);
             }

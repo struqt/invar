@@ -71,6 +71,8 @@
   <template key="struct"><![CDATA[
     [#addImport(struct; imports; ::DataWriter)]
     [#addImport(struct; imports; ::DataReader)]
+    #define CRC32 0x[#codeCRC32(struct)]
+    (#blank)
     @interface (#name) ()
     {
     [#codeFields(struct; fields)]}
@@ -78,9 +80,9 @@
     (#blank)
     @implementation (#name)
     (#blank)
-    static const uint32_t CRC32 = 0x[#codeCRC32(struct)];
-    (#blank)
     [#codeNested (ctor.;  useFullName; struct; fields; imports)]
+    (#blank)
+    [#codeNested (dtor.;  useFullName; struct; fields; imports)]
     (#blank)
     [#codeGetters(struct; fields)]
     (#blank)
@@ -96,12 +98,13 @@
     (#concat) return [#clampLen(lenFieldName; 32; (#name) )]; }
   ]]></template>
   <template key="struct.setter"><![CDATA[
-    - ((#typeupper) *) set[#clampLen(lenFieldName; 24; [#upperHeadChar( (#namer) )] )]
-    (#concat):([#clampLen(lenFieldType; 64; (#type) )] (#mark))v
+    - ((#typeupper) *) set[#clampLen(lenFieldName; 24; [#upperHeadChar( (#namer) )] )]:
+    (#concat) ([#clampLen(lenFieldType; 64; (#type) )] (#mark))v
     (#concat) { [#clampLen(lenFieldName; 32; (#name) )] = v;
     (#concat) return self;
     (#concat) }
   ]]></template>
+
 
   <!-- Method Construct -->
   <template key="ctor.method"><![CDATA[
@@ -111,19 +114,37 @@
     (#tab)if (!self) { return self; }(#body)
     (#tab)return self;
     }
-    /* End of init */
+    /* (#type)::init */
   ]]></template>
   <template key="ctor.any | ctor.vec | ctor.map"><![CDATA[
-    [#clampLen(lenFieldName; 24; (#name))] = (#deft) ]]></template>
+    [#clampLen(lenFieldName; 32; (#name))] = (#deft) ]]></template>
   <template key="ctor.ptr.any"><![CDATA[
-    [#clampLen(lenFieldName; 24; (#name))] = (#null); ]]></template>
+    [#clampLen(lenFieldName; 32; (#name))] = (#null); ]]></template>
   <template key="ctor.ref.any"><![CDATA[ (#body); ]]></template>
+
+
+  <!-- Method Destruct -->
+  <template key="dtor.method"><![CDATA[
+    - (void) dealloc
+    {
+    (#tab)[super dealloc];(#body)
+    }
+    /* (#type)::dealloc */
+  ]]></template>
+  <template key="dtor.any"><![CDATA[ ]]></template>
+  <template key="dtor.vec | dtor.map | dtor.string | dtor.struct"><![CDATA[
+    if ([#clampLen(lenFieldName; 32; (#name) )]) {
+    (#concat-all) [[#clampLen(lenFieldName; 32; (#name) )] dealloc];
+    (#concat-all) [#clampLen(lenFieldName; 32; (#name) )] = nil; } ]]></template>
+  <template key="dtor.ptr.any"><![CDATA[ (#body) ]]></template>
+  <template key="dtor.ref.any"><![CDATA[ (#body) ]]></template>
+
 
   <!-- Method Read -->
   <template key="read.import"><![CDATA[ ::DataReader ]]></template>
   <template key="read.method.arg"><![CDATA[ r ]]></template>
   <template key="read.method"><![CDATA[
-    - (int32_t) read: (DataReader *)r
+    - (NSInteger) read: (DataReader *)r
     {
     (#tab)boolean_t eof = false;(#body)
     (#tab)return 0;
@@ -142,7 +163,7 @@
   <template key="read.string"><![CDATA[ [(#arg) readString:&eof] ]]></template>
   <template key="read.bool">  <![CDATA[ [(#arg) readBool:&eof]   ]]></template>
   <template key="read.enum">  <![CDATA[ ((#type))[(#arg) readInt32:&eof]  ]]></template>
-  <template key="read.struct"><![CDATA[ int32_t (#namer)Err = [(#name) read:(#arg)]    ]]></template>
+  <template key="read.struct"><![CDATA[ NSInteger (#namer)Err = [(#name) read:(#arg)]    ]]></template>
   <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[ (#type) (#name) = (#body); ]]></template>
   <template key="read.nest.n.float|read.nest.k.float|read.nest.v.float"><![CDATA[
     NSNumber *(#name) = @((#body)); ]]></template>
@@ -154,14 +175,16 @@
     (#type) *(#name) = [[(#type) alloc] init];
     (#body); if ((#namer)Err != 0) { return (#namer)Err; }
   ]]></template>
-  <template key="read.vec.head">  <![CDATA[ (#typel) *(#name) = [[(#typel) alloc] init]; //read.vec.head(#brk) ]]></template>
+  <template key="read.vec.head">
+    <![CDATA[ (#typel) *(#name) = [[(#typel) alloc] init]; //read.vec.head(#brk) ]]></template>
   <template key="read.vec.for"><![CDATA[
     (#sizetype) (#len) = [(#arg) readUInt32:&eof];
     for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++) {(#body)
     (#tab)[(#name) addObject:(#value)];
     }
   ]]></template>
-  <template key="read.map.head"> <![CDATA[ (#typel) *(#name) = [[(#typel) alloc] init]; //read.map.head(#brk)]]></template>
+  <template key="read.map.head">
+    <![CDATA[ (#typel) *(#name) = [[(#typel) alloc] init]; //read.map.head(#brk)]]></template>
   <template key="read.map.for"><![CDATA[
     (#sizetype) (#len) = [(#arg) readUInt32:&eof];
     for ((#sizetype) (#index) = 0; (#index) < (#len); (#index)++) {(#body)

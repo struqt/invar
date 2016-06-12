@@ -3,6 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="objc">
 
+  <export resPath="objc/Invar.h" destDir="" destName="Invar.h"/>
   <export resPath="objc/DataReader.h" destDir="" destName="DataReader.h"/>
   <export resPath="objc/DataWriter.h" destDir="" destName="DataWriter.h"/>
 
@@ -22,6 +23,10 @@
     <string pack="" type="NSString" include="&lt;Foundation/NSString.h&gt;"/>
     <vec pack="" type="NSMutableArray" generic="&lt;?&gt;" include="&lt;Foundation/NSArray.h&gt;"/>
     <map pack="" type="NSMutableDictionary" generic="&lt;?,?&gt;" include="&lt;Foundation/NSDictionary.h&gt;"/>
+    <dialect pack="" type="NSObject" include="&lt;Foundation/NSObject.h&gt;"/>
+    <dialect pack="" type="NSCopying" include="&lt;Foundation/NSObject.h&gt;"/>
+    <dialect pack="" type="InvarEncode" include="Invar.h"/>
+    <dialect pack="" type="InvarDecode" include="Invar.h"/>
     <dialect pack="" type="DataWriter" include="DataWriter.h"/>
     <dialect pack="" type="DataReader" include="DataReader.h"/>
   </redefine>
@@ -79,29 +84,27 @@
   ]]></template>
   <template key="struct"><![CDATA[
     (#doc)
-    @interface (#name) : NSObject
-    (#blank)
-    - (instancetype) init;
-    - (int32_t) read: (DataReader *)r;
+    @interface (#name) : NSObject <NSCopying, InvarEncode, InvarDecode>
     (#blank)
     [#codeGetters(struct; fields)]
     (#blank)
     [#codeSetters(struct; fields)]
     (#blank)
     @end /* @interface (#name) */
-    [#addImport(struct; imports; ::DataWriter)]
-    [#addImport(struct; imports; ::DataReader)]
+    [#addImport(struct; imports; ::NSCopying)]
+    [#addImport(struct; imports; ::InvarEncode)]
+    [#addImport(struct; imports; ::InvarDecode)]
   ]]></template>
   <template key="struct.meta"><![CDATA[ /* (#name) (#type) */ ]]></template>
   <template key="struct.field"><![CDATA[ ]]></template>
   <template key="struct.getter"><![CDATA[
     - ([#clampLen(lenFieldType; 64; (#type) )] (#mark))
-    (#concat) [#clampLen(lenFieldName; 24; (#name) )]
-    (#concat) ; [#codeDoc(fields; (#index))]
+    (#concat) [#clampLen(lenFieldName; 24; (#name) )];
+    (#concat) [#codeDoc(fields; (#index))]
   ]]></template>
   <template key="struct.setter"><![CDATA[
-    - ((#typeupper) *) set[#clampLen(lenFieldName; 24; [#upperHeadChar( (#name) )] )]
-    (#concat) :([#clampLen(lenFieldType; 64; (#type) )] (#mark)) value;
+    - ((#typeupper) *) set[#clampLen(lenFieldName; 24; [#upperHeadChar( (#name) )] )]:
+    (#concat) ([#clampLen(lenFieldType; 64; (#type) )] (#mark)) value;
     (#concat) [#codeMetaData(fields; (#index))]
   ]]></template>
 

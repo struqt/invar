@@ -232,6 +232,7 @@ final public class InvarSnippet {
     static public class Token {
         final static String Br = wrapToken("brk");
         final static String Concat = wrapToken("concat");
+        final static String ConcatAll = wrapToken("concat-all");
         final static String Indent = wrapToken("tab");
         final static String Blank = wrapToken("blank");
         final static String Space = wrapToken("space");
