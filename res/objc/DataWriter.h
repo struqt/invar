@@ -7,6 +7,8 @@
 #ifndef DataWriter_h
 #define DataWriter_h
 
+#import <Foundation/Foundation.h>
+
 @interface DataWriter : NSObject
 
 + (instancetype) Create;

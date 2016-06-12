@@ -1268,6 +1268,7 @@ public final class InvarWriteCode extends InvarWrite {
                 s = replace(s, Token.SpecUpper, specUpper);
                 s = replace(s, Token.TypeUpper, p.parent.rule);
                 s = replace(s, Token.NameUpper, p.parent.nameReal);
+                s = replace(s, Token.NameUpper2, p.parent.name);
             }
             return s;
         }
@@ -1345,6 +1346,7 @@ public final class InvarWriteCode extends InvarWrite {
                 s = replace(s, Token.SpecUpper, specUpper);
                 s = replace(s, Token.TypeUpper, p.parent.rule);
                 s = replace(s, Token.NameUpper, p.parent.nameReal);
+                s = replace(s, Token.NameUpper2, p.parent.name);
                 s = replace(s, Token.IndexUpper, "i" + upperHeadChar(p.parent.name));
             }
             return s;

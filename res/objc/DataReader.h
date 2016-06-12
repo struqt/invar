@@ -7,6 +7,8 @@
 #ifndef DataReader_h
 #define DataReader_h
 
+#import <Foundation/Foundation.h>
+
 @interface DataReader : NSObject
 
 + (instancetype) CreateWithBytes:(const void*)bytes andLength:(NSUInteger)len;

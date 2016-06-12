@@ -268,6 +268,7 @@ final public class InvarSnippet {
         final static String SpecUpper = wrapToken("specupper");
         final static String Name = wrapToken("name");
         final static String NameUpper = wrapToken("nameupper");
+        final static String NameUpper2 = wrapToken("nameupper2");
         final static String Type = wrapToken("type");
         final static String TypeFull = wrapToken("typefull");
         final static String TypeUpper = wrapToken("typeupper");
