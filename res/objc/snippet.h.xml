@@ -84,7 +84,7 @@
   ]]></template>
   <template key="struct"><![CDATA[
     (#doc)
-    @interface (#name) : NSObject <NSCopying, InvarEncode, InvarDecode>
+    @interface (#name) : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
     (#blank)
     [#codeGetters(struct; fields)]
     (#blank)

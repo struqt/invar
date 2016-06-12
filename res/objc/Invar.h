@@ -7,6 +7,7 @@
 #ifndef Invar_h
 #define Invar_h
 
+#import <Foundation/Foundation.h>
 #import "DataWriter.h"
 #import "DataReader.h"
 
@@ -19,6 +20,13 @@
 @protocol InvarEncode
 
 - (NSInteger)write:(DataWriter *)w;
+
+@end
+
+@protocol InvarEncodeJSON
+
+- (NSString *)toStringJSON;
+- (void)writeJSON:(NSMutableString *)s;
 
 @end
 
