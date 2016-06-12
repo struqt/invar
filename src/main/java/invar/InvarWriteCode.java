@@ -1082,10 +1082,11 @@ public final class InvarWriteCode extends InvarWrite {
             this.useFullName = useFullName;
             this.snippetMet = snippetTryGet(prefix + "method", empty);
             this.snippetArg = snippetTryGet(prefix + "method.arg", empty);
-            if (empty.equals(snippetMet))
+            if (empty.equals(snippetMet)) {
                 return empty;
+            }
             List<String> lines = new ArrayList<String>();
-            int len = fs.size();
+            int len = snippetMet.contains("(#body)") ? fs.size() : 0;
             for (int i = 0; i < len; i++) {
                 InvarField f = fs.get(i);
                 lines.addAll(makeField(f, i == 0, i == len - 1));

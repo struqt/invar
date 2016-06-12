@@ -84,6 +84,8 @@
     (#blank)
     [#codeNested (dtor.;  useFullName; struct; fields; imports)]
     (#blank)
+    [#codeNested (copy.;  useFullName; struct; fields; imports)]
+    (#blank)
     [#codeGetters(struct; fields)]
     (#blank)
     [#codeSetters(struct; fields)]
@@ -129,8 +131,8 @@
   <!-- Method Destruct -->
   <template key="dtor.method"><![CDATA[
     - (void) dealloc
-    {
-    (#tab)[super dealloc];(#body)
+    {(#body)
+    (#tab)[super dealloc];
     }
     /* (#type)::dealloc */
   ]]></template>
@@ -142,6 +144,19 @@
   <template key="dtor.ptr.any"><![CDATA[ (#body) ]]></template>
   <template key="dtor.ref.any"><![CDATA[ (#body) ]]></template>
 
+  <!-- Method Copy -->
+  <template key="copy.method"><![CDATA[
+    - (id) copyWithZone:(nullable NSZone *)zone;
+    {
+    (#tab)id copy = [[[self class] allocWithZone:zone] init];
+    (#tab)NSMutableData *data = [[NSMutableData alloc] initWithCapacity:1024];
+    (#tab)[self write:[DataWriter CreateWithData:data]];
+    (#tab)[copy read:[DataReader CreateWithData:data]];
+    (#tab)[data dealloc];
+    (#tab)return copy;
+    }
+    /* (#type)::copyWithZone */
+  ]]></template>
 
   <!-- Method Read -->
   <template key="read.import"><![CDATA[ ::DataReader ]]></template>
