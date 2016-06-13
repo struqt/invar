@@ -15,17 +15,17 @@
 #import "Invar.h"
 
 /* 名字冲突的类型 */
-@interface Conflict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
+@interface test_abc_Conflict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
 
 - (Gender               ) key   ; /*  */
 - (NSString            *) text  ; /*  */
 - (NSMutableArray      *) bytes ; /*  */
 - (NSMutableDictionary *) hotfix; /* [AutoAdd] Hotfix */
 
-- (Conflict *) setKey   : (Gender               ) value; /* 0 test.abc.Gender */
-- (Conflict *) setText  : (NSString            *) value; /* 1 string */
-- (Conflict *) setHotfix: (NSMutableDictionary *) value; /* 3 map<string,string> */
+- (test_abc_Conflict *) setKey   : (Gender               ) value; /* 0 test.abc.Gender */
+- (test_abc_Conflict *) setText  : (NSString            *) value; /* 1 string */
+- (test_abc_Conflict *) setHotfix: (NSMutableDictionary *) value; /* 3 map<string,string> */
 
-@end /* @interface Conflict */
+@end /* @interface test_abc_Conflict */
 
 #endif /* TEST_ABC_CONFLICT_H_ */

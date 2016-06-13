@@ -22,7 +22,7 @@
 - (Gender             ) x       ; /* 枚举值 */
 - (TestBasic         *) test    ; /* 其他类型 */
 - (test_xyz_Conflict *) xyz     ; /* 同名的类型 */
-- (Conflict          *) abc     ; /* 同名的类型 */
+- (test_abc_Conflict *) abc     ; /* 同名的类型 */
 - (NSMutableArray    *) children; /* 自身类型容器 */
 - (int32_t            ) noSetter; /* 屏蔽Setter */
 - (NSString          *) useRef  ; /* 使用引用 */
@@ -34,7 +34,7 @@
 - (Custom *) setX       : (Gender             ) value; /* 0 test.abc.Gender */
 - (Custom *) setTest    : (TestBasic         *) value; /* 1 test.abc.TestBasic */
 - (Custom *) setXyz     : (test_xyz_Conflict *) value; /* 2 test.xyz.Conflict */
-- (Custom *) setAbc     : (Conflict          *) value; /* 3 test.abc.Conflict */
+- (Custom *) setAbc     : (test_abc_Conflict *) value; /* 3 test.abc.Conflict */
 - (Custom *) setUseRef  : (NSString          *) value; /* 6 string */
 - (Custom *) setUsePtr  : (NSString          *) value; /* 7 string */
 - (Custom *) setPrev    : (Custom            *) value; /* 8 test.abc.Custom */

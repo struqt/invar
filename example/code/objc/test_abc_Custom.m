@@ -17,7 +17,7 @@
     Gender              _x       ; /* 0 test.abc.Gender */
     TestBasic         * _test    ; /* 1 test.abc.TestBasic */
     test_xyz_Conflict * _xyz     ; /* 2 test.xyz.Conflict */
-    Conflict          * _abc     ; /* 3 test.abc.Conflict */
+    test_abc_Conflict * _abc     ; /* 3 test.abc.Conflict */
     NSMutableArray    * _children; /* 4 vec<test.abc.Custom> */
     int32_t             _noSetter; /* 5 int32 */
     NSString          * _useRef  ; /* 6 string */
@@ -37,7 +37,7 @@
     _x        = NONE;
     _test     = [[TestBasic alloc] init];
     _xyz      = [[test_xyz_Conflict alloc] init];
-    _abc      = [[Conflict alloc] init];
+    _abc      = [[test_abc_Conflict alloc] init];
     _children = [[NSMutableArray alloc] init];
     _noSetter = -1;
     _useRef   = @"";
@@ -76,7 +76,7 @@
 - (Gender             ) x        { return _x       ; }
 - (TestBasic         *) test     { return _test    ; }
 - (test_xyz_Conflict *) xyz      { return _xyz     ; }
-- (Conflict          *) abc      { return _abc     ; }
+- (test_abc_Conflict *) abc      { return _abc     ; }
 - (NSMutableArray    *) children { return _children; }
 - (int32_t            ) noSetter { return _noSetter; }
 - (NSString          *) useRef   { return _useRef  ; }
@@ -88,7 +88,7 @@
 - (Custom *) setX        : (Gender             )v { _x        = v; return self; }
 - (Custom *) setTest     : (TestBasic         *)v { _test     = v; return self; }
 - (Custom *) setXyz      : (test_xyz_Conflict *)v { _xyz      = v; return self; }
-- (Custom *) setAbc      : (Conflict          *)v { _abc      = v; return self; }
+- (Custom *) setAbc      : (test_abc_Conflict *)v { _abc      = v; return self; }
 - (Custom *) setUseRef   : (NSString          *)v { _useRef   = v; return self; }
 - (Custom *) setUsePtr   : (NSString          *)v { _usePtr   = v; return self; }
 - (Custom *) setPrev     : (Custom            *)v { _prev     = v; return self; }

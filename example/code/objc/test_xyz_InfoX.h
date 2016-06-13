@@ -22,7 +22,7 @@
 
 - (NSMutableArray      *) infos     ; /*  */
 - (test_xyz_Conflict   *) conflict_x; /* Two types with the same name. */
-- (Conflict            *) conflict_a; /* Two types with the same name. */
+- (test_abc_Conflict   *) conflict_a; /* Two types with the same name. */
 - (NSMutableDictionary *) mConflict ; /*  */
 - (NSMutableArray      *) info2d    ; /* 2 dimension list */
 - (NSMutableArray      *) info3d    ; /* 3 dimension list */
@@ -35,7 +35,7 @@
 - (NSMutableDictionary *) hotfix    ; /* [AutoAdd] Hotfix */
 
 - (InfoX *) setConflict_x: (test_xyz_Conflict   *) value; /* 1 test.xyz.Conflict */
-- (InfoX *) setConflict_a: (Conflict            *) value; /* 2 test.abc.Conflict */
+- (InfoX *) setConflict_a: (test_abc_Conflict   *) value; /* 2 test.abc.Conflict */
 - (InfoX *) setHotfix    : (NSMutableDictionary *) value; /* 12 map<string,string> */
 
 @end /* @interface InfoX */

@@ -16,7 +16,7 @@
 {
     NSMutableArray      * _infos     ; /* 0 vec<vec<vec<vec<vec<test.abc.Info>>>>> */
     test_xyz_Conflict   * _conflict_x; /* 1 test.xyz.Conflict */
-    Conflict            * _conflict_a; /* 2 test.abc.Conflict */
+    test_abc_Conflict   * _conflict_a; /* 2 test.abc.Conflict */
     NSMutableDictionary * _mConflict ; /* 3 map<int32,test.abc.Conflict> */
     NSMutableArray      * _info2d    ; /* 4 vec<vec<test.abc.Info>> */
     NSMutableArray      * _info3d    ; /* 5 vec<vec<vec<test.abc.Info>>> */
@@ -38,7 +38,7 @@
     if (!self) { return self; }
     _infos      = [[NSMutableArray alloc] init];
     _conflict_x = [[test_xyz_Conflict alloc] init];
-    _conflict_a = [[Conflict alloc] init];
+    _conflict_a = [[test_abc_Conflict alloc] init];
     _mConflict  = [[NSMutableDictionary alloc] init];
     _info2d     = [[NSMutableArray alloc] init];
     _info3d     = [[NSMutableArray alloc] init];
@@ -83,7 +83,7 @@
 
 - (NSMutableArray      *) infos      { return _infos     ; }
 - (test_xyz_Conflict   *) conflict_x { return _conflict_x; }
-- (Conflict            *) conflict_a { return _conflict_a; }
+- (test_abc_Conflict   *) conflict_a { return _conflict_a; }
 - (NSMutableDictionary *) mConflict  { return _mConflict ; }
 - (NSMutableArray      *) info2d     { return _info2d    ; }
 - (NSMutableArray      *) info3d     { return _info3d    ; }
@@ -96,7 +96,7 @@
 - (NSMutableDictionary *) hotfix     { return _hotfix    ; }
 
 - (InfoX *) setConflict_x : (test_xyz_Conflict   *)v { _conflict_x = v; return self; }
-- (InfoX *) setConflict_a : (Conflict            *)v { _conflict_a = v; return self; }
+- (InfoX *) setConflict_a : (test_abc_Conflict   *)v { _conflict_a = v; return self; }
 - (InfoX *) setHotfix     : (NSMutableDictionary *)v { _hotfix     = v; return self; }
 
 - (NSInteger)read:(DataReader *)r
@@ -133,7 +133,7 @@
     uint32_t lenMConflict = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     for (uint32_t iMConflict = 0; iMConflict < lenMConflict; iMConflict++) {
         NSNumber *k1 = @([r readInt32:&eof]); if (eof) { return INVAR_ERR_DECODE_EOF; }
-        Conflict *v1 = [[Conflict alloc] init];
+        test_abc_Conflict *v1 = [[test_abc_Conflict alloc] init];
         NSInteger v1Err = [v1 read:r]; if (v1Err != 0) { return v1Err; } if (eof) { return INVAR_ERR_DECODE_EOF; }
         [_mConflict setObject:v1 forKey:k1];
     } if (eof) { return INVAR_ERR_DECODE_EOF; }
@@ -304,7 +304,7 @@
     [w writeUInt32:(uint32_t)[_mConflict count]];
     for (id k1 in _mConflict) {
         [w writeInt32:[k1 intValue]];
-        Conflict *v1 = [_mConflict objectForKey:k1];
+        test_abc_Conflict *v1 = [_mConflict objectForKey:k1];
         [v1 write:w];
     }
     [w writeUInt32:(uint32_t)[_info2d count]];

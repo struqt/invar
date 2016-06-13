@@ -1,5 +1,7 @@
 package invar.model;
 
+import invar.InvarContext;
+
 import java.util.HashSet;
 import java.util.regex.Matcher;
 
@@ -80,7 +82,6 @@ public class InvarType {
         this.isBuildin = isBuildin;
         if (typeNames.contains(name)) {
             this.isConflict = true;
-            this.uniqueName = pack.getName().replaceAll("\\.", "_") + "_" + name;
         } else {
             this.isConflict = false;
             typeNames.add(name);
@@ -105,11 +106,21 @@ public class InvarType {
         return name;
     }
 
-    final public Boolean getConflict() {
-        return isConflict;
+    final public Boolean getConflict(InvarContext ctx) {
+        if (isConflict) {
+            return true;
+        }
+        if (ctx.findTypes(this.getName()).size() > 1) {
+            isConflict = true;
+            return true;
+        }
+        return false;
     }
 
     final public String getUniqueName() {
+        if (uniqueName == null || "".equals(uniqueName)){
+            this.uniqueName = pack.getName().replaceAll("\\.", "_") + "_" + name;
+        }
         return uniqueName;
     }
 

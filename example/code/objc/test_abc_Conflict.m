@@ -12,7 +12,7 @@
 
 #define CRC32 0xF938CCBC
 
-@interface Conflict ()
+@interface test_abc_Conflict ()
 {
     Gender                _key   ; /* 0 test.abc.Gender */
     NSString            * _text  ; /* 1 string */
@@ -21,7 +21,7 @@
 }
 @end
 
-@implementation Conflict
+@implementation test_abc_Conflict
 
 - (instancetype) init
 {
@@ -58,9 +58,9 @@
 - (NSMutableArray      *) bytes  { return _bytes ; }
 - (NSMutableDictionary *) hotfix { return _hotfix; }
 
-- (Conflict *) setKey    : (Gender               )v { _key    = v; return self; }
-- (Conflict *) setText   : (NSString            *)v { _text   = v; return self; }
-- (Conflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
+- (test_abc_Conflict *) setKey    : (Gender               )v { _key    = v; return self; }
+- (test_abc_Conflict *) setText   : (NSString            *)v { _text   = v; return self; }
+- (test_abc_Conflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
 
 - (NSInteger)read:(DataReader *)r
 {
@@ -168,5 +168,5 @@
 }
 /* Conflict::writeJSON */
 
-@end /* @implementation Conflict */
+@end /* @implementation test_abc_Conflict */
 

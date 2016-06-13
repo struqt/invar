@@ -30,7 +30,7 @@
     NSMutableArray      * _world        ; /* f13 vec<string> */
     Gender                _gender       ; /* f14 test.abc.Gender */
     Info                * _next         ; /* f15 test.abc.Info */
-    Conflict            * _conflict     ; /* f16 test.abc.Conflict */
+    test_abc_Conflict   * _conflict     ; /* f16 test.abc.Conflict */
     NSMutableArray      * _conflicts    ; /* f17 vec<test.xyz.Conflict> */
     NSMutableArray      * _numbers      ; /* f18 vec<double> */
     NSMutableDictionary * _mapInfoG     ; /* f19 map<test.abc.Info,test.abc.Gender> */
@@ -62,7 +62,7 @@
     _world         = [[NSMutableArray alloc] init];
     _gender        = NONE;
     _next          = nil;
-    _conflict      = [[Conflict alloc] init];
+    _conflict      = [[test_abc_Conflict alloc] init];
     _conflicts     = [[NSMutableArray alloc] init];
     _numbers       = [[NSMutableArray alloc] init];
     _mapInfoG      = [[NSMutableDictionary alloc] init];
@@ -114,7 +114,7 @@
 - (NSMutableArray      *) world         { return _world        ; }
 - (Gender               ) gender        { return _gender       ; }
 - (Info                *) next          { return _next         ; }
-- (Conflict            *) conflict      { return _conflict     ; }
+- (test_abc_Conflict   *) conflict      { return _conflict     ; }
 - (NSMutableArray      *) conflicts     { return _conflicts    ; }
 - (NSMutableArray      *) numbers       { return _numbers      ; }
 - (NSMutableDictionary *) mapInfoG      { return _mapInfoG     ; }
@@ -137,7 +137,7 @@
 - (Info *) setS             : (NSString            *)v { _s             = v; return self; }
 - (Info *) setGender        : (Gender               )v { _gender        = v; return self; }
 - (Info *) setNext          : (Info                *)v { _next          = v; return self; }
-- (Info *) setConflict      : (Conflict            *)v { _conflict      = v; return self; }
+- (Info *) setConflict      : (test_abc_Conflict   *)v { _conflict      = v; return self; }
 - (Info *) setHotfix        : (NSMutableDictionary *)v { _hotfix        = v; return self; }
 
 - (NSInteger)read:(DataReader *)r
@@ -172,7 +172,7 @@
     NSInteger conflictErr = [_conflict read:r]; if (conflictErr != 0) { return conflictErr; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     uint32_t lenConflicts = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     for (uint32_t iConflicts = 0; iConflicts < lenConflicts; iConflicts++) {
-        Conflict *n1 = [[Conflict alloc] init];
+        test_xyz_Conflict *n1 = [[test_xyz_Conflict alloc] init];
         NSInteger n1Err = [n1 read:r]; if (n1Err != 0) { return n1Err; } if (eof) { return INVAR_ERR_DECODE_EOF; }
         [_conflicts addObject:n1];
     } if (eof) { return INVAR_ERR_DECODE_EOF; }

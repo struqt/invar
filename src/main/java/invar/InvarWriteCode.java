@@ -434,10 +434,10 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     protected String makeDoc(String comment) {
-        if (comment == null || comment.equals(empty))
+        if (comment == null)
             return empty;
         String s = snippetGet(Key.DOC);
-        s = replace(s, Token.Doc, comment == null ? empty : comment);
+        s = replace(s, Token.Doc, comment);
         return s;
     }
 
@@ -846,9 +846,13 @@ public final class InvarWriteCode extends InvarWrite {
     private String makeTypeFormatted(InvarContext ctx, InvarField f, String split, Boolean fullName, Boolean head) {
         InvarType t = f.getType().getRedirect();
         String tName = t.getName();
-        boolean conflict = t.getConflict();
+        boolean conflict = t.getConflict(ctx);
         if (conflict) {
-            tName = getUniqueTypeName(t);
+            if (uniqueTypeName) {
+                tName = getUniqueTypeName(t);
+            } else {
+                tName = t.fullName(split);
+            }
         } else {
             if (fullName) {
                 tName = t.fullName(split);
@@ -864,7 +868,7 @@ public final class InvarWriteCode extends InvarWrite {
         if (!uniqueTypeName) {
             return t.getName();
         }
-        return t.getConflict() ? t.getUniqueName() : t.getName();
+        return t.getConflict(context) ? t.getUniqueName() : t.getName();
     }
 
     void impsCheckAdd(TreeSet<String> imps, InvarType t, TypeStruct struct) {
@@ -956,7 +960,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (t.getRealId() == TypeID.VEC || t.getRealId() == TypeID.MAP)
                 forShort = t.getName();
             else {
-                if (/*ctx.findTypes(t.getName()).size() > 1 ||*/useFullName)
+                if (t.getConflict(ctx) || useFullName)
                     forShort = t.fullName(split);
                 else
                     forShort = t.getName();
