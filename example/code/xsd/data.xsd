@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:tns="invar.data" targetNamespace="invar.data">
+
+<xs:element name="root" type="tns:test.xyz.ConfigRoot" />
+
+<xs:complexType name="int8"><xs:attribute type="xs:byte" name="value" use="required"/></xs:complexType>
+<xs:complexType name="int16"><xs:attribute type="xs:short" name="value" use="required"/></xs:complexType>
+<xs:complexType name="int32"><xs:attribute type="xs:int" name="value" use="required"/></xs:complexType>
+<xs:complexType name="int64"><xs:attribute type="xs:long" name="value" use="required"/></xs:complexType>
+<xs:complexType name="uint8"><xs:attribute type="xs:unsignedByte" name="value" use="required"/></xs:complexType>
+<xs:complexType name="uint16"><xs:attribute type="xs:unsignedShort" name="value" use="required"/></xs:complexType>
+<xs:complexType name="uint32"><xs:attribute type="xs:unsignedInt" name="value" use="required"/></xs:complexType>
+<xs:complexType name="uint64"><xs:attribute type="xs:unsignedLong" name="value" use="required"/></xs:complexType>
+<xs:complexType name="float"><xs:attribute type="xs:float" name="value" use="required"/></xs:complexType>
+<xs:complexType name="double"><xs:attribute type="xs:double" name="value" use="required"/></xs:complexType>
+<xs:complexType name="bool"><xs:attribute type="xs:boolean" name="value" use="required"/></xs:complexType>
+<xs:complexType name="string"><xs:attribute type="xs:string" name="value" use="required"/></xs:complexType>
+
+<xs:complexType name="test.abc.Conflict">
+  <xs:sequence>
+    <xs:element name="key" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+    <xs:element name="text" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="bytes" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="int8" minOccurs="0" maxOccurs="2048" type="tns:int8" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="key" type="tns:test.abc.GenderAttr" />
+  <xs:attribute name="text" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="test.abc.TestBasic">
+  <xs:sequence>
+    <xs:element name="numberI08" minOccurs="0" maxOccurs="2048" type="tns:int8" />
+    <xs:element name="numberI16" minOccurs="0" maxOccurs="2048" type="tns:int16" />
+    <xs:element name="numberI32" minOccurs="0" maxOccurs="2048" type="tns:int32" />
+    <xs:element name="numberI64" minOccurs="0" maxOccurs="2048" type="tns:int64" />
+    <xs:element name="numberU08" minOccurs="0" maxOccurs="2048" type="tns:uint8" />
+    <xs:element name="numberU16" minOccurs="0" maxOccurs="2048" type="tns:uint16" />
+    <xs:element name="numberU32" minOccurs="0" maxOccurs="2048" type="tns:uint32" />
+    <xs:element name="numberU64" minOccurs="0" maxOccurs="2048" type="tns:uint64" />
+    <xs:element name="numberSingle" minOccurs="0" maxOccurs="2048" type="tns:float" />
+    <xs:element name="numberDouble" minOccurs="0" maxOccurs="2048" type="tns:double" />
+    <xs:element name="boolValue" minOccurs="0" maxOccurs="2048" type="tns:bool" />
+    <xs:element name="stringValue" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="enumValue" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+    <xs:element name="enumDeft" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="numberI08" type="xs:byte" />
+  <xs:attribute name="numberI16" type="xs:short" />
+  <xs:attribute name="numberI32" type="xs:int" />
+  <xs:attribute name="numberI64" type="xs:long" />
+  <xs:attribute name="numberU08" type="xs:unsignedByte" />
+  <xs:attribute name="numberU16" type="xs:unsignedShort" />
+  <xs:attribute name="numberU32" type="xs:unsignedInt" />
+  <xs:attribute name="numberU64" type="xs:unsignedLong" />
+  <xs:attribute name="numberSingle" type="xs:float" />
+  <xs:attribute name="numberDouble" type="xs:double" />
+  <xs:attribute name="boolValue" type="xs:boolean" />
+  <xs:attribute name="stringValue" type="xs:string" />
+  <xs:attribute name="enumValue" type="tns:test.abc.GenderAttr" />
+  <xs:attribute name="enumDeft" type="tns:test.abc.GenderAttr" />
+</xs:complexType>
+<xs:complexType name="test.abc.Custom">
+  <xs:sequence>
+    <xs:element name="x" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+    <xs:element name="test" minOccurs="0" maxOccurs="2048" type="tns:test.abc.TestBasic" />
+    <xs:element name="xyz" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.Conflict" />
+    <xs:element name="abc" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Conflict" />
+    <xs:element name="children" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Custom" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="noSetter" minOccurs="0" maxOccurs="2048" type="tns:int32" />
+    <xs:element name="useRef" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="usePtr" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="prev" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+    <xs:element name="next" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+    <xs:element name="emptyDoc" minOccurs="0" maxOccurs="2048" type="tns:string" />
+  </xs:sequence>
+  <xs:attribute name="x" type="tns:test.abc.GenderAttr" />
+  <xs:attribute name="noSetter" type="xs:int" />
+  <xs:attribute name="useRef" type="xs:string" />
+  <xs:attribute name="usePtr" type="xs:string" />
+  <xs:attribute name="emptyDoc" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="test.abc.Gender"><xs:attribute type="tns:test.abc.GenderAttr" name="value" use="required" /></xs:complexType>
+<xs:simpleType name="test.abc.GenderAttr">
+  <xs:restriction base="xs:string">
+    <!-- -1 --><xs:enumeration value="NONE" />
+    <!-- 10 --><xs:enumeration value="MALE" />
+    <!-- 20 --><xs:enumeration value="FEMALE" />
+  </xs:restriction></xs:simpleType>
+<xs:complexType name="test.abc.Info">
+  <xs:sequence>
+    <xs:element name="key" minOccurs="0" maxOccurs="2048" type="tns:int32" />
+    <xs:element name="number01" minOccurs="0" maxOccurs="2048" type="tns:int8" />
+    <xs:element name="number02" minOccurs="0" maxOccurs="2048" type="tns:int16" />
+    <xs:element name="number03" minOccurs="0" maxOccurs="2048" type="tns:int32" />
+    <xs:element name="number04" minOccurs="0" maxOccurs="2048" type="tns:int64" />
+    <xs:element name="number05" minOccurs="0" maxOccurs="2048" type="tns:uint8" />
+    <xs:element name="number06" minOccurs="0" maxOccurs="2048" type="tns:uint16" />
+    <xs:element name="number07" minOccurs="0" maxOccurs="2048" type="tns:uint32" />
+    <xs:element name="number08" minOccurs="0" maxOccurs="2048" type="tns:uint64" />
+    <xs:element name="number09" minOccurs="0" maxOccurs="2048" type="tns:float" />
+    <xs:element name="number10" minOccurs="0" maxOccurs="2048" type="tns:double" />
+    <xs:element name="isReal" minOccurs="0" maxOccurs="2048" type="tns:bool" />
+    <xs:element name="s" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="world" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" type="tns:string" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="gender" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+    <xs:element name="next" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+    <xs:element name="conflict" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Conflict" />
+    <xs:element name="conflicts" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Conflict" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.Conflict" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="numbers" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="double" minOccurs="0" maxOccurs="2048" type="tns:double" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="mapInfoG" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="2048">
+      <xs:element name="k-Info" minOccurs="1" maxOccurs="1" type="tns:test.abc.Info" />
+      <xs:element name="v-Gender" minOccurs="1" maxOccurs="1" type="tns:test.abc.Gender" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="mapGenderInfo" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="mapDouble" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="double" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:double">
+      <xs:attribute name="key" type="xs:int" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="key" type="xs:int" />
+  <xs:attribute name="number01" type="xs:byte" />
+  <xs:attribute name="number02" type="xs:short" />
+  <xs:attribute name="number03" type="xs:int" />
+  <xs:attribute name="number04" type="xs:long" />
+  <xs:attribute name="number05" type="xs:unsignedByte" />
+  <xs:attribute name="number06" type="xs:unsignedShort" />
+  <xs:attribute name="number07" type="xs:unsignedInt" />
+  <xs:attribute name="number08" type="xs:unsignedLong" />
+  <xs:attribute name="number09" type="xs:float" />
+  <xs:attribute name="number10" type="xs:double" />
+  <xs:attribute name="isReal" type="xs:boolean" />
+  <xs:attribute name="s" type="xs:string" />
+  <xs:attribute name="gender" type="tns:test.abc.GenderAttr" />
+</xs:complexType>
+<xs:complexType name="test.xyz.TestDict">
+  <xs:sequence>
+    <xs:element name="dictI08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="int8" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:int8">
+      <xs:attribute name="key" type="xs:byte" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictI16" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="int16" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:int16">
+      <xs:attribute name="key" type="xs:short" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictI32" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="int32" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:int32">
+      <xs:attribute name="key" type="xs:int" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictI64" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="int64" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:int64">
+      <xs:attribute name="key" type="xs:long" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictU08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="uint8" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:uint8">
+      <xs:attribute name="key" type="xs:unsignedByte" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictU16" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="uint16" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:uint16">
+      <xs:attribute name="key" type="xs:unsignedShort" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictU32" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="uint32" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:uint32">
+      <xs:attribute name="key" type="xs:unsignedInt" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictU64" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="uint64" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:uint64">
+      <xs:attribute name="key" type="xs:unsignedLong" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictSingle" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="float" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:float">
+      <xs:attribute name="key" type="xs:float" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictDouble" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="double" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:double">
+      <xs:attribute name="key" type="xs:double" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictBoolean" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="bool" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:bool">
+      <xs:attribute name="key" type="xs:boolean" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictString" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictEnum" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="Gender" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:test.abc.Gender">
+      <xs:attribute name="key" type="tns:test.abc.GenderAttr" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictStruct" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="2048">
+      <xs:element name="k-Custom" minOccurs="1" maxOccurs="1" type="tns:test.abc.Custom" />
+      <xs:element name="v-Custom" minOccurs="1" maxOccurs="1" type="tns:test.abc.Custom" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+</xs:complexType>
+<xs:complexType name="test.xyz.TestRefer">
+  <xs:sequence>
+    <xs:element name="numberi08" minOccurs="0" maxOccurs="2048" type="tns:int8" />
+    <xs:element name="numberi16" minOccurs="0" maxOccurs="2048" type="tns:int16" />
+    <xs:element name="numberi32" minOccurs="0" maxOccurs="2048" type="tns:int32" />
+    <xs:element name="numberi64" minOccurs="0" maxOccurs="2048" type="tns:int64" />
+    <xs:element name="numberu08" minOccurs="0" maxOccurs="2048" type="tns:uint8" />
+    <xs:element name="numberu16" minOccurs="0" maxOccurs="2048" type="tns:uint16" />
+    <xs:element name="numberu32" minOccurs="0" maxOccurs="2048" type="tns:uint32" />
+    <xs:element name="numberu64" minOccurs="0" maxOccurs="2048" type="tns:uint64" />
+    <xs:element name="numberSingle" minOccurs="0" maxOccurs="2048" type="tns:float" />
+    <xs:element name="numberDouble" minOccurs="0" maxOccurs="2048" type="tns:double" />
+    <xs:element name="boolValue" minOccurs="0" maxOccurs="2048" type="tns:bool" />
+    <xs:element name="stringValue" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="enumValue" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+    <xs:element name="other" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+    <xs:element name="self" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.TestRefer" />
+    <xs:element name="listI08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="int8" minOccurs="0" maxOccurs="2048" type="tns:int8" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictI08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="int8" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:int8">
+      <xs:attribute name="key" type="xs:byte" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="numberi08" type="xs:byte" />
+  <xs:attribute name="numberi16" type="xs:short" />
+  <xs:attribute name="numberi32" type="xs:int" />
+  <xs:attribute name="numberi64" type="xs:long" />
+  <xs:attribute name="numberu08" type="xs:unsignedByte" />
+  <xs:attribute name="numberu16" type="xs:unsignedShort" />
+  <xs:attribute name="numberu32" type="xs:unsignedInt" />
+  <xs:attribute name="numberu64" type="xs:unsignedLong" />
+  <xs:attribute name="numberSingle" type="xs:float" />
+  <xs:attribute name="numberDouble" type="xs:double" />
+  <xs:attribute name="boolValue" type="xs:boolean" />
+  <xs:attribute name="stringValue" type="xs:string" />
+  <xs:attribute name="enumValue" type="tns:test.abc.GenderAttr" />
+</xs:complexType>
+<xs:complexType name="test.xyz.InfoX">
+  <xs:sequence>
+    <xs:element name="infos" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="conflict_x" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.Conflict" />
+    <xs:element name="conflict_a" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Conflict" />
+    <xs:element name="mConflict" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="Conflict" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Conflict" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="info2d" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="info3d" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="info5d" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="infovm" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="map" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="mvei" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="2048">
+      <xs:element name="k-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Gender" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      <xs:element name="v-Info" minOccurs="1" maxOccurs="1" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="mive" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="2048">
+      <xs:element name="k-Info" minOccurs="1" maxOccurs="1" type="tns:test.abc.Info" />
+      <xs:element name="v-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Gender" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="mvive" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="2048">
+      <xs:element name="k-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      <xs:element name="v-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Gender" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="vmvive" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="map" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="2048">
+      <xs:element name="k-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      <xs:element name="v-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Gender" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+</xs:complexType>
+<xs:complexType name="test.xyz.ConfigRoot">
+  <xs:sequence>
+    <xs:element name="revision" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="list" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.TestList" />
+    <xs:element name="dict" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.TestDict" />
+    <xs:element name="nest" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.TestNest" />
+    <xs:element name="info" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Info" />
+    <xs:element name="infox" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.InfoX" />
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="revision" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="test.xyz.Conflict">
+  <xs:sequence>
+    <xs:element name="pi" minOccurs="0" maxOccurs="2048" type="tns:double" />
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="pi" type="xs:double" />
+</xs:complexType>
+<xs:complexType name="test.xyz.TestNest">
+  <xs:sequence>
+    <xs:element name="listDict" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="map" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="Custom" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:test.abc.Custom">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictList" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="2048">
+      <xs:element name="k-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" type="tns:string" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      <xs:element name="v-vec" minOccurs="1" maxOccurs="1" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Custom" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="list5d" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Custom" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+</xs:complexType>
+<xs:complexType name="test.xyz.TestPointer">
+  <xs:sequence>
+    <xs:element name="self" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.TestPointer" />
+    <xs:element name="stringValue" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="other" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+    <xs:element name="listI08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="int8" minOccurs="0" maxOccurs="2048" type="tns:int8" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="dictI08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="int8" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:int8">
+      <xs:attribute name="key" type="xs:byte" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listNested" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="vec" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="TestPointer" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.TestPointer" />
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="numberSingle" minOccurs="0" maxOccurs="2048" type="tns:float" />
+    <xs:element name="enumValue" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="stringValue" type="xs:string" />
+  <xs:attribute name="numberSingle" type="xs:float" />
+  <xs:attribute name="enumValue" type="tns:test.abc.GenderAttr" />
+</xs:complexType>
+<xs:complexType name="test.xyz.TestList">
+  <xs:sequence>
+    <xs:element name="listI08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="int8" minOccurs="0" maxOccurs="2048" type="tns:int8" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listI16" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="int16" minOccurs="0" maxOccurs="2048" type="tns:int16" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listI32" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="int32" minOccurs="0" maxOccurs="2048" type="tns:int32" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listI64" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="int64" minOccurs="0" maxOccurs="2048" type="tns:int64" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listU08" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="uint8" minOccurs="0" maxOccurs="2048" type="tns:uint8" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listU16" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="uint16" minOccurs="0" maxOccurs="2048" type="tns:uint16" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listU32" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="uint32" minOccurs="0" maxOccurs="2048" type="tns:uint32" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listU64" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="uint64" minOccurs="0" maxOccurs="2048" type="tns:uint64" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listSingle" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="float" minOccurs="0" maxOccurs="2048" type="tns:float" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listDouble" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="double" minOccurs="0" maxOccurs="2048" type="tns:double" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listBoolean" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="bool" minOccurs="0" maxOccurs="2048" type="tns:bool" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listString" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" type="tns:string" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listEnum" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Gender" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listStruct" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:sequence>
+      <xs:element name="Custom" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
+      </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+</xs:complexType>
+<xs:complexType name="test.protoc.Protoc2S">
+  <xs:sequence>
+    <xs:element name="sessionId" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="sessionId" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="test.protoc.Protoc2C">
+  <xs:sequence>
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+</xs:complexType>
+</schema>

@@ -124,7 +124,7 @@
 	]]></template>
   <template key="struct.meta"><![CDATA[ (#name) (#type) ]]></template>
   <template key="struct.field"><![CDATA[
-    (#tab)private \$[#clampLen(lenFieldNameR; 18; (#name) )] ;
+    (#tab)private \$[#clampLen(lenFieldNameR; 24; (#namer) )] ;
     (#concat)/* [#codeMetaData(fields; (#index))]
     (#concat)[#codeLineDoc(fields; (#index))] */
   ]]></template>
