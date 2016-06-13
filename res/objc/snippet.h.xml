@@ -108,5 +108,26 @@
     (#concat) [#codeMetaData(fields; (#index))]
   ]]></template>
 
+  <template key="runtime.file"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.pack"><![CDATA[ ]]></template>
+  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.body"><![CDATA[
+    typedef void (^RecvRequest)(id req, id resp);
+    typedef void (^RecvResponse)(id resp);
+    typedef void (^RecvNotify)(id ntf);
+    (#blank)
+    @interface InvarRuntime : NSObject
+    (#blank)
+    @property (nonatomic, strong) RecvRequest  blockRecvRequest;
+    @property (nonatomic, strong) RecvResponse blockRecvResponse;
+    @property (nonatomic, strong) RecvNotify   blockRecvNotify;
+    (#blank)
+    + (instancetype) shared;
+    + (NSInteger)HandleProtocAsServer:(DataReader *)input;
+    + (NSInteger)HandleProtocAsClient:(DataReader *)input;
+    (#blank)
+    @end
+  ]]></template>
+
 
 </tns:root>

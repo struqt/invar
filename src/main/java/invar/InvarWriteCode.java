@@ -758,7 +758,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (tStruct == null) {
                 continue;
             }
-            impsCheckAdd(imps, tStruct, null);
+            impsCheckAdd(imps, tStruct, null, true);
             boolean needReply = (tStruct == tStruct.getProtoc().getRequest());
             String keySnippet;
             String temp;
@@ -872,6 +872,10 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     void impsCheckAdd(TreeSet<String> imps, InvarType t, TypeStruct struct) {
+        impsCheckAdd(imps, t, struct, false);
+    }
+
+    void impsCheckAdd(TreeSet<String> imps, InvarType t, TypeStruct struct, boolean forcedInclude) {
         String include = t.getCodePath();
         if (include != null && !include.equals(empty)) {
             if (lowerFileName)
@@ -890,6 +894,9 @@ public final class InvarWriteCode extends InvarWrite {
                 if (t != struct)
                     fileIncludes.add(s);
             }
+            if (forcedInclude) {
+                fileIncludes.add(s);
+            }
         }
         //TODO if (impExcludeConflict && t.getIsConflict())
         if (impExcludeConflict && getContext().findTypes(t.getName()).size() > 1) {
@@ -904,7 +911,6 @@ public final class InvarWriteCode extends InvarWrite {
         String packName = t.getPack().getName();
         String typeName = t.getName();
         String rule = packName + ruleTypeSplit + typeName;
-
         imps.add(rule);
     }
 

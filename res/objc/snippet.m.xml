@@ -472,4 +472,94 @@
   ]]></template>
 
 
+  <!-- Write InvarRuntime file -->
+  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.type.split"><![CDATA[ . ]]></template>
+  <template key="runtime.body"><![CDATA[
+    public sealed class InvarRuntime {
+    (#blank)
+    static public InvarReadData MakeXmlReader()
+    {
+    (#tab)if (InvarReadData.AliasBasics == null) {
+    (#tab)(#tab)InvarReadData.AliasBasics = aliasBasic ();
+    (#tab)(#tab)InvarReadData.AliasEnums = aliasEnum ();
+    (#tab)(#tab)InvarReadData.AliasStructs = aliasStruct ();
+    (#tab)}
+    (#tab) return new InvarReadData ();
+    }
+    (#body)
+    static public UInt16 PeekProtocId(System.IO.BinaryReader r)
+    {
+    (#tab)long p = r.BaseStream.Position;
+    (#tab)UInt16 id = r.ReadUInt16();
+    (#tab)r.BaseStream.Position = p;
+    (#tab)return id;
+    }
+    (#blank)
+    } //class: InvarRuntime
+  ]]></template>
+
+  <template key="runtime.file"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.pack"><![CDATA[ ]]></template>
+  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
+
+  <template key="runtime.body"><![CDATA[
+    (#concat-all)
+    #import "InvarRuntime.h"
+    (#blank)
+    #define HandleRequest  [[self shared] blockRecvRequest]
+    #define HandleNotify   [[self shared] blockRecvNotify]
+    #define HandleResponse [[self shared] blockRecvResponse]
+    (#blank)
+    @implementation InvarRuntime
+    (#blank)
+    + (instancetype) shared
+    {
+    (#tab)static id sharedInstance = nil;
+    (#tab)static dispatch_once_t predicate;
+    (#tab)dispatch_once(&predicate, ^{
+    (#tab)(#tab)sharedInstance = [[self alloc] init];
+    (#tab)});
+    (#tab)return sharedInstance;
+    }
+    (#body)
+    @end
+  ]]></template>
+  <template key="runtime.protoc.handle.client"><![CDATA[ HandleProtocAsServer ]]></template>
+  <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtocAsClient ]]></template>
+  <template key="runtime.protoc.handle.notify"><![CDATA[ (#blank)
+    (#tab)(#space)case (#key): /* (#doc) */ {
+    (#tab)(#tab)id (#name) = [[(#type) alloc] init];
+    (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
+    (#tab)(#tab)if (HandleNotify) { HandleNotify((#name)); }
+    (#tab)(#tab)break; } ]]></template>
+  <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
+    (#tab)(#space)case (#key): /* (#doc) */ {
+    (#tab)(#tab)id (#name) = [[(#type) alloc] init];
+    (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
+    (#tab)(#tab)if (HandleResponse) { HandleResponse((#name)); }
+    (#tab)(#tab)break; } ]]></template>
+  <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
+    (#tab)(#space)case (#key): /* (#doc) */ {
+    (#tab)(#tab)id (#name) = [[(#type) alloc] init];
+    (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
+    (#tab)(#tab)if (HandleRequest) { HandleRequest((#name), [[(#resp) alloc] init]); }
+    (#tab)(#tab)break; } ]]></template>
+  <template key="runtime.protoc.handle.method"><![CDATA[
+    (#blank)
+    + (NSInteger)(#name):(DataReader *)r
+    {
+    (#tab)BOOL eof = NO;
+    (#tab)NSUInteger command = [r peekUInt16:&eof];
+    (#tab)if (eof) { return INVAR_ERR_DECODE_EOF; }
+    (#tab)NSInteger err = INVAR_ERR_NONE;
+    (#tab)switch (command) {(#body)
+    (#tab)(#space)default: { return INVAR_ERR_PROTOC_NO_HANDLER; }
+    (#tab)}
+    (#tab)return err;
+    }
+    /* (#name) */
+  ]]></template>
+
+
 </tns:root>

@@ -28,6 +28,8 @@
 - (boolean_t) readBool   : (BOOL *)eof;
 - (NSString*) readString : (BOOL *)eof;
 
+- (uint16_t)  peekUInt16 : (BOOL *)eof;
+
 @end
 
 #endif /* DataReader_h */

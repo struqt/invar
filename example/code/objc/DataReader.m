@@ -111,6 +111,14 @@
     return *(uint16_t*)p;
 }
 
+- (uint16_t) peekUInt16:(BOOL *)eof
+{
+    if (![self checkAvailable:2]) { *eof = YES; }
+    if (*eof) { return 0; }
+    const char *p = _bytes + _bytesPos;
+    return *(uint16_t*)p;
+}
+
 - (uint32_t) readUInt32:(BOOL*)eof
 {
     if (![self checkAvailable:4]) { *eof = YES; }
