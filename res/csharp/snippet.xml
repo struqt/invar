@@ -133,7 +133,7 @@
   <template key="struct.field.prefix"><![CDATA[ this. ]]></template>
   <template key="struct.field"><![CDATA[
     (#tab)private [#clampLen(lenFieldType; 64; (#type))]
-    (#concat) [#clampLen(lenFieldNameR; 16; (#name) )] = (#value);
+    (#concat) [#clampLen(lenFieldNameR; 16; (#namer) )] = (#value);
     (#concat)[#codeLineDoc(fields; (#index))]
   ]]></template>
   <template key="struct.setter"><![CDATA[
