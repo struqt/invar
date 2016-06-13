@@ -31,4 +31,15 @@
 @end
 
 
+#define INVAR_ERR_NONE                     0
+#define INVAR_ERR_DECODE_EOF             495
+#define INVAR_ERR_DECODE_STRING_P        496
+#define INVAR_ERR_DECODE_STRUCT_P        497
+#define INVAR_ERR_DECODE_VEC_MAP_P       498
+#define INVAR_ERR_PROTOC_CRC_MISMATCH    499
+#define INVAR_ERR_PROTOC_UNHANDLED       500
+#define INVAR_ERR_PROTOC_INVALID_ID      501
+#define INVAR_ERR_PROTOC_NO_HANDLER      503
+
+
 #endif /* Invar_h */

@@ -25,13 +25,13 @@ public class InvarTest extends TestCase {
      * Rigourous Test :-)
      */
     public void testInvarMain() {
-        final String prefix = "target/example-code-gen/";
-        Invar.main(new String[]{"-rule", "res/example/rule/",
+        final String prefix = "example/code/";
+        Invar.main(new String[]{"-rule", "example/rule/",
                 "-xsd", prefix + "xsd/",
                 "-csharp", prefix + "csharp/",
-                "-java", prefix + "java/",
+                //"-java", prefix + "java/",
                 "-objc", prefix + "objc/",
-                "-cpp", prefix + "cpp/",
+                //"-cpp", prefix + "cpp/",
                 "-php", prefix + "php/",
                 //"-flash", prefix + "flash/",
         });

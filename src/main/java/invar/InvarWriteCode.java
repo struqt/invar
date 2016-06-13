@@ -517,6 +517,17 @@ public final class InvarWriteCode extends InvarWrite {
         //args.put("env", args);
         s = funcEvalAll(s, args);
         s = replace(s, Token.Debug, type.getCodecRule());
+        if (type.getProtoc() != null) {
+            Integer id = 0;
+            if (type.getProtoc().getClient() == type) {
+                id = type.getProtoc().getClientId();
+            } else if (type.getProtoc().getServer() == type) {
+                id = type.getProtoc().getServerId();
+            } else {
+                id = 0;
+            }
+            s = replace(s, Token.ProtocId, id.toString());
+        }
         return s;
     }
 
@@ -1181,9 +1192,6 @@ public final class InvarWriteCode extends InvarWrite {
                     if (!empty.equals(s_head)) {
                         s = s_head + s;
                     }
-                    if (!empty.equals(s_tail)) {
-                        s = s + s_tail;
-                    }
                     //if (!empty.equals(s_space) && !p.isLast) {
                     //    s = s + s_space;
                     //}
@@ -1192,6 +1200,9 @@ public final class InvarWriteCode extends InvarWrite {
                         if (!empty.equals(s_special)) {
                             s = s + s_special;
                         }
+                    }
+                    if (!empty.equals(s_tail)) {
+                        s = s + s_tail;
                     }
                     s = replace(s, Token.Body, code);
                     s = replace(s, Token.BodyIndent, makeBodyIndent(code));

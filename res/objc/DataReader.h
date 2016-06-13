@@ -11,22 +11,22 @@
 
 @interface DataReader : NSObject
 
-+ (instancetype) CreateWithBytes:(const void*)bytes andLength:(NSUInteger)len;
 + (instancetype) CreateWithData:(NSData*)data;
 + (instancetype) CreateWithData:(NSData*)data andOffset:(NSUInteger)offset;
++ (instancetype) CreateWithBytes:(const void*)bytes andLength:(NSUInteger)len;
 
-- (int8_t)    readInt8   : (boolean_t *)eof;
-- (int16_t)   readInt16  : (boolean_t *)eof;
-- (int32_t)   readInt32  : (boolean_t *)eof;
-- (int64_t)   readInt64  : (boolean_t *)eof;
-- (uint8_t)   readUInt8  : (boolean_t *)eof;
-- (uint16_t)  readUInt16 : (boolean_t *)eof;
-- (uint32_t)  readUInt32 : (boolean_t *)eof;
-- (uint64_t)  readUInt64 : (boolean_t *)eof;
-- (float_t)   readFloat  : (boolean_t *)eof;
-- (double_t)  readDouble : (boolean_t *)eof;
-- (boolean_t) readBool   : (boolean_t *)eof;
-- (NSString*) readString : (boolean_t *)eof;
+- (int8_t)    readInt8   : (BOOL *)eof;
+- (int16_t)   readInt16  : (BOOL *)eof;
+- (int32_t)   readInt32  : (BOOL *)eof;
+- (int64_t)   readInt64  : (BOOL *)eof;
+- (uint8_t)   readUInt8  : (BOOL *)eof;
+- (uint16_t)  readUInt16 : (BOOL *)eof;
+- (uint32_t)  readUInt32 : (BOOL *)eof;
+- (uint64_t)  readUInt64 : (BOOL *)eof;
+- (float_t)   readFloat  : (BOOL *)eof;
+- (double_t)  readDouble : (BOOL *)eof;
+- (boolean_t) readBool   : (BOOL *)eof;
+- (NSString*) readString : (BOOL *)eof;
 
 @end
 
