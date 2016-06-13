@@ -473,43 +473,13 @@
 
 
   <!-- Write InvarRuntime file -->
-  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
-  <template key="runtime.type.split"><![CDATA[ . ]]></template>
-  <template key="runtime.body"><![CDATA[
-    public sealed class InvarRuntime {
-    (#blank)
-    static public InvarReadData MakeXmlReader()
-    {
-    (#tab)if (InvarReadData.AliasBasics == null) {
-    (#tab)(#tab)InvarReadData.AliasBasics = aliasBasic ();
-    (#tab)(#tab)InvarReadData.AliasEnums = aliasEnum ();
-    (#tab)(#tab)InvarReadData.AliasStructs = aliasStruct ();
-    (#tab)}
-    (#tab) return new InvarReadData ();
-    }
-    (#body)
-    static public UInt16 PeekProtocId(System.IO.BinaryReader r)
-    {
-    (#tab)long p = r.BaseStream.Position;
-    (#tab)UInt16 id = r.ReadUInt16();
-    (#tab)r.BaseStream.Position = p;
-    (#tab)return id;
-    }
-    (#blank)
-    } //class: InvarRuntime
-  ]]></template>
-
   <template key="runtime.file"><![CDATA[ InvarRuntime ]]></template>
   <template key="runtime.pack"><![CDATA[ ]]></template>
   <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
-
   <template key="runtime.body"><![CDATA[
     (#concat-all)
     #import "InvarRuntime.h"
-    (#blank)
-    #define HandleRequest  [[self shared] blockRecvRequest]
-    #define HandleNotify   [[self shared] blockRecvNotify]
-    #define HandleResponse [[self shared] blockRecvResponse]
+    #import "ProtocHandlers.h"
     (#blank)
     @implementation InvarRuntime
     (#blank)
@@ -531,19 +501,19 @@
     (#tab)(#space)case (#key): /* (#doc) */ {
     (#tab)(#tab)id (#name) = [[(#type) alloc] init];
     (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
-    (#tab)(#tab)if (HandleNotify) { HandleNotify((#name)); }
+    (#tab)(#tab)Handle(#type)((#name));
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
     (#tab)(#space)case (#key): /* (#doc) */ {
     (#tab)(#tab)id (#name) = [[(#type) alloc] init];
     (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
-    (#tab)(#tab)if (HandleResponse) { HandleResponse((#name)); }
+    (#tab)(#tab)Handle(#type)((#name));
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
     (#tab)(#space)case (#key): /* (#doc) */ {
     (#tab)(#tab)id (#name) = [[(#type) alloc] init];
     (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
-    (#tab)(#tab)if (HandleRequest) { HandleRequest((#name), [[(#resp) alloc] init]); }
+    (#tab)(#tab)Handle(#req)((#name), [[(#resp) alloc] init]);
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.method"><![CDATA[
     (#blank)

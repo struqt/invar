@@ -15,10 +15,7 @@
 #import "test_protoc_TestHeartBeatR2S.h"
 #import "test_protoc_TestHeartBeat2C.h"
 #import "InvarRuntime.h"
-
-#define HandleRequest  [[self shared] blockRecvRequest]
-#define HandleNotify   [[self shared] blockRecvNotify]
-#define HandleResponse [[self shared] blockRecvResponse]
+#import "ProtocHandlers.h"
 
 @implementation InvarRuntime
 
@@ -42,17 +39,17 @@
      case 65527: /* 客户端请求,服务端响应 */ {
         id req = [[TestUserLogin2S alloc] init];
         if (INVAR_ERR_NONE != (err = [req read:r])) { return err; }
-        if (HandleRequest) { HandleRequest(req, [[TestUserLoginR2C alloc] init]); }
+        HandleTestUserLogin2S(req, [[TestUserLoginR2C alloc] init]);
         break; }
      case 65531: /* 客户端通知服务端 */ {
         id ntf = [[TestUserLocationN2S alloc] init];
         if (INVAR_ERR_NONE != (err = [ntf read:r])) { return err; }
-        if (HandleNotify) { HandleNotify(ntf); }
+        HandleTestUserLocationN2S(ntf);
         break; }
      case 65533: /* 服务端请求,客户端响应 */ {
         id rep = [[TestHeartBeatR2S alloc] init];
         if (INVAR_ERR_NONE != (err = [rep read:r])) { return err; }
-        if (HandleResponse) { HandleResponse(rep); }
+        HandleTestHeartBeatR2S(rep);
         break; }
      default: { return INVAR_ERR_PROTOC_NO_HANDLER; }
     }
@@ -70,17 +67,17 @@
      case 65528: /* 客户端请求,服务端响应 */ {
         id rep = [[TestUserLoginR2C alloc] init];
         if (INVAR_ERR_NONE != (err = [rep read:r])) { return err; }
-        if (HandleResponse) { HandleResponse(rep); }
+        HandleTestUserLoginR2C(rep);
         break; }
      case 65530: /* 服务器通知客户端 */ {
         id ntf = [[TestServerTimeN2C alloc] init];
         if (INVAR_ERR_NONE != (err = [ntf read:r])) { return err; }
-        if (HandleNotify) { HandleNotify(ntf); }
+        HandleTestServerTimeN2C(ntf);
         break; }
      case 65534: /* 服务端请求,客户端响应 */ {
         id req = [[TestHeartBeat2C alloc] init];
         if (INVAR_ERR_NONE != (err = [req read:r])) { return err; }
-        if (HandleRequest) { HandleRequest(req, [[TestHeartBeatR2S alloc] init]); }
+        HandleTestHeartBeat2C(req, [[TestHeartBeatR2S alloc] init]);
         break; }
      default: { return INVAR_ERR_PROTOC_NO_HANDLER; }
     }

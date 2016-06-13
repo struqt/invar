@@ -127,7 +127,27 @@
     + (NSInteger)HandleProtocAsClient:(DataReader *)input;
     (#blank)
     @end
+    (#body)(#concat-all)
   ]]></template>
-
+  <template key="runtime.protoc.handle.client"><![CDATA[ HandleProtocAsServer ]]></template>
+  <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtocAsClient ]]></template>
+  <template key="runtime.protoc.handle.notify">  <![CDATA[
+    (#brk)(#brk)/* (#doc) */
+    extern void Handle(#type)((#type) *);
+    #define Handle(#type) [[self shared] blockRecvNotify] ]]></template>
+  <template key="runtime.protoc.handle.response"><![CDATA[
+    (#brk)(#brk)/* (#doc) */
+    extern void Handle(#type)((#type) *);
+    #define Handle(#type) [[self shared] blockRecvResponse]  ]]></template>
+  <template key="runtime.protoc.handle.request"> <![CDATA[
+    (#brk)(#brk)/* (#doc) */
+    extern void Handle(#req)((#req) *, (#resp) *);
+    #define Handle(#type) [[self shared] blockRecvRequest] ]]></template>
+  <template key="runtime.protoc.handle.method"><![CDATA[
+    (#blank)
+    /****************************************************************************** (#name) */(#body)
+    (#blank)
+    /******************************************************************************/
+  ]]></template>
 
 </tns:root>
