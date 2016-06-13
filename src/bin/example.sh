@@ -5,7 +5,7 @@ OutDir="output/"
 java \
  -jar     "lib/invar-1.0.1.jar" \
  -snippet "res/" \
- -rule    "res/example/rule/" \
+ -rule    "example/rule/" \
  -xsd     ${OutDir}."xsd/" \
  -cpp     ${OutDir}."cpp/" \
  -java    ${OutDir}."java/" \
