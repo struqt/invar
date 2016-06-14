@@ -29,6 +29,26 @@
     return sharedInstance;
 }
 
+- (instancetype) init
+{
+    self = [super init];
+    if (!self) { return self; }
+    [self setBlockRecvRequest:
+    ^(id req, id resp) {
+        NSLog(@"Unhandled request: No function named 'Handle%@'.", [req class]);
+        [resp setProtocError:INVAR_ERR_PROTOC_NO_HANDLER];
+    }];
+    [self setBlockRecvResponse:
+    ^(id resp) {
+        NSLog(@"Unhandled response: No function named 'Handle%@'.", [resp class]);
+    }];
+    [self setBlockRecvNotify:
+    ^(id ntf) {
+        NSLog(@"Unhandled notify: No function named 'Handle%@'.", [ntf class]);
+    }];
+    return self;
+}
+
 + (NSInteger)HandleProtocAsServer:(DataReader *)r
 {
     BOOL eof = NO;

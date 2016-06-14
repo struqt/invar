@@ -492,6 +492,26 @@
     (#tab)});
     (#tab)return sharedInstance;
     }
+    (#blank)
+    - (instancetype) init
+    {
+    (#tab)self = [super init];
+    (#tab)if (!self) { return self; }
+    (#tab)[self setBlockRecvRequest:
+    (#tab) ^(id req, id resp) {
+    (#tab)(#tab)NSLog(@"Unhandled request: No function named 'Handle%@'.", [req class]);
+    (#tab)(#tab)[resp setProtocError:INVAR_ERR_PROTOC_NO_HANDLER];
+    (#tab) }];
+    (#tab)[self setBlockRecvResponse:
+    (#tab) ^(id resp) {
+    (#tab)(#tab)NSLog(@"Unhandled response: No function named 'Handle%@'.", [resp class]);
+    (#tab) }];
+    (#tab)[self setBlockRecvNotify:
+    (#tab) ^(id ntf) {
+    (#tab)(#tab)NSLog(@"Unhandled notify: No function named 'Handle%@'.", [ntf class]);
+    (#tab) }];
+    (#tab)return self;
+    }
     (#body)
     @end
   ]]></template>
