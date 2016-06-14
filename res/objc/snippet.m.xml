@@ -263,7 +263,7 @@
     if ((#protoc-id) != (#name)) { (#name) = (#protoc-id); return INVAR_ERR_PROTOC_INVALID_ID; }
   ]]></template>
   <template key="read.special.protocCRC"><![CDATA[
-    if (CRC32 != (#name)) { return INVAR_ERR_PROTOC_CRC_MISMATCH; }
+    (#space)if (CRC32 != (#name)) { return INVAR_ERR_PROTOC_CRC_MISMATCH; }
   ]]></template>
   <template key="read.special.protocError"><![CDATA[
     if ((#name) != 0) { return (#name); }
@@ -387,26 +387,26 @@
     (#blank)
     - (void)writeJSON:(NSMutableString *)(#arg)
     {
-    (#tab)[(#arg) appendString:@"\\n"]; [(#arg) appendString:@"{"];
+    (#tab)[(#arg) appendString:LINE_FEED_S]; [(#arg) appendString:LEFT_CURLY_S];
     (#tab)NSString *comma = nil;(#body)
-    (#tab)[(#arg) appendString:@"}"]; [(#arg) appendString:@"\\n"];
+    (#tab)[(#arg) appendString:RIGHT_CURLY_S]; [(#arg) appendString:LINE_FEED_S];
     }
     /* (#type)::writeJSON */ ]]></template>
-  <template key="tojson.any"> <![CDATA[ [(#arg) appendFormat:@"%@", (#name)] ]]></template>
-  <template key="tojson.bool"><![CDATA[ [(#arg) appendString:(#name) ? @"true" : @"false"]; ]]></template>
+  <template key="tojson.any"> <![CDATA[ [(#arg) appendFormat:FORMAT_S, (#name)] ]]></template>
+  <template key="tojson.bool"><![CDATA[ [(#arg) appendString:(#name) ? @"true" : @"false"] ]]></template>
   <template key="tojson.string">
-    <![CDATA[ [(#arg) appendString:@"\\""]; [(#arg) appendString:(#name)]; [(#arg) appendString:@"\\""] ]]></template>
+    <![CDATA[ [(#arg) appendString:QUOTATION_S]; [(#arg) appendString:(#name)]; [(#arg) appendString:QUOTATION_S] ]]></template>
   <template key="tojson.struct"><![CDATA[ [(#name) writeJSON:(#arg)] ]]></template>
   <template key="tojson.vec.for"><![CDATA[
     NSUInteger (#namer)Size = ((#null) == (#name) ? 0 : [(#name) count]);
     if ((#namer)Size > 0) {
-    (#tab)[(#arg) appendString:@"\\n"]; [(#arg) appendString:@"["];
+    (#tab)[(#arg) appendString:LINE_FEED_S]; [(#arg) appendString:LEFT_SQUARE_S];
     (#tab)int (#namer)Idx = 0;
     (#tab)for (id (#value) in (#name)) {/* vec.for: (#name) */
     (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
-    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { [(#arg) appendString:@","]; }
+    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { [(#arg) appendString:COMMA_S]; }
     (#tab)}
-    (#tab)[(#arg) appendString:@"]"];
+    (#tab)[(#arg) appendString:RIGHT_SQUARE_S];
     }
   ]]></template>
   <template key="tojson.map.head.k"><![CDATA[ ]]></template>
@@ -415,47 +415,52 @@
   <template key="tojson.map.for"><![CDATA[
     NSUInteger (#namer)Size = ((#null) == (#name) ? 0 : [(#name) count]);
     if ((#namer)Size > 0) {
-    (#tab)[(#arg) appendString:@"\\n"]; [(#arg) appendString:@"{"];
+    (#tab)[(#arg) appendString:LINE_FEED_S]; [(#arg) appendString:LEFT_CURLY_S];
     (#tab)int (#namer)Idx = 0;
     (#tab)for (id (#key) in (#name)) { /* map.for: (#name) */
     (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
-    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { [(#arg) appendString:@","]; }
+    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { [(#arg) appendString:COMMA_S]; }
     (#tab)}
-    (#tab)[(#arg) appendString:@"}"];
+    (#tab)[(#arg) appendString:RIGHT_CURLY_S];
     }
   ]]></template>
   <template key="tojson.nest.n"><![CDATA[ (#body); ]]></template>
   <template key="tojson.nest.k"><![CDATA[
-    [(#arg) appendString:@"\\""]; (#body);
-    [(#arg) appendString:@"\\""]; [(#arg) appendString:@":"]; /* nest.k */ ]]></template>
+    [(#arg) appendString:QUOTATION_S]; (#body);
+    [(#arg) appendString:QUOTATION_S]; [(#arg) appendString:COLON_S]; /* nest.k */ ]]></template>
+  <template key="tojson.nest.k.string"><![CDATA[
+    (#body); [(#arg) appendString:COLON_S]; /* nest.k.string */ ]]></template>
   <template key="tojson.nest.v"><![CDATA[
     id (#name) = [(#nameupper2) objectForKey:(#key)];
     (#body); /* nest.v */ ]]></template>
 
   <template key="tojson.ref.any"><![CDATA[
-    [(#arg) appendString:@"\\""]; [(#arg) appendString:@"(#namer)"]; [(#arg) appendString:@"\\""]; [(#arg) appendString:@":"];
-    comma = @","; [(#arg) appendFormat:@"%@", @((#name))]; ]]></template>
+    [(#arg) appendString:QUOTATION_S]; [(#arg) appendString:@"(#namer)"]; [(#arg) appendString:QUOTATION_S]; [(#arg) appendString:COLON_S];
+    comma = COMMA_S; [(#arg) appendFormat:FORMAT_S, @((#name))]; ]]></template>
   <template key="tojson.ref.bool"><![CDATA[
-    [(#arg) appendString:@"\\""]; [(#arg) appendString:@"(#namer)"]; [(#arg) appendString:@"\\""]; [(#arg) appendString:@":"];
-    comma = @","; [(#arg) appendString:(#name) ? @"true" : @"false"]; ]]></template>
-  <template key="tojson.ref.vec | tojson.ref.map"><![CDATA[
-    if ((#namer)Exists) {
-    (#tab)[(#arg) appendString:@"\\""]; [(#arg) appendString:@"(#namer)"];
-    (#tab)[(#arg) appendString:@"\\""]; [(#arg) appendString:@":"]; comma = @","; }
-    (#body) ]]></template>
+    [(#arg) appendString:QUOTATION_S]; [(#arg) appendString:@"(#namer)"]; [(#arg) appendString:QUOTATION_S]; [(#arg) appendString:COLON_S];
+    comma = COMMA_S; [(#arg) appendString:(#name) ? @"true" : @"false"]; ]]></template>
   <template key="tojson.ref.string | tojson.ref.struct |
                  tojson.ptr.string | tojson.ptr.struct"><![CDATA[
     if ((#namer)Exists) {
-    (#tab)[(#arg) appendString:@"\\""]; [(#arg) appendString:@"(#namer)"]; [(#arg) appendString:@"\\""]; [(#arg) appendString:@":"];
-    (#tab)comma = @","; (#body);
+    (#tab)[(#arg) appendString:QUOTATION_S]; [(#arg) appendString:@"(#namer)"]; [(#arg) appendString:QUOTATION_S];
+    (#tab)[(#arg) appendString:COLON_S]; (#body); comma = COMMA_S;
     }
   ]]></template>
-  <template key="tojson.ptr.vec | tojson.ptr.map"><![CDATA[
-    if ((#namer)Exists) {(#bodyindent) comma = @",";
+  <template key="tojson.ref.vec | tojson.ref.map"><![CDATA[
+    if ((#namer)Exists) {
+    (#tab)[(#arg) appendString:QUOTATION_S]; [(#arg) appendString:@"(#namer)"];
+    (#tab)[(#arg) appendString:QUOTATION_S]; [(#arg) appendString:COLON_S]; comma = COMMA_S; }
+    (#body) ]]></template>
+  <template key="tojson.ptr.vec | tojson.ptr.map |
+                 tojson.ref.vec | tojson.ref.map"><![CDATA[
+    if ((#namer)Exists) {
+    (#tab)[(#arg) appendString:QUOTATION_S]; [(#arg) appendString:@"(#namer)"]; [(#arg) appendString:QUOTATION_S]; [(#arg) appendString:COLON_S];
+    (#bodyindent) comma = COMMA_S;
     }
   ]]></template>
   <template key="tojson.field.head.string"><![CDATA[
-    BOOL (#namer)Exists = ((#null) != (#name) && ![@"" isEqual:(#name)]);
+    BOOL (#namer)Exists = ((#name) && [(#name) length] > 0);
   ]]></template>
   <template key="tojson.field.head.struct"><![CDATA[
     BOOL (#namer)Exists = ((#null) != (#name));

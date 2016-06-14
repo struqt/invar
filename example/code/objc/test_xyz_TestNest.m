@@ -198,149 +198,148 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
     BOOL listDictExists = (nil != _listDict && [_listDict count] > 0);
     if (listDictExists) {
-        [s appendString:@"\""]; [s appendString:@"listDict"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listDictSize = (nil == _listDict ? 0 : [_listDict count]);
-    if (listDictSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listDictIdx = 0;
-        for (id n1 in _listDict) {/* vec.for: _listDict */
-            ++listDictIdx;
-            NSUInteger n1Size = (nil == n1 ? 0 : [n1 count]);
-            if (n1Size > 0) {
-                [s appendString:@"\n"]; [s appendString:@"{"];
-                int n1Idx = 0;
-                for (id k2 in n1) { /* map.for: n1 */
-                    ++n1Idx;
-                    [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k2]; [s appendString:@"\""];
-                    [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-                    id v2 = [n1 objectForKey:k2];
-                    [v2 writeJSON:s]; /* nest.v */
-                    if (n1Idx != n1Size) { [s appendString:@","]; }
+        [s appendString:QUOTATION_S]; [s appendString:@"listDict"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listDictSize = (nil == _listDict ? 0 : [_listDict count]);
+        if (listDictSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listDictIdx = 0;
+            for (id n1 in _listDict) {/* vec.for: _listDict */
+                ++listDictIdx;
+                NSUInteger n1Size = (nil == n1 ? 0 : [n1 count]);
+                if (n1Size > 0) {
+                    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+                    int n1Idx = 0;
+                    for (id k2 in n1) { /* map.for: n1 */
+                        ++n1Idx;
+                        [s appendString:QUOTATION_S]; [s appendString:k2]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
+                        id v2 = [n1 objectForKey:k2];
+                        [v2 writeJSON:s]; /* nest.v */
+                        if (n1Idx != n1Size) { [s appendString:COMMA_S]; }
+                    }
+                    [s appendString:RIGHT_CURLY_S];
                 }
-                [s appendString:@"}"];
+                if (listDictIdx != listDictSize) { [s appendString:COMMA_S]; }
             }
-            if (listDictIdx != listDictSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL dictListExists = (nil != _dictList && [_dictList count] > 0);
     if (comma && dictListExists) { [s appendString:comma]; comma = nil; }
     if (dictListExists) {
-        [s appendString:@"\""]; [s appendString:@"dictList"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictListSize = (nil == _dictList ? 0 : [_dictList count]);
-    if (dictListSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictListIdx = 0;
-        for (id k1 in _dictList) { /* map.for: _dictList */
-            ++dictListIdx;
-            NSUInteger k1Size = (nil == k1 ? 0 : [k1 count]);
-            if (k1Size > 0) {
-                [s appendString:@"\n"]; [s appendString:@"["];
-                int k1Idx = 0;
-                for (id n2 in k1) {/* vec.for: k1 */
-                    ++k1Idx;
-                    [s appendString:@"\""]; [s appendString:n2]; [s appendString:@"\""];
-                    if (k1Idx != k1Size) { [s appendString:@","]; }
+        [s appendString:QUOTATION_S]; [s appendString:@"dictList"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictListSize = (nil == _dictList ? 0 : [_dictList count]);
+        if (dictListSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictListIdx = 0;
+            for (id k1 in _dictList) { /* map.for: _dictList */
+                ++dictListIdx;
+                NSUInteger k1Size = (nil == k1 ? 0 : [k1 count]);
+                if (k1Size > 0) {
+                    [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+                    int k1Idx = 0;
+                    for (id n2 in k1) {/* vec.for: k1 */
+                        ++k1Idx;
+                        [s appendString:QUOTATION_S]; [s appendString:n2]; [s appendString:QUOTATION_S];
+                        if (k1Idx != k1Size) { [s appendString:COMMA_S]; }
+                    }
+                    [s appendString:RIGHT_SQUARE_S];
                 }
-                [s appendString:@"]"];
-            }
-            NSMutableArray *v1 = [_dictList objectForKey:k1];/*map.head.v*/
-            NSUInteger v1Size = (nil == v1 ? 0 : [v1 count]);
-            if (v1Size > 0) {
-                [s appendString:@"\n"]; [s appendString:@"["];
-                int v1Idx = 0;
-                for (id n2 in v1) {/* vec.for: v1 */
-                    ++v1Idx;
-                    [n2 writeJSON:s];
-                    if (v1Idx != v1Size) { [s appendString:@","]; }
+                NSMutableArray *v1 = [_dictList objectForKey:k1];/*map.head.v*/
+                NSUInteger v1Size = (nil == v1 ? 0 : [v1 count]);
+                if (v1Size > 0) {
+                    [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+                    int v1Idx = 0;
+                    for (id n2 in v1) {/* vec.for: v1 */
+                        ++v1Idx;
+                        [n2 writeJSON:s];
+                        if (v1Idx != v1Size) { [s appendString:COMMA_S]; }
+                    }
+                    [s appendString:RIGHT_SQUARE_S];
                 }
-                [s appendString:@"]"];
+                if (dictListIdx != dictListSize) { [s appendString:COMMA_S]; }
             }
-            if (dictListIdx != dictListSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL list5dExists = (nil != _list5d && [_list5d count] > 0);
     if (comma && list5dExists) { [s appendString:comma]; comma = nil; }
     if (list5dExists) {
-        [s appendString:@"\""]; [s appendString:@"list5d"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger list5dSize = (nil == _list5d ? 0 : [_list5d count]);
-    if (list5dSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int list5dIdx = 0;
-        for (id n1 in _list5d) {/* vec.for: _list5d */
-            ++list5dIdx;
-            NSUInteger n1Size = (nil == n1 ? 0 : [n1 count]);
-            if (n1Size > 0) {
-                [s appendString:@"\n"]; [s appendString:@"["];
-                int n1Idx = 0;
-                for (id n2 in n1) {/* vec.for: n1 */
-                    ++n1Idx;
-                    NSUInteger n2Size = (nil == n2 ? 0 : [n2 count]);
-                    if (n2Size > 0) {
-                        [s appendString:@"\n"]; [s appendString:@"["];
-                        int n2Idx = 0;
-                        for (id n3 in n2) {/* vec.for: n2 */
-                            ++n2Idx;
-                            NSUInteger n3Size = (nil == n3 ? 0 : [n3 count]);
-                            if (n3Size > 0) {
-                                [s appendString:@"\n"]; [s appendString:@"["];
-                                int n3Idx = 0;
-                                for (id n4 in n3) {/* vec.for: n3 */
-                                    ++n3Idx;
-                                    NSUInteger n4Size = (nil == n4 ? 0 : [n4 count]);
-                                    if (n4Size > 0) {
-                                        [s appendString:@"\n"]; [s appendString:@"["];
-                                        int n4Idx = 0;
-                                        for (id n5 in n4) {/* vec.for: n4 */
-                                            ++n4Idx;
-                                            [n5 writeJSON:s];
-                                            if (n4Idx != n4Size) { [s appendString:@","]; }
+        [s appendString:QUOTATION_S]; [s appendString:@"list5d"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger list5dSize = (nil == _list5d ? 0 : [_list5d count]);
+        if (list5dSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int list5dIdx = 0;
+            for (id n1 in _list5d) {/* vec.for: _list5d */
+                ++list5dIdx;
+                NSUInteger n1Size = (nil == n1 ? 0 : [n1 count]);
+                if (n1Size > 0) {
+                    [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+                    int n1Idx = 0;
+                    for (id n2 in n1) {/* vec.for: n1 */
+                        ++n1Idx;
+                        NSUInteger n2Size = (nil == n2 ? 0 : [n2 count]);
+                        if (n2Size > 0) {
+                            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+                            int n2Idx = 0;
+                            for (id n3 in n2) {/* vec.for: n2 */
+                                ++n2Idx;
+                                NSUInteger n3Size = (nil == n3 ? 0 : [n3 count]);
+                                if (n3Size > 0) {
+                                    [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+                                    int n3Idx = 0;
+                                    for (id n4 in n3) {/* vec.for: n3 */
+                                        ++n3Idx;
+                                        NSUInteger n4Size = (nil == n4 ? 0 : [n4 count]);
+                                        if (n4Size > 0) {
+                                            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+                                            int n4Idx = 0;
+                                            for (id n5 in n4) {/* vec.for: n4 */
+                                                ++n4Idx;
+                                                [n5 writeJSON:s];
+                                                if (n4Idx != n4Size) { [s appendString:COMMA_S]; }
+                                            }
+                                            [s appendString:RIGHT_SQUARE_S];
                                         }
-                                        [s appendString:@"]"];
+                                        if (n3Idx != n3Size) { [s appendString:COMMA_S]; }
                                     }
-                                    if (n3Idx != n3Size) { [s appendString:@","]; }
+                                    [s appendString:RIGHT_SQUARE_S];
                                 }
-                                [s appendString:@"]"];
+                                if (n2Idx != n2Size) { [s appendString:COMMA_S]; }
                             }
-                            if (n2Idx != n2Size) { [s appendString:@","]; }
+                            [s appendString:RIGHT_SQUARE_S];
                         }
-                        [s appendString:@"]"];
+                        if (n1Idx != n1Size) { [s appendString:COMMA_S]; }
                     }
-                    if (n1Idx != n1Size) { [s appendString:@","]; }
+                    [s appendString:RIGHT_SQUARE_S];
                 }
-                [s appendString:@"]"];
+                if (list5dIdx != list5dSize) { [s appendString:COMMA_S]; }
             }
-            if (list5dIdx != list5dSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestNest::writeJSON */
 

@@ -94,26 +94,26 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* Protoc2C::writeJSON */
 

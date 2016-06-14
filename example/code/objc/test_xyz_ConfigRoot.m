@@ -136,62 +136,62 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
-    BOOL revisionExists = (nil != _revision && ![@"" isEqual:_revision]);
+    BOOL revisionExists = (_revision && [_revision length] > 0);
     if (revisionExists) {
-        [s appendString:@"\""]; [s appendString:@"revision"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [s appendString:@"\""]; [s appendString:_revision]; [s appendString:@"\""];
+        [s appendString:QUOTATION_S]; [s appendString:@"revision"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [s appendString:QUOTATION_S]; [s appendString:_revision]; [s appendString:QUOTATION_S]; comma = COMMA_S;
     }
     BOOL listExists = (nil != _list);
     if (comma && listExists) { [s appendString:comma]; comma = nil; }
     if (listExists) {
-        [s appendString:@"\""]; [s appendString:@"list"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_list writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"list"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_list writeJSON:s]; comma = COMMA_S;
     }
     BOOL dictExists = (nil != _dict);
     if (comma && dictExists) { [s appendString:comma]; comma = nil; }
     if (dictExists) {
-        [s appendString:@"\""]; [s appendString:@"dict"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_dict writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"dict"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_dict writeJSON:s]; comma = COMMA_S;
     }
     BOOL nestExists = (nil != _nest);
     if (comma && nestExists) { [s appendString:comma]; comma = nil; }
     if (nestExists) {
-        [s appendString:@"\""]; [s appendString:@"nest"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_nest writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"nest"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_nest writeJSON:s]; comma = COMMA_S;
     }
     BOOL infoExists = (nil != _info);
     if (comma && infoExists) { [s appendString:comma]; comma = nil; }
     if (infoExists) {
-        [s appendString:@"\""]; [s appendString:@"info"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_info writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"info"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_info writeJSON:s]; comma = COMMA_S;
     }
     BOOL infoxExists = (nil != _infox);
     if (comma && infoxExists) { [s appendString:comma]; comma = nil; }
     if (infoxExists) {
-        [s appendString:@"\""]; [s appendString:@"infox"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_infox writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"infox"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_infox writeJSON:s]; comma = COMMA_S;
     }
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* ConfigRoot::writeJSON */
 

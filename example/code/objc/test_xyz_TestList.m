@@ -277,250 +277,250 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
     BOOL listI08Exists = (nil != _listI08 && [_listI08 count] > 0);
     if (listI08Exists) {
-        [s appendString:@"\""]; [s appendString:@"listI08"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listI08Size = (nil == _listI08 ? 0 : [_listI08 count]);
-    if (listI08Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listI08Idx = 0;
-        for (id n1 in _listI08) {/* vec.for: _listI08 */
-            ++listI08Idx;
-            [s appendFormat:@"%@", n1];
-            if (listI08Idx != listI08Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listI08"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listI08Size = (nil == _listI08 ? 0 : [_listI08 count]);
+        if (listI08Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listI08Idx = 0;
+            for (id n1 in _listI08) {/* vec.for: _listI08 */
+                ++listI08Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listI08Idx != listI08Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listI16Exists = (nil != _listI16 && [_listI16 count] > 0);
     if (comma && listI16Exists) { [s appendString:comma]; comma = nil; }
     if (listI16Exists) {
-        [s appendString:@"\""]; [s appendString:@"listI16"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listI16Size = (nil == _listI16 ? 0 : [_listI16 count]);
-    if (listI16Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listI16Idx = 0;
-        for (id n1 in _listI16) {/* vec.for: _listI16 */
-            ++listI16Idx;
-            [s appendFormat:@"%@", n1];
-            if (listI16Idx != listI16Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listI16"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listI16Size = (nil == _listI16 ? 0 : [_listI16 count]);
+        if (listI16Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listI16Idx = 0;
+            for (id n1 in _listI16) {/* vec.for: _listI16 */
+                ++listI16Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listI16Idx != listI16Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listI32Exists = (nil != _listI32 && [_listI32 count] > 0);
     if (comma && listI32Exists) { [s appendString:comma]; comma = nil; }
     if (listI32Exists) {
-        [s appendString:@"\""]; [s appendString:@"listI32"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listI32Size = (nil == _listI32 ? 0 : [_listI32 count]);
-    if (listI32Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listI32Idx = 0;
-        for (id n1 in _listI32) {/* vec.for: _listI32 */
-            ++listI32Idx;
-            [s appendFormat:@"%@", n1];
-            if (listI32Idx != listI32Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listI32"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listI32Size = (nil == _listI32 ? 0 : [_listI32 count]);
+        if (listI32Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listI32Idx = 0;
+            for (id n1 in _listI32) {/* vec.for: _listI32 */
+                ++listI32Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listI32Idx != listI32Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listI64Exists = (nil != _listI64 && [_listI64 count] > 0);
     if (comma && listI64Exists) { [s appendString:comma]; comma = nil; }
     if (listI64Exists) {
-        [s appendString:@"\""]; [s appendString:@"listI64"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listI64Size = (nil == _listI64 ? 0 : [_listI64 count]);
-    if (listI64Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listI64Idx = 0;
-        for (id n1 in _listI64) {/* vec.for: _listI64 */
-            ++listI64Idx;
-            [s appendFormat:@"%@", n1];
-            if (listI64Idx != listI64Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listI64"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listI64Size = (nil == _listI64 ? 0 : [_listI64 count]);
+        if (listI64Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listI64Idx = 0;
+            for (id n1 in _listI64) {/* vec.for: _listI64 */
+                ++listI64Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listI64Idx != listI64Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listU08Exists = (nil != _listU08 && [_listU08 count] > 0);
     if (comma && listU08Exists) { [s appendString:comma]; comma = nil; }
     if (listU08Exists) {
-        [s appendString:@"\""]; [s appendString:@"listU08"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listU08Size = (nil == _listU08 ? 0 : [_listU08 count]);
-    if (listU08Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listU08Idx = 0;
-        for (id n1 in _listU08) {/* vec.for: _listU08 */
-            ++listU08Idx;
-            [s appendFormat:@"%@", n1];
-            if (listU08Idx != listU08Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listU08"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listU08Size = (nil == _listU08 ? 0 : [_listU08 count]);
+        if (listU08Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listU08Idx = 0;
+            for (id n1 in _listU08) {/* vec.for: _listU08 */
+                ++listU08Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listU08Idx != listU08Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listU16Exists = (nil != _listU16 && [_listU16 count] > 0);
     if (comma && listU16Exists) { [s appendString:comma]; comma = nil; }
     if (listU16Exists) {
-        [s appendString:@"\""]; [s appendString:@"listU16"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listU16Size = (nil == _listU16 ? 0 : [_listU16 count]);
-    if (listU16Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listU16Idx = 0;
-        for (id n1 in _listU16) {/* vec.for: _listU16 */
-            ++listU16Idx;
-            [s appendFormat:@"%@", n1];
-            if (listU16Idx != listU16Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listU16"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listU16Size = (nil == _listU16 ? 0 : [_listU16 count]);
+        if (listU16Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listU16Idx = 0;
+            for (id n1 in _listU16) {/* vec.for: _listU16 */
+                ++listU16Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listU16Idx != listU16Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listU32Exists = (nil != _listU32 && [_listU32 count] > 0);
     if (comma && listU32Exists) { [s appendString:comma]; comma = nil; }
     if (listU32Exists) {
-        [s appendString:@"\""]; [s appendString:@"listU32"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listU32Size = (nil == _listU32 ? 0 : [_listU32 count]);
-    if (listU32Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listU32Idx = 0;
-        for (id n1 in _listU32) {/* vec.for: _listU32 */
-            ++listU32Idx;
-            [s appendFormat:@"%@", n1];
-            if (listU32Idx != listU32Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listU32"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listU32Size = (nil == _listU32 ? 0 : [_listU32 count]);
+        if (listU32Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listU32Idx = 0;
+            for (id n1 in _listU32) {/* vec.for: _listU32 */
+                ++listU32Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listU32Idx != listU32Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listU64Exists = (nil != _listU64 && [_listU64 count] > 0);
     if (comma && listU64Exists) { [s appendString:comma]; comma = nil; }
     if (listU64Exists) {
-        [s appendString:@"\""]; [s appendString:@"listU64"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listU64Size = (nil == _listU64 ? 0 : [_listU64 count]);
-    if (listU64Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listU64Idx = 0;
-        for (id n1 in _listU64) {/* vec.for: _listU64 */
-            ++listU64Idx;
-            [s appendFormat:@"%@", n1];
-            if (listU64Idx != listU64Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listU64"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listU64Size = (nil == _listU64 ? 0 : [_listU64 count]);
+        if (listU64Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listU64Idx = 0;
+            for (id n1 in _listU64) {/* vec.for: _listU64 */
+                ++listU64Idx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listU64Idx != listU64Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listSingleExists = (nil != _listSingle && [_listSingle count] > 0);
     if (comma && listSingleExists) { [s appendString:comma]; comma = nil; }
     if (listSingleExists) {
-        [s appendString:@"\""]; [s appendString:@"listSingle"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listSingleSize = (nil == _listSingle ? 0 : [_listSingle count]);
-    if (listSingleSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listSingleIdx = 0;
-        for (id n1 in _listSingle) {/* vec.for: _listSingle */
-            ++listSingleIdx;
-            [s appendFormat:@"%@", n1];
-            if (listSingleIdx != listSingleSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listSingle"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listSingleSize = (nil == _listSingle ? 0 : [_listSingle count]);
+        if (listSingleSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listSingleIdx = 0;
+            for (id n1 in _listSingle) {/* vec.for: _listSingle */
+                ++listSingleIdx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listSingleIdx != listSingleSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listDoubleExists = (nil != _listDouble && [_listDouble count] > 0);
     if (comma && listDoubleExists) { [s appendString:comma]; comma = nil; }
     if (listDoubleExists) {
-        [s appendString:@"\""]; [s appendString:@"listDouble"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listDoubleSize = (nil == _listDouble ? 0 : [_listDouble count]);
-    if (listDoubleSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listDoubleIdx = 0;
-        for (id n1 in _listDouble) {/* vec.for: _listDouble */
-            ++listDoubleIdx;
-            [s appendFormat:@"%@", n1];
-            if (listDoubleIdx != listDoubleSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listDouble"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listDoubleSize = (nil == _listDouble ? 0 : [_listDouble count]);
+        if (listDoubleSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listDoubleIdx = 0;
+            for (id n1 in _listDouble) {/* vec.for: _listDouble */
+                ++listDoubleIdx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listDoubleIdx != listDoubleSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listBooleanExists = (nil != _listBoolean && [_listBoolean count] > 0);
     if (comma && listBooleanExists) { [s appendString:comma]; comma = nil; }
     if (listBooleanExists) {
-        [s appendString:@"\""]; [s appendString:@"listBoolean"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listBooleanSize = (nil == _listBoolean ? 0 : [_listBoolean count]);
-    if (listBooleanSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listBooleanIdx = 0;
-        for (id n1 in _listBoolean) {/* vec.for: _listBoolean */
-            ++listBooleanIdx;
-            [s appendString:n1 ? @"true" : @"false"];;
-            if (listBooleanIdx != listBooleanSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listBoolean"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listBooleanSize = (nil == _listBoolean ? 0 : [_listBoolean count]);
+        if (listBooleanSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listBooleanIdx = 0;
+            for (id n1 in _listBoolean) {/* vec.for: _listBoolean */
+                ++listBooleanIdx;
+                [s appendString:n1 ? @"true" : @"false"];
+                if (listBooleanIdx != listBooleanSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listStringExists = (nil != _listString && [_listString count] > 0);
     if (comma && listStringExists) { [s appendString:comma]; comma = nil; }
     if (listStringExists) {
-        [s appendString:@"\""]; [s appendString:@"listString"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listStringSize = (nil == _listString ? 0 : [_listString count]);
-    if (listStringSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listStringIdx = 0;
-        for (id n1 in _listString) {/* vec.for: _listString */
-            ++listStringIdx;
-            [s appendString:@"\""]; [s appendString:n1]; [s appendString:@"\""];
-            if (listStringIdx != listStringSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listString"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listStringSize = (nil == _listString ? 0 : [_listString count]);
+        if (listStringSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listStringIdx = 0;
+            for (id n1 in _listString) {/* vec.for: _listString */
+                ++listStringIdx;
+                [s appendString:QUOTATION_S]; [s appendString:n1]; [s appendString:QUOTATION_S];
+                if (listStringIdx != listStringSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listEnumExists = (nil != _listEnum && [_listEnum count] > 0);
     if (comma && listEnumExists) { [s appendString:comma]; comma = nil; }
     if (listEnumExists) {
-        [s appendString:@"\""]; [s appendString:@"listEnum"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listEnumSize = (nil == _listEnum ? 0 : [_listEnum count]);
-    if (listEnumSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listEnumIdx = 0;
-        for (id n1 in _listEnum) {/* vec.for: _listEnum */
-            ++listEnumIdx;
-            [s appendFormat:@"%@", n1];
-            if (listEnumIdx != listEnumSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listEnum"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listEnumSize = (nil == _listEnum ? 0 : [_listEnum count]);
+        if (listEnumSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listEnumIdx = 0;
+            for (id n1 in _listEnum) {/* vec.for: _listEnum */
+                ++listEnumIdx;
+                [s appendFormat:FORMAT_S, n1];
+                if (listEnumIdx != listEnumSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL listStructExists = (nil != _listStruct && [_listStruct count] > 0);
     if (comma && listStructExists) { [s appendString:comma]; comma = nil; }
     if (listStructExists) {
-        [s appendString:@"\""]; [s appendString:@"listStruct"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger listStructSize = (nil == _listStruct ? 0 : [_listStruct count]);
-    if (listStructSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int listStructIdx = 0;
-        for (id n1 in _listStruct) {/* vec.for: _listStruct */
-            ++listStructIdx;
-            [n1 writeJSON:s];
-            if (listStructIdx != listStructSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"listStruct"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger listStructSize = (nil == _listStruct ? 0 : [_listStruct count]);
+        if (listStructSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int listStructIdx = 0;
+            for (id n1 in _listStruct) {/* vec.for: _listStruct */
+                ++listStructIdx;
+                [n1 writeJSON:s];
+                if (listStructIdx != listStructSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestList::writeJSON */
 

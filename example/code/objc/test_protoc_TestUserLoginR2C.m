@@ -83,7 +83,7 @@
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];
     if (65528 != _protocId) { _protocId = 65528; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocCRC = [r readUInt32:&eof];if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocCRC = [r readUInt32:&eof]; if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2CExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2CExists) {
@@ -153,69 +153,69 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
-    [s appendString:@"\""]; [s appendString:@"protocId"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_protocId)];
+    [s appendString:QUOTATION_S]; [s appendString:@"protocId"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocId)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"protocCRC"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_protocCRC)];
+    [s appendString:QUOTATION_S]; [s appendString:@"protocCRC"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocCRC)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"protocError"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_protocError)];
+    [s appendString:QUOTATION_S]; [s appendString:@"protocError"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocError)];
     BOOL protoc2CExists = (nil != _protoc2C);
     if (comma && protoc2CExists) { [s appendString:comma]; comma = nil; }
     if (protoc2CExists) {
-        [s appendString:@"\""]; [s appendString:@"protoc2C"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_protoc2C writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"protoc2C"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_protoc2C writeJSON:s]; comma = COMMA_S;
     }
-    BOOL userIdExists = (nil != _userId && ![@"" isEqual:_userId]);
+    BOOL userIdExists = (_userId && [_userId length] > 0);
     if (comma && userIdExists) { [s appendString:comma]; comma = nil; }
     if (userIdExists) {
-        [s appendString:@"\""]; [s appendString:@"userId"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [s appendString:@"\""]; [s appendString:_userId]; [s appendString:@"\""];
+        [s appendString:QUOTATION_S]; [s appendString:@"userId"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [s appendString:QUOTATION_S]; [s appendString:_userId]; [s appendString:QUOTATION_S]; comma = COMMA_S;
     }
-    BOOL userNameExists = (nil != _userName && ![@"" isEqual:_userName]);
+    BOOL userNameExists = (_userName && [_userName length] > 0);
     if (comma && userNameExists) { [s appendString:comma]; comma = nil; }
     if (userNameExists) {
-        [s appendString:@"\""]; [s appendString:@"userName"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [s appendString:@"\""]; [s appendString:_userName]; [s appendString:@"\""];
+        [s appendString:QUOTATION_S]; [s appendString:@"userName"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [s appendString:QUOTATION_S]; [s appendString:_userName]; [s appendString:QUOTATION_S]; comma = COMMA_S;
     }
     BOOL rolesExists = (nil != _roles && [_roles count] > 0);
     if (comma && rolesExists) { [s appendString:comma]; comma = nil; }
     if (rolesExists) {
-        [s appendString:@"\""]; [s appendString:@"roles"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger rolesSize = (nil == _roles ? 0 : [_roles count]);
-    if (rolesSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int rolesIdx = 0;
-        for (id n1 in _roles) {/* vec.for: _roles */
-            ++rolesIdx;
-            [s appendFormat:@"%@", n1];
-            if (rolesIdx != rolesSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"roles"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger rolesSize = (nil == _roles ? 0 : [_roles count]);
+        if (rolesSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int rolesIdx = 0;
+            for (id n1 in _roles) {/* vec.for: _roles */
+                ++rolesIdx;
+                [s appendFormat:FORMAT_S, n1];
+                if (rolesIdx != rolesSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestUserLoginR2C::writeJSON */
 

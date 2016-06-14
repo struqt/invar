@@ -167,78 +167,78 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
-    [s appendString:@"\""]; [s appendString:@"x"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_x)];
+    [s appendString:QUOTATION_S]; [s appendString:@"x"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_x)];
     BOOL testExists = (nil != _test);
     if (comma && testExists) { [s appendString:comma]; comma = nil; }
     if (testExists) {
-        [s appendString:@"\""]; [s appendString:@"test"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_test writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"test"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_test writeJSON:s]; comma = COMMA_S;
     }
     BOOL xyzExists = (nil != _xyz);
     if (comma && xyzExists) { [s appendString:comma]; comma = nil; }
     if (xyzExists) {
-        [s appendString:@"\""]; [s appendString:@"xyz"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_xyz writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"xyz"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_xyz writeJSON:s]; comma = COMMA_S;
     }
     BOOL abcExists = (nil != _abc);
     if (comma && abcExists) { [s appendString:comma]; comma = nil; }
     if (abcExists) {
-        [s appendString:@"\""]; [s appendString:@"abc"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_abc writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"abc"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_abc writeJSON:s]; comma = COMMA_S;
     }
     BOOL childrenExists = (nil != _children && [_children count] > 0);
     if (comma && childrenExists) { [s appendString:comma]; comma = nil; }
     if (childrenExists) {
-        [s appendString:@"\""]; [s appendString:@"children"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger childrenSize = (nil == _children ? 0 : [_children count]);
-    if (childrenSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int childrenIdx = 0;
-        for (id n1 in _children) {/* vec.for: _children */
-            ++childrenIdx;
-            [n1 writeJSON:s];
-            if (childrenIdx != childrenSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"children"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger childrenSize = (nil == _children ? 0 : [_children count]);
+        if (childrenSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int childrenIdx = 0;
+            for (id n1 in _children) {/* vec.for: _children */
+                ++childrenIdx;
+                [n1 writeJSON:s];
+                if (childrenIdx != childrenSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"noSetter"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_noSetter)];
-    BOOL useRefExists = (nil != _useRef && ![@"" isEqual:_useRef]);
+    [s appendString:QUOTATION_S]; [s appendString:@"noSetter"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_noSetter)];
+    BOOL useRefExists = (_useRef && [_useRef length] > 0);
     if (comma && useRefExists) { [s appendString:comma]; comma = nil; }
     if (useRefExists) {
-        [s appendString:@"\""]; [s appendString:@"useRef"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [s appendString:@"\""]; [s appendString:_useRef]; [s appendString:@"\""];
+        [s appendString:QUOTATION_S]; [s appendString:@"useRef"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [s appendString:QUOTATION_S]; [s appendString:_useRef]; [s appendString:QUOTATION_S]; comma = COMMA_S;
     }
-    BOOL usePtrExists = (nil != _usePtr && ![@"" isEqual:_usePtr]);
+    BOOL usePtrExists = (_usePtr && [_usePtr length] > 0);
     if (comma && usePtrExists) { [s appendString:comma]; comma = nil; }
     if (usePtrExists) {
-        [s appendString:@"\""]; [s appendString:@"usePtr"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [s appendString:@"\""]; [s appendString:_usePtr]; [s appendString:@"\""];
+        [s appendString:QUOTATION_S]; [s appendString:@"usePtr"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [s appendString:QUOTATION_S]; [s appendString:_usePtr]; [s appendString:QUOTATION_S]; comma = COMMA_S;
     }
     BOOL prevExists = (nil != _prev);
     if (comma && prevExists) { [s appendString:comma]; comma = nil; }
     if (prevExists) {
-        [s appendString:@"\""]; [s appendString:@"prev"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_prev writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"prev"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_prev writeJSON:s]; comma = COMMA_S;
     }
     BOOL nextExists = (nil != _next);
     if (comma && nextExists) { [s appendString:comma]; comma = nil; }
     if (nextExists) {
-        [s appendString:@"\""]; [s appendString:@"next"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_next writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"next"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_next writeJSON:s]; comma = COMMA_S;
     }
-    BOOL emptyDocExists = (nil != _emptyDoc && ![@"" isEqual:_emptyDoc]);
+    BOOL emptyDocExists = (_emptyDoc && [_emptyDoc length] > 0);
     if (comma && emptyDocExists) { [s appendString:comma]; comma = nil; }
     if (emptyDocExists) {
-        [s appendString:@"\""]; [s appendString:@"emptyDoc"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [s appendString:@"\""]; [s appendString:_emptyDoc]; [s appendString:@"\""];
+        [s appendString:QUOTATION_S]; [s appendString:@"emptyDoc"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [s appendString:QUOTATION_S]; [s appendString:_emptyDoc]; [s appendString:QUOTATION_S]; comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* Custom::writeJSON */
 

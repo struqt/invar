@@ -308,292 +308,291 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
     BOOL dictI08Exists = (nil != _dictI08 && [_dictI08 count] > 0);
     if (dictI08Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictI08"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictI08Size = (nil == _dictI08 ? 0 : [_dictI08 count]);
-    if (dictI08Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictI08Idx = 0;
-        for (id k1 in _dictI08) { /* map.for: _dictI08 */
-            ++dictI08Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictI08 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictI08Idx != dictI08Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictI08"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictI08Size = (nil == _dictI08 ? 0 : [_dictI08 count]);
+        if (dictI08Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictI08Idx = 0;
+            for (id k1 in _dictI08) { /* map.for: _dictI08 */
+                ++dictI08Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictI08 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictI08Idx != dictI08Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictI16Exists = (nil != _dictI16 && [_dictI16 count] > 0);
     if (comma && dictI16Exists) { [s appendString:comma]; comma = nil; }
     if (dictI16Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictI16"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictI16Size = (nil == _dictI16 ? 0 : [_dictI16 count]);
-    if (dictI16Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictI16Idx = 0;
-        for (id k1 in _dictI16) { /* map.for: _dictI16 */
-            ++dictI16Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictI16 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictI16Idx != dictI16Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictI16"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictI16Size = (nil == _dictI16 ? 0 : [_dictI16 count]);
+        if (dictI16Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictI16Idx = 0;
+            for (id k1 in _dictI16) { /* map.for: _dictI16 */
+                ++dictI16Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictI16 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictI16Idx != dictI16Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictI32Exists = (nil != _dictI32 && [_dictI32 count] > 0);
     if (comma && dictI32Exists) { [s appendString:comma]; comma = nil; }
     if (dictI32Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictI32"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictI32Size = (nil == _dictI32 ? 0 : [_dictI32 count]);
-    if (dictI32Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictI32Idx = 0;
-        for (id k1 in _dictI32) { /* map.for: _dictI32 */
-            ++dictI32Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictI32 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictI32Idx != dictI32Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictI32"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictI32Size = (nil == _dictI32 ? 0 : [_dictI32 count]);
+        if (dictI32Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictI32Idx = 0;
+            for (id k1 in _dictI32) { /* map.for: _dictI32 */
+                ++dictI32Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictI32 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictI32Idx != dictI32Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictI64Exists = (nil != _dictI64 && [_dictI64 count] > 0);
     if (comma && dictI64Exists) { [s appendString:comma]; comma = nil; }
     if (dictI64Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictI64"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictI64Size = (nil == _dictI64 ? 0 : [_dictI64 count]);
-    if (dictI64Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictI64Idx = 0;
-        for (id k1 in _dictI64) { /* map.for: _dictI64 */
-            ++dictI64Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictI64 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictI64Idx != dictI64Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictI64"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictI64Size = (nil == _dictI64 ? 0 : [_dictI64 count]);
+        if (dictI64Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictI64Idx = 0;
+            for (id k1 in _dictI64) { /* map.for: _dictI64 */
+                ++dictI64Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictI64 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictI64Idx != dictI64Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictU08Exists = (nil != _dictU08 && [_dictU08 count] > 0);
     if (comma && dictU08Exists) { [s appendString:comma]; comma = nil; }
     if (dictU08Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictU08"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictU08Size = (nil == _dictU08 ? 0 : [_dictU08 count]);
-    if (dictU08Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictU08Idx = 0;
-        for (id k1 in _dictU08) { /* map.for: _dictU08 */
-            ++dictU08Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictU08 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictU08Idx != dictU08Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictU08"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictU08Size = (nil == _dictU08 ? 0 : [_dictU08 count]);
+        if (dictU08Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictU08Idx = 0;
+            for (id k1 in _dictU08) { /* map.for: _dictU08 */
+                ++dictU08Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictU08 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictU08Idx != dictU08Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictU16Exists = (nil != _dictU16 && [_dictU16 count] > 0);
     if (comma && dictU16Exists) { [s appendString:comma]; comma = nil; }
     if (dictU16Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictU16"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictU16Size = (nil == _dictU16 ? 0 : [_dictU16 count]);
-    if (dictU16Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictU16Idx = 0;
-        for (id k1 in _dictU16) { /* map.for: _dictU16 */
-            ++dictU16Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictU16 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictU16Idx != dictU16Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictU16"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictU16Size = (nil == _dictU16 ? 0 : [_dictU16 count]);
+        if (dictU16Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictU16Idx = 0;
+            for (id k1 in _dictU16) { /* map.for: _dictU16 */
+                ++dictU16Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictU16 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictU16Idx != dictU16Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictU32Exists = (nil != _dictU32 && [_dictU32 count] > 0);
     if (comma && dictU32Exists) { [s appendString:comma]; comma = nil; }
     if (dictU32Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictU32"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictU32Size = (nil == _dictU32 ? 0 : [_dictU32 count]);
-    if (dictU32Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictU32Idx = 0;
-        for (id k1 in _dictU32) { /* map.for: _dictU32 */
-            ++dictU32Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictU32 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictU32Idx != dictU32Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictU32"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictU32Size = (nil == _dictU32 ? 0 : [_dictU32 count]);
+        if (dictU32Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictU32Idx = 0;
+            for (id k1 in _dictU32) { /* map.for: _dictU32 */
+                ++dictU32Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictU32 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictU32Idx != dictU32Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictU64Exists = (nil != _dictU64 && [_dictU64 count] > 0);
     if (comma && dictU64Exists) { [s appendString:comma]; comma = nil; }
     if (dictU64Exists) {
-        [s appendString:@"\""]; [s appendString:@"dictU64"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictU64Size = (nil == _dictU64 ? 0 : [_dictU64 count]);
-    if (dictU64Size > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictU64Idx = 0;
-        for (id k1 in _dictU64) { /* map.for: _dictU64 */
-            ++dictU64Idx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictU64 objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictU64Idx != dictU64Size) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictU64"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictU64Size = (nil == _dictU64 ? 0 : [_dictU64 count]);
+        if (dictU64Size > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictU64Idx = 0;
+            for (id k1 in _dictU64) { /* map.for: _dictU64 */
+                ++dictU64Idx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictU64 objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictU64Idx != dictU64Size) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictSingleExists = (nil != _dictSingle && [_dictSingle count] > 0);
     if (comma && dictSingleExists) { [s appendString:comma]; comma = nil; }
     if (dictSingleExists) {
-        [s appendString:@"\""]; [s appendString:@"dictSingle"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictSingleSize = (nil == _dictSingle ? 0 : [_dictSingle count]);
-    if (dictSingleSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictSingleIdx = 0;
-        for (id k1 in _dictSingle) { /* map.for: _dictSingle */
-            ++dictSingleIdx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictSingle objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictSingleIdx != dictSingleSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictSingle"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictSingleSize = (nil == _dictSingle ? 0 : [_dictSingle count]);
+        if (dictSingleSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictSingleIdx = 0;
+            for (id k1 in _dictSingle) { /* map.for: _dictSingle */
+                ++dictSingleIdx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictSingle objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictSingleIdx != dictSingleSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictDoubleExists = (nil != _dictDouble && [_dictDouble count] > 0);
     if (comma && dictDoubleExists) { [s appendString:comma]; comma = nil; }
     if (dictDoubleExists) {
-        [s appendString:@"\""]; [s appendString:@"dictDouble"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictDoubleSize = (nil == _dictDouble ? 0 : [_dictDouble count]);
-    if (dictDoubleSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictDoubleIdx = 0;
-        for (id k1 in _dictDouble) { /* map.for: _dictDouble */
-            ++dictDoubleIdx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictDouble objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictDoubleIdx != dictDoubleSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictDouble"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictDoubleSize = (nil == _dictDouble ? 0 : [_dictDouble count]);
+        if (dictDoubleSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictDoubleIdx = 0;
+            for (id k1 in _dictDouble) { /* map.for: _dictDouble */
+                ++dictDoubleIdx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictDouble objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictDoubleIdx != dictDoubleSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictBooleanExists = (nil != _dictBoolean && [_dictBoolean count] > 0);
     if (comma && dictBooleanExists) { [s appendString:comma]; comma = nil; }
     if (dictBooleanExists) {
-        [s appendString:@"\""]; [s appendString:@"dictBoolean"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictBooleanSize = (nil == _dictBoolean ? 0 : [_dictBoolean count]);
-    if (dictBooleanSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictBooleanIdx = 0;
-        for (id k1 in _dictBoolean) { /* map.for: _dictBoolean */
-            ++dictBooleanIdx;
-            [s appendString:@"\""]; [s appendString:k1 ? @"true" : @"false"];;
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictBoolean objectForKey:k1];
-            [s appendString:v1 ? @"true" : @"false"];; /* nest.v */
-            if (dictBooleanIdx != dictBooleanSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictBoolean"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictBooleanSize = (nil == _dictBoolean ? 0 : [_dictBoolean count]);
+        if (dictBooleanSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictBooleanIdx = 0;
+            for (id k1 in _dictBoolean) { /* map.for: _dictBoolean */
+                ++dictBooleanIdx;
+                [s appendString:QUOTATION_S]; [s appendString:k1 ? @"true" : @"false"];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictBoolean objectForKey:k1];
+                [s appendString:v1 ? @"true" : @"false"]; /* nest.v */
+                if (dictBooleanIdx != dictBooleanSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictStringExists = (nil != _dictString && [_dictString count] > 0);
     if (comma && dictStringExists) { [s appendString:comma]; comma = nil; }
     if (dictStringExists) {
-        [s appendString:@"\""]; [s appendString:@"dictString"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictStringSize = (nil == _dictString ? 0 : [_dictString count]);
-    if (dictStringSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictStringIdx = 0;
-        for (id k1 in _dictString) { /* map.for: _dictString */
-            ++dictStringIdx;
-            [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictString objectForKey:k1];
-            [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-            if (dictStringIdx != dictStringSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictString"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictStringSize = (nil == _dictString ? 0 : [_dictString count]);
+        if (dictStringSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictStringIdx = 0;
+            for (id k1 in _dictString) { /* map.for: _dictString */
+                ++dictStringIdx;
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
+                id v1 = [_dictString objectForKey:k1];
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (dictStringIdx != dictStringSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictEnumExists = (nil != _dictEnum && [_dictEnum count] > 0);
     if (comma && dictEnumExists) { [s appendString:comma]; comma = nil; }
     if (dictEnumExists) {
-        [s appendString:@"\""]; [s appendString:@"dictEnum"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictEnumSize = (nil == _dictEnum ? 0 : [_dictEnum count]);
-    if (dictEnumSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictEnumIdx = 0;
-        for (id k1 in _dictEnum) { /* map.for: _dictEnum */
-            ++dictEnumIdx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictEnum objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (dictEnumIdx != dictEnumSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictEnum"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictEnumSize = (nil == _dictEnum ? 0 : [_dictEnum count]);
+        if (dictEnumSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictEnumIdx = 0;
+            for (id k1 in _dictEnum) { /* map.for: _dictEnum */
+                ++dictEnumIdx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictEnum objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (dictEnumIdx != dictEnumSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL dictStructExists = (nil != _dictStruct && [_dictStruct count] > 0);
     if (comma && dictStructExists) { [s appendString:comma]; comma = nil; }
     if (dictStructExists) {
-        [s appendString:@"\""]; [s appendString:@"dictStruct"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger dictStructSize = (nil == _dictStruct ? 0 : [_dictStruct count]);
-    if (dictStructSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int dictStructIdx = 0;
-        for (id k1 in _dictStruct) { /* map.for: _dictStruct */
-            ++dictStructIdx;
-            [s appendString:@"\""]; [k1 writeJSON:s];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_dictStruct objectForKey:k1];
-            [v1 writeJSON:s]; /* nest.v */
-            if (dictStructIdx != dictStructSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"dictStruct"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger dictStructSize = (nil == _dictStruct ? 0 : [_dictStruct count]);
+        if (dictStructSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int dictStructIdx = 0;
+            for (id k1 in _dictStruct) { /* map.for: _dictStruct */
+                ++dictStructIdx;
+                [s appendString:QUOTATION_S]; [k1 writeJSON:s];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_dictStruct objectForKey:k1];
+                [v1 writeJSON:s]; /* nest.v */
+                if (dictStructIdx != dictStructSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestDict::writeJSON */
 

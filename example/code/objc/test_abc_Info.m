@@ -288,188 +288,188 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
-    [s appendString:@"\""]; [s appendString:@"key"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_key)];
+    [s appendString:QUOTATION_S]; [s appendString:@"key"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_key)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number01"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number01)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number01"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number01)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number02"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number02)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number02"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number02)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number03"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number03)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number03"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number03)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number04"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number04)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number04"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number04)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number05"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number05)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number05"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number05)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number06"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number06)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number06"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number06)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number07"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number07)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number07"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number07)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number08"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number08)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number08"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number08)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number09"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number09)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number09"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number09)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"number10"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_number10)];
+    [s appendString:QUOTATION_S]; [s appendString:@"number10"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_number10)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"isReal"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendString:_isReal ? @"true" : @"false"];
-    BOOL sExists = (nil != _s && ![@"" isEqual:_s]);
+    [s appendString:QUOTATION_S]; [s appendString:@"isReal"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendString:_isReal ? @"true" : @"false"];
+    BOOL sExists = (_s && [_s length] > 0);
     if (comma && sExists) { [s appendString:comma]; comma = nil; }
     if (sExists) {
-        [s appendString:@"\""]; [s appendString:@"s"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [s appendString:@"\""]; [s appendString:_s]; [s appendString:@"\""];
+        [s appendString:QUOTATION_S]; [s appendString:@"s"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [s appendString:QUOTATION_S]; [s appendString:_s]; [s appendString:QUOTATION_S]; comma = COMMA_S;
     }
     BOOL worldExists = (nil != _world && [_world count] > 0);
     if (comma && worldExists) { [s appendString:comma]; comma = nil; }
     if (worldExists) {
-        [s appendString:@"\""]; [s appendString:@"world"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger worldSize = (nil == _world ? 0 : [_world count]);
-    if (worldSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int worldIdx = 0;
-        for (id n1 in _world) {/* vec.for: _world */
-            ++worldIdx;
-            [s appendString:@"\""]; [s appendString:n1]; [s appendString:@"\""];
-            if (worldIdx != worldSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"world"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger worldSize = (nil == _world ? 0 : [_world count]);
+        if (worldSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int worldIdx = 0;
+            for (id n1 in _world) {/* vec.for: _world */
+                ++worldIdx;
+                [s appendString:QUOTATION_S]; [s appendString:n1]; [s appendString:QUOTATION_S];
+                if (worldIdx != worldSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"gender"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_gender)];
+    [s appendString:QUOTATION_S]; [s appendString:@"gender"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_gender)];
     BOOL nextExists = (nil != _next);
     if (comma && nextExists) { [s appendString:comma]; comma = nil; }
     if (nextExists) {
-        [s appendString:@"\""]; [s appendString:@"next"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_next writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"next"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_next writeJSON:s]; comma = COMMA_S;
     }
     BOOL conflictExists = (nil != _conflict);
     if (comma && conflictExists) { [s appendString:comma]; comma = nil; }
     if (conflictExists) {
-        [s appendString:@"\""]; [s appendString:@"conflict"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_conflict writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"conflict"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_conflict writeJSON:s]; comma = COMMA_S;
     }
     BOOL conflictsExists = (nil != _conflicts && [_conflicts count] > 0);
     if (comma && conflictsExists) { [s appendString:comma]; comma = nil; }
     if (conflictsExists) {
-        [s appendString:@"\""]; [s appendString:@"conflicts"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger conflictsSize = (nil == _conflicts ? 0 : [_conflicts count]);
-    if (conflictsSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int conflictsIdx = 0;
-        for (id n1 in _conflicts) {/* vec.for: _conflicts */
-            ++conflictsIdx;
-            [n1 writeJSON:s];
-            if (conflictsIdx != conflictsSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"conflicts"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger conflictsSize = (nil == _conflicts ? 0 : [_conflicts count]);
+        if (conflictsSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int conflictsIdx = 0;
+            for (id n1 in _conflicts) {/* vec.for: _conflicts */
+                ++conflictsIdx;
+                [n1 writeJSON:s];
+                if (conflictsIdx != conflictsSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL numbersExists = (nil != _numbers && [_numbers count] > 0);
     if (comma && numbersExists) { [s appendString:comma]; comma = nil; }
     if (numbersExists) {
-        [s appendString:@"\""]; [s appendString:@"numbers"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger numbersSize = (nil == _numbers ? 0 : [_numbers count]);
-    if (numbersSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"["];
-        int numbersIdx = 0;
-        for (id n1 in _numbers) {/* vec.for: _numbers */
-            ++numbersIdx;
-            [s appendFormat:@"%@", n1];
-            if (numbersIdx != numbersSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"]"];
+        [s appendString:QUOTATION_S]; [s appendString:@"numbers"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger numbersSize = (nil == _numbers ? 0 : [_numbers count]);
+        if (numbersSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_SQUARE_S];
+            int numbersIdx = 0;
+            for (id n1 in _numbers) {/* vec.for: _numbers */
+                ++numbersIdx;
+                [s appendFormat:FORMAT_S, n1];
+                if (numbersIdx != numbersSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_SQUARE_S];
+        } comma = COMMA_S;
     }
     BOOL mapInfoGExists = (nil != _mapInfoG && [_mapInfoG count] > 0);
     if (comma && mapInfoGExists) { [s appendString:comma]; comma = nil; }
     if (mapInfoGExists) {
-        [s appendString:@"\""]; [s appendString:@"mapInfoG"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger mapInfoGSize = (nil == _mapInfoG ? 0 : [_mapInfoG count]);
-    if (mapInfoGSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int mapInfoGIdx = 0;
-        for (id k1 in _mapInfoG) { /* map.for: _mapInfoG */
-            ++mapInfoGIdx;
-            [s appendString:@"\""]; [k1 writeJSON:s];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_mapInfoG objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (mapInfoGIdx != mapInfoGSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"mapInfoG"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger mapInfoGSize = (nil == _mapInfoG ? 0 : [_mapInfoG count]);
+        if (mapInfoGSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int mapInfoGIdx = 0;
+            for (id k1 in _mapInfoG) { /* map.for: _mapInfoG */
+                ++mapInfoGIdx;
+                [s appendString:QUOTATION_S]; [k1 writeJSON:s];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_mapInfoG objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (mapInfoGIdx != mapInfoGSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL mapGenderInfoExists = (nil != _mapGenderInfo && [_mapGenderInfo count] > 0);
     if (comma && mapGenderInfoExists) { [s appendString:comma]; comma = nil; }
     if (mapGenderInfoExists) {
-        [s appendString:@"\""]; [s appendString:@"mapGenderInfo"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger mapGenderInfoSize = (nil == _mapGenderInfo ? 0 : [_mapGenderInfo count]);
-    if (mapGenderInfoSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int mapGenderInfoIdx = 0;
-        for (id k1 in _mapGenderInfo) { /* map.for: _mapGenderInfo */
-            ++mapGenderInfoIdx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_mapGenderInfo objectForKey:k1];
-            [v1 writeJSON:s]; /* nest.v */
-            if (mapGenderInfoIdx != mapGenderInfoSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"mapGenderInfo"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger mapGenderInfoSize = (nil == _mapGenderInfo ? 0 : [_mapGenderInfo count]);
+        if (mapGenderInfoSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int mapGenderInfoIdx = 0;
+            for (id k1 in _mapGenderInfo) { /* map.for: _mapGenderInfo */
+                ++mapGenderInfoIdx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_mapGenderInfo objectForKey:k1];
+                [v1 writeJSON:s]; /* nest.v */
+                if (mapGenderInfoIdx != mapGenderInfoSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL mapDoubleExists = (nil != _mapDouble && [_mapDouble count] > 0);
     if (comma && mapDoubleExists) { [s appendString:comma]; comma = nil; }
     if (mapDoubleExists) {
-        [s appendString:@"\""]; [s appendString:@"mapDouble"];
-        [s appendString:@"\""]; [s appendString:@":"]; comma = @","; }
-    NSUInteger mapDoubleSize = (nil == _mapDouble ? 0 : [_mapDouble count]);
-    if (mapDoubleSize > 0) {
-        [s appendString:@"\n"]; [s appendString:@"{"];
-        int mapDoubleIdx = 0;
-        for (id k1 in _mapDouble) { /* map.for: _mapDouble */
-            ++mapDoubleIdx;
-            [s appendString:@"\""]; [s appendFormat:@"%@", k1];
-            [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
-            id v1 = [_mapDouble objectForKey:k1];
-            [s appendFormat:@"%@", v1]; /* nest.v */
-            if (mapDoubleIdx != mapDoubleSize) { [s appendString:@","]; }
-        }
-        [s appendString:@"}"];
+        [s appendString:QUOTATION_S]; [s appendString:@"mapDouble"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+        NSUInteger mapDoubleSize = (nil == _mapDouble ? 0 : [_mapDouble count]);
+        if (mapDoubleSize > 0) {
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
+            int mapDoubleIdx = 0;
+            for (id k1 in _mapDouble) { /* map.for: _mapDouble */
+                ++mapDoubleIdx;
+                [s appendString:QUOTATION_S]; [s appendFormat:FORMAT_S, k1];
+                [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k */
+                id v1 = [_mapDouble objectForKey:k1];
+                [s appendFormat:FORMAT_S, v1]; /* nest.v */
+                if (mapDoubleIdx != mapDoubleSize) { [s appendString:COMMA_S]; }
+            }
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* Info::writeJSON */
 

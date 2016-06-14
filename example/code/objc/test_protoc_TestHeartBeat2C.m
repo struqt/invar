@@ -65,7 +65,7 @@
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];
     if (65534 != _protocId) { _protocId = 65534; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocCRC = [r readUInt32:&eof];if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocCRC = [r readUInt32:&eof]; if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2CExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2CExists) {
         if (_protoc2C == nil) { _protoc2C = [[Protoc2C alloc] init]; }
@@ -119,38 +119,38 @@
 
 - (void)writeJSON:(NSMutableString *)s
 {
-    [s appendString:@"\n"]; [s appendString:@"{"];
+    [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
-    [s appendString:@"\""]; [s appendString:@"protocId"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_protocId)];
+    [s appendString:QUOTATION_S]; [s appendString:@"protocId"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocId)];
     if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:@"\""]; [s appendString:@"protocCRC"]; [s appendString:@"\""]; [s appendString:@":"];
-    comma = @","; [s appendFormat:@"%@", @(_protocCRC)];
+    [s appendString:QUOTATION_S]; [s appendString:@"protocCRC"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocCRC)];
     BOOL protoc2CExists = (nil != _protoc2C);
     if (comma && protoc2CExists) { [s appendString:comma]; comma = nil; }
     if (protoc2CExists) {
-        [s appendString:@"\""]; [s appendString:@"protoc2C"]; [s appendString:@"\""]; [s appendString:@":"];
-        comma = @","; [_protoc2C writeJSON:s];
+        [s appendString:QUOTATION_S]; [s appendString:@"protoc2C"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_protoc2C writeJSON:s]; comma = COMMA_S;
     }
     BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
     if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
     if (hotfixExists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
         NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
         if (hotfixSize > 0) {
-            [s appendString:@"\n"]; [s appendString:@"{"];
+            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
             int hotfixIdx = 0;
             for (id k1 in _hotfix) { /* map.for: _hotfix */
                 ++hotfixIdx;
-                [s appendString:@"\""]; [s appendString:@"\""]; [s appendString:k1]; [s appendString:@"\""];
-                [s appendString:@"\""]; [s appendString:@":"]; /* nest.k */
+                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
                 id v1 = [_hotfix objectForKey:k1];
-                [s appendString:@"\""]; [s appendString:v1]; [s appendString:@"\""]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:@","]; }
+                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
+                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
             }
-            [s appendString:@"}"];
-        } comma = @",";
+            [s appendString:RIGHT_CURLY_S];
+        } comma = COMMA_S;
     }
-    [s appendString:@"}"]; [s appendString:@"\n"];
+    [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestHeartBeat2C::writeJSON */
 
