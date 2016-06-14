@@ -54,7 +54,7 @@
 - (Protoc2S *) setSessionId : (NSString            *)v { _sessionId = v; return self; }
 - (Protoc2S *) setHotfix    : (NSMutableDictionary *)v { _hotfix    = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _sessionId = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

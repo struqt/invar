@@ -64,7 +64,7 @@
 - (TestServerTimeN2C *) setTime      : (int64_t              )v { _time      = v; return self; }
 - (TestServerTimeN2C *) setHotfix    : (NSMutableDictionary *)v { _hotfix    = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];

@@ -68,7 +68,7 @@
 - (TestUserLocationN2S *) setY         : (float_t              )v { _y         = v; return self; }
 - (TestUserLocationN2S *) setHotfix    : (NSMutableDictionary *)v { _hotfix    = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];

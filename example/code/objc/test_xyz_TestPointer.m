@@ -87,7 +87,7 @@
 - (TestPointer *) setEnumValue    : (Gender               )v { _enumValue    = v; return self; }
 - (TestPointer *) setHotfix       : (NSMutableDictionary *)v { _hotfix       = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     int8_t selfExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

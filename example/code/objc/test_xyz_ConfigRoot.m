@@ -79,7 +79,7 @@
 - (ConfigRoot *) setInfox    : (InfoX               *)v { _infox    = v; return self; }
 - (ConfigRoot *) setHotfix   : (NSMutableDictionary *)v { _hotfix   = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _revision = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

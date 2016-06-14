@@ -12,7 +12,7 @@
 @interface DataWriter : NSObject
 
 + (instancetype) Create;
-+ (instancetype) CreateWithData:(NSMutableData*)data;
++ (instancetype) CreateWithData:(NSMutableData * const)data;
 
 - (NSData*) data;
 

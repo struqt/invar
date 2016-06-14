@@ -11,9 +11,9 @@
 
 @interface DataReader : NSObject
 
-+ (instancetype) CreateWithData:(NSData*)data;
-+ (instancetype) CreateWithData:(NSData*)data andOffset:(NSUInteger)offset;
-+ (instancetype) CreateWithBytes:(const void*)bytes andLength:(NSUInteger)len;
++ (instancetype) CreateWithData:(const NSData * const)data;
++ (instancetype) CreateWithData:(const NSData * const)data andOffset:(NSUInteger)offset;
++ (instancetype) CreateWithBytes:(const void * const)bytes andLength:(NSUInteger)len;
 
 - (int8_t)    readInt8   : (BOOL *)eof;
 - (int16_t)   readInt16  : (BOOL *)eof;

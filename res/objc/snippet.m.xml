@@ -3,6 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="objc">
 
+  <export resPath="objc/Invar.m" destDir="" destName="Invar.m"/>
   <export resPath="objc/DataReader.m" destDir="" destName="DataReader.m"/>
   <export resPath="objc/DataWriter.m" destDir="" destName="DataWriter.m"/>
 
@@ -165,7 +166,7 @@
   <template key="read.import"><![CDATA[ ::DataReader ]]></template>
   <template key="read.method.arg"><![CDATA[ r ]]></template>
   <template key="read.method"><![CDATA[
-    - (NSInteger)read:(DataReader *)r
+    - (NSInteger)read:(const DataReader * const)r
     {
     (#tab)BOOL eof = false;(#body)
     (#tab)return INVAR_ERR_NONE;
@@ -502,19 +503,19 @@
     {
     (#tab)self = [super init];
     (#tab)if (!self) { return self; }
-    (#tab)[self setBlockRecvRequest:
-    (#tab) ^(id req, id resp) {
+    (#tab)_blockRecvRequest = ^(id req, id resp) {
     (#tab)(#tab)NSLog(@"Unhandled request: No function named 'Handle%@'.", [req class]);
     (#tab)(#tab)[resp setProtocError:INVAR_ERR_PROTOC_NO_HANDLER];
-    (#tab) }];
-    (#tab)[self setBlockRecvResponse:
-    (#tab) ^(id resp) {
+    (#tab)};
+    (#tab)_blockRecvResponse = ^(id resp) {
     (#tab)(#tab)NSLog(@"Unhandled response: No function named 'Handle%@'.", [resp class]);
-    (#tab) }];
-    (#tab)[self setBlockRecvNotify:
-    (#tab) ^(id ntf) {
+    (#tab)};
+    (#tab)_blockRecvNotify = ^(id ntf) {
     (#tab)(#tab)NSLog(@"Unhandled notify: No function named 'Handle%@'.", [ntf class]);
-    (#tab) }];
+    (#tab)};
+    (#tab)_blockHandleError = ^(NSInteger code, uint16_t protoc) {
+    (#tab)(#tab)NSLog(@"Error when handle protocol %@, the error code is %@", @(protoc), @(code));
+    (#tab)};
     (#tab)return self;
     }
     (#body)
@@ -525,33 +526,39 @@
   <template key="runtime.protoc.handle.notify"><![CDATA[ (#blank)
     (#tab)(#space)case (#key): /* (#doc) */ {
     (#tab)(#tab)id (#name) = [[(#type) alloc] init];
-    (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
-    (#tab)(#tab)Handle(#type)((#name));
+    (#tab)(#tab)if (INVAR_ERR_NONE == (code = [(#name) read:r])) { Handle(#type)((#name)); }
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
     (#tab)(#space)case (#key): /* (#doc) */ {
     (#tab)(#tab)id (#name) = [[(#type) alloc] init];
-    (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
-    (#tab)(#tab)Handle(#type)((#name));
+    (#tab)(#tab)if (INVAR_ERR_NONE == (code = [(#name) read:r])) { Handle(#type)((#name)); }
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
     (#tab)(#space)case (#key): /* (#doc) */ {
-    (#tab)(#tab)id (#name) = [[(#type) alloc] init];
-    (#tab)(#tab)if (INVAR_ERR_NONE != (err = [(#name) read:r])) { return err; }
-    (#tab)(#tab)Handle(#req)((#name), [[(#resp) alloc] init]);
+    (#tab)(#tab)id (#name) = [[(#type) alloc] init]; resp = [[(#resp) alloc] init];
+    (#tab)(#tab)if (INVAR_ERR_NONE == (code = [(#name) read:r])) { Handle(#req)((#name), resp); }
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.method"><![CDATA[
     (#blank)
-    + (NSInteger)(#name):(DataReader *)r
+    + (id<InvarEncode>)(#name):(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
     {
-    (#tab)BOOL eof = NO;
-    (#tab)NSUInteger command = [r peekUInt16:&eof];
-    (#tab)if (eof) { return INVAR_ERR_DECODE_EOF; }
-    (#tab)NSInteger err = INVAR_ERR_NONE;
-    (#tab)switch (command) {(#body)
-    (#tab)(#space)default: { return INVAR_ERR_PROTOC_NO_HANDLER; }
+    (#tab)BOOL eof = NO; id resp = nil;
+    (#tab)NSInteger code = INVAR_ERR_PROTOC_UNHANDLED;
+    (#tab)NSUInteger request = [r peekUInt16:&eof];
+    (#tab)if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
+    (#tab)switch (request) {(#body)
+    (#tab)(#space)default: { code = INVAR_ERR_PROTOC_NO_HANDLER; break; }
     (#tab)}
-    (#tab)return err;
+    error:
+    (#tab)if (INVAR_ERR_NONE != code && [[[self class] shared] blockHandleError]) {
+    (#tab)(#tab)[[[self class] shared] blockHandleError](code, request);
+    (#tab)}
+    (#tab)if (resp) {
+    (#tab)(#tab)[resp setProtocError:code];
+    (#tab)}
+    (#tab)*p = request;
+    (#tab)*e = code;
+    (#tab)return resp;
     }
     /* (#name) */
   ]]></template>

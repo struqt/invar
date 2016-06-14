@@ -64,7 +64,7 @@
 - (TestHeartBeatR2S *) setProtoc2S    : (Protoc2S            *)v { _protoc2S    = v; return self; }
 - (TestHeartBeatR2S *) setHotfix      : (NSMutableDictionary *)v { _hotfix      = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];

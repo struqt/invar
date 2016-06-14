@@ -13,7 +13,7 @@
 
 @protocol InvarDecode
 
-- (NSInteger)read:(DataReader *)r;
+- (NSInteger)read:(const DataReader * const)r;
 
 @end
 
@@ -30,6 +30,21 @@
 
 @end
 
+typedef struct _ResponseBytes {
+    const void * bytes;
+    int32_t      length;
+    int32_t      error;
+    uint16_t     request;
+    uint16_t     response;
+} ResponseBytes;
+
+void          HandleNotify2S   (const void * const, int32_t);
+void          HandleNotify2C   (const void * const, int32_t);
+void          HandleResponse2S (const void * const, int32_t);
+void          HandleResponse2C (const void * const, int32_t);
+ResponseBytes HandleRequest2S  (const void * const, int32_t);
+ResponseBytes HandleRequest2C  (const void * const, int32_t);
+
 
 #define FORMAT_S        @"%@"
 #define LINE_FEED_S     @"\n"
@@ -43,6 +58,8 @@
 
 
 #define INVAR_ERR_NONE                     0
+#define INVAR_ERR_SIZE_TOO_LONG          493
+#define INVAR_ERR_INVALID_REQ            494
 #define INVAR_ERR_DECODE_EOF             495
 #define INVAR_ERR_DECODE_STRING_P        496
 #define INVAR_ERR_DECODE_STRUCT_P        497

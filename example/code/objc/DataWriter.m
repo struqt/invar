@@ -24,7 +24,7 @@
     return [[DataWriter alloc] init];
 }
 
-+ (instancetype) CreateWithData:(NSMutableData*)data
++ (instancetype) CreateWithData:(NSMutableData * const)data
 {
     return [[DataWriter alloc] initWithData:data];
 }

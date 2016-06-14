@@ -99,7 +99,7 @@
 - (InfoX *) setConflict_a : (test_abc_Conflict   *)v { _conflict_a = v; return self; }
 - (InfoX *) setHotfix     : (NSMutableDictionary *)v { _hotfix     = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     uint32_t lenInfos = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

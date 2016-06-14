@@ -105,7 +105,7 @@
 
 - (TestDict *) setHotfix      : (NSMutableDictionary *)v { _hotfix      = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     uint32_t lenDictI08 = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

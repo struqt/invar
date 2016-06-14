@@ -21,24 +21,24 @@
 
 @implementation DataReader
 
-+ (instancetype) CreateWithBytes:(const void*)bytes andLength:(NSUInteger)length
++ (instancetype) CreateWithBytes:(const void * const)bytes andLength:(NSUInteger)length
 {
     return [[DataReader alloc] initWithBytes:bytes andLength:length];
 }
 
-+ (instancetype) CreateWithData:(NSData*)data
++ (instancetype) CreateWithData:(const NSData * const)data
 {
     if (!data) { return nil; }
     return [[DataReader alloc] initWithBytes:data.bytes andLength:data.length];
 }
 
-+ (instancetype) CreateWithData:(NSData*)data andOffset:(NSUInteger)offset;
++ (instancetype) CreateWithData:(const NSData * const)data andOffset:(NSUInteger)offset;
 {
     if (!data) { return nil; }
     return [[DataReader alloc] initWithBytes:data.bytes + offset andLength:data.length];
 }
 
-- (instancetype)initWithBytes:(const void*)bytes andLength:(NSUInteger)len
+- (instancetype)initWithBytes:(const void * const)bytes andLength:(NSUInteger)len
 {
     self = [super init];
     if (!self) {

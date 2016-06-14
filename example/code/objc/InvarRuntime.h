@@ -16,22 +16,22 @@
 #import "test_protoc_TestServerTimeN2C.h"
 #import "test_protoc_TestHeartBeatR2S.h"
 #import "test_protoc_TestHeartBeat2C.h"
-#import "test_protoc_Protoc2C.h"
-#import "Invar.h"
 
 typedef void (^RecvRequest)(id req, id resp);
 typedef void (^RecvResponse)(id resp);
 typedef void (^RecvNotify)(id ntf);
+typedef void (^HandleError)(NSInteger err, uint16_t protoc);
 
 @interface InvarRuntime : NSObject
 
 @property (nonatomic, strong) RecvRequest  blockRecvRequest;
 @property (nonatomic, strong) RecvResponse blockRecvResponse;
 @property (nonatomic, strong) RecvNotify   blockRecvNotify;
+@property (nonatomic, strong) HandleError  blockHandleError;
 
 + (instancetype) shared;
-+ (NSInteger)HandleProtocAsServer:(DataReader *)input;
-+ (NSInteger)HandleProtocAsClient:(DataReader *)input;
++ (id<InvarEncode>)HandleProtocAsServer:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
++ (id<InvarEncode>)HandleProtocAsClient:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
 
 @end
 

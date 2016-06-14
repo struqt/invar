@@ -140,7 +140,7 @@
 - (Info *) setConflict      : (test_abc_Conflict   *)v { _conflict      = v; return self; }
 - (Info *) setHotfix        : (NSMutableDictionary *)v { _hotfix        = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _key = [r readInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

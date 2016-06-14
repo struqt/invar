@@ -120,7 +120,7 @@
 - (TestRefer *) setSelf         : (TestRefer           *)v { _self         = v; return self; }
 - (TestRefer *) setHotfix       : (NSMutableDictionary *)v { _hotfix       = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _numberi08 = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

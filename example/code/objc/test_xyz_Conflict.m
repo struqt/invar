@@ -53,7 +53,7 @@
 - (test_xyz_Conflict *) setPi     : (double_t             )v { _pi     = v; return self; }
 - (test_xyz_Conflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _pi = [r readDouble:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

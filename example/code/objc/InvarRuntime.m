@@ -33,75 +33,87 @@
 {
     self = [super init];
     if (!self) { return self; }
-    [self setBlockRecvRequest:
-    ^(id req, id resp) {
+    _blockRecvRequest = ^(id req, id resp) {
         NSLog(@"Unhandled request: No function named 'Handle%@'.", [req class]);
         [resp setProtocError:INVAR_ERR_PROTOC_NO_HANDLER];
-    }];
-    [self setBlockRecvResponse:
-    ^(id resp) {
+    };
+    _blockRecvResponse = ^(id resp) {
         NSLog(@"Unhandled response: No function named 'Handle%@'.", [resp class]);
-    }];
-    [self setBlockRecvNotify:
-    ^(id ntf) {
+    };
+    _blockRecvNotify = ^(id ntf) {
         NSLog(@"Unhandled notify: No function named 'Handle%@'.", [ntf class]);
-    }];
+    };
+    _blockHandleError = ^(NSInteger code, uint16_t protoc) {
+        NSLog(@"Error when handle protocol %@, the error code is %@", @(protoc), @(code));
+    };
     return self;
 }
 
-+ (NSInteger)HandleProtocAsServer:(DataReader *)r
++ (id<InvarEncode>)HandleProtocAsServer:(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
 {
-    BOOL eof = NO;
-    NSUInteger command = [r peekUInt16:&eof];
-    if (eof) { return INVAR_ERR_DECODE_EOF; }
-    NSInteger err = INVAR_ERR_NONE;
-    switch (command) {
+    BOOL eof = NO; id resp = nil;
+    NSInteger code = INVAR_ERR_PROTOC_UNHANDLED;
+    NSUInteger request = [r peekUInt16:&eof];
+    if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
+    switch (request) {
      case 65527: /* 客户端请求,服务端响应 */ {
-        id req = [[TestUserLogin2S alloc] init];
-        if (INVAR_ERR_NONE != (err = [req read:r])) { return err; }
-        HandleTestUserLogin2S(req, [[TestUserLoginR2C alloc] init]);
+        id req = [[TestUserLogin2S alloc] init]; resp = [[TestUserLoginR2C alloc] init];
+        if (INVAR_ERR_NONE == (code = [req read:r])) { HandleTestUserLogin2S(req, resp); }
         break; }
      case 65531: /* 客户端通知服务端 */ {
         id ntf = [[TestUserLocationN2S alloc] init];
-        if (INVAR_ERR_NONE != (err = [ntf read:r])) { return err; }
-        HandleTestUserLocationN2S(ntf);
+        if (INVAR_ERR_NONE == (code = [ntf read:r])) { HandleTestUserLocationN2S(ntf); }
         break; }
      case 65533: /* 服务端请求,客户端响应 */ {
         id rep = [[TestHeartBeatR2S alloc] init];
-        if (INVAR_ERR_NONE != (err = [rep read:r])) { return err; }
-        HandleTestHeartBeatR2S(rep);
+        if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestHeartBeatR2S(rep); }
         break; }
-     default: { return INVAR_ERR_PROTOC_NO_HANDLER; }
+     default: { code = INVAR_ERR_PROTOC_NO_HANDLER; break; }
     }
-    return err;
+error:
+    if (INVAR_ERR_NONE != code && [[[self class] shared] blockHandleError]) {
+        [[[self class] shared] blockHandleError](code, request);
+    }
+    if (resp) {
+        [resp setProtocError:code];
+    }
+    *p = request;
+    *e = code;
+    return resp;
 }
 /* HandleProtocAsServer */
 
-+ (NSInteger)HandleProtocAsClient:(DataReader *)r
++ (id<InvarEncode>)HandleProtocAsClient:(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
 {
-    BOOL eof = NO;
-    NSUInteger command = [r peekUInt16:&eof];
-    if (eof) { return INVAR_ERR_DECODE_EOF; }
-    NSInteger err = INVAR_ERR_NONE;
-    switch (command) {
+    BOOL eof = NO; id resp = nil;
+    NSInteger code = INVAR_ERR_PROTOC_UNHANDLED;
+    NSUInteger request = [r peekUInt16:&eof];
+    if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
+    switch (request) {
      case 65528: /* 客户端请求,服务端响应 */ {
         id rep = [[TestUserLoginR2C alloc] init];
-        if (INVAR_ERR_NONE != (err = [rep read:r])) { return err; }
-        HandleTestUserLoginR2C(rep);
+        if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestUserLoginR2C(rep); }
         break; }
      case 65530: /* 服务器通知客户端 */ {
         id ntf = [[TestServerTimeN2C alloc] init];
-        if (INVAR_ERR_NONE != (err = [ntf read:r])) { return err; }
-        HandleTestServerTimeN2C(ntf);
+        if (INVAR_ERR_NONE == (code = [ntf read:r])) { HandleTestServerTimeN2C(ntf); }
         break; }
      case 65534: /* 服务端请求,客户端响应 */ {
-        id req = [[TestHeartBeat2C alloc] init];
-        if (INVAR_ERR_NONE != (err = [req read:r])) { return err; }
-        HandleTestHeartBeat2C(req, [[TestHeartBeatR2S alloc] init]);
+        id req = [[TestHeartBeat2C alloc] init]; resp = [[TestHeartBeatR2S alloc] init];
+        if (INVAR_ERR_NONE == (code = [req read:r])) { HandleTestHeartBeat2C(req, resp); }
         break; }
-     default: { return INVAR_ERR_PROTOC_NO_HANDLER; }
+     default: { code = INVAR_ERR_PROTOC_NO_HANDLER; break; }
     }
-    return err;
+error:
+    if (INVAR_ERR_NONE != code && [[[self class] shared] blockHandleError]) {
+        [[[self class] shared] blockHandleError](code, request);
+    }
+    if (resp) {
+        [resp setProtocError:code];
+    }
+    *p = request;
+    *e = code;
+    return resp;
 }
 /* HandleProtocAsClient */
 

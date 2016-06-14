@@ -69,7 +69,7 @@
 - (TestUserLogin2S *) setPlatform  : (NSString            *)v { _platform  = v; return self; }
 - (TestUserLogin2S *) setHotfix    : (NSMutableDictionary *)v { _hotfix    = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];

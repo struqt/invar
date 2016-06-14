@@ -95,7 +95,7 @@
 - (Custom *) setNext     : (Custom            *)v { _next     = v; return self; }
 - (Custom *) setEmptyDoc : (NSString          *)v { _emptyDoc = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _x = (Gender)[r readInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

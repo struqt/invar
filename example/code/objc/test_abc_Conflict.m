@@ -62,7 +62,7 @@
 - (test_abc_Conflict *) setText   : (NSString            *)v { _text   = v; return self; }
 - (test_abc_Conflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _key = (Gender)[r readInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }

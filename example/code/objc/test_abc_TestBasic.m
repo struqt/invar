@@ -106,7 +106,7 @@
 - (TestBasic *) setEnumDeft     : (Gender               )v { _enumDeft     = v; return self; }
 - (TestBasic *) setHotfix       : (NSMutableDictionary *)v { _hotfix       = v; return self; }
 
-- (NSInteger)read:(DataReader *)r
+- (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
     _numberI08 = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
