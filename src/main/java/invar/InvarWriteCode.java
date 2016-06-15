@@ -414,6 +414,7 @@ public final class InvarWriteCode extends InvarWrite {
         }
         fileName = fileName + suffix;
         String fileDir = snippetGet(Key.RUNTIME_PACK);
+        fileIncludes.clear();
         TreeSet<String> imps = new TreeSet<String>();
         String body = makeRuntimeBlock(imps);
         String s = snippet.tryGet(Key.FILE_BODY,
@@ -677,7 +678,6 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     private String makeRuntimeAliasBlock(TreeSet<String> imps) {
-        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
         StringBuilder meBasic = new StringBuilder();
         StringBuilder meEnums = new StringBuilder();
         StringBuilder meStruct = new StringBuilder();
@@ -696,6 +696,7 @@ public final class InvarWriteCode extends InvarWrite {
                 key = Key.RUNTIME_ALIAS_BASIC;
 
             String s = snippetGet(key);
+            String split = snippetTryGet(Key.RUNTIME_TYPE_SPLIT);
             s = replace(s, Token.Name, alias);
             s = replace(s, Token.Type, type.getName());
             s = replace(s, Token.TypeFull, type.fullName(split));
@@ -745,7 +746,6 @@ public final class InvarWriteCode extends InvarWrite {
         }
         String name = snippetGet(key);
         String invoke = snippetTryGet(key + ".read");
-        String split = snippetGet(Key.RUNTIME_TYPE_SPLIT);
         StringBuilder block = new StringBuilder();
         while (protocIds.hasNext()) {
             Integer id = protocIds.next();
@@ -784,6 +784,7 @@ public final class InvarWriteCode extends InvarWrite {
             if (tStruct.getProtoc().getResponse() != null) {
                 s = replace(s, Token.Response, tStruct.getProtoc().getResponse().getName());
             }
+            String split = snippetTryGet(Key.RUNTIME_TYPE_SPLIT);
             s = replace(s, Token.Doc, tStruct.getProtoc().getComment());
             s = replace(s, Token.Key, id.toString());
             s = replace(s, Token.Type, tStruct.getName());

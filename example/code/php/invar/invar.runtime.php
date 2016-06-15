@@ -13,8 +13,6 @@ require_once dirname(__FILE__) . '/../test/protoc/TestUserLocationN2S.php';
 require_once dirname(__FILE__) . '/../test/protoc/TestServerTimeN2C.php';
 require_once dirname(__FILE__) . '/../test/protoc/TestHeartBeatR2S.php';
 require_once dirname(__FILE__) . '/../test/protoc/TestHeartBeat2C.php';
-require_once dirname(__FILE__) . '/../test/protoc/Protoc2C.php';
-require_once dirname(__FILE__) . '/../invar/invar.codec.php';
 
 use \test\protoc\TestHeartBeat2C;
 use \test\protoc\TestHeartBeatR2S;

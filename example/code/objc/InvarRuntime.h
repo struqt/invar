@@ -7,9 +7,6 @@
 #ifndef INVARRUNTIME_H_
 #define INVARRUNTIME_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSDictionary.h>
 #import "test_protoc_TestUserLoginR2C.h"
 #import "test_protoc_TestUserLogin2S.h"
 #import "test_protoc_TestUserLocationN2S.h"
