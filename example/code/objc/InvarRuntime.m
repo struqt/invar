@@ -15,7 +15,6 @@
 #import "test_protoc_TestHeartBeatR2S.h"
 #import "test_protoc_TestHeartBeat2C.h"
 #import "InvarRuntime.h"
-#import "ProtocHandlers.h"
 
 @implementation InvarRuntime
 

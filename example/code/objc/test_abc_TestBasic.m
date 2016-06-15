@@ -50,8 +50,8 @@
     _numberDouble = 3.1415926;
     _boolValue    = false;
     _stringValue  = @"hello世界";
-    _enumValue    = NONE;
-    _enumDeft     = MALE;
+    _enumValue    = GenderNONE;
+    _enumDeft     = GenderMALE;
     _hotfix       = nil;
     return self;
 }

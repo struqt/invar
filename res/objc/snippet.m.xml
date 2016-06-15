@@ -27,7 +27,7 @@
   <template key="init.int64"> <![CDATA[ (#deft)L   ]]></template>
   <template key="init.uint64"><![CDATA[ (#deft)UL  ]]></template>
   <template key="init.float"> <![CDATA[ (#deft)F   ]]></template>
-  <template key="init.enum">  <![CDATA[ (#name)    ]]></template>
+  <template key="init.enum">  <![CDATA[ (#type)(#name)    ]]></template>
   <template key="init.string"><![CDATA[ @"(#deft)" ]]></template>
   <template key="init.struct"><![CDATA[ [[(#type) alloc] init] ]]></template>
   <template key="init.vec">   <![CDATA[ [[NSMutableArray alloc] init] ]]></template>
@@ -485,7 +485,6 @@
   <template key="runtime.body"><![CDATA[
     (#concat-all)
     #import "InvarRuntime.h"
-    #import "ProtocHandlers.h"
     (#blank)
     @implementation InvarRuntime
     (#blank)

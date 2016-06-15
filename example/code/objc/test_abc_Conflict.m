@@ -27,7 +27,7 @@
 {
     self = [super init];
     if (!self) { return self; }
-    _key    = NONE;
+    _key    = GenderNONE;
     _text   = @"";
     _bytes  = [[NSMutableArray alloc] init];
     _hotfix = nil;

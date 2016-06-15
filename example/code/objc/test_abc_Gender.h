@@ -10,9 +10,9 @@
 /* 性别的枚举类型 */
 typedef NS_ENUM(NSInteger, Gender)
 {
-    NONE   = -1,
-    MALE   = 10, //Enum male
-    FEMALE = 20, //Enum female
+    GenderNONE   = -1,
+    GenderMALE   = 10, //Enum male
+    GenderFEMALE = 20, //Enum female
 }; /* enum: Gender */
 
 #endif /* TEST_ABC_GENDER_H_ */

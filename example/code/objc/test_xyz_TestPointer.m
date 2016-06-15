@@ -39,7 +39,7 @@
     _dictI08      = nil;
     _listNested   = nil;
     _numberSingle = 0.0F;
-    _enumValue    = NONE;
+    _enumValue    = GenderNONE;
     _hotfix       = nil;
     return self;
 }

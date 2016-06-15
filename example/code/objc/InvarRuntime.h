@@ -64,5 +64,7 @@ extern void HandleTestHeartBeat2C(TestHeartBeat2C *, TestHeartBeatR2S *);
 
 /******************************************************************************/
 
+#import "ProtocHandlers.h"
+
 
 #endif /* INVARRUNTIME_H_ */

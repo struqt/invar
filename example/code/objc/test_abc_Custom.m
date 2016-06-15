@@ -34,7 +34,7 @@
 {
     self = [super init];
     if (!self) { return self; }
-    _x        = NONE;
+    _x        = GenderNONE;
     _test     = [[TestBasic alloc] init];
     _xyz      = [[test_xyz_Conflict alloc] init];
     _abc      = [[test_abc_Conflict alloc] init];

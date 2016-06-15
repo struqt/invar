@@ -53,7 +53,7 @@
     _numberDouble = 0.00;
     _boolValue    = false;
     _stringValue  = @"";
-    _enumValue    = NONE;
+    _enumValue    = GenderNONE;
     _other        = [[Custom alloc] init];
     _self         = nil;
     _listI08      = [[NSMutableArray alloc] init];

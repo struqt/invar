@@ -60,7 +60,7 @@
     _isReal        = false;
     _s             = @"hello";
     _world         = [[NSMutableArray alloc] init];
-    _gender        = NONE;
+    _gender        = GenderNONE;
     _next          = nil;
     _conflict      = [[test_abc_Conflict alloc] init];
     _conflicts     = [[NSMutableArray alloc] init];

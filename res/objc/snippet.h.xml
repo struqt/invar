@@ -81,7 +81,7 @@
     (#body)}; /* enum: (#name) */
   ]]></template>
   <template key="enum.field"><![CDATA[
-	(#tab)(#name) = (#value),(#doc)
+	(#tab)(#type)(#name) = (#value),(#doc)
   ]]></template>
   <template key="struct"><![CDATA[
     (#doc)
@@ -131,6 +131,8 @@
     (#blank)
     @end
     (#body)(#concat-all)
+    (#blank)
+    #import "ProtocHandlers.h"
   ]]></template>
   <template key="runtime.protoc.handle.client"><![CDATA[ HandleProtocAsServer ]]></template>
   <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtocAsClient ]]></template>
