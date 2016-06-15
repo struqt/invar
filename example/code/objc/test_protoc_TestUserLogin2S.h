@@ -11,7 +11,7 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
 #import "test_protoc_Protoc2S.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 客户端请求,服务端响应 */
 @interface TestUserLogin2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

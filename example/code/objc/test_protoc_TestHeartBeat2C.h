@@ -11,7 +11,7 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
 #import "test_protoc_Protoc2C.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 服务端请求,客户端响应 */
 @interface TestHeartBeat2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

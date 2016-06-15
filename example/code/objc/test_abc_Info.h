@@ -15,7 +15,7 @@
 #import "test_xyz_Conflict.h"
 #import "test_abc_Gender.h"
 #import "test_abc_Conflict.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* Test comments */
 @interface Info : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

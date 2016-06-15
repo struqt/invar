@@ -15,7 +15,7 @@
 #import "test_xyz_TestDict.h"
 #import "test_xyz_InfoX.h"
 #import "test_abc_Info.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /*  */
 @interface ConfigRoot : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

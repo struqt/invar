@@ -10,7 +10,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 服务端响应的公共数据 */
 @interface Protoc2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

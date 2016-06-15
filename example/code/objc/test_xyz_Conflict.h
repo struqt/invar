@@ -11,7 +11,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /*  */
 @interface test_xyz_Conflict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

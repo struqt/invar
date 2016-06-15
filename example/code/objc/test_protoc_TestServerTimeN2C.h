@@ -11,7 +11,7 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
 #import "test_protoc_Protoc2C.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 服务器通知客户端 */
 @interface TestServerTimeN2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

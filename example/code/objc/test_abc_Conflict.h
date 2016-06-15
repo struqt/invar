@@ -12,7 +12,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import "test_abc_Gender.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 名字冲突的类型 */
 @interface test_abc_Conflict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

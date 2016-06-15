@@ -13,7 +13,7 @@
 #import <Foundation/NSDictionary.h>
 #import "test_abc_Gender.h"
 #import "test_abc_Custom.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 测试基本的映射类型 */
 @interface TestDict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

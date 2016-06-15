@@ -12,7 +12,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import "test_protoc_Protoc2C.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 客户端请求,服务端响应 */
 @interface TestUserLoginR2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

@@ -15,7 +15,7 @@
 #import "test_abc_Info.h"
 #import "test_abc_Gender.h"
 #import "test_abc_Conflict.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* Complex data structure */
 @interface InfoX : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

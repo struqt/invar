@@ -12,7 +12,7 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
 #import "test_protoc_Protoc2S.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 客户端通知服务端 */
 @interface TestUserLocationN2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

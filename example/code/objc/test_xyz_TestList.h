@@ -14,7 +14,7 @@
 #import <Foundation/NSArray.h>
 #import "test_abc_Gender.h"
 #import "test_abc_Custom.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 测试基本的列表类型 */
 @interface TestList : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

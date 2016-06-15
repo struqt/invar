@@ -4,6 +4,7 @@
     xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="objc">
 
   <export resPath="objc/Invar.h" destDir="" destName="Invar.h"/>
+  <export resPath="objc/InvarProtoc.h" destDir="" destName="InvarProtoc.h"/>
   <export resPath="objc/DataReader.h" destDir="" destName="DataReader.h"/>
   <export resPath="objc/DataWriter.h" destDir="" destName="DataWriter.h"/>
 
@@ -25,8 +26,8 @@
     <map pack="" type="NSMutableDictionary" generic="&lt;?,?&gt;" include="&lt;Foundation/NSDictionary.h&gt;"/>
     <dialect pack="" type="NSObject" include="&lt;Foundation/NSObject.h&gt;"/>
     <dialect pack="" type="NSCopying" include="&lt;Foundation/NSObject.h&gt;"/>
-    <dialect pack="" type="InvarEncode" include="Invar.h"/>
-    <dialect pack="" type="InvarDecode" include="Invar.h"/>
+    <dialect pack="" type="InvarEncode" include="InvarProtoc.h"/>
+    <dialect pack="" type="InvarDecode" include="InvarProtoc.h"/>
     <dialect pack="" type="DataWriter" include="DataWriter.h"/>
     <dialect pack="" type="DataReader" include="DataReader.h"/>
   </redefine>

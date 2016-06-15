@@ -14,7 +14,7 @@
 #import "test_abc_TestBasic.h"
 #import "test_abc_Gender.h"
 #import "test_abc_Conflict.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 自定义类型 */
 @interface Custom : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

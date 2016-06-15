@@ -12,7 +12,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import "test_abc_Custom.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 测试泛型相互嵌套 */
 @interface TestNest : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

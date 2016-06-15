@@ -12,7 +12,7 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
 #import "test_abc_Gender.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 基础类型 */
 @interface TestBasic : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

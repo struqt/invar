@@ -14,7 +14,7 @@
 #import <Foundation/NSArray.h>
 #import "test_abc_Gender.h"
 #import "test_abc_Custom.h"
-#import "Invar.h"
+#import "InvarProtoc.h"
 
 /* 指针类型测试 */
 @interface TestPointer : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
