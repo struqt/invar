@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -19,46 +20,48 @@ public final class TokensFromXml {
     static private final String suffix = ".xml";
 
     static public void start(InvarContext ctx) throws Exception {
-        File path = new File(ctx.getRuleDir());
-        //log("Path: " + path.toURI().toASCIIString());
-        if (!path.exists())
-            return;
-        FilenameFilter filter = new FilenameFilter() {
-            //@Override
-            public boolean accept(File dir, String name) {
-                File f = new File(dir, name);
-                if (f.getName().startsWith("."))
-                    return false;
-                if (f.getName().startsWith("_"))
-                    return false;
-                if (f.isDirectory())
-                    return true;
-                if (name.endsWith(TokensFromXml.suffix))
-                    return true;
-                return false;
-            }
-        };
 
-        List<File> files = new ArrayList<File>();
-        recursiveReadFile(files, path, filter);
-        TokenNode root = StAX(ctx, files);
-        root.freeze();
-
-        TokenParser syntax = new TokenParser();
-        syntax.init(root, ctx);
-        syntax.parse(ctx);
+        List<String> paths = new ArrayList<String>(8);
+        if (ctx.getRuleDir().contains(",")) {
+            Collections.addAll(paths, ctx.getRuleDir().split(","));
+        } else {
+            paths.add(ctx.getRuleDir());
+        }
+        for (String p : paths) {
+            if (null == p || 0 == p.length()) continue;
+            File path = new File(p);
+            //log("Path: " + path.toURI().toASCIIString());
+            if (!path.exists()) continue;
+            FilenameFilter filter = new FilenameFilter() {
+                //@Override
+                public boolean accept(File dir, String name) {
+                    File f = new File(dir, name);
+                    return !f.getName().startsWith(".")
+                            && !f.getName().startsWith("_")
+                            && (f.isDirectory()
+                            || name.endsWith(TokensFromXml.suffix));
+                }
+            };
+            List<File> files = new ArrayList<File>();
+            recursiveReadFile(files, path, filter);
+            TokenNode root = StAX(ctx, files);
+            root.freeze();
+            TokenParser syntax = new TokenParser();
+            syntax.init(root, ctx);
+            syntax.parse(ctx);
+        }
     }
 
     static private void recursiveReadFile(List<File> all, File file, FilenameFilter filter) {
-        if (all.size() > 1024)
+        if (all.size() > 2048)
             return;
-        if (file.isFile())
+        if (file.isFile()) {
             all.add(file);
-        else if (file.isDirectory()) {
+        } else if (file.isDirectory()) {
             File[] files = file.listFiles(filter);
-            for (int i = 0; i < files.length; i++)
-                recursiveReadFile(all, files[i], filter);
-        } else {
+            for (File file1 : files) {
+                recursiveReadFile(all, file1, filter);
+            }
         }
     }
 
