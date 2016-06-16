@@ -1,5 +1,6 @@
 package invar.model;
 
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.zip.CRC32;
 
@@ -160,7 +161,7 @@ public class TypeStruct extends InvarType {
         }
         this.codecRule = sb.toString();
         CRC32 crc = new CRC32();
-        crc.update(this.codecRule.getBytes());
+        crc.update(this.codecRule.getBytes(Charset.forName("UTF-8")));
         this.codecRuleCRC32 = crc.getValue();
         return this.codecRule;
     }

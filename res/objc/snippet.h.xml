@@ -131,7 +131,15 @@
     + (id<InvarEncode>)HandleProtocAsClient:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
     (#blank)
     @end
+    (#blank)
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
     (#body)(#concat-all)
+    (#blank)
+    #ifdef __cplusplus
+    } /* extern "C" */
+    #endif
     (#blank)
     #import "ProtocHandlers.h"
   ]]></template>
@@ -139,15 +147,15 @@
   <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtocAsClient ]]></template>
   <template key="runtime.protoc.handle.notify">  <![CDATA[
     (#brk)(#brk)/* (#doc) */
-    extern void Handle(#type)((#type) *);
+    extern void Handle(#type)((#type) *ntf);
     #define Handle(#type) [[self shared] blockRecvNotify] ]]></template>
   <template key="runtime.protoc.handle.response"><![CDATA[
     (#brk)(#brk)/* (#doc) */
-    extern void Handle(#type)((#type) *);
+    extern void Handle(#type)((#type) *resp);
     #define Handle(#type) [[self shared] blockRecvResponse]  ]]></template>
   <template key="runtime.protoc.handle.request"> <![CDATA[
     (#brk)(#brk)/* (#doc) */
-    extern void Handle(#req)((#req) *, (#resp) *);
+    extern void Handle(#req)((#req) *req, (#resp) *resp);
     #define Handle(#type) [[self shared] blockRecvRequest] ]]></template>
   <template key="runtime.protoc.handle.method"><![CDATA[
     (#blank)

@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.*;
 
+@Deprecated
 final public class InvarReadRule {/*
     static private String suffix;
 

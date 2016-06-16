@@ -156,13 +156,13 @@ public class TokenParser {
                 AddProtocErrField(tStruct, ctx);
             }
             TypeStruct t2s = ctx.getStructProtoc2S();
-            if (t2s != null && tStruct == tStruct.getProtoc().getClient()) {
+            if (t2s != null && t2s.getPack() == tStruct.getPack() && tStruct == tStruct.getProtoc().getClient()) {
                 InvarField field = makeAutoAddField(tStruct, t2s, t2s.getAlias(), t2s.getComment(), false);
                 field.setUsePointer(true);
                 tStruct.addField(field);
             }
             TypeStruct t2c = ctx.getStructProtoc2C();
-            if (t2c != null && tStruct == tStruct.getProtoc().getServer()) {
+            if (t2c != null && t2c.getPack() == tStruct.getPack() && tStruct == tStruct.getProtoc().getServer()) {
                 InvarField field = makeAutoAddField(tStruct, t2c, t2c.getAlias(), t2c.getComment(), false);
                 field.setUsePointer(true);
                 tStruct.addField(field);

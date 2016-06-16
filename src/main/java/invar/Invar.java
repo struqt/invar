@@ -48,8 +48,8 @@ final public class Invar {
             log("");
             if (a.has(ARG_RULE_PATH)) {
                 TokensFromXml.start(ctx);
-            } //else {
-                //InvarReadRule.start(ctx, ".xml");
+            }// else {
+            //    InvarReadRule.start(ctx, ".xml");
             //}
             if (a.has(ARG_XSD_PATH)) {
                 log("");
@@ -130,4 +130,25 @@ final public class Invar {
     static void log(Object txt) {
         System.out.println(txt);
     }
+
+    private final static char[] hexChars = "0123456789ABCDEF".toCharArray();
+
+    public static String bytesToHex(byte[] bs, int width) {
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for (byte b : bs) {
+            width = Math.max(width, 4);
+            if (count == width) {
+                count = 0;
+                sb.append('\n');
+            } else {
+                sb.append(' ');
+            }
+            sb.append(hexChars[b >> 4]);
+            sb.append(hexChars[b & 0x0F]);
+            ++count;
+        }
+        return sb.toString().trim().toUpperCase();
+    }
+
 }

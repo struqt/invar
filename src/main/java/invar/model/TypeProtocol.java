@@ -27,6 +27,12 @@ public class TypeProtocol extends InvarType {
         return mapServers.get(key);
     }
 
+    static public void reset() {
+        ids.clear();
+        mapClients.clear();
+        mapServers.clear();
+    }
+
     //private final Integer protocId;
     private final Integer clientId;
     private final Integer serverId;
