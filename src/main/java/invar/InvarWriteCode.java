@@ -205,6 +205,7 @@ public final class InvarWriteCode extends InvarWrite {
         lowerFileName = (Boolean.parseBoolean(snippetTryGet("file.name.lowercase")));
         onePackOneFile = (Boolean.parseBoolean(snippetTryGet("one.pack.one.file")));
         flattenCodeDir = (Boolean.parseBoolean(snippetTryGet("code.dir.flatten")));
+        flattenCodeSplit = snippetTryGet("code.flatten.split");
         traceAllTypes = (Boolean.parseBoolean(snippetTryGet("trace.all.types")));
         uniqueTypeName = (Boolean.parseBoolean(snippetTryGet("unique.type.name")));
         noGenericType = (Boolean.parseBoolean(snippetTryGet("no.generic.type")));
@@ -244,7 +245,7 @@ public final class InvarWriteCode extends InvarWrite {
                 if (!onePackOneFile) {
                     name = typeName;
                     if (flattenCodeDir) {
-                        name = type.fullName("_");
+                        name = type.fullName(flattenCodeSplit);
                     }
                 }
                 String split = snippetTryGet(Key.FILE_INCLUDE + ".split", "/");
@@ -281,7 +282,7 @@ public final class InvarWriteCode extends InvarWrite {
         if (!onePackOneFile) {
             name = t.getName();
             if (flattenCodeDir) {
-                name = t.fullName("_");
+                name = t.fullName(flattenCodeSplit);
             }
         }
         t.setCodeName(name);

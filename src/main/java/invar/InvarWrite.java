@@ -40,6 +40,7 @@ abstract public class InvarWrite {
     Boolean uniqueTypeName = false;
     Boolean noGenericType = false;
     Boolean flattenCodeDir = false;
+    String flattenCodeSplit = "";
     Boolean onePackOneFile = false;
     Boolean lowerFileName = false;
     Boolean packNameNested = false;

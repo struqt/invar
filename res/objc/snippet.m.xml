@@ -13,6 +13,7 @@
   <!-- Settings -->
   <template key="trace.all.types">     <![CDATA[ false ]]></template>
   <template key="unique.type.name">    <![CDATA[ true  ]]></template>
+  <template key="capitalize.pack.head"><![CDATA[ true  ]]></template>
   <template key="one.pack.one.file">   <![CDATA[ false ]]></template>
   <template key="include.self">        <![CDATA[ true  ]]></template>
   <template key="pack.name.nested">    <![CDATA[ true  ]]></template>
