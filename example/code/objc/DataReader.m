@@ -152,7 +152,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(double_t);
-    return *(double_t*)p;
+    // return *(double_t*)p; /* Cause EXC_ARM_DA_ALIGN */
+    double_t number;
+    id data = [[NSData alloc] initWithBytes:p length:sizeof(double_t)];
+    [data getBytes:&number length:sizeof(double_t)];
+    return number;
 }
 
 - (boolean_t) readBool:(BOOL*)eof
