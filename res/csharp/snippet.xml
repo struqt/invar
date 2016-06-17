@@ -125,9 +125,8 @@
     [#codeNested (tolua.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (tophp.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (toxml.;  useFullName; struct; fields; imports)](#brk)
-    } //class: (#name)
-    /*
-    (#debug)*/
+    } /* class: (#name) */
+    /*(#brk)(#debug)*/
   ]]></template>
   <template key="struct.meta"><![CDATA[ [Invar.InvarRule("(#type)", "(#name)")] ]]></template>
   <template key="struct.field.prefix"><![CDATA[ this. ]]></template>

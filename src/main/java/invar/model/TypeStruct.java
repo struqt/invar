@@ -175,13 +175,7 @@ public class TypeStruct extends InvarType {
         final int max = 98;
         StringBuilder sb = new StringBuilder();
         sb.append('@');
-        if (t.getPack() != null && t.getPack().getName() != null &&  t.getPack().getName().length() > 0)
-        {
-            sb.append(t.getPack().getName().toLowerCase());
-            sb.append('.');
-        }
-        sb.append(t.getName());
-        //sb.append(t.fullName("."));
+        sb.append(t.codecRuleName());
         for (InvarField f : t.fields.values()) {
             String rule;
             if (f.getType().getId().equals(TypeID.ENUM)) {

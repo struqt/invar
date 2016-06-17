@@ -103,6 +103,7 @@
     [#codeNested (tojson.;  useFullName; struct; fields; imports)]
     (#blank)
     @end /* @implementation (#name) */
+    /*(#brk)(#debug)*/
 	]]></template>
 
   <template key="struct.getter"><![CDATA[

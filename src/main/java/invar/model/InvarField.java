@@ -224,7 +224,7 @@ public class InvarField {
 
     static void makeCodecRule(InvarType t, StringBuilder sb) {
         if (t instanceof TypeStruct) {
-            sb.append(t.fullName("."));
+            sb.append(t.codecRuleName());
         } else if (t instanceof TypeEnum) {
             sb.append(TypeID.INT32.getName());
         } else {

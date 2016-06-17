@@ -94,6 +94,18 @@ public class InvarType {
         return !isBuildin() && !packName.equals("") ? packName + splitter + name : name;
     }
 
+    final public String codecRuleName()
+    {
+        StringBuilder sb = new StringBuilder(64);
+        if (getPack() != null && getPack().getName() != null && getPack().getName().length() > 0)
+        {
+            sb.append(getPack().getName().toLowerCase());
+            sb.append('.');
+        }
+        sb.append(getName());
+        return sb.toString();
+    }
+
     final public TypeID getId() {
         return id;
     }
