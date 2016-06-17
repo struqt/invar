@@ -10,7 +10,7 @@
 
 #import "TestXyzTestRefer.h"
 
-#define CRC32 0x422E7560
+#define CRC32 0xC9B6DDD6
 
 @interface TestRefer ()
 {
@@ -335,4 +335,10 @@
 /* TestRefer::writeJSON */
 
 @end /* @implementation TestRefer */
+/*
+1@test.xyz.TestRefer/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
+  2/test.abc.Custom/test.xyz.TestRefer/vec-int8/map-int8-int8/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
+*/
 

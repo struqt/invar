@@ -10,7 +10,7 @@
 
 #import "TestProtocTestServerTimeN2C.h"
 
-#define CRC32 0x6AACCCC1
+#define CRC32 0x85E08773
 
 @interface TestServerTimeN2C ()
 {
@@ -164,4 +164,8 @@
 /* TestServerTimeN2C::writeJSON */
 
 @end /* @implementation TestServerTimeN2C */
+/*
+1@test.protoc.TestServerTimeN2C/uint16/uint32/test.protoc.Protoc2C/int64/map-string-string
++@test.protoc.Protoc2C/map-string-string
+*/
 

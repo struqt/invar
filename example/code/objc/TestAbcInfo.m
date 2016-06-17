@@ -10,7 +10,7 @@
 
 #import "TestAbcInfo.h"
 
-#define CRC32 0xD718E7CE
+#define CRC32 0x120FDCDB
 
 @interface Info ()
 {
@@ -474,4 +474,11 @@
 /* Info::writeJSON */
 
 @end /* @implementation Info */
+/*
+2@test.abc.Info/int32/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/vec
+  -string/int32/test.abc.Info/test.abc.Conflict/vec-test.xyz.Conflict/vec-double/map-test.abc.Info-i
+  nt32/map-int32-test.abc.Info/map-int32-double/map-string-string
++@test.abc.Conflict/int32/string/vec-int8/map-string-string
++@test.xyz.Conflict/double/map-string-string
+*/
 

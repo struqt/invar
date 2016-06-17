@@ -17,7 +17,7 @@ use \invar\BinaryWriter;
 
 final class Info
 {
-    const CRC32 = 0xD718E7CE;
+    const CRC32 = 0x120FDCDB;
 
     static public function &CreateFromBytes (& $str)
     {

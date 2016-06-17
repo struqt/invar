@@ -10,7 +10,7 @@
 
 #import "TestProtocTestUserLogin2S.h"
 
-#define CRC32 0xA0B2FE0C
+#define CRC32 0xB29912EF
 
 @interface TestUserLogin2S ()
 {
@@ -177,4 +177,8 @@
 /* TestUserLogin2S::writeJSON */
 
 @end /* @implementation TestUserLogin2S */
+/*
+1@test.protoc.TestUserLogin2S/uint16/uint32/test.protoc.Protoc2S/int64/string/map-string-string
++@test.protoc.Protoc2S/string/map-string-string
+*/
 

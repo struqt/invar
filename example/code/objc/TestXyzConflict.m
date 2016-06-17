@@ -127,4 +127,7 @@
 /* Conflict::writeJSON */
 
 @end /* @implementation Test_Xyz_Conflict */
+/*
+0@test.xyz.Conflict/double/map-string-string
+*/
 

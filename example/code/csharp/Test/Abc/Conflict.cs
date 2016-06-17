@@ -369,7 +369,7 @@ public sealed class Conflict
         }
     } //Conflict::WriteXML(...)
 
-} //class: Conflict
+} /* class: Conflict */
 /*
 0@test.abc.Conflict/int32/string/vec-int8/map-string-string
 */

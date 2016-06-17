@@ -10,7 +10,7 @@
 
 #import "TestXyzTestPointer.h"
 
-#define CRC32 0x34F9553
+#define CRC32 0x6348C9B7
 
 @interface TestPointer ()
 {
@@ -378,4 +378,10 @@
 /* TestPointer::writeJSON */
 
 @end /* @implementation TestPointer */
+/*
+1@test.xyz.TestPointer/test.xyz.TestPointer/string/test.abc.Custom/vec-int8/map-int8-int8/vec-vec-ve
+  c-vec-test.xyz.TestPointer/float/int32/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
+*/
 

@@ -18,7 +18,7 @@ public sealed class Info
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xD718E7CE;
+    public const uint CRC32 = 0x120FDCDB;
 
     private Int32                     key           = 123;
     private SByte                     number01      = -1;
@@ -1140,11 +1140,11 @@ public sealed class Info
         }
     } //Info::WriteXML(...)
 
-} //class: Info
+} /* class: Info */
 /*
 2@test.abc.Info/int32/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/vec
-  -string/int32/Test.Abc.Info/Test.Abc.Conflict/vec-Test.Xyz.Conflict/vec-double/map-Test.Abc.Info-i
-  nt32/map-int32-Test.Abc.Info/map-int32-double/map-string-string
+  -string/int32/test.abc.Info/test.abc.Conflict/vec-test.xyz.Conflict/vec-double/map-test.abc.Info-i
+  nt32/map-int32-test.abc.Info/map-int32-double/map-string-string
 +@test.abc.Conflict/int32/string/vec-int8/map-string-string
 +@test.xyz.Conflict/double/map-string-string
 */

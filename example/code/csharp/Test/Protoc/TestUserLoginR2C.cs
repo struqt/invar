@@ -18,7 +18,7 @@ public sealed class TestUserLoginR2C
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x27D7E210;
+    public const uint CRC32 = 0x38180462;
 
     private UInt16                    protocId    = 65528; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC   = CRC32; // [AutoAdd] Protocol CRC32.
@@ -492,9 +492,9 @@ public sealed class TestUserLoginR2C
         }
     } //TestUserLoginR2C::WriteXML(...)
 
-} //class: TestUserLoginR2C
+} /* class: TestUserLoginR2C */
 /*
-1@test.protoc.TestUserLoginR2C/uint16/uint32/uint16/Test.Protoc.Protoc2C/string/string/vec-int32/map
+1@test.protoc.TestUserLoginR2C/uint16/uint32/uint16/test.protoc.Protoc2C/string/string/vec-int32/map
   -string-string
 +@test.protoc.Protoc2C/map-string-string
 */

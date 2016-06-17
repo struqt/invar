@@ -10,7 +10,7 @@
 
 #import "TestAbcCustom.h"
 
-#define CRC32 0x604D8227
+#define CRC32 0xC5DA4F60
 
 @interface Custom ()
 {
@@ -243,4 +243,12 @@
 /* Custom::writeJSON */
 
 @end /* @implementation Custom */
+/*
+3@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
++@test.abc.Conflict/int32/string/vec-int8/map-string-string
++@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
+  2/int32/map-string-string
++@test.xyz.Conflict/double/map-string-string
+*/
 

@@ -18,7 +18,7 @@ public sealed class TestHeartBeatR2S
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xF3D16889;
+    public const uint CRC32 = 0xD651F662;
 
     private UInt16                    protocId    = 65533; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC   = CRC32; // [AutoAdd] Protocol CRC32.
@@ -356,9 +356,9 @@ public sealed class TestHeartBeatR2S
         }
     } //TestHeartBeatR2S::WriteXML(...)
 
-} //class: TestHeartBeatR2S
+} /* class: TestHeartBeatR2S */
 /*
-1@test.protoc.TestHeartBeatR2S/uint16/uint32/uint16/Test.Protoc.Protoc2S/map-string-string
+1@test.protoc.TestHeartBeatR2S/uint16/uint32/uint16/test.protoc.Protoc2S/map-string-string
 +@test.protoc.Protoc2S/string/map-string-string
 */
 } //namespace: Test.Protoc

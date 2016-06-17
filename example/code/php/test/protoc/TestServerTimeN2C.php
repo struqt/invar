@@ -15,7 +15,7 @@ use \invar\BinaryWriter;
 
 final class TestServerTimeN2C
 {
-    const CRC32 = 0x6AACCCC1;
+    const CRC32 = 0x85E08773;
 
     static public function &CreateFromBytes (& $str)
     {

@@ -243,7 +243,7 @@ public sealed class Protoc2C
         }
     } //Protoc2C::WriteXML(...)
 
-} //class: Protoc2C
+} /* class: Protoc2C */
 /*
 0@test.protoc.Protoc2C/map-string-string
 */

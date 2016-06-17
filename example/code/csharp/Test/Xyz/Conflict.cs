@@ -265,7 +265,7 @@ public sealed class Conflict
         }
     } //Conflict::WriteXML(...)
 
-} //class: Conflict
+} /* class: Conflict */
 /*
 0@test.xyz.Conflict/double/map-string-string
 */

@@ -19,7 +19,7 @@ public sealed class TestList
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x95441D4;
+    public const uint CRC32 = 0xF313942B;
 
     private List<SByte>               listI08     = new List<SByte>(); // 有符号的8位整数.
     private List<Int16>               listI16     = new List<Int16>(); // 有符号的16位整数.
@@ -1226,11 +1226,11 @@ public sealed class TestList
         }
     } //TestList::WriteXML(...)
 
-} //class: TestList
+} /* class: TestList */
 /*
 1@test.xyz.TestList/vec-int8/vec-int16/vec-int32/vec-int64/vec-uint8/vec-uint16/vec-uint32/vec-uint6
-  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-Test.Abc.Custom/map-string-string
-+@test.abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
-  nt32/string/string/Test.Abc.Custom/Test.Abc.Custom/string
+  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */
 } //namespace: Test.Xyz

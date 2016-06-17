@@ -20,7 +20,7 @@ use \test\abc\Info;
 
 final class ConfigRoot
 {
-    const CRC32 = 0xDAEE388D;
+    const CRC32 = 0x1CDC2714;
 
     static public function &CreateFromBytes (& $str)
     {

@@ -276,7 +276,7 @@ public sealed class Protoc2S
         }
     } //Protoc2S::WriteXML(...)
 
-} //class: Protoc2S
+} /* class: Protoc2S */
 /*
 0@test.protoc.Protoc2S/string/map-string-string
 */

@@ -10,7 +10,7 @@
 
 #import "TestXyzConfigRoot.h"
 
-#define CRC32 0xDAEE388D
+#define CRC32 0x1CDC2714
 
 @interface ConfigRoot ()
 {
@@ -196,4 +196,22 @@
 /* ConfigRoot::writeJSON */
 
 @end /* @implementation ConfigRoot */
+/*
+5@test.xyz.ConfigRoot/string/test.xyz.TestList/test.xyz.TestDict/test.xyz.TestNest/test.abc.Info/tes
+  t.xyz.InfoX/map-string-string
++@test.abc.Info/int32/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/vec
+  -string/int32/test.abc.Info/test.abc.Conflict/vec-test.xyz.Conflict/vec-double/map-test.abc.Info-i
+  nt32/map-int32-test.abc.Info/map-int32-double/map-string-string
++@test.xyz.InfoX/vec-vec-vec-vec-vec-test.abc.Info/test.xyz.Conflict/test.abc.Conflict/map-int32-tes
+  t.abc.Conflict/vec-vec-test.abc.Info/vec-vec-vec-test.abc.Info/vec-vec-vec-vec-vec-test.abc.Info/v
+  ec-map-int16-test.abc.Info/map-vec-int32-test.abc.Info/map-test.abc.Info-vec-int32/map-vec-test.ab
+  c.Info-vec-int32/vec-map-vec-test.abc.Info-vec-int32/map-string-string
++@test.xyz.TestDict/map-int8-int8/map-int16-int16/map-int32-int32/map-int64-int64/map-uint8-uint8/ma
+  p-uint16-uint16/map-uint32-uint32/map-uint64-uint64/map-float-float/map-double-double/map-bool-boo
+  l/map-string-string/map-int32-int32/map-test.abc.Custom-test.abc.Custom/map-string-string
++@test.xyz.TestList/vec-int8/vec-int16/vec-int32/vec-int64/vec-uint8/vec-uint16/vec-uint32/vec-uint6
+  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom/map-string-string
++@test.xyz.TestNest/vec-map-string-test.abc.Custom/map-vec-string-vec-test.abc.Custom/vec-vec-vec-ve
+  c-vec-test.abc.Custom/map-string-string
+*/
 

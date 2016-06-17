@@ -131,4 +131,7 @@
 /* Protoc2S::writeJSON */
 
 @end /* @implementation Protoc2S */
+/*
+0@test.protoc.Protoc2S/string/map-string-string
+*/
 

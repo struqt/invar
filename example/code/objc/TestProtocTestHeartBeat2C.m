@@ -10,7 +10,7 @@
 
 #import "TestProtocTestHeartBeat2C.h"
 
-#define CRC32 0xAF1824FF
+#define CRC32 0xCC52B7AE
 
 @interface TestHeartBeat2C ()
 {
@@ -155,4 +155,8 @@
 /* TestHeartBeat2C::writeJSON */
 
 @end /* @implementation TestHeartBeat2C */
+/*
+1@test.protoc.TestHeartBeat2C/uint16/uint32/test.protoc.Protoc2C/map-string-string
++@test.protoc.Protoc2C/map-string-string
+*/
 

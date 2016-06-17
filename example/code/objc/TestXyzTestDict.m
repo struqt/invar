@@ -10,7 +10,7 @@
 
 #import "TestXyzTestDict.h"
 
-#define CRC32 0x55C2A624
+#define CRC32 0x969046DE
 
 @interface TestDict ()
 {
@@ -597,4 +597,11 @@
 /* TestDict::writeJSON */
 
 @end /* @implementation TestDict */
+/*
+1@test.xyz.TestDict/map-int8-int8/map-int16-int16/map-int32-int32/map-int64-int64/map-uint8-uint8/ma
+  p-uint16-uint16/map-uint32-uint32/map-uint64-uint64/map-float-float/map-double-double/map-bool-boo
+  l/map-string-string/map-int32-int32/map-test.abc.Custom-test.abc.Custom/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
+*/
 

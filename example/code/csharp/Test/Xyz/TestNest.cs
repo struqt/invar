@@ -19,7 +19,7 @@ public sealed class TestNest
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x9A50C831;
+    public const uint CRC32 = 0x3121309F;
 
     private List<Dictionary<String,Custom>>       listDict = new List<Dictionary<String,Custom>>();
     private Dictionary<List<String>,List<Custom>> dictList = new Dictionary<List<String>,List<Custom>>();
@@ -797,11 +797,11 @@ public sealed class TestNest
         }
     } //TestNest::WriteXML(...)
 
-} //class: TestNest
+} /* class: TestNest */
 /*
-1@test.xyz.TestNest/vec-map-string-Test.Abc.Custom/map-vec-string-vec-Test.Abc.Custom/vec-vec-vec-ve
-  c-vec-Test.Abc.Custom/map-string-string
-+@test.abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
-  nt32/string/string/Test.Abc.Custom/Test.Abc.Custom/string
+1@test.xyz.TestNest/vec-map-string-test.abc.Custom/map-vec-string-vec-test.abc.Custom/vec-vec-vec-ve
+  c-vec-test.abc.Custom/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */
 } //namespace: Test.Xyz

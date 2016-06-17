@@ -18,7 +18,7 @@ public sealed class Custom
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x604D8227;
+    public const uint CRC32 = 0xC5DA4F60;
 
     private Gender            x        = Gender.NONE; // 枚举值.
     private TestBasic         test     = new TestBasic(); // 其他类型.
@@ -535,10 +535,10 @@ public sealed class Custom
         }
     } //Custom::WriteXML(...)
 
-} //class: Custom
+} /* class: Custom */
 /*
-3@test.abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
-  nt32/string/string/Test.Abc.Custom/Test.Abc.Custom/string
+3@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
 +@test.abc.Conflict/int32/string/vec-int8/map-string-string
 +@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
   2/int32/map-string-string

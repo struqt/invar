@@ -118,4 +118,7 @@
 /* Protoc2C::writeJSON */
 
 @end /* @implementation Protoc2C */
+/*
+0@test.protoc.Protoc2C/map-string-string
+*/
 

@@ -169,4 +169,7 @@
 /* Conflict::writeJSON */
 
 @end /* @implementation Test_Abc_Conflict */
+/*
+0@test.abc.Conflict/int32/string/vec-int8/map-string-string
+*/
 

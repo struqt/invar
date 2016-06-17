@@ -10,7 +10,7 @@
 
 #import "TestXyzInfoX.h"
 
-#define CRC32 0x6CEBABBA
+#define CRC32 0xF55867E1
 
 @interface InfoX ()
 {
@@ -819,4 +819,15 @@
 /* InfoX::writeJSON */
 
 @end /* @implementation InfoX */
+/*
+3@test.xyz.InfoX/vec-vec-vec-vec-vec-test.abc.Info/test.xyz.Conflict/test.abc.Conflict/map-int32-tes
+  t.abc.Conflict/vec-vec-test.abc.Info/vec-vec-vec-test.abc.Info/vec-vec-vec-vec-vec-test.abc.Info/v
+  ec-map-int16-test.abc.Info/map-vec-int32-test.abc.Info/map-test.abc.Info-vec-int32/map-vec-test.ab
+  c.Info-vec-int32/vec-map-vec-test.abc.Info-vec-int32/map-string-string
++@test.abc.Conflict/int32/string/vec-int8/map-string-string
++@test.abc.Info/int32/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/vec
+  -string/int32/test.abc.Info/test.abc.Conflict/vec-test.xyz.Conflict/vec-double/map-test.abc.Info-i
+  nt32/map-int32-test.abc.Info/map-int32-double/map-string-string
++@test.xyz.Conflict/double/map-string-string
+*/
 

@@ -10,7 +10,7 @@
 
 #import "TestXyzTestList.h"
 
-#define CRC32 0x95441D4
+#define CRC32 0xF313942B
 
 @interface TestList ()
 {
@@ -525,4 +525,10 @@
 /* TestList::writeJSON */
 
 @end /* @implementation TestList */
+/*
+1@test.xyz.TestList/vec-int8/vec-int16/vec-int32/vec-int64/vec-uint8/vec-uint16/vec-uint32/vec-uint6
+  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
+*/
 

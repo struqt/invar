@@ -19,7 +19,7 @@ public sealed class TestPointer
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x34F9553;
+    public const uint CRC32 = 0x6348C9B7;
 
     private TestPointer                         self         = null;
     private String                              stringValue  = null;
@@ -867,11 +867,11 @@ public sealed class TestPointer
         }
     } //TestPointer::WriteXML(...)
 
-} //class: TestPointer
+} /* class: TestPointer */
 /*
-1@test.xyz.TestPointer/Test.Xyz.TestPointer/string/Test.Abc.Custom/vec-int8/map-int8-int8/vec-vec-ve
-  c-vec-Test.Xyz.TestPointer/float/int32/map-string-string
-+@test.abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
-  nt32/string/string/Test.Abc.Custom/Test.Abc.Custom/string
+1@test.xyz.TestPointer/test.xyz.TestPointer/string/test.abc.Custom/vec-int8/map-int8-int8/vec-vec-ve
+  c-vec-test.xyz.TestPointer/float/int32/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */
 } //namespace: Test.Xyz

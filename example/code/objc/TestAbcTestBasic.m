@@ -248,4 +248,8 @@
 /* TestBasic::writeJSON */
 
 @end /* @implementation TestBasic */
+/*
+0@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
+  2/int32/map-string-string
+*/
 

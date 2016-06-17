@@ -20,7 +20,7 @@ use \test\abc\Info;
 
 final class InfoX
 {
-    const CRC32 = 0x6CEBABBA;
+    const CRC32 = 0xF55867E1;
 
     static public function &CreateFromBytes (& $str)
     {

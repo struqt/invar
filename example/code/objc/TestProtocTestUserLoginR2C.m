@@ -10,7 +10,7 @@
 
 #import "TestProtocTestUserLoginR2C.h"
 
-#define CRC32 0x27D7E210
+#define CRC32 0x38180462
 
 @interface TestUserLoginR2C ()
 {
@@ -220,4 +220,9 @@
 /* TestUserLoginR2C::writeJSON */
 
 @end /* @implementation TestUserLoginR2C */
+/*
+1@test.protoc.TestUserLoginR2C/uint16/uint32/uint16/test.protoc.Protoc2C/string/string/vec-int32/map
+  -string-string
++@test.protoc.Protoc2C/map-string-string
+*/
 

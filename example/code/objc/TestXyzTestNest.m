@@ -10,7 +10,7 @@
 
 #import "TestXyzTestNest.h"
 
-#define CRC32 0x9A50C831
+#define CRC32 0x3121309F
 
 @interface TestNest ()
 {
@@ -344,4 +344,10 @@
 /* TestNest::writeJSON */
 
 @end /* @implementation TestNest */
+/*
+1@test.xyz.TestNest/vec-map-string-test.abc.Custom/map-vec-string-vec-test.abc.Custom/vec-vec-vec-ve
+  c-vec-test.abc.Custom/map-string-string
++@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
+  nt32/string/string/test.abc.Custom/test.abc.Custom/string
+*/
 

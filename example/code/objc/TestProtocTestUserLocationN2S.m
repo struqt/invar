@@ -10,7 +10,7 @@
 
 #import "TestProtocTestUserLocationN2S.h"
 
-#define CRC32 0x7090870E
+#define CRC32 0xEC953457
 
 @interface TestUserLocationN2S ()
 {
@@ -173,4 +173,8 @@
 /* TestUserLocationN2S::writeJSON */
 
 @end /* @implementation TestUserLocationN2S */
+/*
+1@test.protoc.TestUserLocationN2S/uint16/uint32/test.protoc.Protoc2S/float/float/map-string-string
++@test.protoc.Protoc2S/string/map-string-string
+*/
 
