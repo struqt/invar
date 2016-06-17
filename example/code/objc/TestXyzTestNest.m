@@ -10,7 +10,7 @@
 
 #import "TestXyzTestNest.h"
 
-#define CRC32 0xEE83F94A
+#define CRC32 0x9A50C831
 
 @interface TestNest ()
 {

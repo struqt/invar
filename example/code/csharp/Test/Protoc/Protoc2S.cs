@@ -18,7 +18,7 @@ public sealed class Protoc2S
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x8CAEA9DB;
+    public const uint CRC32 = 0xC0869FC2;
 
     private String                    sessionId = ""; // 会话Id.
     private Dictionary<String,String> hotfix    = null; // [AutoAdd] Hotfix.
@@ -278,6 +278,6 @@ public sealed class Protoc2S
 
 } //class: Protoc2S
 /*
-0@Test.Protoc.Protoc2S/string/map-string-string
+0@test.protoc.Protoc2S/string/map-string-string
 */
 } //namespace: Test.Protoc

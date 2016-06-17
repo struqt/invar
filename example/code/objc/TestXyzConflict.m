@@ -10,7 +10,7 @@
 
 #import "TestXyzConflict.h"
 
-#define CRC32 0x1E71FB33
+#define CRC32 0x2126E985
 
 @interface Test_Xyz_Conflict ()
 {

@@ -10,7 +10,7 @@
 
 #import "TestXyzTestList.h"
 
-#define CRC32 0xEAC770C2
+#define CRC32 0x95441D4
 
 @interface TestList ()
 {

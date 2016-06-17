@@ -15,7 +15,7 @@ use \invar\BinaryWriter;
 
 final class Conflict
 {
-    const CRC32 = 0xF938CCBC;
+    const CRC32 = 0xCC7A29B9;
 
     static public function &CreateFromBytes (& $str)
     {

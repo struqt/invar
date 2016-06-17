@@ -10,7 +10,7 @@
 
 #import "TestProtocProtoc2S.h"
 
-#define CRC32 0x8CAEA9DB
+#define CRC32 0xC0869FC2
 
 @interface Protoc2S ()
 {

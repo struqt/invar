@@ -18,7 +18,7 @@ public sealed class TestBasic
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x3F768E8E;
+    public const uint CRC32 = 0x65717264;
 
     private SByte                     numberI08    = -128; // 有符号的8位整数.
     private Int16                     numberI16    = -32768; // 有符号的16位整数.
@@ -566,7 +566,7 @@ public sealed class TestBasic
 
 } //class: TestBasic
 /*
-0@Test.Abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
+0@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
   2/int32/map-string-string
 */
 } //namespace: Test.Abc

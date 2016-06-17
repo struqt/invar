@@ -19,7 +19,7 @@ public sealed class TestRefer
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xCB836F3B;
+    public const uint CRC32 = 0x422E7560;
 
     private SByte                     numberi08    = -1;
     private Int16                     numberi16    = -1;
@@ -790,9 +790,9 @@ public sealed class TestRefer
 
 } //class: TestRefer
 /*
-1@Test.Xyz.TestRefer/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
+1@test.xyz.TestRefer/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
   2/Test.Abc.Custom/Test.Xyz.TestRefer/vec-int8/map-int8-int8/map-string-string
-+@Test.Abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
++@test.abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
   nt32/string/string/Test.Abc.Custom/Test.Abc.Custom/string
 */
 } //namespace: Test.Xyz

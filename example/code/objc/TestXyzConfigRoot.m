@@ -10,7 +10,7 @@
 
 #import "TestXyzConfigRoot.h"
 
-#define CRC32 0xE595968
+#define CRC32 0xDAEE388D
 
 @interface ConfigRoot ()
 {

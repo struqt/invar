@@ -10,7 +10,7 @@
 
 #import "TestAbcCustom.h"
 
-#define CRC32 0x34A39940
+#define CRC32 0x604D8227
 
 @interface Custom ()
 {

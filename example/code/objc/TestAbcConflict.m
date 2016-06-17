@@ -10,7 +10,7 @@
 
 #import "TestAbcConflict.h"
 
-#define CRC32 0xF938CCBC
+#define CRC32 0xCC7A29B9
 
 @interface Test_Abc_Conflict ()
 {

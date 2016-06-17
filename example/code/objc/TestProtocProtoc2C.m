@@ -10,7 +10,7 @@
 
 #import "TestProtocProtoc2C.h"
 
-#define CRC32 0xEB178796
+#define CRC32 0xC716EAFC
 
 @interface Protoc2C ()
 {

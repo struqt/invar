@@ -10,7 +10,7 @@
 
 #import "TestAbcTestBasic.h"
 
-#define CRC32 0x3F768E8E
+#define CRC32 0x65717264
 
 @interface TestBasic ()
 {

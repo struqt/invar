@@ -10,7 +10,7 @@
 
 #import "TestAbcInfo.h"
 
-#define CRC32 0xC2ECCE22
+#define CRC32 0xD718E7CE
 
 @interface Info ()
 {

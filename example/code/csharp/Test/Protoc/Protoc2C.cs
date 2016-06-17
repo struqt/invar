@@ -18,7 +18,7 @@ public sealed class Protoc2C
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xEB178796;
+    public const uint CRC32 = 0xC716EAFC;
 
     private Dictionary<String,String> hotfix = null; // [AutoAdd] Hotfix.
 
@@ -245,6 +245,6 @@ public sealed class Protoc2C
 
 } //class: Protoc2C
 /*
-0@Test.Protoc.Protoc2C/map-string-string
+0@test.protoc.Protoc2C/map-string-string
 */
 } //namespace: Test.Protoc

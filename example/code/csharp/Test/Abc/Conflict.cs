@@ -18,7 +18,7 @@ public sealed class Conflict
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xF938CCBC;
+    public const uint CRC32 = 0xCC7A29B9;
 
     private Gender                    key    = Gender.NONE;
     private String                    text   = "";
@@ -371,6 +371,6 @@ public sealed class Conflict
 
 } //class: Conflict
 /*
-0@Test.Abc.Conflict/int32/string/vec-int8/map-string-string
+0@test.abc.Conflict/int32/string/vec-int8/map-string-string
 */
 } //namespace: Test.Abc

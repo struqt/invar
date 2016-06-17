@@ -10,7 +10,7 @@
 
 #import "TestXyzTestPointer.h"
 
-#define CRC32 0xDF23C954
+#define CRC32 0x34F9553
 
 @interface TestPointer ()
 {

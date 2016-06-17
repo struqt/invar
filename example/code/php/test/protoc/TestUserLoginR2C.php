@@ -15,7 +15,7 @@ use \invar\BinaryWriter;
 
 final class TestUserLoginR2C
 {
-    const CRC32 = 0x56F653EB;
+    const CRC32 = 0x27D7E210;
 
     static public function &CreateFromBytes (& $str)
     {

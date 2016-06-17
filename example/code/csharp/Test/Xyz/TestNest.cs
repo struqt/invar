@@ -19,7 +19,7 @@ public sealed class TestNest
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xEE83F94A;
+    public const uint CRC32 = 0x9A50C831;
 
     private List<Dictionary<String,Custom>>       listDict = new List<Dictionary<String,Custom>>();
     private Dictionary<List<String>,List<Custom>> dictList = new Dictionary<List<String>,List<Custom>>();
@@ -799,9 +799,9 @@ public sealed class TestNest
 
 } //class: TestNest
 /*
-1@Test.Xyz.TestNest/vec-map-string-Test.Abc.Custom/map-vec-string-vec-Test.Abc.Custom/vec-vec-vec-ve
+1@test.xyz.TestNest/vec-map-string-Test.Abc.Custom/map-vec-string-vec-Test.Abc.Custom/vec-vec-vec-ve
   c-vec-Test.Abc.Custom/map-string-string
-+@Test.Abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
++@test.abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
   nt32/string/string/Test.Abc.Custom/Test.Abc.Custom/string
 */
 } //namespace: Test.Xyz

@@ -10,7 +10,7 @@
 
 #import "TestProtocTestUserLocationN2S.h"
 
-#define CRC32 0x38D256D2
+#define CRC32 0x7090870E
 
 @interface TestUserLocationN2S ()
 {

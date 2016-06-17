@@ -10,7 +10,7 @@
 
 #import "TestProtocTestHeartBeatR2S.h"
 
-#define CRC32 0x629B4C46
+#define CRC32 0xF3D16889
 
 @interface TestHeartBeatR2S ()
 {

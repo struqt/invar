@@ -10,7 +10,7 @@
 
 #import "TestProtocTestUserLoginR2C.h"
 
-#define CRC32 0x56F653EB
+#define CRC32 0x27D7E210
 
 @interface TestUserLoginR2C ()
 {

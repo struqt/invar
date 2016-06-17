@@ -18,7 +18,7 @@ use \test\abc\Gender;
 
 final class TestDict
 {
-    const CRC32 = 0xDAA0B07C;
+    const CRC32 = 0x55C2A624;
 
     static public function &CreateFromBytes (& $str)
     {

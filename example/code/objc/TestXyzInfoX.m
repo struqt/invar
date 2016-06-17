@@ -10,7 +10,7 @@
 
 #import "TestXyzInfoX.h"
 
-#define CRC32 0x8E63A1C8
+#define CRC32 0x6CEBABBA
 
 @interface InfoX ()
 {

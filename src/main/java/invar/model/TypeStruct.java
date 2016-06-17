@@ -1,5 +1,7 @@
 package invar.model;
 
+import invar.Invar;
+
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.zip.CRC32;
@@ -161,8 +163,11 @@ public class TypeStruct extends InvarType {
         }
         this.codecRule = sb.toString();
         CRC32 crc = new CRC32();
-        crc.update(this.codecRule.getBytes(Charset.forName("UTF-8")));
+        byte[] bytes = this.codecRule.getBytes(Charset.forName("UTF-8"));
+        crc.update(bytes);
         this.codecRuleCRC32 = crc.getValue();
+        //System.out.println(getName());
+        //System.out.println(Invar.bytesToHex(bytes, 32));
         return this.codecRule;
     }
 
@@ -170,7 +175,13 @@ public class TypeStruct extends InvarType {
         final int max = 98;
         StringBuilder sb = new StringBuilder();
         sb.append('@');
-        sb.append(t.fullName("."));
+        if (t.getPack() != null && t.getPack().getName() != null &&  t.getPack().getName().length() > 0)
+        {
+            sb.append(t.getPack().getName().toLowerCase());
+            sb.append('.');
+        }
+        sb.append(t.getName());
+        //sb.append(t.fullName("."));
         for (InvarField f : t.fields.values()) {
             String rule;
             if (f.getType().getId().equals(TypeID.ENUM)) {

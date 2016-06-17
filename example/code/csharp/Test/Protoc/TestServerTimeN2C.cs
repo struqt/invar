@@ -18,7 +18,7 @@ public sealed class TestServerTimeN2C
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xC4B5CF95;
+    public const uint CRC32 = 0x6AACCCC1;
 
     private UInt16                    protocId  = 65530; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC = CRC32; // [AutoAdd] Protocol CRC32.
@@ -354,7 +354,7 @@ public sealed class TestServerTimeN2C
 
 } //class: TestServerTimeN2C
 /*
-1@Test.Protoc.TestServerTimeN2C/uint16/uint32/Test.Protoc.Protoc2C/int64/map-string-string
-+@Test.Protoc.Protoc2C/map-string-string
+1@test.protoc.TestServerTimeN2C/uint16/uint32/Test.Protoc.Protoc2C/int64/map-string-string
++@test.protoc.Protoc2C/map-string-string
 */
 } //namespace: Test.Protoc

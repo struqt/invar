@@ -18,7 +18,7 @@ use \test\abc\Gender;
 
 final class TestRefer
 {
-    const CRC32 = 0xCB836F3B;
+    const CRC32 = 0x422E7560;
 
     static public function &CreateFromBytes (& $str)
     {

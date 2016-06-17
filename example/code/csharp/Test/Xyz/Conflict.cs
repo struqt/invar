@@ -18,7 +18,7 @@ public sealed class Conflict
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x1E71FB33;
+    public const uint CRC32 = 0x2126E985;
 
     private Double                    pi     = 3.1415926;
     private Dictionary<String,String> hotfix = null; // [AutoAdd] Hotfix.
@@ -267,6 +267,6 @@ public sealed class Conflict
 
 } //class: Conflict
 /*
-0@Test.Xyz.Conflict/double/map-string-string
+0@test.xyz.Conflict/double/map-string-string
 */
 } //namespace: Test.Xyz

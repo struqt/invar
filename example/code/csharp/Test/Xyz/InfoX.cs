@@ -19,7 +19,7 @@ public sealed class InfoX
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x8E63A1C8;
+    public const uint CRC32 = 0x6CEBABBA;
 
     private List<List<List<List<List<Info>>>>>        infos      = new List<List<List<List<List<Info>>>>>();
     private Test.Xyz.Conflict                         conflict_x = new Test.Xyz.Conflict(); // Two types with the same name..
@@ -1946,14 +1946,14 @@ public sealed class InfoX
 
 } //class: InfoX
 /*
-3@Test.Xyz.InfoX/vec-vec-vec-vec-vec-Test.Abc.Info/Test.Xyz.Conflict/Test.Abc.Conflict/map-int32-Tes
+3@test.xyz.InfoX/vec-vec-vec-vec-vec-Test.Abc.Info/Test.Xyz.Conflict/Test.Abc.Conflict/map-int32-Tes
   t.Abc.Conflict/vec-vec-Test.Abc.Info/vec-vec-vec-Test.Abc.Info/vec-vec-vec-vec-vec-Test.Abc.Info/v
   ec-map-int16-Test.Abc.Info/map-vec-int32-Test.Abc.Info/map-Test.Abc.Info-vec-int32/map-vec-Test.Ab
   c.Info-vec-int32/vec-map-vec-Test.Abc.Info-vec-int32/map-string-string
-+@Test.Abc.Conflict/int32/string/vec-int8/map-string-string
-+@Test.Abc.Info/int32/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/vec
++@test.abc.Conflict/int32/string/vec-int8/map-string-string
++@test.abc.Info/int32/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/vec
   -string/int32/Test.Abc.Info/Test.Abc.Conflict/vec-Test.Xyz.Conflict/vec-double/map-Test.Abc.Info-i
   nt32/map-int32-Test.Abc.Info/map-int32-double/map-string-string
-+@Test.Xyz.Conflict/double/map-string-string
++@test.xyz.Conflict/double/map-string-string
 */
 } //namespace: Test.Xyz

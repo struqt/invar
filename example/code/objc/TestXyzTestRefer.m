@@ -10,7 +10,7 @@
 
 #import "TestXyzTestRefer.h"
 
-#define CRC32 0xCB836F3B
+#define CRC32 0x422E7560
 
 @interface TestRefer ()
 {

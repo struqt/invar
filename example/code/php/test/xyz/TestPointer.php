@@ -18,7 +18,7 @@ use \test\abc\Gender;
 
 final class TestPointer
 {
-    const CRC32 = 0xDF23C954;
+    const CRC32 = 0x34F9553;
 
     static public function &CreateFromBytes (& $str)
     {

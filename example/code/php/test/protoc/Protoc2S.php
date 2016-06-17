@@ -14,7 +14,7 @@ use \invar\BinaryWriter;
 
 final class Protoc2S
 {
-    const CRC32 = 0x8CAEA9DB;
+    const CRC32 = 0xC0869FC2;
 
     static public function &CreateFromBytes (& $str)
     {

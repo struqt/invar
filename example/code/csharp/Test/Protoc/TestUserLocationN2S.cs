@@ -18,7 +18,7 @@ public sealed class TestUserLocationN2S
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x38D256D2;
+    public const uint CRC32 = 0x7090870E;
 
     private UInt16                    protocId  = 65531; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC = CRC32; // [AutoAdd] Protocol CRC32.
@@ -376,7 +376,7 @@ public sealed class TestUserLocationN2S
 
 } //class: TestUserLocationN2S
 /*
-1@Test.Protoc.TestUserLocationN2S/uint16/uint32/Test.Protoc.Protoc2S/float/float/map-string-string
-+@Test.Protoc.Protoc2S/string/map-string-string
+1@test.protoc.TestUserLocationN2S/uint16/uint32/Test.Protoc.Protoc2S/float/float/map-string-string
++@test.protoc.Protoc2S/string/map-string-string
 */
 } //namespace: Test.Protoc

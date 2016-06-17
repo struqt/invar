@@ -10,7 +10,7 @@
 
 #import "TestXyzTestDict.h"
 
-#define CRC32 0xDAA0B07C
+#define CRC32 0x55C2A624
 
 @interface TestDict ()
 {

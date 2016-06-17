@@ -19,7 +19,7 @@ public sealed class TestDict
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xDAA0B07C;
+    public const uint CRC32 = 0x55C2A624;
 
     private Dictionary<SByte,SByte>     dictI08     = new Dictionary<SByte,SByte>(); // 有符号的8位整数.
     private Dictionary<Int16,Int16>     dictI16     = new Dictionary<Int16,Int16>(); // 有符号的16位整数.
@@ -1580,10 +1580,10 @@ public sealed class TestDict
 
 } //class: TestDict
 /*
-1@Test.Xyz.TestDict/map-int8-int8/map-int16-int16/map-int32-int32/map-int64-int64/map-uint8-uint8/ma
+1@test.xyz.TestDict/map-int8-int8/map-int16-int16/map-int32-int32/map-int64-int64/map-uint8-uint8/ma
   p-uint16-uint16/map-uint32-uint32/map-uint64-uint64/map-float-float/map-double-double/map-bool-boo
   l/map-string-string/map-int32-int32/map-Test.Abc.Custom-Test.Abc.Custom/map-string-string
-+@Test.Abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
++@test.abc.Custom/int32/Test.Abc.TestBasic/Test.Xyz.Conflict/Test.Abc.Conflict/vec-Test.Abc.Custom/i
   nt32/string/string/Test.Abc.Custom/Test.Abc.Custom/string
 */
 } //namespace: Test.Xyz

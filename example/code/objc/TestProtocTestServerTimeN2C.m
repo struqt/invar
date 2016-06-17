@@ -10,7 +10,7 @@
 
 #import "TestProtocTestServerTimeN2C.h"
 
-#define CRC32 0xC4B5CF95
+#define CRC32 0x6AACCCC1
 
 @interface TestServerTimeN2C ()
 {

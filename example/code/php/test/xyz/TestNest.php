@@ -16,7 +16,7 @@ use \test\abc\Custom;
 
 final class TestNest
 {
-    const CRC32 = 0xEE83F94A;
+    const CRC32 = 0x9A50C831;
 
     static public function &CreateFromBytes (& $str)
     {
