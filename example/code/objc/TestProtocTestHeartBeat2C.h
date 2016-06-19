@@ -14,7 +14,7 @@
 #import "InvarProtoc.h"
 
 /* 服务端请求,客户端响应 */
-@interface TestHeartBeat2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
+@interface TestHeartBeat2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocRequest>
 
 - (uint16_t             ) protocId ; /* [AutoAdd] ProtocolID */
 - (uint32_t             ) protocCRC; /* [AutoAdd] Protocol CRC32 */

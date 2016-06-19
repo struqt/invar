@@ -20,6 +20,7 @@ public class TypeStruct extends InvarType {
     private HashSet<TypeStruct> depends = new HashSet<TypeStruct>(16);
 
     private TypeProtocol protoc;
+    private String protocType;
 
     public TypeStruct(String name, InvarPackage pack, String comment) {
         super(TypeID.STRUCT, name, pack, comment, false);
@@ -140,6 +141,14 @@ public class TypeStruct extends InvarType {
 
     public void setProtoc(TypeProtocol protoc) {
         this.protoc = protoc;
+    }
+
+    public String getProtocType() {
+        return protocType;
+    }
+
+    public void setProtocType(String protocType) {
+        this.protocType = protocType;
     }
 
     public String codecRule() {

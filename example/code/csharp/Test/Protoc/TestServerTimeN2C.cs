@@ -17,6 +17,7 @@ public sealed class TestServerTimeN2C
 , Invar.BinaryEncode
 , Invar.JSONEncode
 , Invar.XMLEncode
+, Invar.ProtocNotify
 {
     public const uint CRC32 = 0x85E08773;
 

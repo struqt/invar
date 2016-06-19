@@ -27,4 +27,23 @@ namespace Invar
         System.Text.StringBuilder ToStringXML();
     }
 
+    public interface InvarProtoc
+    {
+        System.UInt16 GetProtocId();
+        System.UInt32 GetProtocCRC();
+    }
+
+    public interface ProtocNotify : InvarProtoc
+    {
+    }
+
+    public interface ProtocRequest : InvarProtoc
+    {
+    }
+
+    public interface ProtocResponse : InvarProtoc
+    {
+        System.UInt16 GetProtocError();
+    }
+
 }

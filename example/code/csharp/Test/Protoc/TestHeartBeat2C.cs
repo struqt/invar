@@ -17,6 +17,7 @@ public sealed class TestHeartBeat2C
 , Invar.BinaryEncode
 , Invar.JSONEncode
 , Invar.XMLEncode
+, Invar.ProtocRequest
 {
     public const uint CRC32 = 0xCC52B7AE;
 

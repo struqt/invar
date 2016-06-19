@@ -15,7 +15,7 @@
 #import "InvarProtoc.h"
 
 /* 客户端请求,服务端响应 */
-@interface TestUserLoginR2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
+@interface TestUserLoginR2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocResponse>
 
 - (uint16_t             ) protocId   ; /* [AutoAdd] ProtocolID */
 - (uint32_t             ) protocCRC  ; /* [AutoAdd] Protocol CRC32 */

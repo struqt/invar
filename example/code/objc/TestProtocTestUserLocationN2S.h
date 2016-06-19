@@ -15,7 +15,7 @@
 #import "InvarProtoc.h"
 
 /* 客户端通知服务端 */
-@interface TestUserLocationN2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
+@interface TestUserLocationN2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocNotify>
 
 - (uint16_t             ) protocId ; /* [AutoAdd] ProtocolID */
 - (uint32_t             ) protocCRC; /* [AutoAdd] Protocol CRC32 */

@@ -17,6 +17,7 @@ public sealed class TestUserLogin2S
 , Invar.BinaryEncode
 , Invar.JSONEncode
 , Invar.XMLEncode
+, Invar.ProtocRequest
 {
     public const uint CRC32 = 0xB29912EF;
 

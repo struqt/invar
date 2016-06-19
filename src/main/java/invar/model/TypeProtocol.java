@@ -69,10 +69,14 @@ public class TypeProtocol extends InvarType {
         int len = nodes.size();
         if (len == 1) {
             suffix = "N";
-            this.resetByName(nodes.get(0), suffix);
+            TypeStruct t = this.resetByName(nodes.get(0), suffix);
+            assert t != null;
+            t.setProtocType("ntf");
         } else if (len == 2) {
             request = this.resetByName(nodes.get(0), "");
+            request.setProtocType("req");
             response = this.resetByName(nodes.get(1), "R");
+            response.setProtocType("resp");
         }
     }
 

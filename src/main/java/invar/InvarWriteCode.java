@@ -530,6 +530,12 @@ public final class InvarWriteCode extends InvarWrite {
             }
             s = replace(s, Token.ProtocId, id.toString());
         }
+        if (type.getProtocType() != null) {
+            String pt = snippetTryGet("struct.protoc." + type.getProtocType(), empty);
+            s = replace(s, Token.ProtocType, pt);
+        } else {
+            s = replace(s, Token.ProtocType, empty);
+        }
         return s;
     }
 

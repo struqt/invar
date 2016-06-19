@@ -99,6 +99,9 @@
   <template key="enum.field"><![CDATA[
 		(#tab)(#name) = (#value),(#doc)
 	]]></template>
+  <template key="struct.protoc.ntf"> <![CDATA[ (#brk), Invar.ProtocNotify   ]]></template>
+  <template key="struct.protoc.req"> <![CDATA[ (#brk), Invar.ProtocRequest  ]]></template>
+  <template key="struct.protoc.resp"><![CDATA[ (#brk), Invar.ProtocResponse ]]></template>
   <template key="struct"><![CDATA[
 	  [#addImport(struct; imports; System.IO::BinaryReader)]
     [#addImport(struct; imports; System.IO::BinaryWriter)]
@@ -110,7 +113,7 @@
     : Invar.BinaryDecode
     , Invar.BinaryEncode
     , Invar.JSONEncode
-    , Invar.XMLEncode
+    , Invar.XMLEncode(#protoc-type)
     {
     (#tab)public const uint CRC32 = 0x[#codeCRC32(struct)];(#brk)
     [#codeFields (struct; fields)]

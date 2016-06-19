@@ -17,6 +17,7 @@ public sealed class TestUserLocationN2S
 , Invar.BinaryEncode
 , Invar.JSONEncode
 , Invar.XMLEncode
+, Invar.ProtocNotify
 {
     public const uint CRC32 = 0xEC953457;
 

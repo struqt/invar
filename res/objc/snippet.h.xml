@@ -84,9 +84,12 @@
   <template key="enum.field"><![CDATA[
 	(#tab)(#type)(#name) = (#value),(#doc)
   ]]></template>
+  <template key="struct.protoc.ntf"> <![CDATA[ , ProtocNotify   ]]></template>
+  <template key="struct.protoc.req"> <![CDATA[ , ProtocRequest  ]]></template>
+  <template key="struct.protoc.resp"><![CDATA[ , ProtocResponse ]]></template>
   <template key="struct"><![CDATA[
     (#doc)
-    @interface (#name) : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
+    @interface (#name) : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON(#protoc-type)>
     (#blank)
     [#codeGetters(struct; fields)]
     (#blank)

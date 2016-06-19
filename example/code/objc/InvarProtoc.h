@@ -30,6 +30,21 @@
 
 @end
 
+@protocol InvarProtoc
+- (uint16_t) protocId   ;
+- (uint32_t) protocCRC  ;
+@end
+
+@protocol ProtocNotify <InvarProtoc>
+@end
+
+@protocol ProtocRequest <InvarProtoc>
+@end
+
+@protocol ProtocResponse <InvarProtoc>
+- (uint16_t) protocError;
+@end
+
 
 #define FORMAT_S        @"%@"
 #define LINE_FEED_S     @"\n"

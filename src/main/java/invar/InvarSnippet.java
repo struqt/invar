@@ -278,6 +278,7 @@ final public class InvarSnippet {
         final static String Request = wrapToken("req");
         final static String Response = wrapToken("resp");
         final static String ProtocId = wrapToken("protoc-id");
+        final static String ProtocType = wrapToken("protoc-type");
 
         final static String wrapToken(String name) {
             return "\\(#" + name + "\\)";
