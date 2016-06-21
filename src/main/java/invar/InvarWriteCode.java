@@ -37,6 +37,7 @@ public final class InvarWriteCode extends InvarWrite {
         funcPublish("codeInits", TypeStruct.class, List.class);
         funcPublish("codeDeletes", List.class);
         funcPublish("codeCRC32", TypeStruct.class);
+        funcPublish("codeBasicSize", TypeStruct.class);
         funcPublish("codeFields", TypeStruct.class, List.class);
         funcPublish("codeGetters", TypeStruct.class, List.class);
         funcPublish("codeSetters", TypeStruct.class, List.class);
@@ -129,8 +130,7 @@ public final class InvarWriteCode extends InvarWrite {
         StringBuilder code = new StringBuilder();
         for (InvarField f : fields) {
             if (f.isSpecial() && "protocCRC".equals(f.getRealKey())) {
-                /* Special fix for PHP */
-                String deft = snippet.tryGet("struct.field.crc", null);
+                String deft = snippet.tryGet("struct.const.name.crc", null);
                 if (deft != null) {
                     f.setDefault(deft);
                 }
@@ -181,6 +181,11 @@ public final class InvarWriteCode extends InvarWrite {
     public String codeCRC32(TypeStruct type) {
         type.codecRule();
         return Long.toHexString(type.getCodecRuleCRC32()).toUpperCase();
+    }
+
+    public String codeBasicSize(TypeStruct type) {
+        Long size = type.encodeSizeBasic();
+        return size.toString();
     }
 
     @Override
@@ -477,7 +482,6 @@ public final class InvarWriteCode extends InvarWrite {
 
         if (type.getSuperType() != null)
             impsCheckAdd(imps, type.getSuperType(), type);
-
         int widthType = 1;
         int widthName = 1;
         int widthDeft = 1;
@@ -536,6 +540,7 @@ public final class InvarWriteCode extends InvarWrite {
         } else {
             s = replace(s, Token.ProtocType, empty);
         }
+        s = replace(s, Token.ConstCRC, snippetTryGet("struct.const.name.crc", "CRC32"));
         return s;
     }
 
@@ -553,6 +558,7 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Type, f.createAliasRule(getContext(), "."));
         s = replace(s, Token.Name, f.getShortName());
         s = replace(s, Token.Index, f.getIndex().toString());
+        s = replace(s, Token.Mark, f.getUsePointer() ? "*" : "&");
         code.append(s);
         return code;
     }
@@ -1351,7 +1357,26 @@ public final class InvarWriteCode extends InvarWrite {
 
         private String makeUnitIter(String typeName, String body, NestedParam p, NestedParam pv, NestedParam pk) {
             String head = makeUnitIterHead(p);
-            String s = head + snippetGet(prefix + typeName + ".for");
+            String sfor = null;
+            Long sizeOf = -1L;
+            if (/* list */ pk == null && pv != null) {
+                if (pv.type.getSize() > 0) {
+                    sizeOf = pv.type.getSize();
+                }
+            } else if (/* dict */ pk != null && pv != null) {
+                if (pk.type.getSize() > 0 && pv.type.getSize() > 0) {
+                    sizeOf = pk.type.getSize() + pv.type.getSize();
+                }
+            }
+            if (sizeOf > 0) {
+                sfor = snippetTryGet(prefix + typeName + ".for.simple", null);
+            }
+            if (sfor == null) {
+                sfor = snippetGet(prefix + typeName + ".for");
+            } else {
+                sfor = replace(sfor, Token.SizeOf, sizeOf.toString());
+            }
+            String s = head + sfor;
             String iName = upperHeadChar(p.nameReal);
             String sizeType = getContext().findBuildInType(this.sizeType).getRedirect().getName();
             s = replace(s, Token.Body, body);

@@ -19,6 +19,7 @@
 
 @protocol InvarEncode
 
+- (NSUInteger)byteSize;
 - (NSInteger)write:(DataWriter *)w;
 
 @end

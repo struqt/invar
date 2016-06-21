@@ -1,7 +1,5 @@
 package invar.model;
 
-import invar.Invar;
-
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.zip.CRC32;
@@ -15,6 +13,7 @@ public class TypeStruct extends InvarType {
     private String shortField;
     private Boolean noHotfix = false;
 
+    private long encodeSizeBasic = Long.MIN_VALUE;
     private String codecRule = "";
     private long codecRuleCRC32 = 0L;
     private HashSet<TypeStruct> depends = new HashSet<TypeStruct>(16);
@@ -151,6 +150,13 @@ public class TypeStruct extends InvarType {
         this.protocType = protocType;
     }
 
+    public Long encodeSizeBasic() {
+        if (encodeSizeBasic < 0) {
+            encodeSizeBasic = calculateEncodeSizeBasic(this);
+        }
+        return encodeSizeBasic;
+    }
+
     public String codecRule() {
         if (null != codecRule && !"".equals(codecRule)) {
             //System.out.println(this.getName() + " ------------------> \n" + codecRule);
@@ -212,5 +218,30 @@ public class TypeStruct extends InvarType {
             }
         }
         return code.toString();
+    }
+
+    static Long calculateEncodeSizeBasic(TypeStruct t) {
+        long len = 0L;
+        for (InvarField f : t.fields.values()) {
+            Long size = f.getType().getRealId().getSize();
+            if (size > 0) {
+                len += f.getType().getRealId().getSize();
+            } else {
+                if (f.getUsePointer()) {
+                    len += 1;
+                } else {
+                    switch (f.getType().getRealId()) {
+                        case STRING:
+                        case VEC:
+                        case MAP:
+                            len += 4;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        return len;
     }
 }

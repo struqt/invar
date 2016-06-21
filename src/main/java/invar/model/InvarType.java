@@ -7,9 +7,9 @@ import java.util.regex.Matcher;
 
 public class InvarType {
     public enum TypeID {
-        INT08("int8"), INT16("int16"), INT32("int32"), INT64("int64"),
-        UINT08("uint8"), UINT16("uint16"), UINT32("uint32"), UINT64("uint64"),
-        FLOAT("float"), DOUBLE("double"), BOOL("bool"), ENUM("enum"),
+        INT08("int8", 1), INT16("int16", 2), INT32("int32", 4), INT64("int64", 8),
+        UINT08("uint8", 1), UINT16("uint16", 2), UINT32("uint32", 4), UINT64("uint64", 8),
+        FLOAT("float", 4), DOUBLE("double", 8), BOOL("bool", 1), ENUM("enum", 4),
         STRING("string", "", true, true),
         VEC("vec", "<?>", true, true),
         MAP("map", "<?,?>", true, true),
@@ -23,6 +23,15 @@ public class InvarType {
             this.generic = "";
             this.useRefer = false;
             this.nullable = false;
+            this.size = 0L;
+        }
+
+        TypeID(String name, long size) {
+            this.name = name;
+            this.generic = "";
+            this.useRefer = false;
+            this.nullable = false;
+            this.size = size;
         }
 
         TypeID(String name, String generic, Boolean refer, Boolean nullable) {
@@ -30,6 +39,7 @@ public class InvarType {
             this.generic = generic;
             this.useRefer = refer;
             this.nullable = nullable;
+            this.size = 0L;
         }
 
         public String getName() {
@@ -48,10 +58,15 @@ public class InvarType {
             return nullable;
         }
 
+        public Long getSize() {
+            return size;
+        }
+
         final private String name;
         final private String generic;
         final private Boolean useRefer;
         final private Boolean nullable;
+        final private Long size;
     }
 
     static private final HashSet<String> typeNames = new HashSet<String>(512);
@@ -94,11 +109,9 @@ public class InvarType {
         return !isBuildin() && !packName.equals("") ? packName + splitter + name : name;
     }
 
-    final public String codecRuleName()
-    {
+    final public String codecRuleName() {
         StringBuilder sb = new StringBuilder(64);
-        if (getPack() != null && getPack().getName() != null && getPack().getName().length() > 0)
-        {
+        if (getPack() != null && getPack().getName() != null && getPack().getName().length() > 0) {
             sb.append(getPack().getName().toLowerCase());
             sb.append('.');
         }
@@ -130,7 +143,7 @@ public class InvarType {
     }
 
     final public String getUniqueName() {
-        if (uniqueName == null || "".equals(uniqueName)){
+        if (uniqueName == null || "".equals(uniqueName)) {
             this.uniqueName = pack.getName().replaceAll("\\.", "_") + "_" + name;
         }
         return uniqueName;

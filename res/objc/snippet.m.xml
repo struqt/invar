@@ -41,6 +41,8 @@
   <template key="pointer.null">  <![CDATA[ nil ]]></template>
   <template key="ptr.mark.string | ptr.mark.vec |
                  ptr.mark.struct | ptr.mark.map"><![CDATA[ * ]]></template>
+  <template key="struct.field.prefix"><![CDATA[ _ ]]></template>
+  <template key="struct.const.name.crc"><![CDATA[ CRC32__ ]]></template>
 
   <template key="file"><![CDATA[
     //*==---------------------------*  Obj-C  *--------------------------------===//
@@ -61,9 +63,8 @@
   <template key="file.body"><![CDATA[
     (#blank)
     (#structs)]]></template>
-  <template key="struct.meta"><![CDATA[ /* (#name) (#type) */ ]]></template>
+  <template key="struct.meta"><![CDATA[ /* (#name) (#mark)-(#type) */ ]]></template>
   <template key="struct.field.self"><![CDATA[ & ]]></template>
-  <template key="struct.field.prefix"><![CDATA[ _ ]]></template>
   <template key="struct.field"><![CDATA[
 	  (#tab)[#clampLen(lenFieldType; 64; (#type) )] (#mark)
 	  (#concat) [#clampLen(lenFieldName; 32; (#name) )];
@@ -77,7 +78,8 @@
   <template key="struct"><![CDATA[
     [#addImport(struct; imports; ::DataWriter)]
     [#addImport(struct; imports; ::DataReader)]
-    #define CRC32 0x[#codeCRC32(struct)]
+    #define (#const-crc) 0x[#codeCRC32(struct)]
+    #define SIZE__  [#codeBasicSize(struct)]L
     (#blank)
     @interface (#name) ()
     {
@@ -99,6 +101,8 @@
     [#codeNested (read.;  useFullName; struct; fields; imports)]
     (#blank)
     [#codeNested (write.;  useFullName; struct; fields; imports)]
+    (#blank)
+    [#codeNested (size.;  useFullName; struct; fields; imports)]
     (#blank)
     [#codeNested (tojson.;  useFullName; struct; fields; imports)]
     (#blank)
@@ -156,7 +160,7 @@
     - (id) copyWithZone:(nullable NSZone *)zone;
     {
     (#tab)id copy = [[[self class] allocWithZone:zone] init];
-    (#tab)DataWriter *writer = [DataWriter Create];
+    (#tab)DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     (#tab)[self write:writer];
     (#tab)[copy read:[DataReader CreateWithData:writer.data]];
     (#tab)return copy;
@@ -266,7 +270,7 @@
     if ((#protoc-id) != (#name)) { (#name) = (#protoc-id); return INVAR_ERR_PROTOC_INVALID_ID; }
   ]]></template>
   <template key="read.special.protocCRC"><![CDATA[
-    (#space)if (CRC32 != (#name)) { return INVAR_ERR_PROTOC_CRC_MISMATCH; }
+    (#space)if ((#const-crc) != (#name)) { return INVAR_ERR_PROTOC_CRC_MISMATCH; }
   ]]></template>
   <template key="read.special.protocError"><![CDATA[
     if ((#name) != 0) { return (#name); }
@@ -376,6 +380,169 @@
     (#brk)if ((#name) != 0) { return (#name); }
   ]]></template>
 
+  <!-- Method Write -->
+  <template key="write.import"><![CDATA[ ::DataWriter ]]></template>
+  <template key="write.method.arg"><![CDATA[ w ]]></template>
+  <template key="write.method"><![CDATA[
+    - (NSInteger)write:(DataWriter *)(#arg)
+    {(#body)
+    (#tab)return 0;
+    }
+    /* (#type)::write */ ]]></template>
+  <template key="write.int8">  <![CDATA[ [(#arg) writeInt8:(#name)]   ]]></template>
+  <template key="write.int16"> <![CDATA[ [(#arg) writeInt16:(#name)]  ]]></template>
+  <template key="write.int32"> <![CDATA[ [(#arg) writeInt32:(#name)]  ]]></template>
+  <template key="write.int64"> <![CDATA[ [(#arg) writeInt64:(#name)]  ]]></template>
+  <template key="write.uint8"> <![CDATA[ [(#arg) writeUInt8:(#name)]  ]]></template>
+  <template key="write.uint16"><![CDATA[ [(#arg) writeUInt16:(#name)] ]]></template>
+  <template key="write.uint32"><![CDATA[ [(#arg) writeUInt32:(#name)] ]]></template>
+  <template key="write.uint64"><![CDATA[ [(#arg) writeUInt64:(#name)] ]]></template>
+  <template key="write.float"> <![CDATA[ [(#arg) writeFloat:(#name)]  ]]></template>
+  <template key="write.double"><![CDATA[ [(#arg) writeDouble:(#name)] ]]></template>
+  <template key="write.bool">  <![CDATA[ [(#arg) writeBool:(#name)]   ]]></template>
+  <template key="write.string"><![CDATA[ [(#arg) writeString:(#name)] ]]></template>
+  <template key="write.enum">  <![CDATA[ [(#arg) writeInt32:(#name)]  ]]></template>
+  <template key="write.struct"><![CDATA[ [(#name) write:(#arg)]       ]]></template>
+  <template key="write.vec.head">  <![CDATA[ ]]></template>
+  <template key="write.vec.for"><![CDATA[
+    [(#arg) writeUInt32:((#sizetype))[(#name) count]];
+    for (id (#value) in (#name)) {(#body)
+    }
+  ]]></template>
+  <template key="write.map.head.k"><![CDATA[ ]]></template>
+  <template key="write.map.head.v"><![CDATA[
+    (#typel) *(#name) = [(#nameupper2) objectForKey:(#key)];/*write.map.head.v*/(#brk) ]]></template>
+  <template key="write.map.for"><![CDATA[
+    [(#arg) writeUInt32:((#sizetype))[(#name) count]];
+    for (id (#key) in (#name)) {(#body)
+    }
+  ]]></template>
+
+  <template key="write.nest.n"><![CDATA[ (#body); ]]></template>
+  <template key="write.nest.k"><![CDATA[ (#body); ]]></template>
+  <template key="write.nest.n.int8 | write.nest.k.int8"><![CDATA[
+    [(#arg) writeInt8:[(#name) charValue]]; ]]></template>
+  <template key="write.nest.n.uint8 | write.nest.k.uint8 | write.nest.n.bool | write.nest.k.bool"><![CDATA[
+    [(#arg) writeUInt8:[(#name) unsignedCharValue]]; ]]></template>
+  <template key="write.nest.n.int16 | write.nest.k.int16"><![CDATA[
+    [(#arg) writeInt16:[(#name) shortValue]]; ]]></template>
+  <template key="write.nest.n.uint16 | write.nest.k.uint16"><![CDATA[
+    [(#arg) writeUInt16:[(#name) unsignedShortValue]]; ]]></template>
+  <template key="write.nest.n.int32 | write.nest.k.int32 | write.nest.n.enum | write.nest.k.enum"><![CDATA[
+    [(#arg) writeInt32:[(#name) intValue]]; ]]></template>
+  <template key="write.nest.n.uint32 | write.nest.k.uint32"><![CDATA[
+    [(#arg) writeUInt32:[(#name) unsignedIntValue]]; ]]></template>
+  <template key="write.nest.n.int64 | write.nest.k.int64"><![CDATA[
+    [(#arg) writeInt64:[(#name) longValue]]; ]]></template>
+  <template key="write.nest.n.uint64 | write.nest.k.uint64"><![CDATA[
+    [(#arg) writeUInt64:[(#name) unsignedLongValue]]; ]]></template>
+  <template key="write.nest.n.float | write.nest.k.float"><![CDATA[
+    [(#arg) writeFloat:[(#name) floatValue]]; ]]></template>
+  <template key="write.nest.n.double | write.nest.k.double"><![CDATA[
+    [(#arg) writeDouble:[(#name) doubleValue]]; ]]></template>
+
+  <template key="write.nest.v"><![CDATA[
+    (#type) (#name) = [(#nameupper2) objectForKey:(#key)];(#brk)(#body); ]]></template>
+  <template key="write.nest.v.int8"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] charValue]; (#body); ]]></template>
+  <template key="write.nest.v.uint8 | write.nest.v.bool"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] unsignedCharValue]; (#body); ]]></template>
+  <template key="write.nest.v.int16"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] shortValue]; (#body); ]]></template>
+  <template key="write.nest.v.uint16"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] unsignedShortValue]; (#body); ]]></template>
+  <template key="write.nest.v.int32 | write.nest.v.enum"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] intValue]; (#body); ]]></template>
+  <template key="write.nest.v.uint32"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] unsignedIntValue]; (#body); ]]></template>
+  <template key="write.nest.v.int64"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] longValue]; (#body); ]]></template>
+  <template key="write.nest.v.uint64"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] unsignedLongValue]; (#body); ]]></template>
+  <template key="write.nest.v.float"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] floatValue]; (#body); ]]></template>
+  <template key="write.nest.v.double"><![CDATA[
+    (#type) (#name) = [[(#nameupper2) objectForKey:(#key)] doubleValue]; (#body); ]]></template>
+  <template key="write.nest.v.string | write.nest.v.struct | write.nest.v.vec | write.nest.v.map"><![CDATA[
+    (#type) *(#name) = [(#nameupper2) objectForKey:(#key)];(#brk)(#body); ]]></template>
+
+  <template key="write.ref.any"><![CDATA[(#body);]]></template>
+  <template key="write.ref.vec | write.ref.map"><![CDATA[ (#body) ]]></template>
+  <template key="write.ptr.string | write.ptr.struct"><![CDATA[
+    if ((#name) != (#null)) { [(#arg) writeInt8:(#byteyes)]; (#body); }
+    else { [(#arg) writeInt8:(#bytenon)]; }
+  ]]></template>
+  <template key="write.ptr.vec | write.ptr.map"><![CDATA[
+    if ((#name) != (#null)) {
+    (#tab)[(#arg) writeInt8:(#byteyes)];(#bodyindent)
+    } else {
+    (#tab)[(#arg) writeInt8:(#bytenon)];
+    }
+  ]]></template>
+  <template key="write.special.protocError"><![CDATA[
+    (#brk)if ((#name) != 0) { return (#name); }
+  ]]></template>
+
+
+  <!-- Method Write -->
+  <template key="size.import"><![CDATA[ ::DataWriter ]]></template>
+  <template key="size.method.arg"><![CDATA[ size ]]></template>
+  <template key="size.method"><![CDATA[
+    - (NSUInteger)byteSize
+    {
+    (#tab)NSUInteger size = SIZE__;(#body)
+    (#tab)return size;
+    }
+    /* (#type)::write */ ]]></template>
+  <template key="size.int8">  <![CDATA[ 1  ]]></template>
+  <template key="size.int16"> <![CDATA[ 2  ]]></template>
+  <template key="size.int32"> <![CDATA[ 4  ]]></template>
+  <template key="size.int64"> <![CDATA[ 8  ]]></template>
+  <template key="size.uint8"> <![CDATA[ 1  ]]></template>
+  <template key="size.uint16"><![CDATA[ 2  ]]></template>
+  <template key="size.uint32"><![CDATA[ 4  ]]></template>
+  <template key="size.uint64"><![CDATA[ 8  ]]></template>
+  <template key="size.float"> <![CDATA[ 4  ]]></template>
+  <template key="size.double"><![CDATA[ 8  ]]></template>
+  <template key="size.bool">  <![CDATA[ 1  ]]></template>
+  <template key="size.enum">  <![CDATA[ 4  ]]></template>
+  <template key="size.string"><![CDATA[ [(#name) length] ]]></template>
+  <template key="size.struct"><![CDATA[ [(#name) byteSize] ]]></template>
+
+  <template key="size.ref.any"><![CDATA[ (#concat-all) ]]></template>
+  <template key="size.ref.vec | size.ref.map"><![CDATA[ (#body) ]]></template>
+  <template key="size.ref.string | size.ref.struct"><![CDATA[
+    (#arg) += (#body);
+  ]]></template>
+  <template key="size.ptr.string | size.ptr.struct"><![CDATA[
+    if ((#name) != (#null)) { (#arg) += (#body); }
+  ]]></template>
+  <template key="size.ptr.vec | size.ptr.map"><![CDATA[
+    if ((#name) != (#null)) {(#bodyindent)
+    }
+  ]]></template>
+  <template key="size.vec.head">  <![CDATA[ ]]></template>
+  <template key="size.vec.for"><![CDATA[
+    (#arg) += sizeof(uint32_t);
+    for (id (#value) in (#name)) {(#body)
+    }
+  ]]></template>
+  <template key="size.map.head.k"><![CDATA[ ]]></template>
+  <template key="size.map.head.v"><![CDATA[
+    (#typel) *(#name) = [(#nameupper2) objectForKey:(#key)];/*size.map.head.v*/(#brk) ]]></template>
+  <template key="size.map.for"><![CDATA[
+    (#arg) += sizeof(uint32_t);
+    for (id (#key) in (#name)) {(#body)
+    }
+  ]]></template>
+  <template key="size.nest.n"><![CDATA[ (#arg) += (#body); ]]></template>
+  <template key="size.nest.k"><![CDATA[ (#arg) += (#body); ]]></template>
+  <template key="size.nest.v"><![CDATA[ (#arg) += (#body); ]]></template>
+  <template key="size.nest.v.string|size.nest.v.struct|size.nest.v.vec|size.nest.v.map"><![CDATA[
+    (#type) *(#name) = [(#nameupper2) objectForKey:(#key)];(#brk)(#arg) += (#body); ]]></template>
+  <template key="size.vec.for.simple | size.map.for.simple"><![CDATA[
+    if ([(#name) count] > 0) { (#arg) += [(#name) count] * (#sizeof); }
+  ]]></template>
 
   <!-- Write data to JSON data format -->
   <template key="tojson.import">      <![CDATA[ ]]></template>

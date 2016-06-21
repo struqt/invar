@@ -62,7 +62,7 @@
   <template key="doc">     <![CDATA[ /** (#doc) */    ]]></template>
   <template key="doc.line"><![CDATA[ (#space)// (#doc) ]]></template>
   <template key="struct.field.prefix"><![CDATA[ this-> ]]></template>
-  <template key="struct.field.crc"><![CDATA[ self::CRC32 ]]></template>
+  <template key="struct.const.name.crc"><![CDATA[ self::CRC32 ]]></template>
 
   <template key="file"><![CDATA[
     <?php

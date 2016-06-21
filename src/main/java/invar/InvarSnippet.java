@@ -254,6 +254,7 @@ final public class InvarSnippet {
         final static String Argument = wrapToken("arg");
         final static String SizeType = wrapToken("sizetype");
         final static String Size = wrapToken("len");
+        final static String SizeOf = wrapToken("sizeof");
         final static String Key = wrapToken("key");
         final static String Value = wrapToken("value");
         final static String Body = wrapToken("body");
@@ -279,6 +280,7 @@ final public class InvarSnippet {
         final static String Response = wrapToken("resp");
         final static String ProtocId = wrapToken("protoc-id");
         final static String ProtocType = wrapToken("protoc-type");
+        final static String ConstCRC = wrapToken("const-crc");
 
         final static String wrapToken(String name) {
             return "\\(#" + name + "\\)";
