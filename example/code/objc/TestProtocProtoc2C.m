@@ -10,11 +10,12 @@
 
 #import "TestProtocProtoc2C.h"
 
-#define CRC32 0xC716EAFC
+#define CRC32__ 0xC716EAFC
+#define SIZE__  1L
 
 @interface Protoc2C ()
 {
-    NSMutableDictionary * _hotfix; /* 0 map<string,string> */
+    NSMutableDictionary * _hotfix; /* 0 *-map<string,string> */
 }
 @end
 
@@ -38,7 +39,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -84,6 +85,21 @@
     return 0;
 }
 /* Protoc2C::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* Protoc2C::byteSize */
 
 - (NSString *)toStringJSON;
 {

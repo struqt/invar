@@ -19,26 +19,25 @@ public sealed class TestRefer
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xC9B6DDD6;
+    public const uint CRC32 = 0xBBD63AFD;
 
-    private SByte                     numberi08    = -1;
-    private Int16                     numberi16    = -1;
-    private Int32                     numberi32    = -1;
-    private Int64                     numberi64    = -1L;
-    private Byte                      numberu08    = 0;
-    private UInt16                    numberu16    = 0;
-    private UInt32                    numberu32    = 0;
-    private UInt64                    numberu64    = 0L;
-    private Single                    numberSingle = 0.0F;
-    private Double                    numberDouble = 0.00;
-    private Boolean                   boolValue    = false;
-    private String                    stringValue  = "";
-    private Gender                    enumValue    = Gender.NONE;
-    private Custom                    other        = new Custom();
-    private TestRefer                 self         = null;
-    private List<SByte>               listI08      = new List<SByte>();
-    private Dictionary<SByte,SByte>   dictI08      = new Dictionary<SByte,SByte>();
-    private Dictionary<String,String> hotfix       = null; // [AutoAdd] Hotfix.
+    private SByte                   numberi08    = -1;
+    private Int16                   numberi16    = -1;
+    private Int32                   numberi32    = -1;
+    private Int64                   numberi64    = -1L;
+    private Byte                    numberu08    = 0;
+    private UInt16                  numberu16    = 0;
+    private UInt32                  numberu32    = 0;
+    private UInt64                  numberu64    = 0L;
+    private Single                  numberSingle = 0.0F;
+    private Double                  numberDouble = 0.00;
+    private Boolean                 boolValue    = false;
+    private String                  stringValue  = "";
+    private Gender                  enumValue    = Gender.NONE;
+    private Custom                  other        = new Custom();
+    private TestRefer               self         = null;
+    private List<SByte>             listI08      = new List<SByte>();
+    private Dictionary<SByte,SByte> dictI08      = new Dictionary<SByte,SByte>();
 
     /// .
     [Invar.InvarRule("int8", "0")]
@@ -108,10 +107,6 @@ public sealed class TestRefer
     [Invar.InvarRule("map<int8,int8>", "16")]
     public Dictionary<SByte,SByte> GetDictI08() { return this.dictI08; }
 
-    /// [AutoAdd] Hotfix.
-    [Invar.InvarRule("map<string,string>", "17")]
-    public Dictionary<String,String> GetHotfix() { return this.hotfix; }
-
     /// .
     [Invar.InvarRule("int8", "0")]
     public TestRefer SetNumberi08(SByte value) { this.numberi08 = value; return this; }
@@ -172,10 +167,6 @@ public sealed class TestRefer
     [Invar.InvarRule("Test.Xyz.TestRefer", "14")]
     public TestRefer SetSelf(TestRefer value) { this.self = value; return this; }
 
-    /// [AutoAdd] Hotfix.
-    [Invar.InvarRule("map<string,string>", "17")]
-    public TestRefer SetHotfix(Dictionary<String,String> value) { this.hotfix = value; return this; }
-
     public TestRefer Reuse()
     {
         this.numberi08   = -1;
@@ -195,7 +186,6 @@ public sealed class TestRefer
         if (this.self != null) { this.self.Reuse(); }
         this.listI08.Clear();
         this.dictI08.Clear();
-        if (this.hotfix != null) { this.hotfix.Clear(); }
         return this;
     } //TestRefer::Reuse()
 
@@ -229,15 +219,6 @@ public sealed class TestRefer
         this.dictI08.Clear();
         foreach (var dictI08Iter in from_.dictI08) {
             this.dictI08.Add(dictI08Iter.Key, dictI08Iter.Value);
-        }
-        if (null == from_.hotfix) {
-            this.hotfix = null;
-        } else {
-            if (null == this.hotfix) { this.hotfix = new Dictionary<String,String>(); }
-            else { this.hotfix.Clear(); }
-            foreach (var hotfixIter in from_.hotfix) {
-                this.hotfix.Add(hotfixIter.Key, hotfixIter.Value);
-            }
         }
         return this;
     } //TestRefer::Copy(...)
@@ -280,22 +261,6 @@ public sealed class TestRefer
                 this.dictI08[k1] = v1;
             }
         }
-        sbyte hotfixExists = r.ReadSByte();
-        if ((sbyte)0x01 == hotfixExists) {
-            if (this.hotfix == null) { this.hotfix = new Dictionary<String,String>(); }
-            UInt32 lenHotfix = r.ReadUInt32();
-            for (UInt32 iHotfix = 0; iHotfix < lenHotfix; iHotfix++) {
-                String k1 = Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt32()));
-                String v1 = Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt32()));
-                if (!this.hotfix.ContainsKey(k1)) {
-                    this.hotfix.Add(k1, v1);
-                } else {
-                    this.hotfix[k1] = v1;
-                }
-            }
-        }
-        else if ((sbyte)0x00 == hotfixExists) { this.hotfix = null; }
-        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid.", 498); }
     } //TestRefer::Read(...)
 
     public void Write(BinaryWriter w)
@@ -332,22 +297,6 @@ public sealed class TestRefer
             w.Write(k1);
             SByte v1 = dictI08Iter.Value;
             w.Write(v1);
-        }
-        if (this.hotfix != null) {
-            w.Write((sbyte)0x01);
-            w.Write(this.hotfix.Count);
-            foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) {
-                String k1 = hotfixIter.Key;
-                byte[] k1Bytes = Encoding.UTF8.GetBytes(k1);
-                w.Write(k1Bytes.Length);
-                w.Write(k1Bytes);
-                String v1 = hotfixIter.Value;
-                byte[] v1Bytes = Encoding.UTF8.GetBytes(v1);
-                w.Write(v1Bytes.Length);
-                w.Write(v1Bytes);
-            }
-        } else {
-            w.Write((sbyte)0x00);
         }
     } //TestRefer::Write(...)
 
@@ -391,9 +340,6 @@ public sealed class TestRefer
         result.Append("(" + this.listI08.Count + ")");
         result.Append(',').Append(' ').Append("dictI08").Append(':');
         result.Append("[" + this.dictI08.Count + "]");
-        result.Append(',').Append(' ').Append("hotfix").Append(':');
-        if (this.hotfix != null) { result.Append("[" + this.hotfix.Count + "]"); }
-        else { result.Append("null"); }
         result.Append(' ').Append('}');
         return result.ToString();
     } //TestRefer::ToString()
@@ -477,24 +423,6 @@ public sealed class TestRefer
                 if (dictI08Idx != dictI08Size) { s.Append(','); }
             }
             s.Append('}');
-        }
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append('\n').Append('{');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('"'); s.Append('"').Append(k1.ToString()).Append('"'); s.Append('"').Append(':');
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('"').Append(v1.ToString()).Append('"');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); }
-                }
-                s.Append('}');
-            } comma = ",";
         }
         s.Append('}').Append('\n');
     } //TestRefer::WriteJSON(...)
@@ -581,24 +509,6 @@ public sealed class TestRefer
                 if (dictI08Idx != dictI08Size) { s.Append(','); }
                 s.Append('}');
             }
-        }
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append('\n').Append('{');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('"').Append(k1.ToString()).Append('"'); s.Append('=');
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('"').Append(v1.ToString()).Append('"');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); }
-                    s.Append('}');
-                }
-            } comma = ",";
         }
         s.Append('}').Append('\n');
     }
@@ -687,24 +597,6 @@ public sealed class TestRefer
             }
             s.Append("/* map size: ").Append(this.dictI08.Count).Append(" */").Append(')');
         }
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma).Append('\n'); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append("array").Append('(').Append('\n');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('\'').Append(k1.ToString()).Append('\''); s.Append("=>");
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('\'').Append(v1.ToString()).Append('\'');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); s.Append('\n'); }
-                }
-                s.Append("/* map size: ").Append(this.hotfix.Count).Append(" */").Append(')');
-            } comma = ",";
-        }
         s.Append("/* ").Append(GetType().ToString()).Append(" */");
         s.Append(')');
     }
@@ -764,21 +656,6 @@ public sealed class TestRefer
             }
             nodes.Append('<').Append('/').Append("dictI08").Append('>');
         }
-        if (this.hotfix != null && this.hotfix.Count > 0) {
-            nodes.Append('\n').Append('<').Append("hotfix").Append('>');
-            foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) {
-                nodes.Append('\n');
-                String k1 = hotfixIter.Key;
-                nodes.Append('<').Append("k1").Append(' ').Append("value").Append('=').Append('"');
-                nodes.Append(k1);
-                nodes.Append('"').Append('/').Append('>');
-                String v1 = hotfixIter.Value;
-                nodes.Append('<').Append("v1").Append(' ').Append("value").Append('=').Append('"');
-                nodes.Append(v1);
-                nodes.Append('"').Append('/').Append('>');
-            }
-            nodes.Append('<').Append('/').Append("hotfix").Append('>');
-        }
         s.Append('\n').Append('<').Append(name).Append(attrs);
         if (nodes.Length == 0) {
             s.Append('/').Append('>');
@@ -791,7 +668,7 @@ public sealed class TestRefer
 } /* class: TestRefer */
 /*
 1@test.xyz.TestRefer/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
-  2/test.abc.Custom/test.xyz.TestRefer/vec-int8/map-int8-int8/map-string-string
+  2/test.abc.Custom/test.xyz.TestRefer/vec-int8/map-int8-int8
 +@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
   nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */

@@ -10,14 +10,15 @@
 
 #import "TestProtocTestHeartBeat2C.h"
 
-#define CRC32 0xCC52B7AE
+#define CRC32__ 0xCC52B7AE
+#define SIZE__  8L
 
 @interface TestHeartBeat2C ()
 {
-    uint16_t              _protocId ; /*  uint16 */
-    uint32_t              _protocCRC; /*  uint32 */
-    Protoc2C            * _protoc2C ; /*  Test.Protoc.Protoc2C */
-    NSMutableDictionary * _hotfix   ; /*  map<string,string> */
+    uint16_t              _protocId ; /*  &-uint16 */
+    uint32_t              _protocCRC; /*  &-uint32 */
+    Protoc2C            * _protoc2C ; /*  *-Test.Protoc.Protoc2C */
+    NSMutableDictionary * _hotfix   ; /*  *-map<string,string> */
 }
 @end
 
@@ -28,7 +29,7 @@
     self = [super init];
     if (!self) { return self; }
     _protocId  = 65534;
-    _protocCRC = CRC32;
+    _protocCRC = CRC32__;
     _protoc2C  = nil;
     _hotfix    = nil;
     return self;
@@ -45,7 +46,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -65,7 +66,7 @@
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];
     if (65534 != _protocId) { _protocId = 65534; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocCRC = [r readUInt32:&eof]; if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2CExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2CExists) {
         if (_protoc2C == nil) { _protoc2C = [[Protoc2C alloc] init]; }
@@ -109,6 +110,22 @@
     return 0;
 }
 /* TestHeartBeat2C::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if (_protoc2C != nil) { size += [_protoc2C byteSize]; }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* TestHeartBeat2C::byteSize */
 
 - (NSString *)toStringJSON;
 {

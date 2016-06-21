@@ -57,17 +57,6 @@ xmlns:tns="invar.data" targetNamespace="invar.data">
     <xs:element name="stringValue" minOccurs="0" maxOccurs="2048" type="tns:string" />
     <xs:element name="enumValue" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
     <xs:element name="enumDeft" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
-    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType>
-      <xs:sequence>
-      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType><xs:complexContent>
-      <xs:extension base="tns:string">
-      <xs:attribute name="key" type="xs:string" use="required" />
-      </xs:extension></xs:complexContent></xs:complexType>
-      </xs:element>
-      </xs:sequence></xs:complexType>
-    </xs:element>
   </xs:sequence>
   <xs:attribute name="numberI08" type="xs:byte" />
   <xs:attribute name="numberI16" type="xs:short" />
@@ -397,17 +386,6 @@ xmlns:tns="invar.data" targetNamespace="invar.data">
       </xs:element>
       </xs:sequence></xs:complexType>
     </xs:element>
-    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType>
-      <xs:sequence>
-      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType><xs:complexContent>
-      <xs:extension base="tns:string">
-      <xs:attribute name="key" type="xs:string" use="required" />
-      </xs:extension></xs:complexContent></xs:complexType>
-      </xs:element>
-      </xs:sequence></xs:complexType>
-    </xs:element>
   </xs:sequence>
   <xs:attribute name="numberi08" type="xs:byte" />
   <xs:attribute name="numberi16" type="xs:short" />
@@ -668,17 +646,6 @@ xmlns:tns="invar.data" targetNamespace="invar.data">
       </xs:element>
       </xs:sequence></xs:complexType>
     </xs:element>
-    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType>
-      <xs:sequence>
-      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType><xs:complexContent>
-      <xs:extension base="tns:string">
-      <xs:attribute name="key" type="xs:string" use="required" />
-      </xs:extension></xs:complexContent></xs:complexType>
-      </xs:element>
-      </xs:sequence></xs:complexType>
-    </xs:element>
   </xs:sequence>
 </xs:complexType>
 <xs:complexType name="test.xyz.TestPointer">
@@ -807,17 +774,6 @@ xmlns:tns="invar.data" targetNamespace="invar.data">
     <xs:element name="listStruct" minOccurs="0" maxOccurs="2048" >
       <xs:complexType><xs:sequence>
       <xs:element name="Custom" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Custom" />
-      </xs:sequence></xs:complexType>
-    </xs:element>
-    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType>
-      <xs:sequence>
-      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
-      <xs:complexType><xs:complexContent>
-      <xs:extension base="tns:string">
-      <xs:attribute name="key" type="xs:string" use="required" />
-      </xs:extension></xs:complexContent></xs:complexType>
-      </xs:element>
       </xs:sequence></xs:complexType>
     </xs:element>
   </xs:sequence>

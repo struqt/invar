@@ -16,7 +16,7 @@ use \test\abc\Custom;
 
 final class TestNest
 {
-    const CRC32 = 0x3121309F;
+    const CRC32 = 0x6F0C2598;
 
     static public function &CreateFromBytes (& $str)
     {
@@ -28,14 +28,12 @@ final class TestNest
     private $listDict ;/* 0 vec<map<string,test.abc.Custom>> */
     private $dictList ;/* 1 map<vec<string>,vec<test.abc.Custom>> */
     private $list5d   ;/* 2 vec<vec<vec<vec<vec<test.abc.Custom>>>>> // 五维列表 */
-    private $hotfix   ;/* 3 map<string,string> // [AutoAdd] Hotfix */
 
     function __construct()
     {
         $this->listDict = array();
         $this->dictList = array();
         $this->list5d   = array();
-        $this->hotfix   = NULL;
     }
     /* End of constructor() */
 
@@ -58,12 +56,6 @@ final class TestNest
             $this->list5d = array_merge($from->list5d);
         } else {
             $this->list5d = array();
-        }
-        if ($from->hotfix != NULL) {
-            $this->hotfix = array();
-            $this->hotfix = array_merge($from->hotfix);
-        } else {
-            $this->hotfix = NULL;
         }
         return $this;
     }
@@ -129,18 +121,6 @@ final class TestNest
             }
             $this->list5d[] = $n1;
         }
-        $hotfixExists = $r->readInt08();
-        if (0x01 == $hotfixExists) {
-            if ($this->hotfix == NULL) { $this->hotfix = array(); }
-            $lenHotfix = $r->readUInt32();
-            for ($iHotfix = 0; $iHotfix < $lenHotfix; ++$iHotfix) {
-                $k1 = $r->readUTF();
-                $v1 = $r->readUTF();
-                $this->hotfix[$k1] = $v1;
-            }
-        }
-        else if (0x00 == $hotfixExists) { $this->hotfix = NULL; }
-        else { throw new \Exception('Protoc read error: The value of ' . $hotfixExists . ' is invalid.', 498); }
         return $this;
     }
     /* End of read(...) */
@@ -182,16 +162,6 @@ final class TestNest
                 }
             }
         }
-        if ($this->hotfix != NULL) {
-            BinaryWriter::writeInt08(0x01, $str);
-            BinaryWriter::writeInt32(count($this->hotfix), $str);
-            foreach ($this->hotfix as $k1 => &$v1) {
-                BinaryWriter::writeUTF($k1, $str);
-                BinaryWriter::writeUTF($v1, $str);
-            }
-        } else {
-            BinaryWriter::writeInt08(0x00, $str);
-        }
     }
     /* End of write(...) */
 
@@ -204,12 +174,6 @@ final class TestNest
     /** 五维列表 */
     public function &getList5d() { return $this->list5d; }
 
-    /** [AutoAdd] Hotfix */
-    public function getHotfix() { return $this->hotfix; }
-
-    /** [AutoAdd] Hotfix */
-    public function setHotfix($value) { $this->hotfix = $value; return $this; }
-
     public function &toString()
     {
         $s  = '{'; $s .= get_class($this);
@@ -219,9 +183,6 @@ final class TestNest
         $s .= '['; $s .= count($this->dictList); $s .= ']';
         $s .= ','; $s .= 'list5d'; $s .= ':';
         $s .= '('; $s .= count($this->list5d); $s .= ')';
-        $s .= ','; $s .= 'hotfix'; $s .= ':';
-        if (isset($this->hotfix)) { $s .= '['; $s .= count($this->hotfix); $s .= ']'; }
-        else { $s .= 'null'; }
         $s .= '}';
         return $s;
     }
@@ -336,21 +297,6 @@ final class TestNest
             }
             $s .= ']';
         }
-        $hotfixExists = (isset($this->hotfix) && count($this->hotfix) > 0);
-        if (!empty($comma) && $hotfixExists) { $s .= $comma; $comma = ''; }
-        if ($hotfixExists) {
-            $s .= '"'; $s .= 'hotfix'; $s .= '"'; $s .= ':'; $comma = ',';
-            $hotfixSize = (!isset($this->hotfix) ? 0 : count($this->hotfix));
-            $s .= "\n"; $s .= '{';
-            $hotfixIdx = 0;
-            foreach ($this->hotfix as $k1 => &$v1) {
-                $s .= '"'; $s .= $k1; $s .= '"';
-                $s .= '"'; $s .= $v1; $s .= '"';
-                ++$hotfixIdx;
-                if (hotfixIdx != $hotfixSize) { $s .= ','; }
-            }
-            $s .= '}';
-        }
         $s .= '}'; $s .= "\n";
     }
     /* End of writeJSON(...) */
@@ -421,18 +367,6 @@ final class TestNest
                 $nodes .= '</'; $nodes .= 'n1'; $nodes .= '>';
             }
             $nodes .= '</'; $nodes .= 'list5d'; $nodes .= '>';
-        }
-        if (isset($this->hotfix) && count($this->hotfix) > 0) {
-            $nodes .= '<'; $nodes .= 'hotfix'; $nodes .= '>';
-            foreach ($this->hotfix as $k1 => &$v1) {
-                $nodes .= '<'; $nodes .= 'k1'; $nodes .= ' ';
-                $nodes .= 'value'; $nodes .= '='; $nodes .= '"';
-                $nodes .= $$k1; $nodes .= '"';  $nodes .= '/>';
-                $nodes .= '<'; $nodes .= 'v1'; $nodes .= ' ';
-                $nodes .= 'value'; $nodes .= '='; $nodes .= '"';
-                $nodes .= $$v1; $nodes .= '"';  $nodes .= '/>';
-            }
-            $nodes .= '</'; $nodes .= 'hotfix'; $nodes .= '>';
         }
         $s .= '<';
         $s .= $name;

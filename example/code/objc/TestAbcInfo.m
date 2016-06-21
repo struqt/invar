@@ -10,33 +10,34 @@
 
 #import "TestAbcInfo.h"
 
-#define CRC32 0x120FDCDB
+#define CRC32__ 0x120FDCDB
+#define SIZE__  81L
 
 @interface Info ()
 {
-    int32_t               _key          ; /* f0 int32 */
-    int8_t                _number01     ; /* f1 int8 */
-    int16_t               _number02     ; /* f2 int16 */
-    int32_t               _number03     ; /* f3 int32 */
-    int64_t               _number04     ; /* f4 int64 */
-    uint8_t               _number05     ; /* f5 uint8 */
-    uint16_t              _number06     ; /* f6 uint16 */
-    uint32_t              _number07     ; /* f7 uint32 */
-    uint64_t              _number08     ; /* f8 uint64 */
-    float_t               _number09     ; /* f9 float */
-    double_t              _number10     ; /* f10 double */
-    boolean_t             _isReal       ; /* f11 bool */
-    NSString            * _s            ; /* f12 string */
-    NSMutableArray      * _world        ; /* f13 vec<string> */
-    Gender                _gender       ; /* f14 Test.Abc.Gender */
-    Info                * _next         ; /* f15 Test.Abc.Info */
-    Test_Abc_Conflict   * _conflict     ; /* f16 Test.Abc.Conflict */
-    NSMutableArray      * _conflicts    ; /* f17 vec<Test.Xyz.Conflict> */
-    NSMutableArray      * _numbers      ; /* f18 vec<double> */
-    NSMutableDictionary * _mapInfoG     ; /* f19 map<Test.Abc.Info,Test.Abc.Gender> */
-    NSMutableDictionary * _mapGenderInfo; /* f20 map<Test.Abc.Gender,Test.Abc.Info> */
-    NSMutableDictionary * _mapDouble    ; /* f21 map<int32,double> */
-    NSMutableDictionary * _hotfix       ; /* f22 map<string,string> */
+    int32_t               _key          ; /* f0 &-int32 */
+    int8_t                _number01     ; /* f1 &-int8 */
+    int16_t               _number02     ; /* f2 &-int16 */
+    int32_t               _number03     ; /* f3 &-int32 */
+    int64_t               _number04     ; /* f4 &-int64 */
+    uint8_t               _number05     ; /* f5 &-uint8 */
+    uint16_t              _number06     ; /* f6 &-uint16 */
+    uint32_t              _number07     ; /* f7 &-uint32 */
+    uint64_t              _number08     ; /* f8 &-uint64 */
+    float_t               _number09     ; /* f9 &-float */
+    double_t              _number10     ; /* f10 &-double */
+    boolean_t             _isReal       ; /* f11 &-bool */
+    NSString            * _s            ; /* f12 &-string */
+    NSMutableArray      * _world        ; /* f13 &-vec<string> */
+    Gender                _gender       ; /* f14 &-Test.Abc.Gender */
+    Info                * _next         ; /* f15 *-Test.Abc.Info */
+    Test_Abc_Conflict   * _conflict     ; /* f16 &-Test.Abc.Conflict */
+    NSMutableArray      * _conflicts    ; /* f17 &-vec<Test.Xyz.Conflict> */
+    NSMutableArray      * _numbers      ; /* f18 &-vec<double> */
+    NSMutableDictionary * _mapInfoG     ; /* f19 &-map<Test.Abc.Info,Test.Abc.Gender> */
+    NSMutableDictionary * _mapGenderInfo; /* f20 &-map<Test.Abc.Gender,Test.Abc.Info> */
+    NSMutableDictionary * _mapDouble    ; /* f21 &-map<int32,double> */
+    NSMutableDictionary * _hotfix       ; /* f22 *-map<string,string> */
 }
 @end
 
@@ -91,7 +92,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -278,6 +279,45 @@
     return 0;
 }
 /* Info::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += [_s length];
+    size += sizeof(uint32_t);
+    for (id n1 in _world) {
+        size += [n1 length];
+    }
+    if (_next != nil) { size += [_next byteSize]; }
+    size += [_conflict byteSize];
+    size += sizeof(uint32_t);
+    for (id n1 in _conflicts) {
+        size += [n1 byteSize];
+    }
+    if ([_numbers count] > 0) { size += [_numbers count] * 8; }
+    size += sizeof(uint32_t);
+    for (id k1 in _mapInfoG) {
+        size += [k1 byteSize];
+        size += sizeof(int32_t);
+    }
+    size += sizeof(uint32_t);
+    for (id k1 in _mapGenderInfo) {
+        size += sizeof(int32_t);
+        Info *v1 = [_mapGenderInfo objectForKey:k1];
+        size += [v1 byteSize];
+    }
+    if ([_mapDouble count] > 0) { size += [_mapDouble count] * 12; }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* Info::byteSize */
 
 - (NSString *)toStringJSON;
 {

@@ -15,7 +15,7 @@ use \invar\BinaryWriter;
 
 final class TestBasic
 {
-    const CRC32 = 0x65717264;
+    const CRC32 = 0xF60C9915;
 
     static public function &CreateFromBytes (& $str)
     {
@@ -38,7 +38,6 @@ final class TestBasic
     private $stringValue  ;/* 11 string // 字符串 */
     private $enumValue    ;/* 12 test.abc.Gender // 枚举值 */
     private $enumDeft     ;/* 13 test.abc.Gender // 枚举值制定默认值 */
-    private $hotfix       ;/* 14 map<string,string> // [AutoAdd] Hotfix */
 
     function __construct()
     {
@@ -56,7 +55,6 @@ final class TestBasic
         $this->stringValue  = 'hello世界';
         $this->enumValue    = Gender::NONE;
         $this->enumDeft     = Gender::MALE;
-        $this->hotfix       = NULL;
     }
     /* End of constructor() */
 
@@ -79,12 +77,6 @@ final class TestBasic
         $this->stringValue = $from->stringValue;
         $this->enumValue = $from->enumValue;
         $this->enumDeft = $from->enumDeft;
-        if ($from->hotfix != NULL) {
-            $this->hotfix = array();
-            $this->hotfix = array_merge($from->hotfix);
-        } else {
-            $this->hotfix = NULL;
-        }
         return $this;
     }
     /* End of copy(...) */
@@ -105,18 +97,6 @@ final class TestBasic
         $this->stringValue = $r->readUTF();
         $this->enumValue = $r->readInt32();
         $this->enumDeft = $r->readInt32();
-        $hotfixExists = $r->readInt08();
-        if (0x01 == $hotfixExists) {
-            if ($this->hotfix == NULL) { $this->hotfix = array(); }
-            $lenHotfix = $r->readUInt32();
-            for ($iHotfix = 0; $iHotfix < $lenHotfix; ++$iHotfix) {
-                $k1 = $r->readUTF();
-                $v1 = $r->readUTF();
-                $this->hotfix[$k1] = $v1;
-            }
-        }
-        else if (0x00 == $hotfixExists) { $this->hotfix = NULL; }
-        else { throw new \Exception('Protoc read error: The value of ' . $hotfixExists . ' is invalid.', 498); }
         return $this;
     }
     /* End of read(...) */
@@ -137,16 +117,6 @@ final class TestBasic
         BinaryWriter::writeUTF($this->stringValue, $str);
         BinaryWriter::writeInt32($this->enumValue, $str);
         BinaryWriter::writeInt32($this->enumDeft, $str);
-        if ($this->hotfix != NULL) {
-            BinaryWriter::writeInt08(0x01, $str);
-            BinaryWriter::writeInt32(count($this->hotfix), $str);
-            foreach ($this->hotfix as $k1 => &$v1) {
-                BinaryWriter::writeUTF($k1, $str);
-                BinaryWriter::writeUTF($v1, $str);
-            }
-        } else {
-            BinaryWriter::writeInt08(0x00, $str);
-        }
     }
     /* End of write(...) */
 
@@ -192,9 +162,6 @@ final class TestBasic
     /** 枚举值制定默认值 */
     public function  getEnumDeft() { return $this->enumDeft; }
 
-    /** [AutoAdd] Hotfix */
-    public function getHotfix() { return $this->hotfix; }
-
     /** 有符号的8位整数 */
     public function setNumberI08($value) { $this->numberI08 = $value; return $this; }
 
@@ -237,9 +204,6 @@ final class TestBasic
     /** 枚举值制定默认值 */
     public function setEnumDeft($value) { $this->enumDeft = $value; return $this; }
 
-    /** [AutoAdd] Hotfix */
-    public function setHotfix($value) { $this->hotfix = $value; return $this; }
-
     public function &toString()
     {
         $s  = '{'; $s .= get_class($this);
@@ -271,9 +235,6 @@ final class TestBasic
         $s .= $this->enumValue;
         $s .= ','; $s .= 'enumDeft'; $s .= ':';
         $s .= $this->enumDeft;
-        $s .= ','; $s .= 'hotfix'; $s .= ':';
-        if (isset($this->hotfix)) { $s .= '['; $s .= count($this->hotfix); $s .= ']'; }
-        else { $s .= 'null'; }
         $s .= '}';
         return $s;
     }
@@ -333,21 +294,6 @@ final class TestBasic
         if (!empty($comma)) { $s .= $comma; $comma = ''; }
         $s .= '"'; $s .= 'enumDeft'; $s .= '"'; $s .= ':'; $comma = ',';
         $s .= $this->enumDeft;
-        $hotfixExists = (isset($this->hotfix) && count($this->hotfix) > 0);
-        if (!empty($comma) && $hotfixExists) { $s .= $comma; $comma = ''; }
-        if ($hotfixExists) {
-            $s .= '"'; $s .= 'hotfix'; $s .= '"'; $s .= ':'; $comma = ',';
-            $hotfixSize = (!isset($this->hotfix) ? 0 : count($this->hotfix));
-            $s .= "\n"; $s .= '{';
-            $hotfixIdx = 0;
-            foreach ($this->hotfix as $k1 => &$v1) {
-                $s .= '"'; $s .= $k1; $s .= '"';
-                $s .= '"'; $s .= $v1; $s .= '"';
-                ++$hotfixIdx;
-                if (hotfixIdx != $hotfixSize) { $s .= ','; }
-            }
-            $s .= '}';
-        }
         $s .= '}'; $s .= "\n";
     }
     /* End of writeJSON(...) */
@@ -392,18 +338,6 @@ final class TestBasic
         $attrs .= '"'; $attrs .= $this->enumValue; $attrs .= '"';
         $attrs .= ' '; $attrs .= 'enumDeft'; $attrs .= '=';
         $attrs .= '"'; $attrs .= $this->enumDeft; $attrs .= '"';
-        if (isset($this->hotfix) && count($this->hotfix) > 0) {
-            $nodes .= '<'; $nodes .= 'hotfix'; $nodes .= '>';
-            foreach ($this->hotfix as $k1 => &$v1) {
-                $nodes .= '<'; $nodes .= 'k1'; $nodes .= ' ';
-                $nodes .= 'value'; $nodes .= '='; $nodes .= '"';
-                $nodes .= $$k1; $nodes .= '"';  $nodes .= '/>';
-                $nodes .= '<'; $nodes .= 'v1'; $nodes .= ' ';
-                $nodes .= 'value'; $nodes .= '='; $nodes .= '"';
-                $nodes .= $$v1; $nodes .= '"';  $nodes .= '/>';
-            }
-            $nodes .= '</'; $nodes .= 'hotfix'; $nodes .= '>';
-        }
         $s .= '<';
         $s .= $name;
         $s .= $attrs;

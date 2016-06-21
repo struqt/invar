@@ -10,15 +10,16 @@
 
 #import "TestProtocTestHeartBeatR2S.h"
 
-#define CRC32 0xD651F662
+#define CRC32__ 0xD651F662
+#define SIZE__  10L
 
 @interface TestHeartBeatR2S ()
 {
-    uint16_t              _protocId   ; /*  uint16 */
-    uint32_t              _protocCRC  ; /*  uint32 */
-    uint16_t              _protocError; /*  uint16 */
-    Protoc2S            * _protoc2S   ; /*  Test.Protoc.Protoc2S */
-    NSMutableDictionary * _hotfix     ; /*  map<string,string> */
+    uint16_t              _protocId   ; /*  &-uint16 */
+    uint32_t              _protocCRC  ; /*  &-uint32 */
+    uint16_t              _protocError; /*  &-uint16 */
+    Protoc2S            * _protoc2S   ; /*  *-Test.Protoc.Protoc2S */
+    NSMutableDictionary * _hotfix     ; /*  *-map<string,string> */
 }
 @end
 
@@ -29,7 +30,7 @@
     self = [super init];
     if (!self) { return self; }
     _protocId    = 65533;
-    _protocCRC   = CRC32;
+    _protocCRC   = CRC32__;
     _protocError = 0;
     _protoc2S    = nil;
     _hotfix      = nil;
@@ -47,7 +48,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -69,7 +70,7 @@
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];
     if (65533 != _protocId) { _protocId = 65533; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocCRC = [r readUInt32:&eof]; if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2SExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2SExists) {
@@ -116,6 +117,22 @@
     return 0;
 }
 /* TestHeartBeatR2S::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if (_protoc2S != nil) { size += [_protoc2S byteSize]; }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* TestHeartBeatR2S::byteSize */
 
 - (NSString *)toStringJSON;
 {

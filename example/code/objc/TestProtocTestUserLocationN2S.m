@@ -10,16 +10,17 @@
 
 #import "TestProtocTestUserLocationN2S.h"
 
-#define CRC32 0xEC953457
+#define CRC32__ 0xEC953457
+#define SIZE__  16L
 
 @interface TestUserLocationN2S ()
 {
-    uint16_t              _protocId ; /*  uint16 */
-    uint32_t              _protocCRC; /*  uint32 */
-    Protoc2S            * _protoc2S ; /*  Test.Protoc.Protoc2S */
-    float_t               _x        ; /*  float */
-    float_t               _y        ; /*  float */
-    NSMutableDictionary * _hotfix   ; /*  map<string,string> */
+    uint16_t              _protocId ; /*  &-uint16 */
+    uint32_t              _protocCRC; /*  &-uint32 */
+    Protoc2S            * _protoc2S ; /*  *-Test.Protoc.Protoc2S */
+    float_t               _x        ; /*  &-float */
+    float_t               _y        ; /*  &-float */
+    NSMutableDictionary * _hotfix   ; /*  *-map<string,string> */
 }
 @end
 
@@ -30,7 +31,7 @@
     self = [super init];
     if (!self) { return self; }
     _protocId  = 65531;
-    _protocCRC = CRC32;
+    _protocCRC = CRC32__;
     _protoc2S  = nil;
     _x         = 0.0F;
     _y         = 0.0F;
@@ -49,7 +50,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -73,7 +74,7 @@
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];
     if (65531 != _protocId) { _protocId = 65531; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocCRC = [r readUInt32:&eof]; if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2SExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2SExists) {
         if (_protoc2S == nil) { _protoc2S = [[Protoc2S alloc] init]; }
@@ -121,6 +122,22 @@
     return 0;
 }
 /* TestUserLocationN2S::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if (_protoc2S != nil) { size += [_protoc2S byteSize]; }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* TestUserLocationN2S::byteSize */
 
 - (NSString *)toStringJSON;
 {

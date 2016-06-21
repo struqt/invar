@@ -6,7 +6,6 @@
 
 namespace Test.Abc {
 
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System;
@@ -18,23 +17,22 @@ public sealed class TestBasic
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x65717264;
+    public const uint CRC32 = 0xF60C9915;
 
-    private SByte                     numberI08    = -128; // 有符号的8位整数.
-    private Int16                     numberI16    = -32768; // 有符号的16位整数.
-    private Int32                     numberI32    = -2147483648; // 有符号的32位整数.
-    private Int64                     numberI64    = -9223372036854774808L; // 有符号的64位整数.
-    private Byte                      numberU08    = 255; // 无符号的8位整数.
-    private UInt16                    numberU16    = 65535; // 无符号的16位整数.
-    private UInt32                    numberU32    = 4294967295; // 无符号的32位整数.
-    private UInt64                    numberU64    = 18446744073709551615L; // 无符号的64位整数.
-    private Single                    numberSingle = 3.14159F; // 单精度浮点小数.
-    private Double                    numberDouble = 3.1415926; // 双精度浮点小数.
-    private Boolean                   boolValue    = false; // 布尔值.
-    private String                    stringValue  = "hello世界"; // 字符串.
-    private Gender                    enumValue    = Gender.NONE; // 枚举值.
-    private Gender                    enumDeft     = Gender.MALE; // 枚举值制定默认值.
-    private Dictionary<String,String> hotfix       = null; // [AutoAdd] Hotfix.
+    private SByte   numberI08    = -128; // 有符号的8位整数.
+    private Int16   numberI16    = -32768; // 有符号的16位整数.
+    private Int32   numberI32    = -2147483648; // 有符号的32位整数.
+    private Int64   numberI64    = -9223372036854774808L; // 有符号的64位整数.
+    private Byte    numberU08    = 255; // 无符号的8位整数.
+    private UInt16  numberU16    = 65535; // 无符号的16位整数.
+    private UInt32  numberU32    = 4294967295; // 无符号的32位整数.
+    private UInt64  numberU64    = 18446744073709551615L; // 无符号的64位整数.
+    private Single  numberSingle = 3.14159F; // 单精度浮点小数.
+    private Double  numberDouble = 3.1415926; // 双精度浮点小数.
+    private Boolean boolValue    = false; // 布尔值.
+    private String  stringValue  = "hello世界"; // 字符串.
+    private Gender  enumValue    = Gender.NONE; // 枚举值.
+    private Gender  enumDeft     = Gender.MALE; // 枚举值制定默认值.
 
     /// 有符号的8位整数.
     [Invar.InvarRule("int8", "0")]
@@ -92,10 +90,6 @@ public sealed class TestBasic
     [Invar.InvarRule("Test.Abc.Gender", "13")]
     public Gender GetEnumDeft() { return this.enumDeft; }
 
-    /// [AutoAdd] Hotfix.
-    [Invar.InvarRule("map<string,string>", "14")]
-    public Dictionary<String,String> GetHotfix() { return this.hotfix; }
-
     /// 有符号的8位整数.
     [Invar.InvarRule("int8", "0")]
     public TestBasic SetNumberI08(SByte value) { this.numberI08 = value; return this; }
@@ -152,10 +146,6 @@ public sealed class TestBasic
     [Invar.InvarRule("Test.Abc.Gender", "13")]
     public TestBasic SetEnumDeft(Gender value) { this.enumDeft = value; return this; }
 
-    /// [AutoAdd] Hotfix.
-    [Invar.InvarRule("map<string,string>", "14")]
-    public TestBasic SetHotfix(Dictionary<String,String> value) { this.hotfix = value; return this; }
-
     public TestBasic Reuse()
     {
         this.numberI08   = -128;
@@ -172,7 +162,6 @@ public sealed class TestBasic
         this.stringValue = "hello世界";
         this.enumValue   = Gender.NONE;
         this.enumDeft    = Gender.MALE;
-        if (this.hotfix != null) { this.hotfix.Clear(); }
         return this;
     } //TestBasic::Reuse()
 
@@ -195,15 +184,6 @@ public sealed class TestBasic
         this.stringValue = from_.stringValue;
         this.enumValue = from_.enumValue;
         this.enumDeft = from_.enumDeft;
-        if (null == from_.hotfix) {
-            this.hotfix = null;
-        } else {
-            if (null == this.hotfix) { this.hotfix = new Dictionary<String,String>(); }
-            else { this.hotfix.Clear(); }
-            foreach (var hotfixIter in from_.hotfix) {
-                this.hotfix.Add(hotfixIter.Key, hotfixIter.Value);
-            }
-        }
         return this;
     } //TestBasic::Copy(...)
 
@@ -223,22 +203,6 @@ public sealed class TestBasic
         this.stringValue = Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt32()));
         this.enumValue = (Gender)Enum.ToObject(typeof(Gender), r.ReadInt32());
         this.enumDeft = (Gender)Enum.ToObject(typeof(Gender), r.ReadInt32());
-        sbyte hotfixExists = r.ReadSByte();
-        if ((sbyte)0x01 == hotfixExists) {
-            if (this.hotfix == null) { this.hotfix = new Dictionary<String,String>(); }
-            UInt32 lenHotfix = r.ReadUInt32();
-            for (UInt32 iHotfix = 0; iHotfix < lenHotfix; iHotfix++) {
-                String k1 = Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt32()));
-                String v1 = Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt32()));
-                if (!this.hotfix.ContainsKey(k1)) {
-                    this.hotfix.Add(k1, v1);
-                } else {
-                    this.hotfix[k1] = v1;
-                }
-            }
-        }
-        else if ((sbyte)0x00 == hotfixExists) { this.hotfix = null; }
-        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid.", 498); }
     } //TestBasic::Read(...)
 
     public void Write(BinaryWriter w)
@@ -259,22 +223,6 @@ public sealed class TestBasic
         w.Write(stringValueBytes);
         w.Write((Int32)this.enumValue);
         w.Write((Int32)this.enumDeft);
-        if (this.hotfix != null) {
-            w.Write((sbyte)0x01);
-            w.Write(this.hotfix.Count);
-            foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) {
-                String k1 = hotfixIter.Key;
-                byte[] k1Bytes = Encoding.UTF8.GetBytes(k1);
-                w.Write(k1Bytes.Length);
-                w.Write(k1Bytes);
-                String v1 = hotfixIter.Value;
-                byte[] v1Bytes = Encoding.UTF8.GetBytes(v1);
-                w.Write(v1Bytes.Length);
-                w.Write(v1Bytes);
-            }
-        } else {
-            w.Write((sbyte)0x00);
-        }
     } //TestBasic::Write(...)
 
     public override String ToString()
@@ -310,9 +258,6 @@ public sealed class TestBasic
         result.Append(this.enumValue.ToString());
         result.Append(',').Append(' ').Append("enumDeft").Append(':');
         result.Append(this.enumDeft.ToString());
-        result.Append(',').Append(' ').Append("hotfix").Append(':');
-        if (this.hotfix != null) { result.Append("[" + this.hotfix.Count + "]"); }
-        else { result.Append("null"); }
         result.Append(' ').Append('}');
         return result.ToString();
     } //TestBasic::ToString()
@@ -358,24 +303,6 @@ public sealed class TestBasic
         s.Append('"').Append("enumValue").Append('"').Append(':'); comma = ","; s.Append((int)this.enumValue);;
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append('"').Append("enumDeft").Append('"').Append(':'); comma = ","; s.Append((int)this.enumDeft);;
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append('\n').Append('{');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('"'); s.Append('"').Append(k1.ToString()).Append('"'); s.Append('"').Append(':');
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('"').Append(v1.ToString()).Append('"');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); }
-                }
-                s.Append('}');
-            } comma = ",";
-        }
         s.Append('}').Append('\n');
     } //TestBasic::WriteJSON(...)
 
@@ -423,24 +350,6 @@ public sealed class TestBasic
         s.Append("enumValue").Append('='); comma = ","; s.Append((int)this.enumValue);;
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append("enumDeft").Append('='); comma = ","; s.Append((int)this.enumDeft);;
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append('\n').Append('{');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('"').Append(k1.ToString()).Append('"'); s.Append('=');
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('"').Append(v1.ToString()).Append('"');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); }
-                    s.Append('}');
-                }
-            } comma = ",";
-        }
         s.Append('}').Append('\n');
     }
 
@@ -490,24 +399,6 @@ public sealed class TestBasic
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma).Append('\n'); comma = null; }
         s.Append('\'').Append("enumDeft").Append('\'').Append("=>"); comma = ","; s.Append((int)this.enumDeft);
         s.Append("/*Gender::").Append(this.enumDeft.ToString()).Append("*/");
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma).Append('\n'); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append("array").Append('(').Append('\n');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('\'').Append(k1.ToString()).Append('\''); s.Append("=>");
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('\'').Append(v1.ToString()).Append('\'');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); s.Append('\n'); }
-                }
-                s.Append("/* map size: ").Append(this.hotfix.Count).Append(" */").Append(')');
-            } comma = ",";
-        }
         s.Append("/* ").Append(GetType().ToString()).Append(" */");
         s.Append(')');
     }
@@ -540,21 +431,6 @@ public sealed class TestBasic
         attrs.Append(' ').Append("stringValue").Append('=').Append('"').Append(this.stringValue).Append('"');
         attrs.Append(' ').Append("enumValue").Append('=').Append('"').Append(this.enumValue.ToString()).Append('"');
         attrs.Append(' ').Append("enumDeft").Append('=').Append('"').Append(this.enumDeft.ToString()).Append('"');
-        if (this.hotfix != null && this.hotfix.Count > 0) {
-            nodes.Append('\n').Append('<').Append("hotfix").Append('>');
-            foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) {
-                nodes.Append('\n');
-                String k1 = hotfixIter.Key;
-                nodes.Append('<').Append("k1").Append(' ').Append("value").Append('=').Append('"');
-                nodes.Append(k1);
-                nodes.Append('"').Append('/').Append('>');
-                String v1 = hotfixIter.Value;
-                nodes.Append('<').Append("v1").Append(' ').Append("value").Append('=').Append('"');
-                nodes.Append(v1);
-                nodes.Append('"').Append('/').Append('>');
-            }
-            nodes.Append('<').Append('/').Append("hotfix").Append('>');
-        }
         s.Append('\n').Append('<').Append(name).Append(attrs);
         if (nodes.Length == 0) {
             s.Append('/').Append('>');
@@ -567,6 +443,6 @@ public sealed class TestBasic
 } /* class: TestBasic */
 /*
 0@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
-  2/int32/map-string-string
+  2/int32
 */
 } //namespace: Test.Abc

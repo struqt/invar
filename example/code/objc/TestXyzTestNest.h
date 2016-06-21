@@ -20,9 +20,6 @@
 - (NSMutableArray      *) listDict; /*  */
 - (NSMutableDictionary *) dictList; /*  */
 - (NSMutableArray      *) list5d  ; /* 五维列表 */
-- (NSMutableDictionary *) hotfix  ; /* [AutoAdd] Hotfix */
-
-- (TestNest *) setHotfix  : (NSMutableDictionary *) value; /* 3 map<string,string> */
 
 @end /* @interface TestNest */
 

@@ -493,22 +493,21 @@
     (#tab)NSUInteger size = SIZE__;(#body)
     (#tab)return size;
     }
-    /* (#type)::write */ ]]></template>
-  <template key="size.int8">  <![CDATA[ 1  ]]></template>
-  <template key="size.int16"> <![CDATA[ 2  ]]></template>
-  <template key="size.int32"> <![CDATA[ 4  ]]></template>
-  <template key="size.int64"> <![CDATA[ 8  ]]></template>
-  <template key="size.uint8"> <![CDATA[ 1  ]]></template>
-  <template key="size.uint16"><![CDATA[ 2  ]]></template>
-  <template key="size.uint32"><![CDATA[ 4  ]]></template>
-  <template key="size.uint64"><![CDATA[ 8  ]]></template>
-  <template key="size.float"> <![CDATA[ 4  ]]></template>
-  <template key="size.double"><![CDATA[ 8  ]]></template>
-  <template key="size.bool">  <![CDATA[ 1  ]]></template>
-  <template key="size.enum">  <![CDATA[ 4  ]]></template>
+    /* (#type)::byteSize */ ]]></template>
+  <template key="size.int8">  <![CDATA[ sizeof(int8_t)   ]]></template>
+  <template key="size.int16"> <![CDATA[ sizeof(int16_t)  ]]></template>
+  <template key="size.int32"> <![CDATA[ sizeof(int32_t)  ]]></template>
+  <template key="size.int64"> <![CDATA[ sizeof(int64_t)  ]]></template>
+  <template key="size.uint8"> <![CDATA[ sizeof(uint8_t)  ]]></template>
+  <template key="size.uint16"><![CDATA[ sizeof(uint16_t) ]]></template>
+  <template key="size.uint32"><![CDATA[ sizeof(uint32_t) ]]></template>
+  <template key="size.uint64"><![CDATA[ sizeof(uint64_t) ]]></template>
+  <template key="size.float"> <![CDATA[ sizeof(float_t)  ]]></template>
+  <template key="size.double"><![CDATA[ sizeof(double_t) ]]></template>
+  <template key="size.bool">  <![CDATA[ sizeof(uint8_t)  ]]></template>
+  <template key="size.enum">  <![CDATA[ sizeof(int32_t)  ]]></template>
   <template key="size.string"><![CDATA[ [(#name) length] ]]></template>
   <template key="size.struct"><![CDATA[ [(#name) byteSize] ]]></template>
-
   <template key="size.ref.any"><![CDATA[ (#concat-all) ]]></template>
   <template key="size.ref.vec | size.ref.map"><![CDATA[ (#body) ]]></template>
   <template key="size.ref.string | size.ref.struct"><![CDATA[

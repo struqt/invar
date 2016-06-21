@@ -10,14 +10,15 @@
 
 #import "TestAbcConflict.h"
 
-#define CRC32 0xCC7A29B9
+#define CRC32__ 0xCC7A29B9
+#define SIZE__  13L
 
 @interface Test_Abc_Conflict ()
 {
-    Gender                _key   ; /* 0 Test.Abc.Gender */
-    NSString            * _text  ; /* 1 string */
-    NSMutableArray      * _bytes ; /* 2 vec<int8> */
-    NSMutableDictionary * _hotfix; /* 3 map<string,string> */
+    Gender                _key   ; /* 0 &-Test.Abc.Gender */
+    NSString            * _text  ; /* 1 &-string */
+    NSMutableArray      * _bytes ; /* 2 &-vec<int8> */
+    NSMutableDictionary * _hotfix; /* 3 *-map<string,string> */
 }
 @end
 
@@ -46,7 +47,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -110,6 +111,23 @@
     return 0;
 }
 /* Conflict::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += [_text length];
+    if ([_bytes count] > 0) { size += [_bytes count] * 1; }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* Conflict::byteSize */
 
 - (NSString *)toStringJSON;
 {

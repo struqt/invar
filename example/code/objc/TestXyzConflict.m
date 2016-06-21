@@ -10,12 +10,13 @@
 
 #import "TestXyzConflict.h"
 
-#define CRC32 0x2126E985
+#define CRC32__ 0x2126E985
+#define SIZE__  9L
 
 @interface Test_Xyz_Conflict ()
 {
-    double_t              _pi    ; /* 0 double */
-    NSMutableDictionary * _hotfix; /* 1 map<string,string> */
+    double_t              _pi    ; /* 0 &-double */
+    NSMutableDictionary * _hotfix; /* 1 *-map<string,string> */
 }
 @end
 
@@ -40,7 +41,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -90,6 +91,21 @@
     return 0;
 }
 /* Conflict::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* Conflict::byteSize */
 
 - (NSString *)toStringJSON;
 {

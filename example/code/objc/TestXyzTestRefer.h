@@ -36,7 +36,6 @@
 - (TestRefer           *) self        ; /*  */
 - (NSMutableArray      *) listI08     ; /*  */
 - (NSMutableDictionary *) dictI08     ; /*  */
-- (NSMutableDictionary *) hotfix      ; /* [AutoAdd] Hotfix */
 
 - (TestRefer *) setNumberi08   : (int8_t               ) value; /* 0 int8 */
 - (TestRefer *) setNumberi16   : (int16_t              ) value; /* 1 int16 */
@@ -53,7 +52,6 @@
 - (TestRefer *) setEnumValue   : (Gender               ) value; /* 12 Test.Abc.Gender */
 - (TestRefer *) setOther       : (Custom              *) value; /* 13 Test.Abc.Custom */
 - (TestRefer *) setSelf        : (TestRefer           *) value; /* 14 Test.Xyz.TestRefer */
-- (TestRefer *) setHotfix      : (NSMutableDictionary *) value; /* 17 map<string,string> */
 
 @end /* @interface TestRefer */
 

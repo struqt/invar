@@ -10,25 +10,25 @@
 
 #import "TestAbcTestBasic.h"
 
-#define CRC32 0x65717264
+#define CRC32__ 0xF60C9915
+#define SIZE__  55L
 
 @interface TestBasic ()
 {
-    int8_t                _numberI08   ; /* 0 int8 */
-    int16_t               _numberI16   ; /* 1 int16 */
-    int32_t               _numberI32   ; /* 2 int32 */
-    int64_t               _numberI64   ; /* 3 int64 */
-    uint8_t               _numberU08   ; /* 4 uint8 */
-    uint16_t              _numberU16   ; /* 5 uint16 */
-    uint32_t              _numberU32   ; /* 6 uint32 */
-    uint64_t              _numberU64   ; /* 7 uint64 */
-    float_t               _numberSingle; /* 8 float */
-    double_t              _numberDouble; /* 9 double */
-    boolean_t             _boolValue   ; /* 10 bool */
-    NSString            * _stringValue ; /* 11 string */
-    Gender                _enumValue   ; /* 12 Test.Abc.Gender */
-    Gender                _enumDeft    ; /* 13 Test.Abc.Gender */
-    NSMutableDictionary * _hotfix      ; /* 14 map<string,string> */
+    int8_t      _numberI08   ; /* 0 &-int8 */
+    int16_t     _numberI16   ; /* 1 &-int16 */
+    int32_t     _numberI32   ; /* 2 &-int32 */
+    int64_t     _numberI64   ; /* 3 &-int64 */
+    uint8_t     _numberU08   ; /* 4 &-uint8 */
+    uint16_t    _numberU16   ; /* 5 &-uint16 */
+    uint32_t    _numberU32   ; /* 6 &-uint32 */
+    uint64_t    _numberU64   ; /* 7 &-uint64 */
+    float_t     _numberSingle; /* 8 &-float */
+    double_t    _numberDouble; /* 9 &-double */
+    boolean_t   _boolValue   ; /* 10 &-bool */
+    NSString  * _stringValue ; /* 11 &-string */
+    Gender      _enumValue   ; /* 12 &-Test.Abc.Gender */
+    Gender      _enumDeft    ; /* 13 &-Test.Abc.Gender */
 }
 @end
 
@@ -52,7 +52,6 @@
     _stringValue  = @"hello世界";
     _enumValue    = GenderNONE;
     _enumDeft     = GenderMALE;
-    _hotfix       = nil;
     return self;
 }
 /* TestBasic::init */
@@ -60,51 +59,48 @@
 - (void) dealloc
 {
     if (_stringValue ) { _stringValue  = nil; }
-    if (_hotfix      ) { _hotfix       = nil; }
 }
 /* TestBasic::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
 }
 /* TestBasic::copyWithZone */
 
-- (int8_t               ) numberI08    { return _numberI08   ; }
-- (int16_t              ) numberI16    { return _numberI16   ; }
-- (int32_t              ) numberI32    { return _numberI32   ; }
-- (int64_t              ) numberI64    { return _numberI64   ; }
-- (uint8_t              ) numberU08    { return _numberU08   ; }
-- (uint16_t             ) numberU16    { return _numberU16   ; }
-- (uint32_t             ) numberU32    { return _numberU32   ; }
-- (uint64_t             ) numberU64    { return _numberU64   ; }
-- (float_t              ) numberSingle { return _numberSingle; }
-- (double_t             ) numberDouble { return _numberDouble; }
-- (boolean_t            ) boolValue    { return _boolValue   ; }
-- (NSString            *) stringValue  { return _stringValue ; }
-- (Gender               ) enumValue    { return _enumValue   ; }
-- (Gender               ) enumDeft     { return _enumDeft    ; }
-- (NSMutableDictionary *) hotfix       { return _hotfix      ; }
+- (int8_t     ) numberI08    { return _numberI08   ; }
+- (int16_t    ) numberI16    { return _numberI16   ; }
+- (int32_t    ) numberI32    { return _numberI32   ; }
+- (int64_t    ) numberI64    { return _numberI64   ; }
+- (uint8_t    ) numberU08    { return _numberU08   ; }
+- (uint16_t   ) numberU16    { return _numberU16   ; }
+- (uint32_t   ) numberU32    { return _numberU32   ; }
+- (uint64_t   ) numberU64    { return _numberU64   ; }
+- (float_t    ) numberSingle { return _numberSingle; }
+- (double_t   ) numberDouble { return _numberDouble; }
+- (boolean_t  ) boolValue    { return _boolValue   ; }
+- (NSString  *) stringValue  { return _stringValue ; }
+- (Gender     ) enumValue    { return _enumValue   ; }
+- (Gender     ) enumDeft     { return _enumDeft    ; }
 
-- (TestBasic *) setNumberI08    : (int8_t               )v { _numberI08    = v; return self; }
-- (TestBasic *) setNumberI16    : (int16_t              )v { _numberI16    = v; return self; }
-- (TestBasic *) setNumberI32    : (int32_t              )v { _numberI32    = v; return self; }
-- (TestBasic *) setNumberI64    : (int64_t              )v { _numberI64    = v; return self; }
-- (TestBasic *) setNumberU08    : (uint8_t              )v { _numberU08    = v; return self; }
-- (TestBasic *) setNumberU16    : (uint16_t             )v { _numberU16    = v; return self; }
-- (TestBasic *) setNumberU32    : (uint32_t             )v { _numberU32    = v; return self; }
-- (TestBasic *) setNumberU64    : (uint64_t             )v { _numberU64    = v; return self; }
-- (TestBasic *) setNumberSingle : (float_t              )v { _numberSingle = v; return self; }
-- (TestBasic *) setNumberDouble : (double_t             )v { _numberDouble = v; return self; }
-- (TestBasic *) setBoolValue    : (boolean_t            )v { _boolValue    = v; return self; }
-- (TestBasic *) setStringValue  : (NSString            *)v { _stringValue  = v; return self; }
-- (TestBasic *) setEnumValue    : (Gender               )v { _enumValue    = v; return self; }
-- (TestBasic *) setEnumDeft     : (Gender               )v { _enumDeft     = v; return self; }
-- (TestBasic *) setHotfix       : (NSMutableDictionary *)v { _hotfix       = v; return self; }
+- (TestBasic *) setNumberI08    : (int8_t     )v { _numberI08    = v; return self; }
+- (TestBasic *) setNumberI16    : (int16_t    )v { _numberI16    = v; return self; }
+- (TestBasic *) setNumberI32    : (int32_t    )v { _numberI32    = v; return self; }
+- (TestBasic *) setNumberI64    : (int64_t    )v { _numberI64    = v; return self; }
+- (TestBasic *) setNumberU08    : (uint8_t    )v { _numberU08    = v; return self; }
+- (TestBasic *) setNumberU16    : (uint16_t   )v { _numberU16    = v; return self; }
+- (TestBasic *) setNumberU32    : (uint32_t   )v { _numberU32    = v; return self; }
+- (TestBasic *) setNumberU64    : (uint64_t   )v { _numberU64    = v; return self; }
+- (TestBasic *) setNumberSingle : (float_t    )v { _numberSingle = v; return self; }
+- (TestBasic *) setNumberDouble : (double_t   )v { _numberDouble = v; return self; }
+- (TestBasic *) setBoolValue    : (boolean_t  )v { _boolValue    = v; return self; }
+- (TestBasic *) setStringValue  : (NSString  *)v { _stringValue  = v; return self; }
+- (TestBasic *) setEnumValue    : (Gender     )v { _enumValue    = v; return self; }
+- (TestBasic *) setEnumDeft     : (Gender     )v { _enumDeft     = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
@@ -123,18 +119,6 @@
     _stringValue = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     _enumValue = (Gender)[r readInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     _enumDeft = (Gender)[r readInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-    int8_t hotfixExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-    if (0x01 == hotfixExists) {
-        if (_hotfix == nil) { _hotfix = [[NSMutableDictionary alloc] init]; }
-        uint32_t lenHotfix = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-        for (uint32_t iHotfix = 0; iHotfix < lenHotfix; iHotfix++) {
-            NSString *k1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            NSString *v1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            [_hotfix setObject:v1 forKey:k1];
-        }
-    }
-    else if (0x00 == hotfixExists) { _hotfix = nil; }
-    else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
 /* TestBasic::read(...) */
@@ -155,20 +139,17 @@
     [w writeString:_stringValue];
     [w writeInt32:_enumValue];
     [w writeInt32:_enumDeft];
-    if (_hotfix != nil) {
-        [w writeInt8:0x01];
-        [w writeUInt32:(uint32_t)[_hotfix count]];
-        for (id k1 in _hotfix) {
-            [w writeString:k1];
-            NSString *v1 = [_hotfix objectForKey:k1];
-            [w writeString:v1];
-        }
-    } else {
-        [w writeInt8:0x00];
-    }
     return 0;
 }
 /* TestBasic::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += [_stringValue length];
+    return size;
+}
+/* TestBasic::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -225,24 +206,6 @@
     if (comma) { [s appendString:comma]; comma = nil; }
     [s appendString:QUOTATION_S]; [s appendString:@"enumDeft"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
     comma = COMMA_S; [s appendFormat:FORMAT_S, @(_enumDeft)];
-    BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
-    if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
-    if (hotfixExists) {
-        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
-        NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
-        if (hotfixSize > 0) {
-            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
-            int hotfixIdx = 0;
-            for (id k1 in _hotfix) { /* map.for: _hotfix */
-                ++hotfixIdx;
-                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
-                id v1 = [_hotfix objectForKey:k1];
-                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
-            }
-            [s appendString:RIGHT_CURLY_S];
-        } comma = COMMA_S;
-    }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestBasic::writeJSON */
@@ -250,6 +213,6 @@
 @end /* @implementation TestBasic */
 /*
 0@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
-  2/int32/map-string-string
+  2/int32
 */
 

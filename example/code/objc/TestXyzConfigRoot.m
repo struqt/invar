@@ -10,17 +10,18 @@
 
 #import "TestXyzConfigRoot.h"
 
-#define CRC32 0x1CDC2714
+#define CRC32__ 0x6D03BB9B
+#define SIZE__  5L
 
 @interface ConfigRoot ()
 {
-    NSString            * _revision; /* f0 string */
-    TestList            * _list    ; /* f1 Test.Xyz.TestList */
-    TestDict            * _dict    ; /* f2 Test.Xyz.TestDict */
-    TestNest            * _nest    ; /* f3 Test.Xyz.TestNest */
-    Info                * _info    ; /* f4 Test.Abc.Info */
-    InfoX               * _infox   ; /* f5 Test.Xyz.InfoX */
-    NSMutableDictionary * _hotfix  ; /* f6 map<string,string> */
+    NSString            * _revision; /* f0 &-string */
+    TestList            * _list    ; /* f1 &-Test.Xyz.TestList */
+    TestDict            * _dict    ; /* f2 &-Test.Xyz.TestDict */
+    TestNest            * _nest    ; /* f3 &-Test.Xyz.TestNest */
+    Info                * _info    ; /* f4 &-Test.Abc.Info */
+    InfoX               * _infox   ; /* f5 &-Test.Xyz.InfoX */
+    NSMutableDictionary * _hotfix  ; /* f6 *-map<string,string> */
 }
 @end
 
@@ -56,7 +57,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -126,6 +127,27 @@
     return 0;
 }
 /* ConfigRoot::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += [_revision length];
+    size += [_list byteSize];
+    size += [_dict byteSize];
+    size += [_nest byteSize];
+    size += [_info byteSize];
+    size += [_infox byteSize];
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* ConfigRoot::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -210,8 +232,8 @@
   p-uint16-uint16/map-uint32-uint32/map-uint64-uint64/map-float-float/map-double-double/map-bool-boo
   l/map-string-string/map-int32-int32/map-test.abc.Custom-test.abc.Custom/map-string-string
 +@test.xyz.TestList/vec-int8/vec-int16/vec-int32/vec-int64/vec-uint8/vec-uint16/vec-uint32/vec-uint6
-  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom/map-string-string
+  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom
 +@test.xyz.TestNest/vec-map-string-test.abc.Custom/map-vec-string-vec-test.abc.Custom/vec-vec-vec-ve
-  c-vec-test.abc.Custom/map-string-string
+  c-vec-test.abc.Custom
 */
 

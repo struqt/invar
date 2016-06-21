@@ -10,23 +10,24 @@
 
 #import "TestXyzInfoX.h"
 
-#define CRC32 0xF55867E1
+#define CRC32__ 0xF55867E1
+#define SIZE__  41L
 
 @interface InfoX ()
 {
-    NSMutableArray      * _infos     ; /* 0 vec<vec<vec<vec<vec<Test.Abc.Info>>>>> */
-    Test_Xyz_Conflict   * _conflict_x; /* 1 Test.Xyz.Conflict */
-    Test_Abc_Conflict   * _conflict_a; /* 2 Test.Abc.Conflict */
-    NSMutableDictionary * _mConflict ; /* 3 map<int32,Test.Abc.Conflict> */
-    NSMutableArray      * _info2d    ; /* 4 vec<vec<Test.Abc.Info>> */
-    NSMutableArray      * _info3d    ; /* 5 vec<vec<vec<Test.Abc.Info>>> */
-    NSMutableArray      * _info5d    ; /* 6 vec<vec<vec<vec<vec<Test.Abc.Info>>>>> */
-    NSMutableArray      * _infovm    ; /* 7 vec<map<int16,Test.Abc.Info>> */
-    NSMutableDictionary * _mvei      ; /* 8 map<vec<Test.Abc.Gender>,Test.Abc.Info> */
-    NSMutableDictionary * _mive      ; /* 9 map<Test.Abc.Info,vec<Test.Abc.Gender>> */
-    NSMutableDictionary * _mvive     ; /* 10 map<vec<Test.Abc.Info>,vec<Test.Abc.Gender>> */
-    NSMutableArray      * _vmvive    ; /* 11 vec<map<vec<Test.Abc.Info>,vec<Test.Abc.Gender>>> */
-    NSMutableDictionary * _hotfix    ; /* 12 map<string,string> */
+    NSMutableArray      * _infos     ; /* 0 &-vec<vec<vec<vec<vec<Test.Abc.Info>>>>> */
+    Test_Xyz_Conflict   * _conflict_x; /* 1 &-Test.Xyz.Conflict */
+    Test_Abc_Conflict   * _conflict_a; /* 2 &-Test.Abc.Conflict */
+    NSMutableDictionary * _mConflict ; /* 3 &-map<int32,Test.Abc.Conflict> */
+    NSMutableArray      * _info2d    ; /* 4 &-vec<vec<Test.Abc.Info>> */
+    NSMutableArray      * _info3d    ; /* 5 &-vec<vec<vec<Test.Abc.Info>>> */
+    NSMutableArray      * _info5d    ; /* 6 &-vec<vec<vec<vec<vec<Test.Abc.Info>>>>> */
+    NSMutableArray      * _infovm    ; /* 7 &-vec<map<int16,Test.Abc.Info>> */
+    NSMutableDictionary * _mvei      ; /* 8 &-map<vec<Test.Abc.Gender>,Test.Abc.Info> */
+    NSMutableDictionary * _mive      ; /* 9 &-map<Test.Abc.Info,vec<Test.Abc.Gender>> */
+    NSMutableDictionary * _mvive     ; /* 10 &-map<vec<Test.Abc.Info>,vec<Test.Abc.Gender>> */
+    NSMutableArray      * _vmvive    ; /* 11 &-vec<map<vec<Test.Abc.Info>,vec<Test.Abc.Gender>>> */
+    NSMutableDictionary * _hotfix    ; /* 12 *-map<string,string> */
 }
 @end
 
@@ -74,7 +75,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -408,6 +409,120 @@
     return 0;
 }
 /* InfoX::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += sizeof(uint32_t);
+    for (id n1 in _infos) {
+        size += sizeof(uint32_t);
+        for (id n2 in n1) {
+            size += sizeof(uint32_t);
+            for (id n3 in n2) {
+                size += sizeof(uint32_t);
+                for (id n4 in n3) {
+                    size += sizeof(uint32_t);
+                    for (id n5 in n4) {
+                        size += [n5 byteSize];
+                    }
+                }
+            }
+        }
+    }
+    size += [_conflict_x byteSize];
+    size += [_conflict_a byteSize];
+    size += sizeof(uint32_t);
+    for (id k1 in _mConflict) {
+        size += sizeof(int32_t);
+        Test_Abc_Conflict *v1 = [_mConflict objectForKey:k1];
+        size += [v1 byteSize];
+    }
+    size += sizeof(uint32_t);
+    for (id n1 in _info2d) {
+        size += sizeof(uint32_t);
+        for (id n2 in n1) {
+            size += [n2 byteSize];
+        }
+    }
+    size += sizeof(uint32_t);
+    for (id n1 in _info3d) {
+        size += sizeof(uint32_t);
+        for (id n2 in n1) {
+            size += sizeof(uint32_t);
+            for (id n3 in n2) {
+                size += [n3 byteSize];
+            }
+        }
+    }
+    size += sizeof(uint32_t);
+    for (id n1 in _info5d) {
+        size += sizeof(uint32_t);
+        for (id n2 in n1) {
+            size += sizeof(uint32_t);
+            for (id n3 in n2) {
+                size += sizeof(uint32_t);
+                for (id n4 in n3) {
+                    size += sizeof(uint32_t);
+                    for (id n5 in n4) {
+                        size += [n5 byteSize];
+                    }
+                }
+            }
+        }
+    }
+    size += sizeof(uint32_t);
+    for (id n1 in _infovm) {
+        size += sizeof(uint32_t);
+        for (id k2 in n1) {
+            size += sizeof(int16_t);
+            Info *v2 = [n1 objectForKey:k2];
+            size += [v2 byteSize];
+        }
+    }
+    size += sizeof(uint32_t);
+    for (id k1 in _mvei) {
+        if ([k1 count] > 0) { size += [k1 count] * 4; }
+        Info *v1 = [_mvei objectForKey:k1];
+        size += [v1 byteSize];
+    }
+    size += sizeof(uint32_t);
+    for (id k1 in _mive) {
+        size += [k1 byteSize];
+        NSMutableArray *v1 = [_mive objectForKey:k1];/*size.map.head.v*/
+        if ([v1 count] > 0) { size += [v1 count] * 4; }
+    }
+    size += sizeof(uint32_t);
+    for (id k1 in _mvive) {
+        size += sizeof(uint32_t);
+        for (id n2 in k1) {
+            size += [n2 byteSize];
+        }
+        NSMutableArray *v1 = [_mvive objectForKey:k1];/*size.map.head.v*/
+        if ([v1 count] > 0) { size += [v1 count] * 4; }
+    }
+    size += sizeof(uint32_t);
+    for (id n1 in _vmvive) {
+        size += sizeof(uint32_t);
+        for (id k2 in n1) {
+            size += sizeof(uint32_t);
+            for (id n3 in k2) {
+                size += [n3 byteSize];
+            }
+            NSMutableArray *v2 = [n1 objectForKey:k2];/*size.map.head.v*/
+            if ([v2 count] > 0) { size += [v2 count] * 4; }
+        }
+    }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* InfoX::byteSize */
 
 - (NSString *)toStringJSON;
 {

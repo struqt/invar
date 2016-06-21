@@ -10,25 +10,26 @@
 
 #import "TestXyzTestDict.h"
 
-#define CRC32 0x969046DE
+#define CRC32__ 0x969046DE
+#define SIZE__  57L
 
 @interface TestDict ()
 {
-    NSMutableDictionary * _dictI08    ; /* 0 map<int8,int8> */
-    NSMutableDictionary * _dictI16    ; /* 1 map<int16,int16> */
-    NSMutableDictionary * _dictI32    ; /* 2 map<int32,int32> */
-    NSMutableDictionary * _dictI64    ; /* 3 map<int64,int64> */
-    NSMutableDictionary * _dictU08    ; /* 4 map<uint8,uint8> */
-    NSMutableDictionary * _dictU16    ; /* 5 map<uint16,uint16> */
-    NSMutableDictionary * _dictU32    ; /* 6 map<uint32,uint32> */
-    NSMutableDictionary * _dictU64    ; /* 7 map<uint64,uint64> */
-    NSMutableDictionary * _dictSingle ; /* 8 map<float,float> */
-    NSMutableDictionary * _dictDouble ; /* 9 map<double,double> */
-    NSMutableDictionary * _dictBoolean; /* 10 map<bool,bool> */
-    NSMutableDictionary * _dictString ; /* 11 map<string,string> */
-    NSMutableDictionary * _dictEnum   ; /* 12 map<Test.Abc.Gender,Test.Abc.Gender> */
-    NSMutableDictionary * _dictStruct ; /* 13 map<Test.Abc.Custom,Test.Abc.Custom> */
-    NSMutableDictionary * _hotfix     ; /* 14 map<string,string> */
+    NSMutableDictionary * _dictI08    ; /* 0 &-map<int8,int8> */
+    NSMutableDictionary * _dictI16    ; /* 1 &-map<int16,int16> */
+    NSMutableDictionary * _dictI32    ; /* 2 &-map<int32,int32> */
+    NSMutableDictionary * _dictI64    ; /* 3 &-map<int64,int64> */
+    NSMutableDictionary * _dictU08    ; /* 4 &-map<uint8,uint8> */
+    NSMutableDictionary * _dictU16    ; /* 5 &-map<uint16,uint16> */
+    NSMutableDictionary * _dictU32    ; /* 6 &-map<uint32,uint32> */
+    NSMutableDictionary * _dictU64    ; /* 7 &-map<uint64,uint64> */
+    NSMutableDictionary * _dictSingle ; /* 8 &-map<float,float> */
+    NSMutableDictionary * _dictDouble ; /* 9 &-map<double,double> */
+    NSMutableDictionary * _dictBoolean; /* 10 &-map<bool,bool> */
+    NSMutableDictionary * _dictString ; /* 11 &-map<string,string> */
+    NSMutableDictionary * _dictEnum   ; /* 12 &-map<Test.Abc.Gender,Test.Abc.Gender> */
+    NSMutableDictionary * _dictStruct ; /* 13 &-map<Test.Abc.Custom,Test.Abc.Custom> */
+    NSMutableDictionary * _hotfix     ; /* 14 *-map<string,string> */
 }
 @end
 
@@ -80,7 +81,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -298,6 +299,45 @@
     return 0;
 }
 /* TestDict::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if ([_dictI08 count] > 0) { size += [_dictI08 count] * 2; }
+    if ([_dictI16 count] > 0) { size += [_dictI16 count] * 4; }
+    if ([_dictI32 count] > 0) { size += [_dictI32 count] * 8; }
+    if ([_dictI64 count] > 0) { size += [_dictI64 count] * 16; }
+    if ([_dictU08 count] > 0) { size += [_dictU08 count] * 2; }
+    if ([_dictU16 count] > 0) { size += [_dictU16 count] * 4; }
+    if ([_dictU32 count] > 0) { size += [_dictU32 count] * 8; }
+    if ([_dictU64 count] > 0) { size += [_dictU64 count] * 16; }
+    if ([_dictSingle count] > 0) { size += [_dictSingle count] * 8; }
+    if ([_dictDouble count] > 0) { size += [_dictDouble count] * 16; }
+    if ([_dictBoolean count] > 0) { size += [_dictBoolean count] * 2; }
+    size += sizeof(uint32_t);
+    for (id k1 in _dictString) {
+        size += [k1 length];
+        NSString *v1 = [_dictString objectForKey:k1];
+        size += [v1 length];
+    }
+    if ([_dictEnum count] > 0) { size += [_dictEnum count] * 8; }
+    size += sizeof(uint32_t);
+    for (id k1 in _dictStruct) {
+        size += [k1 byteSize];
+        Custom *v1 = [_dictStruct objectForKey:k1];
+        size += [v1 byteSize];
+    }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* TestDict::byteSize */
 
 - (NSString *)toStringJSON;
 {

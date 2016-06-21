@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:package name="test.xyz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.rule rule.xsd"
   xmlns:tns="invar.rule">
-  <struct name="TestList" doc="测试基本的列表类型">
+  <struct name="TestList" doc="测试基本的列表类型" nohotfix="true">
     <field name="listI08" type="Vec-Int8" doc="有符号的8位整数"/>
     <field name="listI16" type="Vec-Int16" doc="有符号的16位整数"/>
     <field name="listI32" type="Vec-Int32" doc="有符号的32位整数"/>
@@ -33,12 +33,12 @@
     <field name="dictEnum" type="Map-Gender-Gender" doc="枚举值"/>
     <field name="dictStruct" type="Map-Custom-Custom" doc="自定义结构"/>
   </struct>
-  <struct name="TestNest" doc="测试泛型相互嵌套">
+  <struct name="TestNest" doc="测试泛型相互嵌套" nohotfix="true">
     <field name="listDict" type="Vec-Map-String-Custom" doc=""/>
     <field name="dictList" type="Map-Vec-String-Vec-Custom" doc=""/>
     <field name="list5d" type="Vec-Vec-Vec-Vec-Vec-Custom" doc="五维列表"/>
   </struct>
-  <struct name="TestRefer" doc="引用类型测试">
+  <struct name="TestRefer" doc="引用类型测试" nohotfix="true">
     <field name="numberi08" type="Int8" useref="true" doc=""/>
     <field name="numberi16" type="Int16" useref="true" doc=""/>
     <field name="numberi32" type="Int32" useref="true" doc=""/>

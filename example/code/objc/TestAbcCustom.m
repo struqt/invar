@@ -10,21 +10,22 @@
 
 #import "TestAbcCustom.h"
 
-#define CRC32 0xC5DA4F60
+#define CRC32__ 0x355EC042
+#define SIZE__  23L
 
 @interface Custom ()
 {
-    Gender              _x       ; /* 0 Test.Abc.Gender */
-    TestBasic         * _test    ; /* 1 Test.Abc.TestBasic */
-    Test_Xyz_Conflict * _xyz     ; /* 2 Test.Xyz.Conflict */
-    Test_Abc_Conflict * _abc     ; /* 3 Test.Abc.Conflict */
-    NSMutableArray    * _children; /* 4 vec<Test.Abc.Custom> */
-    int32_t             _noSetter; /* 5 int32 */
-    NSString          * _useRef  ; /* 6 string */
-    NSString          * _usePtr  ; /* 7 string */
-    Custom            * _prev    ; /* 8 Test.Abc.Custom */
-    Custom            * _next    ; /* 9 Test.Abc.Custom */
-    NSString          * _emptyDoc; /* 10 string */
+    Gender              _x       ; /* 0 &-Test.Abc.Gender */
+    TestBasic         * _test    ; /* 1 &-Test.Abc.TestBasic */
+    Test_Xyz_Conflict * _xyz     ; /* 2 &-Test.Xyz.Conflict */
+    Test_Abc_Conflict * _abc     ; /* 3 &-Test.Abc.Conflict */
+    NSMutableArray    * _children; /* 4 &-vec<Test.Abc.Custom> */
+    int32_t             _noSetter; /* 5 &-int32 */
+    NSString          * _useRef  ; /* 6 &-string */
+    NSString          * _usePtr  ; /* 7 *-string */
+    Custom            * _prev    ; /* 8 *-Test.Abc.Custom */
+    Custom            * _next    ; /* 9 *-Test.Abc.Custom */
+    NSString          * _emptyDoc; /* 10 &-string */
 }
 @end
 
@@ -66,7 +67,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -158,6 +159,25 @@
 }
 /* Custom::write */
 
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += [_test byteSize];
+    size += [_xyz byteSize];
+    size += [_abc byteSize];
+    size += sizeof(uint32_t);
+    for (id n1 in _children) {
+        size += [n1 byteSize];
+    }
+    size += [_useRef length];
+    if (_usePtr != nil) { size += [_usePtr length]; }
+    if (_prev != nil) { size += [_prev byteSize]; }
+    if (_next != nil) { size += [_next byteSize]; }
+    size += [_emptyDoc length];
+    return size;
+}
+/* Custom::byteSize */
+
 - (NSString *)toStringJSON;
 {
     NSMutableString *s = [[NSMutableString alloc] init] ;
@@ -248,7 +268,7 @@
   nt32/string/string/test.abc.Custom/test.abc.Custom/string
 +@test.abc.Conflict/int32/string/vec-int8/map-string-string
 +@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
-  2/int32/map-string-string
+  2/int32
 +@test.xyz.Conflict/double/map-string-string
 */
 

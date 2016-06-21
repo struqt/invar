@@ -30,7 +30,7 @@
     <field name="emptyDoc" type="String" doc=""/>
   </struct>
 
-  <struct name="TestBasic" doc="基础类型">
+  <struct name="TestBasic" doc="基础类型" nohotfix="true">
     <field name="numberI08" type="Int8" doc="有符号的8位整数" value="-128"/>
     <field name="numberI16" type="Int16" doc="有符号的16位整数" value="-32768"/>
     <field name="numberI32" type="Int32" doc="有符号的32位整数" value="-2147483648"/>

@@ -10,28 +10,28 @@
 
 #import "TestXyzTestRefer.h"
 
-#define CRC32 0xC9B6DDD6
+#define CRC32__ 0xBBD63AFD
+#define SIZE__  60L
 
 @interface TestRefer ()
 {
-    int8_t                _numberi08   ; /* 0 int8 */
-    int16_t               _numberi16   ; /* 1 int16 */
-    int32_t               _numberi32   ; /* 2 int32 */
-    int64_t               _numberi64   ; /* 3 int64 */
-    uint8_t               _numberu08   ; /* 4 uint8 */
-    uint16_t              _numberu16   ; /* 5 uint16 */
-    uint32_t              _numberu32   ; /* 6 uint32 */
-    uint64_t              _numberu64   ; /* 7 uint64 */
-    float_t               _numberSingle; /* 8 float */
-    double_t              _numberDouble; /* 9 double */
-    boolean_t             _boolValue   ; /* 10 bool */
-    NSString            * _stringValue ; /* 11 string */
-    Gender                _enumValue   ; /* 12 Test.Abc.Gender */
-    Custom              * _other       ; /* 13 Test.Abc.Custom */
-    TestRefer           * _self        ; /* 14 Test.Xyz.TestRefer */
-    NSMutableArray      * _listI08     ; /* 15 vec<int8> */
-    NSMutableDictionary * _dictI08     ; /* 16 map<int8,int8> */
-    NSMutableDictionary * _hotfix      ; /* 17 map<string,string> */
+    int8_t                _numberi08   ; /* 0 &-int8 */
+    int16_t               _numberi16   ; /* 1 &-int16 */
+    int32_t               _numberi32   ; /* 2 &-int32 */
+    int64_t               _numberi64   ; /* 3 &-int64 */
+    uint8_t               _numberu08   ; /* 4 &-uint8 */
+    uint16_t              _numberu16   ; /* 5 &-uint16 */
+    uint32_t              _numberu32   ; /* 6 &-uint32 */
+    uint64_t              _numberu64   ; /* 7 &-uint64 */
+    float_t               _numberSingle; /* 8 &-float */
+    double_t              _numberDouble; /* 9 &-double */
+    boolean_t             _boolValue   ; /* 10 &-bool */
+    NSString            * _stringValue ; /* 11 &-string */
+    Gender                _enumValue   ; /* 12 &-Test.Abc.Gender */
+    Custom              * _other       ; /* 13 &-Test.Abc.Custom */
+    TestRefer           * _self        ; /* 14 *-Test.Xyz.TestRefer */
+    NSMutableArray      * _listI08     ; /* 15 &-vec<int8> */
+    NSMutableDictionary * _dictI08     ; /* 16 &-map<int8,int8> */
 }
 @end
 
@@ -58,7 +58,6 @@
     _self         = nil;
     _listI08      = [[NSMutableArray alloc] init];
     _dictI08      = [[NSMutableDictionary alloc] init];
-    _hotfix       = nil;
     return self;
 }
 /* TestRefer::init */
@@ -70,14 +69,13 @@
     if (_self        ) { _self         = nil; }
     if (_listI08     ) { _listI08      = nil; }
     if (_dictI08     ) { _dictI08      = nil; }
-    if (_hotfix      ) { _hotfix       = nil; }
 }
 /* TestRefer::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -101,7 +99,6 @@
 - (TestRefer           *) self         { return _self        ; }
 - (NSMutableArray      *) listI08      { return _listI08     ; }
 - (NSMutableDictionary *) dictI08      { return _dictI08     ; }
-- (NSMutableDictionary *) hotfix       { return _hotfix      ; }
 
 - (TestRefer *) setNumberi08    : (int8_t               )v { _numberi08    = v; return self; }
 - (TestRefer *) setNumberi16    : (int16_t              )v { _numberi16    = v; return self; }
@@ -118,7 +115,6 @@
 - (TestRefer *) setEnumValue    : (Gender               )v { _enumValue    = v; return self; }
 - (TestRefer *) setOther        : (Custom              *)v { _other        = v; return self; }
 - (TestRefer *) setSelf         : (TestRefer           *)v { _self         = v; return self; }
-- (TestRefer *) setHotfix       : (NSMutableDictionary *)v { _hotfix       = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
@@ -155,18 +151,6 @@
         NSNumber *v1 = @([r readInt8:&eof]); if (eof) { return INVAR_ERR_DECODE_EOF; }
         [_dictI08 setObject:v1 forKey:k1];
     } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    int8_t hotfixExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-    if (0x01 == hotfixExists) {
-        if (_hotfix == nil) { _hotfix = [[NSMutableDictionary alloc] init]; }
-        uint32_t lenHotfix = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-        for (uint32_t iHotfix = 0; iHotfix < lenHotfix; iHotfix++) {
-            NSString *k1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            NSString *v1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            [_hotfix setObject:v1 forKey:k1];
-        }
-    }
-    else if (0x00 == hotfixExists) { _hotfix = nil; }
-    else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
 /* TestRefer::read(...) */
@@ -198,20 +182,21 @@
         [w writeInt8:[k1 charValue]];
         int8_t v1 = [[_dictI08 objectForKey:k1] charValue]; [w writeInt8:v1];
     }
-    if (_hotfix != nil) {
-        [w writeInt8:0x01];
-        [w writeUInt32:(uint32_t)[_hotfix count]];
-        for (id k1 in _hotfix) {
-            [w writeString:k1];
-            NSString *v1 = [_hotfix objectForKey:k1];
-            [w writeString:v1];
-        }
-    } else {
-        [w writeInt8:0x00];
-    }
     return 0;
 }
 /* TestRefer::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += [_stringValue length];
+    size += [_other byteSize];
+    if (_self != nil) { size += [_self byteSize]; }
+    if ([_listI08 count] > 0) { size += [_listI08 count] * 1; }
+    if ([_dictI08 count] > 0) { size += [_dictI08 count] * 2; }
+    return size;
+}
+/* TestRefer::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -312,24 +297,6 @@
             [s appendString:RIGHT_CURLY_S];
         } comma = COMMA_S;
     }
-    BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
-    if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
-    if (hotfixExists) {
-        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
-        NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
-        if (hotfixSize > 0) {
-            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
-            int hotfixIdx = 0;
-            for (id k1 in _hotfix) { /* map.for: _hotfix */
-                ++hotfixIdx;
-                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
-                id v1 = [_hotfix objectForKey:k1];
-                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
-            }
-            [s appendString:RIGHT_CURLY_S];
-        } comma = COMMA_S;
-    }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestRefer::writeJSON */
@@ -337,7 +304,7 @@
 @end /* @implementation TestRefer */
 /*
 1@test.xyz.TestRefer/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
-  2/test.abc.Custom/test.xyz.TestRefer/vec-int8/map-int8-int8/map-string-string
+  2/test.abc.Custom/test.xyz.TestRefer/vec-int8/map-int8-int8
 +@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
   nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */

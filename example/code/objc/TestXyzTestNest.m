@@ -10,14 +10,14 @@
 
 #import "TestXyzTestNest.h"
 
-#define CRC32 0x3121309F
+#define CRC32__ 0x6F0C2598
+#define SIZE__  12L
 
 @interface TestNest ()
 {
-    NSMutableArray      * _listDict; /* 0 vec<map<string,Test.Abc.Custom>> */
-    NSMutableDictionary * _dictList; /* 1 map<vec<string>,vec<Test.Abc.Custom>> */
-    NSMutableArray      * _list5d  ; /* 2 vec<vec<vec<vec<vec<Test.Abc.Custom>>>>> */
-    NSMutableDictionary * _hotfix  ; /* 3 map<string,string> */
+    NSMutableArray      * _listDict; /* 0 &-vec<map<string,Test.Abc.Custom>> */
+    NSMutableDictionary * _dictList; /* 1 &-map<vec<string>,vec<Test.Abc.Custom>> */
+    NSMutableArray      * _list5d  ; /* 2 &-vec<vec<vec<vec<vec<Test.Abc.Custom>>>>> */
 }
 @end
 
@@ -30,7 +30,6 @@
     _listDict = [[NSMutableArray alloc] init];
     _dictList = [[NSMutableDictionary alloc] init];
     _list5d   = [[NSMutableArray alloc] init];
-    _hotfix   = nil;
     return self;
 }
 /* TestNest::init */
@@ -40,14 +39,13 @@
     if (_listDict) { _listDict = nil; }
     if (_dictList) { _dictList = nil; }
     if (_list5d  ) { _list5d   = nil; }
-    if (_hotfix  ) { _hotfix   = nil; }
 }
 /* TestNest::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -57,9 +55,6 @@
 - (NSMutableArray      *) listDict { return _listDict; }
 - (NSMutableDictionary *) dictList { return _dictList; }
 - (NSMutableArray      *) list5d   { return _list5d  ; }
-- (NSMutableDictionary *) hotfix   { return _hotfix  ; }
-
-- (TestNest *) setHotfix   : (NSMutableDictionary *)v { _hotfix   = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
@@ -119,18 +114,6 @@
         }
         [_list5d addObject:n1];
     } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    int8_t hotfixExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-    if (0x01 == hotfixExists) {
-        if (_hotfix == nil) { _hotfix = [[NSMutableDictionary alloc] init]; }
-        uint32_t lenHotfix = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-        for (uint32_t iHotfix = 0; iHotfix < lenHotfix; iHotfix++) {
-            NSString *k1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            NSString *v1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            [_hotfix setObject:v1 forKey:k1];
-        }
-    }
-    else if (0x00 == hotfixExists) { _hotfix = nil; }
-    else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
 /* TestNest::read(...) */
@@ -174,20 +157,53 @@
             }
         }
     }
-    if (_hotfix != nil) {
-        [w writeInt8:0x01];
-        [w writeUInt32:(uint32_t)[_hotfix count]];
-        for (id k1 in _hotfix) {
-            [w writeString:k1];
-            NSString *v1 = [_hotfix objectForKey:k1];
-            [w writeString:v1];
-        }
-    } else {
-        [w writeInt8:0x00];
-    }
     return 0;
 }
 /* TestNest::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    size += sizeof(uint32_t);
+    for (id n1 in _listDict) {
+        size += sizeof(uint32_t);
+        for (id k2 in n1) {
+            size += [k2 length];
+            Custom *v2 = [n1 objectForKey:k2];
+            size += [v2 byteSize];
+        }
+    }
+    size += sizeof(uint32_t);
+    for (id k1 in _dictList) {
+        size += sizeof(uint32_t);
+        for (id n2 in k1) {
+            size += [n2 length];
+        }
+        NSMutableArray *v1 = [_dictList objectForKey:k1];/*size.map.head.v*/
+        size += sizeof(uint32_t);
+        for (id n2 in v1) {
+            size += [n2 byteSize];
+        }
+    }
+    size += sizeof(uint32_t);
+    for (id n1 in _list5d) {
+        size += sizeof(uint32_t);
+        for (id n2 in n1) {
+            size += sizeof(uint32_t);
+            for (id n3 in n2) {
+                size += sizeof(uint32_t);
+                for (id n4 in n3) {
+                    size += sizeof(uint32_t);
+                    for (id n5 in n4) {
+                        size += [n5 byteSize];
+                    }
+                }
+            }
+        }
+    }
+    return size;
+}
+/* TestNest::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -321,24 +337,6 @@
             [s appendString:RIGHT_SQUARE_S];
         } comma = COMMA_S;
     }
-    BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
-    if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
-    if (hotfixExists) {
-        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
-        NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
-        if (hotfixSize > 0) {
-            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
-            int hotfixIdx = 0;
-            for (id k1 in _hotfix) { /* map.for: _hotfix */
-                ++hotfixIdx;
-                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
-                id v1 = [_hotfix objectForKey:k1];
-                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
-            }
-            [s appendString:RIGHT_CURLY_S];
-        } comma = COMMA_S;
-    }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestNest::writeJSON */
@@ -346,7 +344,7 @@
 @end /* @implementation TestNest */
 /*
 1@test.xyz.TestNest/vec-map-string-test.abc.Custom/map-vec-string-vec-test.abc.Custom/vec-vec-vec-ve
-  c-vec-test.abc.Custom/map-string-string
+  c-vec-test.abc.Custom
 +@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
   nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */

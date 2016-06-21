@@ -10,7 +10,6 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSObject.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import "TestAbcGender.h"
 #import "TestAbcCustom.h"
@@ -19,23 +18,20 @@
 /* 测试基本的列表类型 */
 @interface TestList : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
 
-- (NSMutableArray      *) listI08    ; /* 有符号的8位整数 */
-- (NSMutableArray      *) listI16    ; /* 有符号的16位整数 */
-- (NSMutableArray      *) listI32    ; /* 有符号的32位整数 */
-- (NSMutableArray      *) listI64    ; /* 有符号的64位整数 */
-- (NSMutableArray      *) listU08    ; /* 无符号的8位整数 */
-- (NSMutableArray      *) listU16    ; /* 无符号的16位整数 */
-- (NSMutableArray      *) listU32    ; /* 无符号的32位整数 */
-- (NSMutableArray      *) listU64    ; /* 无符号的64位整数 */
-- (NSMutableArray      *) listSingle ; /* 单精度浮点小数 */
-- (NSMutableArray      *) listDouble ; /* 双精度浮点小数 */
-- (NSMutableArray      *) listBoolean; /* 布尔值 */
-- (NSMutableArray      *) listString ; /* 字符串 */
-- (NSMutableArray      *) listEnum   ; /* 枚举值 */
-- (NSMutableArray      *) listStruct ; /* 自定义结构 */
-- (NSMutableDictionary *) hotfix     ; /* [AutoAdd] Hotfix */
-
-- (TestList *) setHotfix     : (NSMutableDictionary *) value; /* 14 map<string,string> */
+- (NSMutableArray *) listI08    ; /* 有符号的8位整数 */
+- (NSMutableArray *) listI16    ; /* 有符号的16位整数 */
+- (NSMutableArray *) listI32    ; /* 有符号的32位整数 */
+- (NSMutableArray *) listI64    ; /* 有符号的64位整数 */
+- (NSMutableArray *) listU08    ; /* 无符号的8位整数 */
+- (NSMutableArray *) listU16    ; /* 无符号的16位整数 */
+- (NSMutableArray *) listU32    ; /* 无符号的32位整数 */
+- (NSMutableArray *) listU64    ; /* 无符号的64位整数 */
+- (NSMutableArray *) listSingle ; /* 单精度浮点小数 */
+- (NSMutableArray *) listDouble ; /* 双精度浮点小数 */
+- (NSMutableArray *) listBoolean; /* 布尔值 */
+- (NSMutableArray *) listString ; /* 字符串 */
+- (NSMutableArray *) listEnum   ; /* 枚举值 */
+- (NSMutableArray *) listStruct ; /* 自定义结构 */
 
 @end /* @interface TestList */
 

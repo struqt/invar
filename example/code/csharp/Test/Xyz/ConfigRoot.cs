@@ -19,7 +19,7 @@ public sealed class ConfigRoot
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x1CDC2714;
+    public const uint CRC32 = 0x6D03BB9B;
 
     private String                    revision = "1.0.0";
     private TestList                  list     = new TestList();
@@ -447,8 +447,8 @@ public sealed class ConfigRoot
   p-uint16-uint16/map-uint32-uint32/map-uint64-uint64/map-float-float/map-double-double/map-bool-boo
   l/map-string-string/map-int32-int32/map-test.abc.Custom-test.abc.Custom/map-string-string
 +@test.xyz.TestList/vec-int8/vec-int16/vec-int32/vec-int64/vec-uint8/vec-uint16/vec-uint32/vec-uint6
-  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom/map-string-string
+  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom
 +@test.xyz.TestNest/vec-map-string-test.abc.Custom/map-vec-string-vec-test.abc.Custom/vec-vec-vec-ve
-  c-vec-test.abc.Custom/map-string-string
+  c-vec-test.abc.Custom
 */
 } //namespace: Test.Xyz

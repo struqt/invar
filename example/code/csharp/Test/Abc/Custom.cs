@@ -18,7 +18,7 @@ public sealed class Custom
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0xC5DA4F60;
+    public const uint CRC32 = 0x355EC042;
 
     private Gender            x        = Gender.NONE; // 枚举值.
     private TestBasic         test     = new TestBasic(); // 其他类型.
@@ -541,7 +541,7 @@ public sealed class Custom
   nt32/string/string/test.abc.Custom/test.abc.Custom/string
 +@test.abc.Conflict/int32/string/vec-int8/map-string-string
 +@test.abc.TestBasic/int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double/bool/string/int3
-  2/int32/map-string-string
+  2/int32
 +@test.xyz.Conflict/double/map-string-string
 */
 } //namespace: Test.Abc

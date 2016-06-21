@@ -10,18 +10,19 @@
 
 #import "TestProtocTestUserLoginR2C.h"
 
-#define CRC32 0x38180462
+#define CRC32__ 0x38180462
+#define SIZE__  22L
 
 @interface TestUserLoginR2C ()
 {
-    uint16_t              _protocId   ; /*  uint16 */
-    uint32_t              _protocCRC  ; /*  uint32 */
-    uint16_t              _protocError; /*  uint16 */
-    Protoc2C            * _protoc2C   ; /*  Test.Protoc.Protoc2C */
-    NSString            * _userId     ; /*  string */
-    NSString            * _userName   ; /*  string */
-    NSMutableArray      * _roles      ; /*  vec<int32> */
-    NSMutableDictionary * _hotfix     ; /*  map<string,string> */
+    uint16_t              _protocId   ; /*  &-uint16 */
+    uint32_t              _protocCRC  ; /*  &-uint32 */
+    uint16_t              _protocError; /*  &-uint16 */
+    Protoc2C            * _protoc2C   ; /*  *-Test.Protoc.Protoc2C */
+    NSString            * _userId     ; /*  &-string */
+    NSString            * _userName   ; /*  &-string */
+    NSMutableArray      * _roles      ; /*  &-vec<int32> */
+    NSMutableDictionary * _hotfix     ; /*  *-map<string,string> */
 }
 @end
 
@@ -32,7 +33,7 @@
     self = [super init];
     if (!self) { return self; }
     _protocId    = 65528;
-    _protocCRC   = CRC32;
+    _protocCRC   = CRC32__;
     _protocError = 0;
     _protoc2C    = nil;
     _userId      = @"";
@@ -56,7 +57,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -83,7 +84,7 @@
     BOOL eof = false;
     _protocId = [r readUInt16:&eof];
     if (65528 != _protocId) { _protocId = 65528; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocCRC = [r readUInt32:&eof]; if (CRC32 != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2CExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2CExists) {
@@ -143,6 +144,25 @@
     return 0;
 }
 /* TestUserLoginR2C::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if (_protoc2C != nil) { size += [_protoc2C byteSize]; }
+    size += [_userId length];
+    size += [_userName length];
+    if ([_roles count] > 0) { size += [_roles count] * 4; }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* TestUserLoginR2C::byteSize */
 
 - (NSString *)toStringJSON;
 {

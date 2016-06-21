@@ -18,7 +18,7 @@ use \test\abc\Gender;
 
 final class TestList
 {
-    const CRC32 = 0xF313942B;
+    const CRC32 = 0x5FD1194A;
 
     static public function &CreateFromBytes (& $str)
     {
@@ -41,7 +41,6 @@ final class TestList
     private $listString  ;/* 11 vec<string> // 字符串 */
     private $listEnum    ;/* 12 vec<test.abc.Gender> // 枚举值 */
     private $listStruct  ;/* 13 vec<test.abc.Custom> // 自定义结构 */
-    private $hotfix      ;/* 14 map<string,string> // [AutoAdd] Hotfix */
 
     function __construct()
     {
@@ -59,7 +58,6 @@ final class TestList
         $this->listString  = array();
         $this->listEnum    = array();
         $this->listStruct  = array();
-        $this->hotfix      = NULL;
     }
     /* End of constructor() */
 
@@ -137,12 +135,6 @@ final class TestList
             $this->listStruct = array_merge($from->listStruct);
         } else {
             $this->listStruct = array();
-        }
-        if ($from->hotfix != NULL) {
-            $this->hotfix = array();
-            $this->hotfix = array_merge($from->hotfix);
-        } else {
-            $this->hotfix = NULL;
         }
         return $this;
     }
@@ -235,18 +227,6 @@ final class TestList
             $n1->read($r);
             $this->listStruct[] = $n1;
         }
-        $hotfixExists = $r->readInt08();
-        if (0x01 == $hotfixExists) {
-            if ($this->hotfix == NULL) { $this->hotfix = array(); }
-            $lenHotfix = $r->readUInt32();
-            for ($iHotfix = 0; $iHotfix < $lenHotfix; ++$iHotfix) {
-                $k1 = $r->readUTF();
-                $v1 = $r->readUTF();
-                $this->hotfix[$k1] = $v1;
-            }
-        }
-        else if (0x00 == $hotfixExists) { $this->hotfix = NULL; }
-        else { throw new \Exception('Protoc read error: The value of ' . $hotfixExists . ' is invalid.', 498); }
         return $this;
     }
     /* End of read(...) */
@@ -309,16 +289,6 @@ final class TestList
         foreach ($this->listStruct as &$n1) {
             $n1->write($str);
         }
-        if ($this->hotfix != NULL) {
-            BinaryWriter::writeInt08(0x01, $str);
-            BinaryWriter::writeInt32(count($this->hotfix), $str);
-            foreach ($this->hotfix as $k1 => &$v1) {
-                BinaryWriter::writeUTF($k1, $str);
-                BinaryWriter::writeUTF($v1, $str);
-            }
-        } else {
-            BinaryWriter::writeInt08(0x00, $str);
-        }
     }
     /* End of write(...) */
 
@@ -364,12 +334,6 @@ final class TestList
     /** 自定义结构 */
     public function &getListStruct() { return $this->listStruct; }
 
-    /** [AutoAdd] Hotfix */
-    public function getHotfix() { return $this->hotfix; }
-
-    /** [AutoAdd] Hotfix */
-    public function setHotfix($value) { $this->hotfix = $value; return $this; }
-
     public function &toString()
     {
         $s  = '{'; $s .= get_class($this);
@@ -401,9 +365,6 @@ final class TestList
         $s .= '('; $s .= count($this->listEnum); $s .= ')';
         $s .= ','; $s .= 'listStruct'; $s .= ':';
         $s .= '('; $s .= count($this->listStruct); $s .= ')';
-        $s .= ','; $s .= 'hotfix'; $s .= ':';
-        if (isset($this->hotfix)) { $s .= '['; $s .= count($this->hotfix); $s .= ']'; }
-        else { $s .= 'null'; }
         $s .= '}';
         return $s;
     }
@@ -614,21 +575,6 @@ final class TestList
             }
             $s .= ']';
         }
-        $hotfixExists = (isset($this->hotfix) && count($this->hotfix) > 0);
-        if (!empty($comma) && $hotfixExists) { $s .= $comma; $comma = ''; }
-        if ($hotfixExists) {
-            $s .= '"'; $s .= 'hotfix'; $s .= '"'; $s .= ':'; $comma = ',';
-            $hotfixSize = (!isset($this->hotfix) ? 0 : count($this->hotfix));
-            $s .= "\n"; $s .= '{';
-            $hotfixIdx = 0;
-            foreach ($this->hotfix as $k1 => &$v1) {
-                $s .= '"'; $s .= $k1; $s .= '"';
-                $s .= '"'; $s .= $v1; $s .= '"';
-                ++$hotfixIdx;
-                if (hotfixIdx != $hotfixSize) { $s .= ','; }
-            }
-            $s .= '}';
-        }
         $s .= '}'; $s .= "\n";
     }
     /* End of writeJSON(...) */
@@ -768,18 +714,6 @@ final class TestList
                 $n1->writeXML($nodes, 'n1');
             }
             $nodes .= '</'; $nodes .= 'listStruct'; $nodes .= '>';
-        }
-        if (isset($this->hotfix) && count($this->hotfix) > 0) {
-            $nodes .= '<'; $nodes .= 'hotfix'; $nodes .= '>';
-            foreach ($this->hotfix as $k1 => &$v1) {
-                $nodes .= '<'; $nodes .= 'k1'; $nodes .= ' ';
-                $nodes .= 'value'; $nodes .= '='; $nodes .= '"';
-                $nodes .= $$k1; $nodes .= '"';  $nodes .= '/>';
-                $nodes .= '<'; $nodes .= 'v1'; $nodes .= ' ';
-                $nodes .= 'value'; $nodes .= '='; $nodes .= '"';
-                $nodes .= $$v1; $nodes .= '"';  $nodes .= '/>';
-            }
-            $nodes .= '</'; $nodes .= 'hotfix'; $nodes .= '>';
         }
         $s .= '<';
         $s .= $name;

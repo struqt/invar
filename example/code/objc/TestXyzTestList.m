@@ -10,25 +10,25 @@
 
 #import "TestXyzTestList.h"
 
-#define CRC32 0xF313942B
+#define CRC32__ 0x5FD1194A
+#define SIZE__  56L
 
 @interface TestList ()
 {
-    NSMutableArray      * _listI08    ; /* 0 vec<int8> */
-    NSMutableArray      * _listI16    ; /* 1 vec<int16> */
-    NSMutableArray      * _listI32    ; /* 2 vec<int32> */
-    NSMutableArray      * _listI64    ; /* 3 vec<int64> */
-    NSMutableArray      * _listU08    ; /* 4 vec<uint8> */
-    NSMutableArray      * _listU16    ; /* 5 vec<uint16> */
-    NSMutableArray      * _listU32    ; /* 6 vec<uint32> */
-    NSMutableArray      * _listU64    ; /* 7 vec<uint64> */
-    NSMutableArray      * _listSingle ; /* 8 vec<float> */
-    NSMutableArray      * _listDouble ; /* 9 vec<double> */
-    NSMutableArray      * _listBoolean; /* 10 vec<bool> */
-    NSMutableArray      * _listString ; /* 11 vec<string> */
-    NSMutableArray      * _listEnum   ; /* 12 vec<Test.Abc.Gender> */
-    NSMutableArray      * _listStruct ; /* 13 vec<Test.Abc.Custom> */
-    NSMutableDictionary * _hotfix     ; /* 14 map<string,string> */
+    NSMutableArray * _listI08    ; /* 0 &-vec<int8> */
+    NSMutableArray * _listI16    ; /* 1 &-vec<int16> */
+    NSMutableArray * _listI32    ; /* 2 &-vec<int32> */
+    NSMutableArray * _listI64    ; /* 3 &-vec<int64> */
+    NSMutableArray * _listU08    ; /* 4 &-vec<uint8> */
+    NSMutableArray * _listU16    ; /* 5 &-vec<uint16> */
+    NSMutableArray * _listU32    ; /* 6 &-vec<uint32> */
+    NSMutableArray * _listU64    ; /* 7 &-vec<uint64> */
+    NSMutableArray * _listSingle ; /* 8 &-vec<float> */
+    NSMutableArray * _listDouble ; /* 9 &-vec<double> */
+    NSMutableArray * _listBoolean; /* 10 &-vec<bool> */
+    NSMutableArray * _listString ; /* 11 &-vec<string> */
+    NSMutableArray * _listEnum   ; /* 12 &-vec<Test.Abc.Gender> */
+    NSMutableArray * _listStruct ; /* 13 &-vec<Test.Abc.Custom> */
 }
 @end
 
@@ -52,7 +52,6 @@
     _listString  = [[NSMutableArray alloc] init];
     _listEnum    = [[NSMutableArray alloc] init];
     _listStruct  = [[NSMutableArray alloc] init];
-    _hotfix      = nil;
     return self;
 }
 /* TestList::init */
@@ -73,37 +72,33 @@
     if (_listString ) { _listString  = nil; }
     if (_listEnum   ) { _listEnum    = nil; }
     if (_listStruct ) { _listStruct  = nil; }
-    if (_hotfix     ) { _hotfix      = nil; }
 }
 /* TestList::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
 }
 /* TestList::copyWithZone */
 
-- (NSMutableArray      *) listI08     { return _listI08    ; }
-- (NSMutableArray      *) listI16     { return _listI16    ; }
-- (NSMutableArray      *) listI32     { return _listI32    ; }
-- (NSMutableArray      *) listI64     { return _listI64    ; }
-- (NSMutableArray      *) listU08     { return _listU08    ; }
-- (NSMutableArray      *) listU16     { return _listU16    ; }
-- (NSMutableArray      *) listU32     { return _listU32    ; }
-- (NSMutableArray      *) listU64     { return _listU64    ; }
-- (NSMutableArray      *) listSingle  { return _listSingle ; }
-- (NSMutableArray      *) listDouble  { return _listDouble ; }
-- (NSMutableArray      *) listBoolean { return _listBoolean; }
-- (NSMutableArray      *) listString  { return _listString ; }
-- (NSMutableArray      *) listEnum    { return _listEnum   ; }
-- (NSMutableArray      *) listStruct  { return _listStruct ; }
-- (NSMutableDictionary *) hotfix      { return _hotfix     ; }
-
-- (TestList *) setHotfix      : (NSMutableDictionary *)v { _hotfix      = v; return self; }
+- (NSMutableArray *) listI08     { return _listI08    ; }
+- (NSMutableArray *) listI16     { return _listI16    ; }
+- (NSMutableArray *) listI32     { return _listI32    ; }
+- (NSMutableArray *) listI64     { return _listI64    ; }
+- (NSMutableArray *) listU08     { return _listU08    ; }
+- (NSMutableArray *) listU16     { return _listU16    ; }
+- (NSMutableArray *) listU32     { return _listU32    ; }
+- (NSMutableArray *) listU64     { return _listU64    ; }
+- (NSMutableArray *) listSingle  { return _listSingle ; }
+- (NSMutableArray *) listDouble  { return _listDouble ; }
+- (NSMutableArray *) listBoolean { return _listBoolean; }
+- (NSMutableArray *) listString  { return _listString ; }
+- (NSMutableArray *) listEnum    { return _listEnum   ; }
+- (NSMutableArray *) listStruct  { return _listStruct ; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
@@ -179,18 +174,6 @@
         NSInteger n1Err = [n1 read:r]; if (n1Err != 0) { return n1Err; } if (eof) { return INVAR_ERR_DECODE_EOF; }
         [_listStruct addObject:n1];
     } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    int8_t hotfixExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-    if (0x01 == hotfixExists) {
-        if (_hotfix == nil) { _hotfix = [[NSMutableDictionary alloc] init]; }
-        uint32_t lenHotfix = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-        for (uint32_t iHotfix = 0; iHotfix < lenHotfix; iHotfix++) {
-            NSString *k1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            NSString *v1 = [r readString:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-            [_hotfix setObject:v1 forKey:k1];
-        }
-    }
-    else if (0x00 == hotfixExists) { _hotfix = nil; }
-    else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
 /* TestList::read(...) */
@@ -253,20 +236,36 @@
     for (id n1 in _listStruct) {
         [n1 write:w];
     }
-    if (_hotfix != nil) {
-        [w writeInt8:0x01];
-        [w writeUInt32:(uint32_t)[_hotfix count]];
-        for (id k1 in _hotfix) {
-            [w writeString:k1];
-            NSString *v1 = [_hotfix objectForKey:k1];
-            [w writeString:v1];
-        }
-    } else {
-        [w writeInt8:0x00];
-    }
     return 0;
 }
 /* TestList::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if ([_listI08 count] > 0) { size += [_listI08 count] * 1; }
+    if ([_listI16 count] > 0) { size += [_listI16 count] * 2; }
+    if ([_listI32 count] > 0) { size += [_listI32 count] * 4; }
+    if ([_listI64 count] > 0) { size += [_listI64 count] * 8; }
+    if ([_listU08 count] > 0) { size += [_listU08 count] * 1; }
+    if ([_listU16 count] > 0) { size += [_listU16 count] * 2; }
+    if ([_listU32 count] > 0) { size += [_listU32 count] * 4; }
+    if ([_listU64 count] > 0) { size += [_listU64 count] * 8; }
+    if ([_listSingle count] > 0) { size += [_listSingle count] * 4; }
+    if ([_listDouble count] > 0) { size += [_listDouble count] * 8; }
+    if ([_listBoolean count] > 0) { size += [_listBoolean count] * 1; }
+    size += sizeof(uint32_t);
+    for (id n1 in _listString) {
+        size += [n1 length];
+    }
+    if ([_listEnum count] > 0) { size += [_listEnum count] * 4; }
+    size += sizeof(uint32_t);
+    for (id n1 in _listStruct) {
+        size += [n1 byteSize];
+    }
+    return size;
+}
+/* TestList::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -502,24 +501,6 @@
             [s appendString:RIGHT_SQUARE_S];
         } comma = COMMA_S;
     }
-    BOOL hotfixExists = (nil != _hotfix && [_hotfix count] > 0);
-    if (comma && hotfixExists) { [s appendString:comma]; comma = nil; }
-    if (hotfixExists) {
-        [s appendString:QUOTATION_S]; [s appendString:@"hotfix"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
-        NSUInteger hotfixSize = (nil == _hotfix ? 0 : [_hotfix count]);
-        if (hotfixSize > 0) {
-            [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
-            int hotfixIdx = 0;
-            for (id k1 in _hotfix) { /* map.for: _hotfix */
-                ++hotfixIdx;
-                [s appendString:QUOTATION_S]; [s appendString:k1]; [s appendString:QUOTATION_S]; [s appendString:COLON_S]; /* nest.k.string */
-                id v1 = [_hotfix objectForKey:k1];
-                [s appendString:QUOTATION_S]; [s appendString:v1]; [s appendString:QUOTATION_S]; /* nest.v */
-                if (hotfixIdx != hotfixSize) { [s appendString:COMMA_S]; }
-            }
-            [s appendString:RIGHT_CURLY_S];
-        } comma = COMMA_S;
-    }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
 /* TestList::writeJSON */
@@ -527,7 +508,7 @@
 @end /* @implementation TestList */
 /*
 1@test.xyz.TestList/vec-int8/vec-int16/vec-int32/vec-int64/vec-uint8/vec-uint16/vec-uint32/vec-uint6
-  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom/map-string-string
+  4/vec-float/vec-double/vec-bool/vec-string/vec-int32/vec-test.abc.Custom
 +@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
   nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */

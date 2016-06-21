@@ -19,12 +19,11 @@ public sealed class TestNest
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x3121309F;
+    public const uint CRC32 = 0x6F0C2598;
 
     private List<Dictionary<String,Custom>>       listDict = new List<Dictionary<String,Custom>>();
     private Dictionary<List<String>,List<Custom>> dictList = new Dictionary<List<String>,List<Custom>>();
     private List<List<List<List<List<Custom>>>>>  list5d   = new List<List<List<List<List<Custom>>>>>(); // 五维列表.
-    private Dictionary<String,String>             hotfix   = null; // [AutoAdd] Hotfix.
 
     /// .
     [Invar.InvarRule("vec<map<string,Test.Abc.Custom>>", "0")]
@@ -38,20 +37,11 @@ public sealed class TestNest
     [Invar.InvarRule("vec<vec<vec<vec<vec<Test.Abc.Custom>>>>>", "2")]
     public List<List<List<List<List<Custom>>>>> GetList5d() { return this.list5d; }
 
-    /// [AutoAdd] Hotfix.
-    [Invar.InvarRule("map<string,string>", "3")]
-    public Dictionary<String,String> GetHotfix() { return this.hotfix; }
-
-    /// [AutoAdd] Hotfix.
-    [Invar.InvarRule("map<string,string>", "3")]
-    public TestNest SetHotfix(Dictionary<String,String> value) { this.hotfix = value; return this; }
-
     public TestNest Reuse()
     {
         this.listDict.Clear();
         this.dictList.Clear();
         this.list5d.Clear();
-        if (this.hotfix != null) { this.hotfix.Clear(); }
         return this;
     } //TestNest::Reuse()
 
@@ -68,15 +58,6 @@ public sealed class TestNest
         }
         this.list5d.Clear();
         this.list5d.AddRange(from_.list5d);
-        if (null == from_.hotfix) {
-            this.hotfix = null;
-        } else {
-            if (null == this.hotfix) { this.hotfix = new Dictionary<String,String>(); }
-            else { this.hotfix.Clear(); }
-            foreach (var hotfixIter in from_.hotfix) {
-                this.hotfix.Add(hotfixIter.Key, hotfixIter.Value);
-            }
-        }
         return this;
     } //TestNest::Copy(...)
 
@@ -145,22 +126,6 @@ public sealed class TestNest
             }
             this.list5d.Add(n1);
         }
-        sbyte hotfixExists = r.ReadSByte();
-        if ((sbyte)0x01 == hotfixExists) {
-            if (this.hotfix == null) { this.hotfix = new Dictionary<String,String>(); }
-            UInt32 lenHotfix = r.ReadUInt32();
-            for (UInt32 iHotfix = 0; iHotfix < lenHotfix; iHotfix++) {
-                String k1 = Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt32()));
-                String v1 = Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt32()));
-                if (!this.hotfix.ContainsKey(k1)) {
-                    this.hotfix.Add(k1, v1);
-                } else {
-                    this.hotfix[k1] = v1;
-                }
-            }
-        }
-        else if ((sbyte)0x00 == hotfixExists) { this.hotfix = null; }
-        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid.", 498); }
     } //TestNest::Read(...)
 
     public void Write(BinaryWriter w)
@@ -208,22 +173,6 @@ public sealed class TestNest
                 }
             }
         }
-        if (this.hotfix != null) {
-            w.Write((sbyte)0x01);
-            w.Write(this.hotfix.Count);
-            foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) {
-                String k1 = hotfixIter.Key;
-                byte[] k1Bytes = Encoding.UTF8.GetBytes(k1);
-                w.Write(k1Bytes.Length);
-                w.Write(k1Bytes);
-                String v1 = hotfixIter.Value;
-                byte[] v1Bytes = Encoding.UTF8.GetBytes(v1);
-                w.Write(v1Bytes.Length);
-                w.Write(v1Bytes);
-            }
-        } else {
-            w.Write((sbyte)0x00);
-        }
     } //TestNest::Write(...)
 
     public override String ToString()
@@ -237,9 +186,6 @@ public sealed class TestNest
         result.Append("[" + this.dictList.Count + "]");
         result.Append(',').Append(' ').Append("list5d").Append(':');
         result.Append("(" + this.list5d.Count + ")");
-        result.Append(',').Append(' ').Append("hotfix").Append(':');
-        if (this.hotfix != null) { result.Append("[" + this.hotfix.Count + "]"); }
-        else { result.Append("null"); }
         result.Append(' ').Append('}');
         return result.ToString();
     } //TestNest::ToString()
@@ -371,24 +317,6 @@ public sealed class TestNest
                 if (list5dIdx != list5dSize) { s.Append(','); }
             }
             s.Append(']');
-        }
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append('\n').Append('{');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('"'); s.Append('"').Append(k1.ToString()).Append('"'); s.Append('"').Append(':');
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('"').Append(v1.ToString()).Append('"');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); }
-                }
-                s.Append('}');
-            } comma = ",";
         }
         s.Append('}').Append('\n');
     } //TestNest::WriteJSON(...)
@@ -524,24 +452,6 @@ public sealed class TestNest
                 s.Append('}');
             }
         }
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append('\n').Append('{');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('"').Append(k1.ToString()).Append('"'); s.Append('=');
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('"').Append(v1.ToString()).Append('"');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); }
-                    s.Append('}');
-                }
-            } comma = ",";
-        }
         s.Append('}').Append('\n');
     }
 
@@ -676,24 +586,6 @@ public sealed class TestNest
             }
             s.Append("/* vec size: ").Append(this.list5d.Count).Append(" */").Append(')');
         }
-        bool hotfixExists = (null != this.hotfix && this.hotfix.Count > 0);
-        if (!String.IsNullOrEmpty(comma) && hotfixExists) { s.Append(comma).Append('\n'); comma = null; }
-        if (hotfixExists) {
-            int hotfixSize = (null == this.hotfix ? 0 : this.hotfix.Count);
-            if (hotfixSize > 0) {
-                s.Append("array").Append('(').Append('\n');
-                int hotfixIdx = 0;
-                foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) { /* map.for: this.hotfix */
-                    ++hotfixIdx;
-                    String k1 = hotfixIter.Key; /* nest.k */
-                    s.Append('\'').Append(k1.ToString()).Append('\''); s.Append("=>");
-                    String v1 = hotfixIter.Value; /* nest.v */
-                    s.Append('\'').Append(v1.ToString()).Append('\'');
-                    if (hotfixIdx != hotfixSize) { s.Append(','); s.Append('\n'); }
-                }
-                s.Append("/* map size: ").Append(this.hotfix.Count).Append(" */").Append(')');
-            } comma = ",";
-        }
         s.Append("/* ").Append(GetType().ToString()).Append(" */");
         s.Append(')');
     }
@@ -773,21 +665,6 @@ public sealed class TestNest
             }
             nodes.Append('<').Append('/').Append("list5d").Append('>');
         }
-        if (this.hotfix != null && this.hotfix.Count > 0) {
-            nodes.Append('\n').Append('<').Append("hotfix").Append('>');
-            foreach (KeyValuePair<String,String> hotfixIter in this.hotfix) {
-                nodes.Append('\n');
-                String k1 = hotfixIter.Key;
-                nodes.Append('<').Append("k1").Append(' ').Append("value").Append('=').Append('"');
-                nodes.Append(k1);
-                nodes.Append('"').Append('/').Append('>');
-                String v1 = hotfixIter.Value;
-                nodes.Append('<').Append("v1").Append(' ').Append("value").Append('=').Append('"');
-                nodes.Append(v1);
-                nodes.Append('"').Append('/').Append('>');
-            }
-            nodes.Append('<').Append('/').Append("hotfix").Append('>');
-        }
         s.Append('\n').Append('<').Append(name).Append(attrs);
         if (nodes.Length == 0) {
             s.Append('/').Append('>');
@@ -800,7 +677,7 @@ public sealed class TestNest
 } /* class: TestNest */
 /*
 1@test.xyz.TestNest/vec-map-string-test.abc.Custom/map-vec-string-vec-test.abc.Custom/vec-vec-vec-ve
-  c-vec-test.abc.Custom/map-string-string
+  c-vec-test.abc.Custom
 +@test.abc.Custom/int32/test.abc.TestBasic/test.xyz.Conflict/test.abc.Conflict/vec-test.abc.Custom/i
   nt32/string/string/test.abc.Custom/test.abc.Custom/string
 */

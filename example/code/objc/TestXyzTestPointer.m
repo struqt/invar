@@ -10,19 +10,20 @@
 
 #import "TestXyzTestPointer.h"
 
-#define CRC32 0x6348C9B7
+#define CRC32__ 0x6348C9B7
+#define SIZE__  15L
 
 @interface TestPointer ()
 {
-    TestPointer         * _self        ; /* 0 Test.Xyz.TestPointer */
-    NSString            * _stringValue ; /* 1 string */
-    Custom              * _other       ; /* 2 Test.Abc.Custom */
-    NSMutableArray      * _listI08     ; /* 3 vec<int8> */
-    NSMutableDictionary * _dictI08     ; /* 4 map<int8,int8> */
-    NSMutableArray      * _listNested  ; /* 5 vec<vec<vec<vec<Test.Xyz.TestPointer>>>> */
-    float_t               _numberSingle; /* 6 float */
-    Gender                _enumValue   ; /* 7 Test.Abc.Gender */
-    NSMutableDictionary * _hotfix      ; /* 8 map<string,string> */
+    TestPointer         * _self        ; /* 0 *-Test.Xyz.TestPointer */
+    NSString            * _stringValue ; /* 1 *-string */
+    Custom              * _other       ; /* 2 *-Test.Abc.Custom */
+    NSMutableArray      * _listI08     ; /* 3 *-vec<int8> */
+    NSMutableDictionary * _dictI08     ; /* 4 *-map<int8,int8> */
+    NSMutableArray      * _listNested  ; /* 5 *-vec<vec<vec<vec<Test.Xyz.TestPointer>>>> */
+    float_t               _numberSingle; /* 6 &-float */
+    Gender                _enumValue   ; /* 7 &-Test.Abc.Gender */
+    NSMutableDictionary * _hotfix      ; /* 8 *-map<string,string> */
 }
 @end
 
@@ -60,7 +61,7 @@
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
     id copy = [[[self class] allocWithZone:zone] init];
-    DataWriter *writer = [DataWriter Create];
+    DataWriter *writer = [DataWriter CreateWithData:[[NSMutableData alloc] initWithCapacity:[self byteSize]]];
     [self write:writer];
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
@@ -239,6 +240,45 @@
     return 0;
 }
 /* TestPointer::write */
+
+- (NSUInteger)byteSize
+{
+    NSUInteger size = SIZE__;
+    if (_self != nil) { size += [_self byteSize]; }
+    if (_stringValue != nil) { size += [_stringValue length]; }
+    if (_other != nil) { size += [_other byteSize]; }
+    if (_listI08 != nil) {
+        if ([_listI08 count] > 0) { size += [_listI08 count] * 1; }
+    }
+    if (_dictI08 != nil) {
+        if ([_dictI08 count] > 0) { size += [_dictI08 count] * 2; }
+    }
+    if (_listNested != nil) {
+        size += sizeof(uint32_t);
+        for (id n1 in _listNested) {
+            size += sizeof(uint32_t);
+            for (id n2 in n1) {
+                size += sizeof(uint32_t);
+                for (id n3 in n2) {
+                    size += sizeof(uint32_t);
+                    for (id n4 in n3) {
+                        size += [n4 byteSize];
+                    }
+                }
+            }
+        }
+    }
+    if (_hotfix != nil) {
+        size += sizeof(uint32_t);
+        for (id k1 in _hotfix) {
+            size += [k1 length];
+            NSString *v1 = [_hotfix objectForKey:k1];
+            size += [v1 length];
+        }
+    }
+    return size;
+}
+/* TestPointer::byteSize */
 
 - (NSString *)toStringJSON;
 {
