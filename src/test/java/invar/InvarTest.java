@@ -32,6 +32,7 @@ public class InvarTest extends TestCase {
                 //"-java", prefix + "java/",
                 "-objc", prefix + "objc/",
                 //"-cpp", prefix + "cpp/",
+                "-python", prefix + "python/",
                 "-php", prefix + "php/",
                 //"-flash", prefix + "flash/",
         });

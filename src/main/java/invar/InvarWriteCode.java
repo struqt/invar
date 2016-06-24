@@ -129,12 +129,6 @@ public final class InvarWriteCode extends InvarWrite {
     public StringBuilder codeFields(TypeStruct struct, List<InvarField> fields) {
         StringBuilder code = new StringBuilder();
         for (InvarField f : fields) {
-            if (f.isSpecial() && "protocCRC".equals(f.getRealKey())) {
-                String deft = snippet.tryGet("struct.const.name.crc", null);
-                if (deft != null) {
-                    f.setDefault(deft);
-                }
-            }
             code.append(makeStructField(f));
         }
         return code;
@@ -486,6 +480,13 @@ public final class InvarWriteCode extends InvarWrite {
         int widthName = 1;
         int widthDeft = 1;
         for (InvarField f : fs) {
+            if (f.isSpecial() && "protocCRC".equals(f.getRealKey())) {
+                String deft = snippet.tryGet("struct.const.name.crc", null);
+                if (deft != null) {
+                    deft = replace(deft, Token.Type, type.getName());
+                    f.setDefault(deft);
+                }
+            }
             makeTypeFormatted(getContext(), f, snippetGet(Key.IMPORT_SPLIT), useFullName, packHeadPrefix);
             f.setDeftFormatted(makeStructFieldInit(f, false));
 
@@ -912,7 +913,10 @@ public final class InvarWriteCode extends InvarWrite {
                 fileIncludes.add(s);
             }
         }
-        //TODO if (impExcludeConflict && t.getIsConflict())
+        if (t == struct) {
+            return;
+        }
+        //TODO if (impExcludeConflict && t.getConflict(context)) {
         if (impExcludeConflict && getContext().findTypes(t.getName()).size() > 1) {
             return;
         }
@@ -922,8 +926,10 @@ public final class InvarWriteCode extends InvarWrite {
         if (impExcludePacks != null && impExcludePacks.size() > 0 && impExcludePacks.contains(t.getPack().getName())) {
             return;
         }
-        String packName = t.getPack().getName();
-        String typeName = t.getName();
+        //String packName = t.getPack().getName();
+        //String typeName = t.getName();
+        String packName = uniqueTypeName ? t.getCodeName() : t.getPack().getName(); //FIXME uniqueTypeName is not a good condition
+        String typeName = uniqueTypeName && t.getConflict(context) ? t.getUniqueName() : t.getName();
         String rule = packName + ruleTypeSplit + typeName;
         imps.add(rule);
     }
@@ -1126,7 +1132,8 @@ public final class InvarWriteCode extends InvarWrite {
                 InvarField f = fs.get(i);
                 lines.addAll(makeField(f, i == 0, i == len - 1));
             }
-            return makeCodeMethod(lines, type.getName(), snippetMet);
+            String typeName = uniqueTypeName && type.getConflict(context) ? type.getUniqueName() : type.getName();
+            return makeCodeMethod(lines, typeName, snippetMet);
         }
 
         private String makeCodeMethod(List<String> lines, String returnType, String snippet) {
