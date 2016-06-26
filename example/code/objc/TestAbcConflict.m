@@ -34,7 +34,7 @@
     _hotfix = nil;
     return self;
 }
-/* Conflict::init */
+/* Test_Abc_Conflict::init */
 
 - (void) dealloc
 {
@@ -42,7 +42,7 @@
     if (_bytes ) { _bytes  = nil; }
     if (_hotfix) { _hotfix = nil; }
 }
-/* Conflict::dealloc */
+/* Test_Abc_Conflict::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
@@ -52,7 +52,7 @@
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
 }
-/* Conflict::copyWithZone */
+/* Test_Abc_Conflict::copyWithZone */
 
 - (Gender               ) key    { return _key   ; }
 - (NSString            *) text   { return _text  ; }
@@ -87,7 +87,7 @@
     else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
-/* Conflict::read(...) */
+/* Test_Abc_Conflict::read(...) */
 
 - (NSInteger)write:(DataWriter *)w
 {
@@ -110,7 +110,7 @@
     }
     return 0;
 }
-/* Conflict::write */
+/* Test_Abc_Conflict::write */
 
 - (NSUInteger)byteSize
 {
@@ -127,7 +127,7 @@
     }
     return size;
 }
-/* Conflict::byteSize */
+/* Test_Abc_Conflict::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -184,7 +184,7 @@
     }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
-/* Conflict::writeJSON */
+/* Test_Abc_Conflict::writeJSON */
 
 @end /* @implementation Test_Abc_Conflict */
 /*

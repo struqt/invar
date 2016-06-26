@@ -30,13 +30,13 @@
     _hotfix = nil;
     return self;
 }
-/* Conflict::init */
+/* Test_Xyz_Conflict::init */
 
 - (void) dealloc
 {
     if (_hotfix) { _hotfix = nil; }
 }
-/* Conflict::dealloc */
+/* Test_Xyz_Conflict::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
@@ -46,7 +46,7 @@
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
 }
-/* Conflict::copyWithZone */
+/* Test_Xyz_Conflict::copyWithZone */
 
 - (double_t             ) pi     { return _pi    ; }
 - (NSMutableDictionary *) hotfix { return _hotfix; }
@@ -72,7 +72,7 @@
     else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
-/* Conflict::read(...) */
+/* Test_Xyz_Conflict::read(...) */
 
 - (NSInteger)write:(DataWriter *)w
 {
@@ -90,7 +90,7 @@
     }
     return 0;
 }
-/* Conflict::write */
+/* Test_Xyz_Conflict::write */
 
 - (NSUInteger)byteSize
 {
@@ -105,7 +105,7 @@
     }
     return size;
 }
-/* Conflict::byteSize */
+/* Test_Xyz_Conflict::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -140,7 +140,7 @@
     }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
-/* Conflict::writeJSON */
+/* Test_Xyz_Conflict::writeJSON */
 
 @end /* @implementation Test_Xyz_Conflict */
 /*

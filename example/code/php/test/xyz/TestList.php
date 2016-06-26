@@ -181,7 +181,7 @@ final class TestList
         $this->listU32 = array();
         $lenListU32 = $r->readUInt32();
         for ($iListU32 = 0; $iListU32 < $lenListU32; ++$iListU32) {
-            $n1 = $r->readUInt64();
+            $n1 = $r->readUInt32();
             $this->listU32[] = $n1;
         }
         $this->listU64 = array();
@@ -259,7 +259,7 @@ final class TestList
         }
         BinaryWriter::writeInt32(count($this->listU32), $str);
         foreach ($this->listU32 as &$n1) {
-            BinaryWriter::writeUInt64($n1, $str);
+            BinaryWriter::writeUInt32($n1, $str);
         }
         BinaryWriter::writeInt32(count($this->listU64), $str);
         foreach ($this->listU64 as &$n1) {

@@ -195,8 +195,8 @@ final class TestDict
         $this->dictU32 = array();
         $lenDictU32 = $r->readUInt32();
         for ($iDictU32 = 0; $iDictU32 < $lenDictU32; ++$iDictU32) {
-            $k1 = $r->readUInt64();
-            $v1 = $r->readUInt64();
+            $k1 = $r->readUInt32();
+            $v1 = $r->readUInt32();
             $this->dictU32[$k1] = $v1;
         }
         $this->dictU64 = array();
@@ -300,8 +300,8 @@ final class TestDict
         }
         BinaryWriter::writeInt32(count($this->dictU32), $str);
         foreach ($this->dictU32 as $k1 => &$v1) {
-            BinaryWriter::writeUInt64($k1, $str);
-            BinaryWriter::writeUInt64($v1, $str);
+            BinaryWriter::writeUInt32($k1, $str);
+            BinaryWriter::writeUInt32($v1, $str);
         }
         BinaryWriter::writeInt32(count($this->dictU64), $str);
         foreach ($this->dictU64 as $k1 => &$v1) {
