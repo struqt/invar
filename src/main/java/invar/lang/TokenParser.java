@@ -74,11 +74,7 @@ public class TokenParser {
                 String comment = getAttrOptional(n, "doc");
                 TypeStruct t = new TypeStruct(name, pack, comment);
                 addToPack(pack, t, n);
-                if (alias.equals("")) {
-                    alias = name;
-                }
                 t.setAlias(alias);
-                ctx.aliasAdd(t);
                 structNodes.put(n, t);
                 t.setShortField(getAttrOptional(n, "short"));
                 t.setNoHotfix(Boolean.parseBoolean(getAttrOptional(n, "nohotfix")));
@@ -230,6 +226,10 @@ public class TokenParser {
             field.setUsePointer(true);
             tStruct.addField(field);
         }
+        if (tStruct.getAlias() == null || tStruct.getAlias().length() <= 0) {
+            tStruct.setAlias(tStruct.getConflict(ctx) ? tStruct.getUniqueName() : tStruct.getName());
+        }
+        ctx.aliasAdd(tStruct);
     }
 
     private InvarField makeAutoAddField(

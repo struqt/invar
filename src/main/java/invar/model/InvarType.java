@@ -144,9 +144,26 @@ public class InvarType {
 
     final public String getUniqueName() {
         if (uniqueName == null || "".equals(uniqueName)) {
-            this.uniqueName = pack.getName().replaceAll("\\.", "_") + "_" + name;
+            String[] packs = pack.getName().split("\\.");
+            this.uniqueName = "";
+            for (String pack : packs) {
+                if (pack.length() < 1) {
+                    continue;
+                }
+                this.uniqueName += upperHeadChar(pack);
+            }
+            this.uniqueName += name;
+            //this.uniqueName = pack.getName().replaceAll("\\.", "_") + "_" + name;
         }
         return uniqueName;
+    }
+
+    static String upperHeadChar(String s) {
+        String ss = s.substring(0, 1).toUpperCase();
+        if (s.length() > 1) {
+            ss += s.substring(1, s.length());
+        }
+        return ss;
     }
 
     final public String getComment() {

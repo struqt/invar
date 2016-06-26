@@ -37,7 +37,7 @@
   <template key="byte.non">    <![CDATA[ 0x00 ]]></template>
   <template key="doc">         <![CDATA[/* (#doc). */]]></template>
   <template key="doc.line">    <![CDATA[// (#doc).]]></template>
-  <template key="import.split"><![CDATA[ _ ]]></template>
+  <template key="import.split"><![CDATA[  ]]></template>
   <template key="pointer.null">  <![CDATA[ nil ]]></template>
   <template key="ptr.mark.string | ptr.mark.vec |
                  ptr.mark.struct | ptr.mark.map"><![CDATA[ * ]]></template>
