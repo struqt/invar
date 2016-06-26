@@ -168,7 +168,7 @@ final public class InvarContext {
             structProtoc2S = type;
         }
         if (type.getAlias().equals("protoc2C")) {
-            structProtoc2C= type;
+            structProtoc2C = type;
         }
     }
 
@@ -177,7 +177,7 @@ final public class InvarContext {
     }
 
     public Iterator<String> aliasNames() {
-        return typeWithAlias.keySet().iterator();
+        return new TreeSet<String>(typeWithAlias.keySet()).iterator();
     }
 
     public TypeStruct getStructRoot() {

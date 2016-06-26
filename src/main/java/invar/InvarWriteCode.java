@@ -643,6 +643,9 @@ public final class InvarWriteCode extends InvarWrite {
         }
         InvarType type = f.getType();
         String s = snippet.tryGet("init." + type.getRealId().getName(), null);
+        if (f.isSpecial()) {
+            s = snippet.tryGet("init." + f.getKey(), null);
+        }
         if (s == null) {
             s = snippetGet("init.any");
         }
@@ -711,10 +714,10 @@ public final class InvarWriteCode extends InvarWrite {
 
             String s = snippetGet(key);
             String split = snippetTryGet(Key.RUNTIME_TYPE_SPLIT);
+            String full = type.fullName(split);
             s = replace(s, Token.Name, alias);
-            s = replace(s, Token.Type, type.getName());
-            s = replace(s, Token.TypeFull, type.fullName(split));
-
+            s = replace(s, Token.Type, type.getConflict(context) ? full : type.getName());
+            s = replace(s, Token.TypeFull, full);
             if (type instanceof TypeStruct)
                 meStruct.append(s);
             else if (type instanceof TypeEnum)
@@ -863,7 +866,7 @@ public final class InvarWriteCode extends InvarWrite {
         String tName = t.getName();
         boolean conflict = t.getConflict(ctx);
         if (conflict) {
-            if (uniqueTypeName) {
+            if (uniqueTypeName && t.getConflict(ctx)) {
                 tName = getUniqueTypeName(t);
             } else {
                 tName = t.fullName(split);

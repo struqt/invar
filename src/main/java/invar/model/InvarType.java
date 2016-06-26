@@ -153,7 +153,6 @@ public class InvarType {
                 this.uniqueName += upperHeadChar(pack);
             }
             this.uniqueName += name;
-            //this.uniqueName = pack.getName().replaceAll("\\.", "_") + "_" + name;
         }
         return uniqueName;
     }

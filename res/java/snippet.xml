@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
-  xmlns:tns="invar.template" language="java">
+<tns:root
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="java">
+
   <export resPath="java/InvarReadData.txt" destDir="invar" destName="InvarReadData.java"/>
   <export resPath="java/InvarRule.txt" destDir="invar" destName="InvarRule.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
   <redefine>
-    <int8 pack="   java.lang" type="Byte   " initValue="-1"/>
-    <int16 pack="  java.lang" type="Short  " initValue="-1"/>
-    <int32 pack="  java.lang" type="Integer" initValue="-1"/>
-    <int64 pack="  java.lang" type="Long   " initValue="-1"/>
-    <uint8 pack="  java.lang" type="Integer" initValue="0"/>
-    <uint16 pack=" java.lang" type="Integer" initValue="0"/>
-    <uint32 pack=" java.lang" type="Long   " initValue="0"/>
-    <uint64 pack=" java.lang" type="Long   " initValue="0"/>
-    <float pack="  java.lang" type="Float  " initValue="0.0"/>
-    <double pack=" java.lang" type="Double " initValue="0.00"/>
-    <string pack=" java.lang" type="String " initValue=""/>
-    <bool pack="   java.lang" type="Boolean" initValue="false"/>
+    <int8 pack="   java.lang" type="Byte         " initValue="-1"/>
+    <int16 pack="  java.lang" type="Short        " initValue="-1"/>
+    <int32 pack="  java.lang" type="Integer      " initValue="-1"/>
+    <int64 pack="  java.lang" type="Long         " initValue="-1"/>
+    <uint8 pack="  java.lang" type="Integer      " initValue="0"/>
+    <uint16 pack=" java.lang" type="Integer      " initValue="0"/>
+    <uint32 pack=" java.lang" type="Long         " initValue="0"/>
+    <uint64 pack=" java.math" type="BigInteger   " initValue="0"/>
+    <float pack="  java.lang" type="Float        " initValue="0.0"/>
+    <double pack=" java.lang" type="Double       " initValue="0.00"/>
+    <string pack=" java.lang" type="String       " initValue=""/>
+    <bool pack="   java.lang" type="Boolean      " initValue="false"/>
     <vec pack="    java.util" type="LinkedList   " generic="&lt;?&gt;"/>
     <map pack="    java.util" type="LinkedHashMap" generic="&lt;?,?&gt;"/>
     <dialect pack="java.util" type="Map"/>
@@ -26,64 +28,75 @@
     <dialect pack="java.io" type="DataInput"/>
     <dialect pack="java.io" type="IOException"/>
   </redefine>
-  <template key="trace.all.types">     <![CDATA[false]]></template>
-  <template key="include.self">        <![CDATA[false]]></template>
-  <template key="pack.name.nested">    <![CDATA[false]]></template>
-  <template key="file.name.lowercase"> <![CDATA[false]]></template>
-  <template key="capitalize.pack.head"><![CDATA[false]]></template>
-  <template key="method.indent.num">   <![CDATA[1]]></template>
-  <template key="one.pack.one.file">   <![CDATA[false]]></template>
-  <template key="code.dir.flatten">    <![CDATA[false]]></template>
-  <template key="code.dir.prefix">     <![CDATA[]]></template>
-  <template key="refer.spec">    <![CDATA[&]]></template>
-  <template key="refer.invoke">  <![CDATA[.]]></template>
-  <template key="refer.copy">    <![CDATA[(#name) = (#arg);]]></template>
-  <template key="refer.const">   <![CDATA[const]]></template>
-  <template key="pointer.spec">  <![CDATA[*]]></template>
-  <template key="pointer.invoke"><![CDATA[->]]></template>
-  <template key="pointer.null">  <![CDATA[null]]></template>
-  <template key="pointer.copy">  <![CDATA[(#name) = (#arg);]]></template>
-  <template key="byte.yes">      <![CDATA[(byte)0x01]]></template>
-  <template key="byte.non">      <![CDATA[(byte)0x00]]></template>
-  <template key="init.any">    <![CDATA[ (#deft)        ]]></template>
-  <template key="init.int64">  <![CDATA[ (#deft)L       ]]></template>
-  <template key="init.uint32"> <![CDATA[ (#deft)L       ]]></template>
-  <template key="init.uint64"> <![CDATA[ (#deft)L       ]]></template>
-  <template key="init.float">  <![CDATA[ (#deft)F       ]]></template>
-  <template key="init.string"> <![CDATA[ "(#deft)"      ]]></template>
-  <template key="init.enum">   <![CDATA[ (#type).(#name)]]></template>
-  <template key="init.struct"> <![CDATA[ new (#type)()  ]]></template>
-  <template key="init.vec">    <![CDATA[ new (#type)()  ]]></template>
-  <template key="init.map">    <![CDATA[ new (#type)()  ]]></template>
+
+  <!-- Settings -->
+  <template key="trace.all.types">         <![CDATA[ false ]]></template>
+  <template key="include.self">            <![CDATA[ false ]]></template>
+  <template key="pack.name.nested">        <![CDATA[ false ]]></template>
+  <template key="file.name.lowercase">     <![CDATA[ false ]]></template>
+  <template key="capitalize.pack.head">    <![CDATA[ false ]]></template>
+  <template key="method.indent.num">       <![CDATA[ 1     ]]></template>
+  <template key="one.pack.one.file">       <![CDATA[ false ]]></template>
+  <template key="code.dir.flatten">        <![CDATA[ false ]]></template>
+  <template key="code.dir.prefix">         <![CDATA[ ]]></template>
+
+  <!-- Common snippet -->
+  <template key="refer.spec">    <![CDATA[ & ]]></template>
+  <template key="refer.invoke">  <![CDATA[ . ]]></template>
+  <template key="refer.copy">    <![CDATA[ (#name) = (#arg); ]]></template>
+  <template key="refer.const">   <![CDATA[ const ]]></template>
+  <template key="pointer.spec">  <![CDATA[ *    ]]></template>
+  <template key="pointer.invoke"><![CDATA[ ->   ]]></template>
+  <template key="pointer.null">  <![CDATA[ null ]]></template>
+  <template key="pointer.copy">  <![CDATA[ (#name) = (#arg); ]]></template>
+  <template key="byte.yes">      <![CDATA[ (byte)0x01 ]]></template>
+  <template key="byte.non">      <![CDATA[ (byte)0x00 ]]></template>
+  <template key="struct.const.name.crc"><![CDATA[ CRC32 ]]></template>
+
+  <template key="init.any">    <![CDATA[ (#deft)         ]]></template>
+  <template key="init.int64">  <![CDATA[ (#deft)L        ]]></template>
+  <template key="init.uint32"> <![CDATA[ (#deft)L        ]]></template>
+  <template key="init.float">  <![CDATA[ (#deft)F        ]]></template>
+  <template key="init.string"> <![CDATA[ "(#deft)"       ]]></template>
+  <template key="init.enum">   <![CDATA[ (#type).(#name) ]]></template>
+  <template key="init.struct"> <![CDATA[ new (#type)()   ]]></template>
+  <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
+  <template key="init.map">    <![CDATA[ new (#type)()   ]]></template>
+  <template key="init.uint64"> <![CDATA[ new BigInteger("(#deft)", 10) ]]></template>
+  <template key="init.protocCRC"><![CDATA[ (#deft)       ]]></template>
+
+  <template key="import.exclude.conflict"> <![CDATA[ true ]]></template>
+  <template key="import.exclude.same.pack"><![CDATA[ true ]]></template>
+  <template key="import.exclude.packs">    <![CDATA[ java.lang ]]></template>
+  <template key="import">      <![CDATA[ import (#body);(#brk) ]]></template>
+  <template key="import.body"> <![CDATA[ (#pack)(#name) ]]></template>
+  <template key="import.split"><![CDATA[ . ]]></template>
+
+  <template key="doc">     <![CDATA[ /** (#doc) */ ]]></template>
+  <template key="doc.line"><![CDATA[ /* (#doc) */ ]]></template>
+
   <template key="file"><![CDATA[
-	//===----------------------------*  Java  *---------------------------------===//
+	  /*===----------------------------*  Java  *--------------------------------===//
     //
     //             THIS FILE IS GENERATED BY INVAR. DO NOT EDIT !!!
     //
-    //===----------------------------------------------------------------------===//
-    (#blank)
+    //===----------------------------------------------------------------------===*/
     (#pack)
   ]]></template>
   <template key="file.pack"><![CDATA[
-	package (#name);
-	(#body)
+	  package (#name);
+	  (#body)
   ]]></template>
   <template key="file.body"><![CDATA[
     (#blank)
     (#import)
+    (#blank)
     (#enums)(#structs)]]></template>
-  <template key="import"><![CDATA[import (#body);(#brk)]]></template>
-  <template key="import.body"><![CDATA[(#pack)(#name)]]></template>
-  <template key="import.split"><![CDATA[.]]></template>
-  <template key="import.exclude.conflict"><![CDATA[true]]></template>
-  <template key="import.exclude.same.pack"><![CDATA[true]]></template>
-  <template key="import.exclude.packs"><![CDATA[java.lang]]></template>
-  <template key="doc"><![CDATA[/** (#doc) */]]></template>
-  <template key="doc.line"><![CDATA[ //(#doc)]]></template>
   <template key="enum.field"><![CDATA[
     (#brk)(#tab)(#doc)
-    (#tab)(#name) ((#value), "(#name)"),]]></template>
+    (#tab)(#name) ((#value), "(#name)"), ]]></template>
   <template key="enum"><![CDATA[
+    (#doc)
     public enum (#name)
     {(#body);
     (#blank)
@@ -103,10 +116,10 @@
     (#tab)static public (#name) valueOf(Integer v)
     (#tab){
     (#tab)(#tab)(#name)[] es = (#name).values();
-    (#tab)(#tab)for ((#name) e : es)
-    (#tab)(#tab){
-    (#tab)(#tab)(#tab)if(e.getValue() == v)
+    (#tab)(#tab)for ((#name) e : es) {
+    (#tab)(#tab)(#tab)if(e.getValue().equals(v)) {
     (#tab)(#tab)(#tab)(#tab)return e;
+    (#tab)(#tab)(#tab)}
     (#tab)(#tab)}
     (#tab)(#tab)return es[0];
     (#tab)}
@@ -116,14 +129,15 @@
     [#addImport(struct; imports; java.io::DataInput)]
     [#addImport(struct; imports; java.io::DataOutput)]
     [#addImport(struct; imports; java.io::IOException)]
-    (#concat)
+    (#doc)
     final public class (#name)
     {
     (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)];(#brk)
     [#codeFields (struct; fields)]
+    [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
     [#codeGetters(struct; fields)]
     [#codeSetters(struct; fields)]
-    [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (copy.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (read.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (write.; useFullName; struct; fields; imports)](#brk)
@@ -134,27 +148,42 @@
   <template key="struct.meta"><![CDATA[@invar.InvarRule(T="(#type)", S="f(#index)")]]></template>
   <template key="struct.field"><![CDATA[
     (#tab)private [#clampLen(lenFieldType; 64; (#type))]
-    (#concat) [#clampLen(lenFieldName; 16; (#name) )] = (#value);
+    (#concat) [#clampLen(lenFieldName; 16; (#namer) )];
     (#concat)[#codeLineDoc(fields; (#index))]
   ]]></template>
   <template key="struct.setter"><![CDATA[
+    (#blank)
     (#tab)[#codeDoc(fields; (#index))]
     (#tab)[#codeMetaData(fields; (#index))]
-    (#tab)public (#typeupper) set[#upperHeadChar( (#name) )]((#type) value) {this.(#name) = value; return this;}
+    (#tab)public (#typeupper) set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; return this; }
   ]]></template>
   <template key="struct.getter"><![CDATA[
+    (#blank)
     (#tab)[#codeDoc(fields; (#index))]
     (#tab)[#codeMetaData(fields; (#index))]
-    (#tab)public (#type) get[#upperHeadChar( (#name) )]() {return (#name);}
+    (#tab)public (#type) get[#upperHeadChar( (#name) )]() { return (#name); }
   ]]></template>
 
+  <!-- Method Construct -->
+  <template key="ctor.method"><![CDATA[
+    (#tab)public (#type)()
+    (#tab){(#body)
+    (#tab)}
+  ]]></template>
+  <template key="ctor.any | ctor.vec | ctor.map"><![CDATA[
+    [#clampLen(lenFieldName; 32; (#name))] = (#deft) ]]></template>
+  <template key="ctor.ptr.any"><![CDATA[
+    [#clampLen(lenFieldName; 32; (#name))] = (#null); ]]></template>
+  <template key="ctor.ref.any"><![CDATA[ (#body); ]]></template>
+
   <!-- Method Reuse -->
-  <template key="reuse.method.arg"><![CDATA[]]></template>
-  <template key="reuse.method"><![CDATA[ (#tab)public (#type) reuse()
+  <template key="reuse.method"><![CDATA[
+    (#tab)public (#type) reuse()
     (#tab){(#body)
     (#tab)(#tab)return this;
-    (#tab)} //reuse() ]]></template>
-  <template key="reuse.any">   <![CDATA[ [#clampLen(lenFieldName; 16; (#name))] = (#deft) ]]></template>
+    (#tab)}
+  ]]></template>
+  <template key="reuse.any">   <![CDATA[ (#name) = (#deft) ]]></template>
   <template key="reuse.struct"><![CDATA[ (#name).reuse() ]]></template>
   <template key="reuse.vec | reuse.map"><![CDATA[ (#name).clear() ]]></template>
   <template key="reuse.ref.any"><![CDATA[ (#body); ]]></template>
@@ -214,7 +243,7 @@
   <template key="read.uint8"> <![CDATA[ (#arg).readUnsignedByte()  ]]></template>
   <template key="read.uint16"><![CDATA[ (#arg).readUnsignedShort() ]]></template>
   <template key="read.uint32"><![CDATA[ (#arg).readInt() & 0xFFFFFFFFL ]]></template>
-  <template key="read.uint64"><![CDATA[ (#arg).readLong()    ]]></template>
+  <template key="read.uint64"><![CDATA[ (#arg).readXXX()    ]]></template>
   <template key="read.float"> <![CDATA[ (#arg).readFloat()   ]]></template>
   <template key="read.double"><![CDATA[ (#arg).readDouble()  ]]></template>
   <template key="read.string"><![CDATA[ (#arg).readUTF()     ]]></template>
@@ -224,6 +253,10 @@
   <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[ (#type) (#name) = (#body); ]]></template>
   <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
     (#type) (#name) = new (#type)();(#brk)(#body); ]]></template>
+  <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64"><![CDATA[
+    byte[] (#name)Bytes = new byte[8]; from.readFully((#name)Bytes, 0, 8);
+    (#type) (#name) = new (#type)((#namer)Bytes); ]]></template>
+
   <template key="read.vec.head">  <![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
   <template key="read.vec.for"><![CDATA[
     Long (#len) = (#arg).readInt() & 0xFFFFFFFFL;
@@ -242,6 +275,11 @@
   <template key="read.ref.struct"><![CDATA[ (#body); ]]></template>
   <template key="read.ref.vec"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
   <template key="read.ref.map"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
+  <template key="read.ref.uint64"><![CDATA[
+    byte[] (#namer)Bytes = new byte[8]; from.readFully((#namer)Bytes, 0, 8);
+    (#name) = new (#type)((#namer)Bytes);
+  ]]></template>
+
   <template key="read.ptr.string"><![CDATA[
     if ((#arg).readByte() == (#byteyes)) {
     (#tab)(#name) = (#body);
@@ -273,7 +311,7 @@
   <template key="write.uint8"> <![CDATA[ (#arg).writeByte((#name))  ]]></template>
   <template key="write.uint16"><![CDATA[ (#arg).writeShort((#name)) ]]></template>
   <template key="write.uint32"><![CDATA[ (#arg).writeInt((#name).intValue()) ]]></template>
-  <template key="write.uint64"><![CDATA[ (#arg).writeLong((#name))  ]]></template>
+  <template key="write.uint64"><![CDATA[ (#arg).writeLong((#name).longValue())  ]]></template>
   <template key="write.float"> <![CDATA[ (#arg).writeFloat((#name)) ]]></template>
   <template key="write.double"><![CDATA[ (#arg).writeDouble((#name))]]></template>
   <template key="write.string"><![CDATA[ (#arg).writeUTF((#name))   ]]></template>
@@ -284,12 +322,14 @@
   <template key="write.nest.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)(#body);]]></template>
   <template key="write.nest.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)(#body);]]></template>
   <template key="write.vec.head"><![CDATA[]]></template>
-  <template key="write.vec.for"><![CDATA[ (#arg).writeInt((#name).size());
+  <template key="write.vec.for"><![CDATA[
+    (#arg).writeInt((#name).size());
     for ((#typer) (#value) : (#name)) {(#body)
     } ]]></template>
   <template key="write.map.head.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)]]></template>
   <template key="write.map.head.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)]]></template>
-  <template key="write.map.for"><![CDATA[ (#arg).writeInt((#name).size());
+  <template key="write.map.for"><![CDATA[
+    (#arg).writeInt((#name).size());
     for (Map.Entry<(#typer)> (#name)Iter : (#name).entrySet()) {(#body)
     }[#addImport(struct; imports; java.util::Map)] ]]></template>
   <template key="write.ref.any"><![CDATA[(#body);]]></template>
@@ -407,8 +447,9 @@
     } ]]></template>
 
   <!-- InvarRuntime Class -->
-  <template key="runtime.pack"><![CDATA[invar]]></template>
-  <template key="runtime.name"><![CDATA[InvarRuntime]]></template>
+  <template key="runtime.pack"><![CDATA[ invar ]]></template>
+  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.type.split"><![CDATA[ . ]]></template>
   <template key="runtime.alias"><![CDATA[
     (#tab)static private LinkedHashMap<String,Class<?>> (#name) ()
     (#tab){
@@ -420,9 +461,6 @@
   <template key="runtime.alias.list"><![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
   <template key="runtime.alias.map"><![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
   <template key="runtime.body"><![CDATA[
-    package invar;
-    (#blank)
-    (#import)
     final public class InvarRuntime
     {
     (#tab)static public InvarReadData MakeXmlReader()
@@ -436,6 +474,5 @@
     (#tab)(#tab) return new InvarReadData();
     (#tab)}
     (#body)
-    }
-  ]]></template>
+    } ]]></template>
 </tns:root>

@@ -29,7 +29,7 @@ public class InvarTest extends TestCase {
         Invar.main(new String[]{"-rule", "example/rule/",
                 "-xsd", prefix + "xsd/",
                 "-csharp", prefix + "csharp/",
-                //"-java", prefix + "java/",
+                "-java", prefix + "java/",
                 "-objc", prefix + "objc/",
                 //"-cpp", prefix + "cpp/",
                 "-python", prefix + "python/",
