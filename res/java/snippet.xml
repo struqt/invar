@@ -24,9 +24,14 @@
     <vec pack="    java.util" type="LinkedList   " generic="&lt;?&gt;"/>
     <map pack="    java.util" type="LinkedHashMap" generic="&lt;?,?&gt;"/>
     <dialect pack="java.util" type="Map"/>
-    <dialect pack="java.io" type="DataOutput"/>
-    <dialect pack="java.io" type="DataInput"/>
+
     <dialect pack="java.io" type="IOException"/>
+    <dialect pack="java.io" type="InputStream"/>
+    <dialect pack="java.io" type="DataInput"/>
+    <dialect pack="java.io" type="DataInputStream"/>
+    <dialect pack="java.io" type="OutputStream"/>
+    <dialect pack="java.io" type="DataOutput"/>
+    <dialect pack="java.io" type="DataOutputStream"/>
   </redefine>
 
   <!-- Settings -->
@@ -126,11 +131,15 @@
     }
   ]]></template>
   <template key="struct"><![CDATA[
-    [#addImport(struct; imports; java.io::DataInput)]
-    [#addImport(struct; imports; java.io::DataOutput)]
     [#addImport(struct; imports; java.io::IOException)]
+    [#addImport(struct; imports; java.io::InputStream)]
+    [#addImport(struct; imports; java.io::DataInput)]
+    [#addImport(struct; imports; java.io::DataInputStream)]
+    [#addImport(struct; imports; java.io::OutputStream)]
+    [#addImport(struct; imports; java.io::DataOutput)]
+    [#addImport(struct; imports; java.io::DataOutputStream)]
     (#doc)
-    final public class (#name)
+    public final class (#name)
     {
     (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)];(#brk)
     [#codeFields (struct; fields)]
@@ -229,10 +238,15 @@
   ]]></template>
 
   <!-- Read bytes from a Stream -->
-  <template key="read.import"><![CDATA[java.io::DataInput,java.io::IOException]]></template>
+  <template key="read.import"><![CDATA[  ]]></template>
   <template key="read.method.arg"><![CDATA[from]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public (#type) read (DataInput from) throws IOException
+    (#tab)public (#type) read(InputStream from) throws IOException
+    (#tab){
+    (#tab)(#tab)return this.read((DataInput)new DataInputStream(from));
+    (#tab)}
+    (#blank)
+    (#tab)public (#type) read(DataInput from) throws IOException
     (#tab){(#body)
     (#tab)(#tab)return this;
     (#tab)}]]></template>
@@ -298,9 +312,15 @@
 
 
   <!-- Write bytes to a Stream -->
-  <template key="write.import"><![CDATA[]]></template>
-  <template key="write.method.arg"><![CDATA[dest]]></template>
-  <template key="write.method"><![CDATA[ (#tab)public (#type) write (DataOutput dest) throws IOException
+  <template key="write.import"><![CDATA[ java.io::DataOutputStream, java.io::DataOutput, java.io::IOException ]]></template>
+  <template key="write.method.arg"><![CDATA[ dest ]]></template>
+  <template key="write.method"><![CDATA[
+    (#tab)public (#type) writeStream(OutputStream from) throws IOException
+    (#tab){
+    (#tab)(#tab)return this.write((DataOutput)new DataOutputStream(from));
+    (#tab)}
+    (#blank)
+    (#tab)public (#type) write(DataOutput dest) throws IOException
     (#tab){(#body)
     (#tab)(#tab)return this;
     (#tab)}]]></template>
@@ -461,7 +481,7 @@
   <template key="runtime.alias.list"><![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
   <template key="runtime.alias.map"><![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
   <template key="runtime.body"><![CDATA[
-    final public class InvarRuntime
+    public final class InvarRuntime
     {
     (#tab)static public InvarReadData MakeXmlReader()
     (#tab){
