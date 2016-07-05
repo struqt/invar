@@ -19,27 +19,27 @@
 /* 自定义类型 */
 @interface Custom : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
 
-- (Gender             ) x       ; /* 枚举值 */
-- (TestBasic         *) test    ; /* 其他类型 */
-- (Test_Xyz_Conflict *) xyz     ; /* 同名的类型 */
-- (Test_Abc_Conflict *) abc     ; /* 同名的类型 */
-- (NSMutableArray    *) children; /* 自身类型容器 */
-- (int32_t            ) noSetter; /* 屏蔽Setter */
-- (NSString          *) useRef  ; /* 使用引用 */
-- (NSString          *) usePtr  ; /* 使用指针 */
-- (Custom            *) prev    ; /* 自身类型 */
-- (Custom            *) next    ; /* 自身类型 */
-- (NSString          *) emptyDoc; /*  */
+- (Gender           ) x       ; /* 枚举值 */
+- (TestBasic       *) test    ; /* 其他类型 */
+- (TestXyzConflict *) xyz     ; /* 同名的类型 */
+- (TestAbcConflict *) abc     ; /* 同名的类型 */
+- (NSMutableArray  *) children; /* 自身类型容器 */
+- (int32_t          ) noSetter; /* 屏蔽Setter */
+- (NSString        *) useRef  ; /* 使用引用 */
+- (NSString        *) usePtr  ; /* 使用指针 */
+- (Custom          *) prev    ; /* 自身类型 */
+- (Custom          *) next    ; /* 自身类型 */
+- (NSString        *) emptyDoc; /*  */
 
-- (Custom *) setX       : (Gender             ) value; /* 0 Test.Abc.Gender */
-- (Custom *) setTest    : (TestBasic         *) value; /* 1 Test.Abc.TestBasic */
-- (Custom *) setXyz     : (Test_Xyz_Conflict *) value; /* 2 Test.Xyz.Conflict */
-- (Custom *) setAbc     : (Test_Abc_Conflict *) value; /* 3 Test.Abc.Conflict */
-- (Custom *) setUseRef  : (NSString          *) value; /* 6 string */
-- (Custom *) setUsePtr  : (NSString          *) value; /* 7 string */
-- (Custom *) setPrev    : (Custom            *) value; /* 8 Test.Abc.Custom */
-- (Custom *) setNext    : (Custom            *) value; /* 9 Test.Abc.Custom */
-- (Custom *) setEmptyDoc: (NSString          *) value; /* 10 string */
+- (Custom *) setX       : (Gender           ) value; /* 0 Test.Abc.Gender */
+- (Custom *) setTest    : (TestBasic       *) value; /* 1 Test.Abc.TestBasic */
+- (Custom *) setXyz     : (TestXyzConflict *) value; /* 2 Test.Xyz.Conflict */
+- (Custom *) setAbc     : (TestAbcConflict *) value; /* 3 Test.Abc.Conflict */
+- (Custom *) setUseRef  : (NSString        *) value; /* 6 string */
+- (Custom *) setUsePtr  : (NSString        *) value; /* 7 string */
+- (Custom *) setPrev    : (Custom          *) value; /* 8 Test.Abc.Custom */
+- (Custom *) setNext    : (Custom          *) value; /* 9 Test.Abc.Custom */
+- (Custom *) setEmptyDoc: (NSString        *) value; /* 10 string */
 
 @end /* @interface Custom */
 

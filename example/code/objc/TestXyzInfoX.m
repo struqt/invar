@@ -16,8 +16,8 @@
 @interface InfoX ()
 {
     NSMutableArray      * _infos     ; /* 0 &-vec<vec<vec<vec<vec<Test.Abc.Info>>>>> */
-    Test_Xyz_Conflict   * _conflict_x; /* 1 &-Test.Xyz.Conflict */
-    Test_Abc_Conflict   * _conflict_a; /* 2 &-Test.Abc.Conflict */
+    TestXyzConflict     * _conflict_x; /* 1 &-Test.Xyz.Conflict */
+    TestAbcConflict     * _conflict_a; /* 2 &-Test.Abc.Conflict */
     NSMutableDictionary * _mConflict ; /* 3 &-map<int32,Test.Abc.Conflict> */
     NSMutableArray      * _info2d    ; /* 4 &-vec<vec<Test.Abc.Info>> */
     NSMutableArray      * _info3d    ; /* 5 &-vec<vec<vec<Test.Abc.Info>>> */
@@ -38,8 +38,8 @@
     self = [super init];
     if (!self) { return self; }
     _infos      = [[NSMutableArray alloc] init];
-    _conflict_x = [[Test_Xyz_Conflict alloc] init];
-    _conflict_a = [[Test_Abc_Conflict alloc] init];
+    _conflict_x = [[TestXyzConflict alloc] init];
+    _conflict_a = [[TestAbcConflict alloc] init];
     _mConflict  = [[NSMutableDictionary alloc] init];
     _info2d     = [[NSMutableArray alloc] init];
     _info3d     = [[NSMutableArray alloc] init];
@@ -83,8 +83,8 @@
 /* InfoX::copyWithZone */
 
 - (NSMutableArray      *) infos      { return _infos     ; }
-- (Test_Xyz_Conflict   *) conflict_x { return _conflict_x; }
-- (Test_Abc_Conflict   *) conflict_a { return _conflict_a; }
+- (TestXyzConflict     *) conflict_x { return _conflict_x; }
+- (TestAbcConflict     *) conflict_a { return _conflict_a; }
 - (NSMutableDictionary *) mConflict  { return _mConflict ; }
 - (NSMutableArray      *) info2d     { return _info2d    ; }
 - (NSMutableArray      *) info3d     { return _info3d    ; }
@@ -96,8 +96,8 @@
 - (NSMutableArray      *) vmvive     { return _vmvive    ; }
 - (NSMutableDictionary *) hotfix     { return _hotfix    ; }
 
-- (InfoX *) setConflict_x : (Test_Xyz_Conflict   *)v { _conflict_x = v; return self; }
-- (InfoX *) setConflict_a : (Test_Abc_Conflict   *)v { _conflict_a = v; return self; }
+- (InfoX *) setConflict_x : (TestXyzConflict     *)v { _conflict_x = v; return self; }
+- (InfoX *) setConflict_a : (TestAbcConflict     *)v { _conflict_a = v; return self; }
 - (InfoX *) setHotfix     : (NSMutableDictionary *)v { _hotfix     = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
@@ -134,7 +134,7 @@
     uint32_t lenMConflict = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     for (uint32_t iMConflict = 0; iMConflict < lenMConflict; iMConflict++) {
         NSNumber *k1 = @([r readInt32:&eof]); if (eof) { return INVAR_ERR_DECODE_EOF; }
-        Test_Abc_Conflict *v1 = [[Test_Abc_Conflict alloc] init];
+        TestAbcConflict *v1 = [[TestAbcConflict alloc] init];
         NSInteger v1Err = [v1 read:r]; if (v1Err != 0) { return v1Err; } if (eof) { return INVAR_ERR_DECODE_EOF; }
         [_mConflict setObject:v1 forKey:k1];
     } if (eof) { return INVAR_ERR_DECODE_EOF; }
@@ -305,7 +305,7 @@
     [w writeUInt32:(uint32_t)[_mConflict count]];
     for (id k1 in _mConflict) {
         [w writeInt32:[k1 intValue]];
-        Test_Abc_Conflict *v1 = [_mConflict objectForKey:k1];
+        TestAbcConflict *v1 = [_mConflict objectForKey:k1];
         [v1 write:w];
     }
     [w writeUInt32:(uint32_t)[_info2d count]];
@@ -434,7 +434,7 @@
     size += sizeof(uint32_t);
     for (id k1 in _mConflict) {
         size += sizeof(int32_t);
-        Test_Abc_Conflict *v1 = [_mConflict objectForKey:k1];
+        TestAbcConflict *v1 = [_mConflict objectForKey:k1];
         size += [v1 byteSize];
     }
     size += sizeof(uint32_t);

@@ -14,14 +14,14 @@
 #import "InvarProtoc.h"
 
 /*  */
-@interface Test_Xyz_Conflict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
+@interface TestXyzConflict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
 
 - (double_t             ) pi    ; /*  */
 - (NSMutableDictionary *) hotfix; /* [AutoAdd] Hotfix */
 
-- (Test_Xyz_Conflict *) setPi    : (double_t             ) value; /* 0 double */
-- (Test_Xyz_Conflict *) setHotfix: (NSMutableDictionary *) value; /* 1 map<string,string> */
+- (TestXyzConflict *) setPi    : (double_t             ) value; /* 0 double */
+- (TestXyzConflict *) setHotfix: (NSMutableDictionary *) value; /* 1 map<string,string> */
 
-@end /* @interface Test_Xyz_Conflict */
+@end /* @interface TestXyzConflict */
 
 #endif /* TESTXYZCONFLICT_H_ */

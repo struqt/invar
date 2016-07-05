@@ -10,7 +10,7 @@ except:
 from InvarCodec import DataWriter
 from InvarCodec import DataReader
 
-class Test_Xyz_Conflict(object):
+class TestXyzConflict(object):
 
     """"""
     CRC32_ = 0x2126E985
@@ -30,7 +30,7 @@ class Test_Xyz_Conflict(object):
         s = StringIO()
         s.write(u'{')
         s.write(u' ')
-        s.write(u'Test_Xyz_Conflict')
+        s.write(u'TestXyzConflict')
         s.write(u',')
         s.write(u' ')
         s.write(u'pi')
@@ -54,7 +54,7 @@ class Test_Xyz_Conflict(object):
    #def __str__
 
     def __len__(self):
-        size = Test_Xyz_Conflict.SIZE_
+        size = TestXyzConflict.SIZE_
         if self._hotfix is not None:
             size += 4
             for (k1,v1) in self._hotfix.items():
@@ -94,10 +94,10 @@ class Test_Xyz_Conflict(object):
             w.writeUInt8(0x00)
    #def write
 
-#class Test_Xyz_Conflict
+#class TestXyzConflict
 
 if '__main__' == __name__:
-    print('dir(Test_Xyz_Conflict()) =>\n' + '\n'.join(dir(Test_Xyz_Conflict())))
-    print('Test_Xyz_Conflict.__doc__ => ' + Test_Xyz_Conflict.__doc__)
-    print('Test_Xyz_Conflict.__len__ => ' + str(len(Test_Xyz_Conflict())))
-    print('Test_Xyz_Conflict.__str__ => ' + str(Test_Xyz_Conflict()))
+    print('dir(TestXyzConflict()) =>\n' + '\n'.join(dir(TestXyzConflict())))
+    print('TestXyzConflict.__doc__ => ' + TestXyzConflict.__doc__)
+    print('TestXyzConflict.__len__ => ' + str(len(TestXyzConflict())))
+    print('TestXyzConflict.__str__ => ' + str(TestXyzConflict()))

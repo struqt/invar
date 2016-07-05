@@ -13,7 +13,7 @@
 #define CRC32__ 0xCC7A29B9
 #define SIZE__  13L
 
-@interface Test_Abc_Conflict ()
+@interface TestAbcConflict ()
 {
     Gender                _key   ; /* 0 &-Test.Abc.Gender */
     NSString            * _text  ; /* 1 &-string */
@@ -22,7 +22,7 @@
 }
 @end
 
-@implementation Test_Abc_Conflict
+@implementation TestAbcConflict
 
 - (instancetype) init
 {
@@ -34,7 +34,7 @@
     _hotfix = nil;
     return self;
 }
-/* Test_Abc_Conflict::init */
+/* TestAbcConflict::init */
 
 - (void) dealloc
 {
@@ -42,7 +42,7 @@
     if (_bytes ) { _bytes  = nil; }
     if (_hotfix) { _hotfix = nil; }
 }
-/* Test_Abc_Conflict::dealloc */
+/* TestAbcConflict::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
@@ -52,16 +52,16 @@
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
 }
-/* Test_Abc_Conflict::copyWithZone */
+/* TestAbcConflict::copyWithZone */
 
 - (Gender               ) key    { return _key   ; }
 - (NSString            *) text   { return _text  ; }
 - (NSMutableArray      *) bytes  { return _bytes ; }
 - (NSMutableDictionary *) hotfix { return _hotfix; }
 
-- (Test_Abc_Conflict *) setKey    : (Gender               )v { _key    = v; return self; }
-- (Test_Abc_Conflict *) setText   : (NSString            *)v { _text   = v; return self; }
-- (Test_Abc_Conflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
+- (TestAbcConflict *) setKey    : (Gender               )v { _key    = v; return self; }
+- (TestAbcConflict *) setText   : (NSString            *)v { _text   = v; return self; }
+- (TestAbcConflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
@@ -87,7 +87,7 @@
     else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
-/* Test_Abc_Conflict::read(...) */
+/* TestAbcConflict::read(...) */
 
 - (NSInteger)write:(DataWriter *)w
 {
@@ -110,7 +110,7 @@
     }
     return 0;
 }
-/* Test_Abc_Conflict::write */
+/* TestAbcConflict::write */
 
 - (NSUInteger)byteSize
 {
@@ -127,7 +127,7 @@
     }
     return size;
 }
-/* Test_Abc_Conflict::byteSize */
+/* TestAbcConflict::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -184,9 +184,9 @@
     }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
-/* Test_Abc_Conflict::writeJSON */
+/* TestAbcConflict::writeJSON */
 
-@end /* @implementation Test_Abc_Conflict */
+@end /* @implementation TestAbcConflict */
 /*
 0@test.abc.Conflict/int32/string/vec-int8/map-string-string
 */

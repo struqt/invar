@@ -36,7 +36,7 @@
 - (NSMutableArray      *) world        ; /*  */
 - (Gender               ) gender       ; /*  */
 - (Info                *) next         ; /*  */
-- (Test_Abc_Conflict   *) conflict     ; /*  */
+- (TestAbcConflict     *) conflict     ; /*  */
 - (NSMutableArray      *) conflicts    ; /*  */
 - (NSMutableArray      *) numbers      ; /*  */
 - (NSMutableDictionary *) mapInfoG     ; /*  */
@@ -59,7 +59,7 @@
 - (Info *) setS            : (NSString            *) value; /* f12 string */
 - (Info *) setGender       : (Gender               ) value; /* f14 Test.Abc.Gender */
 - (Info *) setNext         : (Info                *) value; /* f15 Test.Abc.Info */
-- (Info *) setConflict     : (Test_Abc_Conflict   *) value; /* f16 Test.Abc.Conflict */
+- (Info *) setConflict     : (TestAbcConflict     *) value; /* f16 Test.Abc.Conflict */
 - (Info *) setHotfix       : (NSMutableDictionary *) value; /* f22 map<string,string> */
 
 @end /* @interface Info */

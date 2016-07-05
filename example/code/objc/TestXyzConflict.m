@@ -13,14 +13,14 @@
 #define CRC32__ 0x2126E985
 #define SIZE__  9L
 
-@interface Test_Xyz_Conflict ()
+@interface TestXyzConflict ()
 {
     double_t              _pi    ; /* 0 &-double */
     NSMutableDictionary * _hotfix; /* 1 *-map<string,string> */
 }
 @end
 
-@implementation Test_Xyz_Conflict
+@implementation TestXyzConflict
 
 - (instancetype) init
 {
@@ -30,13 +30,13 @@
     _hotfix = nil;
     return self;
 }
-/* Test_Xyz_Conflict::init */
+/* TestXyzConflict::init */
 
 - (void) dealloc
 {
     if (_hotfix) { _hotfix = nil; }
 }
-/* Test_Xyz_Conflict::dealloc */
+/* TestXyzConflict::dealloc */
 
 - (id) copyWithZone:(nullable NSZone *)zone;
 {
@@ -46,13 +46,13 @@
     [copy read:[DataReader CreateWithData:writer.data]];
     return copy;
 }
-/* Test_Xyz_Conflict::copyWithZone */
+/* TestXyzConflict::copyWithZone */
 
 - (double_t             ) pi     { return _pi    ; }
 - (NSMutableDictionary *) hotfix { return _hotfix; }
 
-- (Test_Xyz_Conflict *) setPi     : (double_t             )v { _pi     = v; return self; }
-- (Test_Xyz_Conflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
+- (TestXyzConflict *) setPi     : (double_t             )v { _pi     = v; return self; }
+- (TestXyzConflict *) setHotfix : (NSMutableDictionary *)v { _hotfix = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
@@ -72,7 +72,7 @@
     else { return INVAR_ERR_DECODE_VEC_MAP_P; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     return INVAR_ERR_NONE;
 }
-/* Test_Xyz_Conflict::read(...) */
+/* TestXyzConflict::read(...) */
 
 - (NSInteger)write:(DataWriter *)w
 {
@@ -90,7 +90,7 @@
     }
     return 0;
 }
-/* Test_Xyz_Conflict::write */
+/* TestXyzConflict::write */
 
 - (NSUInteger)byteSize
 {
@@ -105,7 +105,7 @@
     }
     return size;
 }
-/* Test_Xyz_Conflict::byteSize */
+/* TestXyzConflict::byteSize */
 
 - (NSString *)toStringJSON;
 {
@@ -140,9 +140,9 @@
     }
     [s appendString:RIGHT_CURLY_S]; [s appendString:LINE_FEED_S];
 }
-/* Test_Xyz_Conflict::writeJSON */
+/* TestXyzConflict::writeJSON */
 
-@end /* @implementation Test_Xyz_Conflict */
+@end /* @implementation TestXyzConflict */
 /*
 0@test.xyz.Conflict/double/map-string-string
 */

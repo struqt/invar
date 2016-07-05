@@ -12,7 +12,7 @@ except:
 from InvarCodec import DataWriter
 from InvarCodec import DataReader
 
-class Test_Abc_Conflict(object):
+class TestAbcConflict(object):
 
     """名字冲突的类型"""
     CRC32_ = 0xCC7A29B9
@@ -36,7 +36,7 @@ class Test_Abc_Conflict(object):
         s = StringIO()
         s.write(u'{')
         s.write(u' ')
-        s.write(u'Test_Abc_Conflict')
+        s.write(u'TestAbcConflict')
         s.write(u',')
         s.write(u' ')
         s.write(u'key')
@@ -74,7 +74,7 @@ class Test_Abc_Conflict(object):
    #def __str__
 
     def __len__(self):
-        size = Test_Abc_Conflict.SIZE_
+        size = TestAbcConflict.SIZE_
         size += len(self._text)
         if len(self._bytes) > 0:
             size += len(self._bytes) * 1
@@ -128,10 +128,10 @@ class Test_Abc_Conflict(object):
             w.writeUInt8(0x00)
    #def write
 
-#class Test_Abc_Conflict
+#class TestAbcConflict
 
 if '__main__' == __name__:
-    print('dir(Test_Abc_Conflict()) =>\n' + '\n'.join(dir(Test_Abc_Conflict())))
-    print('Test_Abc_Conflict.__doc__ => ' + Test_Abc_Conflict.__doc__)
-    print('Test_Abc_Conflict.__len__ => ' + str(len(Test_Abc_Conflict())))
-    print('Test_Abc_Conflict.__str__ => ' + str(Test_Abc_Conflict()))
+    print('dir(TestAbcConflict()) =>\n' + '\n'.join(dir(TestAbcConflict())))
+    print('TestAbcConflict.__doc__ => ' + TestAbcConflict.__doc__)
+    print('TestAbcConflict.__len__ => ' + str(len(TestAbcConflict())))
+    print('TestAbcConflict.__str__ => ' + str(TestAbcConflict()))

@@ -21,8 +21,8 @@
 @interface InfoX : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
 
 - (NSMutableArray      *) infos     ; /*  */
-- (Test_Xyz_Conflict   *) conflict_x; /* Two types with the same name. */
-- (Test_Abc_Conflict   *) conflict_a; /* Two types with the same name. */
+- (TestXyzConflict     *) conflict_x; /* Two types with the same name. */
+- (TestAbcConflict     *) conflict_a; /* Two types with the same name. */
 - (NSMutableDictionary *) mConflict ; /*  */
 - (NSMutableArray      *) info2d    ; /* 2 dimension list */
 - (NSMutableArray      *) info3d    ; /* 3 dimension list */
@@ -34,8 +34,8 @@
 - (NSMutableArray      *) vmvive    ; /*  */
 - (NSMutableDictionary *) hotfix    ; /* [AutoAdd] Hotfix */
 
-- (InfoX *) setConflict_x: (Test_Xyz_Conflict   *) value; /* 1 Test.Xyz.Conflict */
-- (InfoX *) setConflict_a: (Test_Abc_Conflict   *) value; /* 2 Test.Abc.Conflict */
+- (InfoX *) setConflict_x: (TestXyzConflict     *) value; /* 1 Test.Xyz.Conflict */
+- (InfoX *) setConflict_a: (TestAbcConflict     *) value; /* 2 Test.Abc.Conflict */
 - (InfoX *) setHotfix    : (NSMutableDictionary *) value; /* 12 map<string,string> */
 
 @end /* @interface InfoX */

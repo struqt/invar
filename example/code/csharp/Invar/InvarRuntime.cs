@@ -59,20 +59,20 @@ static public void HandleProtocAsClient (System.IO.BinaryReader r)
 static private Dictionary<String,Type> aliasBasic()
 {
     Dictionary<String,Type> map = new Dictionary<String,Type>();
-    map.Add("int8", typeof(System.SByte));
+    map.Add("bool", typeof(System.Boolean));
+    map.Add("double", typeof(System.Double));
+    map.Add("float", typeof(System.Single));
     map.Add("int16", typeof(System.Int16));
     map.Add("int32", typeof(System.Int32));
     map.Add("int64", typeof(System.Int64));
-    map.Add("uint8", typeof(System.Byte));
+    map.Add("int8", typeof(System.SByte));
+    map.Add("map", typeof(Dictionary<,>));
+    map.Add("string", typeof(System.String));
     map.Add("uint16", typeof(System.UInt16));
     map.Add("uint32", typeof(System.UInt32));
     map.Add("uint64", typeof(System.UInt64));
-    map.Add("float", typeof(System.Single));
-    map.Add("double", typeof(System.Double));
-    map.Add("string", typeof(System.String));
-    map.Add("bool", typeof(System.Boolean));
+    map.Add("uint8", typeof(System.Byte));
     map.Add("vec", typeof(List<>));
-    map.Add("map", typeof(Dictionary<,>));
     return map;
 }
 
@@ -86,19 +86,26 @@ static private Dictionary<String,Type> aliasEnum()
 static private Dictionary<String,Type> aliasStruct()
 {
     Dictionary<String,Type> map = new Dictionary<String,Type>();
-    map.Add("Conflict", typeof(Test.Xyz.Conflict));
     map.Add("Custom", typeof(Test.Abc.Custom));
-    map.Add("TestBasic", typeof(Test.Abc.TestBasic));
     map.Add("Info", typeof(Test.Abc.Info));
-    map.Add("protoc2S", typeof(Test.Protoc.Protoc2S));
-    map.Add("protoc2C", typeof(Test.Protoc.Protoc2C));
-    map.Add("TestList", typeof(Test.Xyz.TestList));
-    map.Add("TestDict", typeof(Test.Xyz.TestDict));
-    map.Add("TestNest", typeof(Test.Xyz.TestNest));
-    map.Add("TestRefer", typeof(Test.Xyz.TestRefer));
-    map.Add("TestPointer", typeof(Test.Xyz.TestPointer));
-    map.Add("root", typeof(Test.Xyz.ConfigRoot));
     map.Add("InfoX", typeof(Test.Xyz.InfoX));
+    map.Add("TestAbcConflict", typeof(Test.Abc.Conflict));
+    map.Add("TestBasic", typeof(Test.Abc.TestBasic));
+    map.Add("TestDict", typeof(Test.Xyz.TestDict));
+    map.Add("TestHeartBeat2C", typeof(Test.Protoc.TestHeartBeat2C));
+    map.Add("TestHeartBeatR2S", typeof(Test.Protoc.TestHeartBeatR2S));
+    map.Add("TestList", typeof(Test.Xyz.TestList));
+    map.Add("TestNest", typeof(Test.Xyz.TestNest));
+    map.Add("TestPointer", typeof(Test.Xyz.TestPointer));
+    map.Add("TestRefer", typeof(Test.Xyz.TestRefer));
+    map.Add("TestServerTimeN2C", typeof(Test.Protoc.TestServerTimeN2C));
+    map.Add("TestUserLocationN2S", typeof(Test.Protoc.TestUserLocationN2S));
+    map.Add("TestUserLogin2S", typeof(Test.Protoc.TestUserLogin2S));
+    map.Add("TestUserLoginR2C", typeof(Test.Protoc.TestUserLoginR2C));
+    map.Add("TestXyzConflict", typeof(Test.Xyz.Conflict));
+    map.Add("protoc2C", typeof(Test.Protoc.Protoc2C));
+    map.Add("protoc2S", typeof(Test.Protoc.Protoc2S));
+    map.Add("root", typeof(Test.Xyz.ConfigRoot));
     return map;
 }
 

@@ -15,17 +15,17 @@
 
 @interface Custom ()
 {
-    Gender              _x       ; /* 0 &-Test.Abc.Gender */
-    TestBasic         * _test    ; /* 1 &-Test.Abc.TestBasic */
-    Test_Xyz_Conflict * _xyz     ; /* 2 &-Test.Xyz.Conflict */
-    Test_Abc_Conflict * _abc     ; /* 3 &-Test.Abc.Conflict */
-    NSMutableArray    * _children; /* 4 &-vec<Test.Abc.Custom> */
-    int32_t             _noSetter; /* 5 &-int32 */
-    NSString          * _useRef  ; /* 6 &-string */
-    NSString          * _usePtr  ; /* 7 *-string */
-    Custom            * _prev    ; /* 8 *-Test.Abc.Custom */
-    Custom            * _next    ; /* 9 *-Test.Abc.Custom */
-    NSString          * _emptyDoc; /* 10 &-string */
+    Gender            _x       ; /* 0 &-Test.Abc.Gender */
+    TestBasic       * _test    ; /* 1 &-Test.Abc.TestBasic */
+    TestXyzConflict * _xyz     ; /* 2 &-Test.Xyz.Conflict */
+    TestAbcConflict * _abc     ; /* 3 &-Test.Abc.Conflict */
+    NSMutableArray  * _children; /* 4 &-vec<Test.Abc.Custom> */
+    int32_t           _noSetter; /* 5 &-int32 */
+    NSString        * _useRef  ; /* 6 &-string */
+    NSString        * _usePtr  ; /* 7 *-string */
+    Custom          * _prev    ; /* 8 *-Test.Abc.Custom */
+    Custom          * _next    ; /* 9 *-Test.Abc.Custom */
+    NSString        * _emptyDoc; /* 10 &-string */
 }
 @end
 
@@ -37,8 +37,8 @@
     if (!self) { return self; }
     _x        = GenderNONE;
     _test     = [[TestBasic alloc] init];
-    _xyz      = [[Test_Xyz_Conflict alloc] init];
-    _abc      = [[Test_Abc_Conflict alloc] init];
+    _xyz      = [[TestXyzConflict alloc] init];
+    _abc      = [[TestAbcConflict alloc] init];
     _children = [[NSMutableArray alloc] init];
     _noSetter = -1;
     _useRef   = @"";
@@ -74,27 +74,27 @@
 }
 /* Custom::copyWithZone */
 
-- (Gender             ) x        { return _x       ; }
-- (TestBasic         *) test     { return _test    ; }
-- (Test_Xyz_Conflict *) xyz      { return _xyz     ; }
-- (Test_Abc_Conflict *) abc      { return _abc     ; }
-- (NSMutableArray    *) children { return _children; }
-- (int32_t            ) noSetter { return _noSetter; }
-- (NSString          *) useRef   { return _useRef  ; }
-- (NSString          *) usePtr   { return _usePtr  ; }
-- (Custom            *) prev     { return _prev    ; }
-- (Custom            *) next     { return _next    ; }
-- (NSString          *) emptyDoc { return _emptyDoc; }
+- (Gender           ) x        { return _x       ; }
+- (TestBasic       *) test     { return _test    ; }
+- (TestXyzConflict *) xyz      { return _xyz     ; }
+- (TestAbcConflict *) abc      { return _abc     ; }
+- (NSMutableArray  *) children { return _children; }
+- (int32_t          ) noSetter { return _noSetter; }
+- (NSString        *) useRef   { return _useRef  ; }
+- (NSString        *) usePtr   { return _usePtr  ; }
+- (Custom          *) prev     { return _prev    ; }
+- (Custom          *) next     { return _next    ; }
+- (NSString        *) emptyDoc { return _emptyDoc; }
 
-- (Custom *) setX        : (Gender             )v { _x        = v; return self; }
-- (Custom *) setTest     : (TestBasic         *)v { _test     = v; return self; }
-- (Custom *) setXyz      : (Test_Xyz_Conflict *)v { _xyz      = v; return self; }
-- (Custom *) setAbc      : (Test_Abc_Conflict *)v { _abc      = v; return self; }
-- (Custom *) setUseRef   : (NSString          *)v { _useRef   = v; return self; }
-- (Custom *) setUsePtr   : (NSString          *)v { _usePtr   = v; return self; }
-- (Custom *) setPrev     : (Custom            *)v { _prev     = v; return self; }
-- (Custom *) setNext     : (Custom            *)v { _next     = v; return self; }
-- (Custom *) setEmptyDoc : (NSString          *)v { _emptyDoc = v; return self; }
+- (Custom *) setX        : (Gender           )v { _x        = v; return self; }
+- (Custom *) setTest     : (TestBasic       *)v { _test     = v; return self; }
+- (Custom *) setXyz      : (TestXyzConflict *)v { _xyz      = v; return self; }
+- (Custom *) setAbc      : (TestAbcConflict *)v { _abc      = v; return self; }
+- (Custom *) setUseRef   : (NSString        *)v { _useRef   = v; return self; }
+- (Custom *) setUsePtr   : (NSString        *)v { _usePtr   = v; return self; }
+- (Custom *) setPrev     : (Custom          *)v { _prev     = v; return self; }
+- (Custom *) setNext     : (Custom          *)v { _next     = v; return self; }
+- (Custom *) setEmptyDoc : (NSString        *)v { _emptyDoc = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
