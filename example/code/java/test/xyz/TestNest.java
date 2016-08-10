@@ -19,7 +19,13 @@ import test.abc.Custom;
 
 /** 测试泛型相互嵌套 */
 public final class TestNest
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestNest Create() { return new TestNest(); }
+
     static public final long CRC32 = 0x6F0C2598;
 
     private LinkedList<LinkedHashMap<String,Custom>>                         listDict;
@@ -67,12 +73,12 @@ public final class TestNest
         return this;
     } //copyFrom(...)
 
-    public TestNest read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestNest read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         listDict.clear();
         Long lenListDict = from.readInt() & 0xFFFFFFFFL;
@@ -132,15 +138,14 @@ public final class TestNest
             }
             list5d.add(n1);
         }
-        return this;
     }
 
-    public TestNest writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestNest write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(listDict.size());
         for (LinkedHashMap<java.lang.String,Custom> n1 : listDict) {
@@ -181,10 +186,9 @@ public final class TestNest
                 }
             }
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -199,7 +203,7 @@ public final class TestNest
                     nodes.append(k2);
                     nodes.append("\">");
                     Custom v2 = n1Iter.getValue();
-                    nodes.append(v2.toStringXml("v2"));
+                    nodes.append(v2.toStringXML("v2"));
                 }
                 nodes.append("</n1>");
             }
@@ -219,7 +223,7 @@ public final class TestNest
                 LinkedList<Custom> v1 = dictListIter.getValue();
                 nodes.append("<v1>");
                 for (Custom n2 : v1) {
-                    nodes.append(n2.toStringXml("n2"));
+                    nodes.append(n2.toStringXML("n2"));
                 }
                 nodes.append("</v1>");
             }
@@ -236,7 +240,7 @@ public final class TestNest
                         for (LinkedList<Custom> n4 : n3) {
                             nodes.append("<n4>");
                             for (Custom n5 : n4) {
-                                nodes.append(n5.toStringXml("n5"));
+                                nodes.append(n5.toStringXML("n5"));
                             }
                             nodes.append("</n4>");
                         }
@@ -256,8 +260,8 @@ public final class TestNest
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestNest::toStringXml (String name)
+        return result;
+    } //TestNest::toStringXML (String name)
 
     public String toString ()
     {

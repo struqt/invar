@@ -20,7 +20,13 @@ import test.abc.Info;
 
 /** Complex data structure */
 public final class InfoX
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public InfoX Create() { return new InfoX(); }
+
     static public final long CRC32 = 0xF55867E1;
 
     private LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> infos     ;
@@ -174,12 +180,12 @@ public final class InfoX
         return this;
     } //copyFrom(...)
 
-    public InfoX read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public InfoX read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         infos.clear();
         Long lenInfos = from.readInt() & 0xFFFFFFFFL;
@@ -363,15 +369,14 @@ public final class InfoX
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public InfoX writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public InfoX write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(infos.size());
         for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : infos) {
@@ -502,10 +507,9 @@ public final class InfoX
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -521,7 +525,7 @@ public final class InfoX
                         for (LinkedList<Info> n4 : n3) {
                             nodes.append("<n4>");
                             for (Info n5 : n4) {
-                                nodes.append(n5.toStringXml("n5"));
+                                nodes.append(n5.toStringXML("n5"));
                             }
                             nodes.append("</n4>");
                         }
@@ -533,8 +537,8 @@ public final class InfoX
             }
             nodes.append("</infos>");
         }
-        nodes.append(conflict_x.toStringXml("conflict_x"));
-        nodes.append(conflict_a.toStringXml("conflict_a"));
+        nodes.append(conflict_x.toStringXML("conflict_x"));
+        nodes.append(conflict_a.toStringXML("conflict_a"));
         if (mConflict.size() > 0) {
             nodes.append("<mConflict>");
             for (Map.Entry<Integer,test.abc.Conflict> mConflictIter : mConflict.entrySet()) {
@@ -543,7 +547,7 @@ public final class InfoX
                 nodes.append(k1.toString());
                 nodes.append("\">");
                 test.abc.Conflict v1 = mConflictIter.getValue();
-                nodes.append(v1.toStringXml("v1"));
+                nodes.append(v1.toStringXML("v1"));
             }
             nodes.append("</mConflict>");
         }
@@ -552,7 +556,7 @@ public final class InfoX
             for (LinkedList<Info> n1 : info2d) {
                 nodes.append("<n1>");
                 for (Info n2 : n1) {
-                    nodes.append(n2.toStringXml("n2"));
+                    nodes.append(n2.toStringXML("n2"));
                 }
                 nodes.append("</n1>");
             }
@@ -565,7 +569,7 @@ public final class InfoX
                 for (LinkedList<Info> n2 : n1) {
                     nodes.append("<n2>");
                     for (Info n3 : n2) {
-                        nodes.append(n3.toStringXml("n3"));
+                        nodes.append(n3.toStringXML("n3"));
                     }
                     nodes.append("</n2>");
                 }
@@ -584,7 +588,7 @@ public final class InfoX
                         for (LinkedList<Info> n4 : n3) {
                             nodes.append("<n4>");
                             for (Info n5 : n4) {
-                                nodes.append(n5.toStringXml("n5"));
+                                nodes.append(n5.toStringXML("n5"));
                             }
                             nodes.append("</n4>");
                         }
@@ -606,7 +610,7 @@ public final class InfoX
                     nodes.append(k2.toString());
                     nodes.append("\">");
                     Info v2 = n1Iter.getValue();
-                    nodes.append(v2.toStringXml("v2"));
+                    nodes.append(v2.toStringXML("v2"));
                 }
                 nodes.append("</n1>");
             }
@@ -624,7 +628,7 @@ public final class InfoX
                 }
                 nodes.append("</k1>");
                 Info v1 = mveiIter.getValue();
-                nodes.append(v1.toStringXml("v1"));
+                nodes.append(v1.toStringXML("v1"));
             }
             nodes.append("</mvei>");
         }
@@ -632,7 +636,7 @@ public final class InfoX
             nodes.append("<mive>");
             for (Map.Entry<Info,LinkedList<Gender>> miveIter : mive.entrySet()) {
                 Info k1 = miveIter.getKey();
-                nodes.append(k1.toStringXml("k1"));
+                nodes.append(k1.toStringXML("k1"));
                 LinkedList<Gender> v1 = miveIter.getValue();
                 nodes.append("<v1>");
                 for (Gender n2 : v1) {
@@ -650,7 +654,7 @@ public final class InfoX
                 LinkedList<Info> k1 = mviveIter.getKey();
                 nodes.append("<k1>");
                 for (Info n2 : k1) {
-                    nodes.append(n2.toStringXml("n2"));
+                    nodes.append(n2.toStringXML("n2"));
                 }
                 nodes.append("</k1>");
                 LinkedList<Gender> v1 = mviveIter.getValue();
@@ -672,7 +676,7 @@ public final class InfoX
                     LinkedList<Info> k2 = n1Iter.getKey();
                     nodes.append("<k2>");
                     for (Info n3 : k2) {
-                        nodes.append(n3.toStringXml("n3"));
+                        nodes.append(n3.toStringXML("n3"));
                     }
                     nodes.append("</k2>");
                     LinkedList<Gender> v2 = n1Iter.getValue();
@@ -710,8 +714,8 @@ public final class InfoX
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //InfoX::toStringXml (String name)
+        return result;
+    } //InfoX::toStringXML (String name)
 
     public String toString ()
     {

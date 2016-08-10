@@ -17,7 +17,14 @@ import java.util.Map;
 
 /** 服务端请求,客户端响应 */
 public final class TestHeartBeat2C
+implements
+invar.InvarCodec.ProtocRequest,
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestHeartBeat2C Create() { return new TestHeartBeat2C(); }
+
     static public final long CRC32 = 0xCC52B7AE;
 
     private java.lang.Integer            protocId ;/* [AutoAdd] ProtocolID */
@@ -91,12 +98,12 @@ public final class TestHeartBeat2C
         return this;
     } //copyFrom(...)
 
-    public TestHeartBeat2C read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestHeartBeat2C read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
@@ -112,15 +119,14 @@ public final class TestHeartBeat2C
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public TestHeartBeat2C writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestHeartBeat2C write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeShort(protocId);
         dest.writeInt(protocCRC.intValue());
@@ -142,10 +148,9 @@ public final class TestHeartBeat2C
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -155,7 +160,7 @@ public final class TestHeartBeat2C
         attrs.append(" protocCRC=\"");
         attrs.append(protocCRC.toString()); attrs.append("\"");
         if (protoc2C != null) {
-            nodes.append(protoc2C.toStringXml("protoc2C"));
+            nodes.append(protoc2C.toStringXML("protoc2C"));
         }
         if (hotfix != null && hotfix.size() > 0) {
             nodes.append("<hotfix>");
@@ -179,8 +184,8 @@ public final class TestHeartBeat2C
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestHeartBeat2C::toStringXml (String name)
+        return result;
+    } //TestHeartBeat2C::toStringXML (String name)
 
     public String toString ()
     {

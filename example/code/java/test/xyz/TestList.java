@@ -19,7 +19,13 @@ import test.abc.Gender;
 
 /** 测试基本的列表类型 */
 public final class TestList
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestList Create() { return new TestList(); }
+
     static public final long CRC32 = 0x5FD1194A;
 
     private LinkedList<Byte>       listI08    ;/* 有符号的8位整数 */
@@ -166,12 +172,12 @@ public final class TestList
         return this;
     } //copyFrom(...)
 
-    public TestList read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestList read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         listI08.clear();
         Long lenListI08 = from.readInt() & 0xFFFFFFFFL;
@@ -259,15 +265,14 @@ public final class TestList
             n1.read(from);
             listStruct.add(n1);
         }
-        return this;
     }
 
-    public TestList writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestList write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(listI08.size());
         for (java.lang.Byte n1 : listI08) {
@@ -325,10 +330,9 @@ public final class TestList
         for (Custom n1 : listStruct) {
             n1.write(dest);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -453,7 +457,7 @@ public final class TestList
         if (listStruct.size() > 0) {
             nodes.append("<listStruct>");
             for (Custom n1 : listStruct) {
-                nodes.append(n1.toStringXml("n1"));
+                nodes.append(n1.toStringXML("n1"));
             }
             nodes.append("</listStruct>");
         }
@@ -465,8 +469,8 @@ public final class TestList
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestList::toStringXml (String name)
+        return result;
+    } //TestList::toStringXML (String name)
 
     public String toString ()
     {

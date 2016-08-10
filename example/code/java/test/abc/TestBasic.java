@@ -16,7 +16,13 @@ import java.math.BigInteger;
 
 /** 基础类型 */
 public final class TestBasic
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestBasic Create() { return new TestBasic(); }
+
     static public final long CRC32 = 0xF60C9915;
 
     private java.lang.Byte    numberI08   ;/* 有符号的8位整数 */
@@ -205,12 +211,12 @@ public final class TestBasic
         return this;
     } //copyFrom(...)
 
-    public TestBasic read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestBasic read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         numberI08 = from.readByte();
         numberI16 = from.readShort();
@@ -227,15 +233,14 @@ public final class TestBasic
         stringValue = from.readUTF();
         enumValue = Gender.valueOf(from.readInt());
         enumDeft = Gender.valueOf(from.readInt());
-        return this;
     }
 
-    public TestBasic writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestBasic write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeByte(numberI08);
         dest.writeShort(numberI16);
@@ -251,10 +256,9 @@ public final class TestBasic
         dest.writeUTF(stringValue);
         dest.writeInt(enumValue.getValue());
         dest.writeInt(enumDeft.getValue());
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -295,8 +299,8 @@ public final class TestBasic
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestBasic::toStringXml (String name)
+        return result;
+    } //TestBasic::toStringXML (String name)
 
     public String toString ()
     {

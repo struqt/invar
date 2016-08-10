@@ -18,7 +18,13 @@ import java.util.Map;
 
 /** 名字冲突的类型 */
 public final class Conflict
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public Conflict Create() { return new Conflict(); }
+
     static public final long CRC32 = 0xCC7A29B9;
 
     private Gender                       key   ;
@@ -91,12 +97,12 @@ public final class Conflict
         return this;
     } //copyFrom(...)
 
-    public Conflict read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public Conflict read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         key = Gender.valueOf(from.readInt());
         text = from.readUTF();
@@ -115,15 +121,14 @@ public final class Conflict
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public Conflict writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public Conflict write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(key.getValue());
         dest.writeUTF(text);
@@ -143,10 +148,9 @@ public final class Conflict
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -186,8 +190,8 @@ public final class Conflict
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //Conflict::toStringXml (String name)
+        return result;
+    } //Conflict::toStringXML (String name)
 
     public String toString ()
     {

@@ -30,12 +30,12 @@ static public void HandleProtocAsServer (System.IO.BinaryReader r)
     UInt16 id = r.ReadUInt16();
     r.BaseStream.Position = p;
     switch (id) {
-    case 65527: /* 客户端请求,服务端响应 */
-    { var req = new TestUserLogin2S(); req.Read(r); RecvRequest<TestUserLogin2S,TestUserLoginR2C>.Raise(req, new TestUserLoginR2C()); return; }
-    case 65531: /* 客户端通知服务端 */
-    { var ntf = new TestUserLocationN2S(); ntf.Read(r); RecvNotify<TestUserLocationN2S>.Raise(ntf); return; }
     case 65533: /* 服务端请求,客户端响应 */
     { var rep = new TestHeartBeatR2S(); rep.Read(r); RecvResponse<TestHeartBeatR2S>.Raise(rep); return; }
+    case 65531: /* 客户端通知服务端 */
+    { var ntf = new TestUserLocationN2S(); ntf.Read(r); RecvNotify<TestUserLocationN2S>.Raise(ntf); return; }
+    case 65527: /* 客户端请求,服务端响应 */
+    { var req = new TestUserLogin2S(); req.Read(r); RecvRequest<TestUserLogin2S,TestUserLoginR2C>.Raise(req, new TestUserLoginR2C()); return; }
     default: throw new Exception("Unsupported protocol id: " + id);
     }
 } // HandleProtocAsServer(...)
@@ -46,12 +46,12 @@ static public void HandleProtocAsClient (System.IO.BinaryReader r)
     UInt16 id = r.ReadUInt16();
     r.BaseStream.Position = p;
     switch (id) {
-    case 65528: /* 客户端请求,服务端响应 */
-    { var rep = new TestUserLoginR2C(); rep.Read(r); RecvResponse<TestUserLoginR2C>.Raise(rep); return; }
-    case 65530: /* 服务器通知客户端 */
-    { var ntf = new TestServerTimeN2C(); ntf.Read(r); RecvNotify<TestServerTimeN2C>.Raise(ntf); return; }
     case 65534: /* 服务端请求,客户端响应 */
     { var req = new TestHeartBeat2C(); req.Read(r); RecvRequest<TestHeartBeat2C,TestHeartBeatR2S>.Raise(req, new TestHeartBeatR2S()); return; }
+    case 65530: /* 服务器通知客户端 */
+    { var ntf = new TestServerTimeN2C(); ntf.Read(r); RecvNotify<TestServerTimeN2C>.Raise(ntf); return; }
+    case 65528: /* 客户端请求,服务端响应 */
+    { var rep = new TestUserLoginR2C(); rep.Read(r); RecvResponse<TestUserLoginR2C>.Raise(rep); return; }
     default: throw new Exception("Unsupported protocol id: " + id);
     }
 } // HandleProtocAsClient(...)

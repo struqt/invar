@@ -17,7 +17,14 @@ import java.util.Map;
 
 /** 客户端通知服务端 */
 public final class TestUserLocationN2S
+implements
+invar.InvarCodec.ProtocNotify,
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestUserLocationN2S Create() { return new TestUserLocationN2S(); }
+
     static public final long CRC32 = 0xEC953457;
 
     private java.lang.Integer            protocId ;/* [AutoAdd] ProtocolID */
@@ -115,12 +122,12 @@ public final class TestUserLocationN2S
         return this;
     } //copyFrom(...)
 
-    public TestUserLocationN2S read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestUserLocationN2S read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
@@ -138,15 +145,14 @@ public final class TestUserLocationN2S
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public TestUserLocationN2S writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestUserLocationN2S write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeShort(protocId);
         dest.writeInt(protocCRC.intValue());
@@ -170,10 +176,9 @@ public final class TestUserLocationN2S
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -183,7 +188,7 @@ public final class TestUserLocationN2S
         attrs.append(" protocCRC=\"");
         attrs.append(protocCRC.toString()); attrs.append("\"");
         if (protoc2S != null) {
-            nodes.append(protoc2S.toStringXml("protoc2S"));
+            nodes.append(protoc2S.toStringXML("protoc2S"));
         }
         attrs.append(" x=\"");
         attrs.append(x.toString()); attrs.append("\"");
@@ -211,8 +216,8 @@ public final class TestUserLocationN2S
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestUserLocationN2S::toStringXml (String name)
+        return result;
+    } //TestUserLocationN2S::toStringXML (String name)
 
     public String toString ()
     {

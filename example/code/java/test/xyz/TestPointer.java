@@ -20,7 +20,13 @@ import test.abc.Gender;
 
 /** 指针类型测试 */
 public final class TestPointer
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestPointer Create() { return new TestPointer(); }
+
     static public final long CRC32 = 0x6348C9B7;
 
     private TestPointer                                                 self        ;
@@ -191,12 +197,12 @@ public final class TestPointer
         return this;
     } //copyFrom(...)
 
-    public TestPointer read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestPointer read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         if (from.readByte() == (byte)0x01) {
             self.read(from);
@@ -259,15 +265,14 @@ public final class TestPointer
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public TestPointer writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestPointer write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         if (self != null) {
             dest.writeByte((byte)0x01);
@@ -340,23 +345,22 @@ public final class TestPointer
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes  = new StringBuilder();
         if (self != null) {
-            nodes.append(self.toStringXml("self"));
+            nodes.append(self.toStringXML("self"));
         }
         if (stringValue != null) {
             attrs.append(" stringValue=\"");
             attrs.append(stringValue); attrs.append("\"");
         }
         if (other != null) {
-            nodes.append(other.toStringXml("other"));
+            nodes.append(other.toStringXML("other"));
         }
         if (listI08 != null && listI08.size() > 0) {
             nodes.append("<listI08>");
@@ -390,7 +394,7 @@ public final class TestPointer
                     for (LinkedList<TestPointer> n3 : n2) {
                         nodes.append("<n3>");
                         for (TestPointer n4 : n3) {
-                            nodes.append(n4.toStringXml("n4"));
+                            nodes.append(n4.toStringXML("n4"));
                         }
                         nodes.append("</n3>");
                     }
@@ -426,8 +430,8 @@ public final class TestPointer
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestPointer::toStringXml (String name)
+        return result;
+    } //TestPointer::toStringXML (String name)
 
     public String toString ()
     {

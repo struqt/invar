@@ -20,7 +20,13 @@ import test.abc.Gender;
 
 /** 测试基本的映射类型 */
 public final class TestDict
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestDict Create() { return new TestDict(); }
+
     static public final long CRC32 = 0x969046DE;
 
     private LinkedHashMap<Byte,Byte>             dictI08    ;/* 有符号的8位整数 */
@@ -186,12 +192,12 @@ public final class TestDict
         return this;
     } //copyFrom(...)
 
-    public TestDict read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestDict read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         dictI08.clear();
         Long lenDictI08 = from.readInt() & 0xFFFFFFFFL;
@@ -304,15 +310,14 @@ public final class TestDict
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public TestDict writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestDict write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(dictI08.size());
         for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) {
@@ -424,10 +429,9 @@ public final class TestDict
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -618,9 +622,9 @@ public final class TestDict
             nodes.append("<dictStruct>");
             for (Map.Entry<Custom,Custom> dictStructIter : dictStruct.entrySet()) {
                 Custom k1 = dictStructIter.getKey();
-                nodes.append(k1.toStringXml("k1"));
+                nodes.append(k1.toStringXML("k1"));
                 Custom v1 = dictStructIter.getValue();
-                nodes.append(v1.toStringXml("v1"));
+                nodes.append(v1.toStringXML("v1"));
             }
             nodes.append("</dictStruct>");
         }
@@ -646,8 +650,8 @@ public final class TestDict
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestDict::toStringXml (String name)
+        return result;
+    } //TestDict::toStringXML (String name)
 
     public String toString ()
     {

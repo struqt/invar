@@ -17,7 +17,13 @@ import java.util.Map;
 
 /** 服务端响应的公共数据 */
 public final class Protoc2C
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public Protoc2C Create() { return new Protoc2C(); }
+
     static public final long CRC32 = 0xC716EAFC;
 
     private LinkedHashMap<String,String> hotfix;/* [AutoAdd] Hotfix */
@@ -57,12 +63,12 @@ public final class Protoc2C
         return this;
     } //copyFrom(...)
 
-    public Protoc2C read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public Protoc2C read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         hotfix.clear();
         if (from.readByte() == (byte)0x01) {
@@ -73,15 +79,14 @@ public final class Protoc2C
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public Protoc2C writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public Protoc2C write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         if (hotfix != null) {
             dest.writeByte((byte)0x01);
@@ -95,10 +100,9 @@ public final class Protoc2C
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -125,8 +129,8 @@ public final class Protoc2C
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //Protoc2C::toStringXml (String name)
+        return result;
+    } //Protoc2C::toStringXML (String name)
 
     public String toString ()
     {

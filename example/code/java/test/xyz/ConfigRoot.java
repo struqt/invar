@@ -18,7 +18,13 @@ import test.abc.Info;
 
 /**  */
 public final class ConfigRoot
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public ConfigRoot Create() { return new ConfigRoot(); }
+
     static public final long CRC32 = 0x6D03BB9B;
 
     private java.lang.String             revision;
@@ -130,12 +136,12 @@ public final class ConfigRoot
         return this;
     } //copyFrom(...)
 
-    public ConfigRoot read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public ConfigRoot read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         revision = from.readUTF();
         list.read(from);
@@ -152,15 +158,14 @@ public final class ConfigRoot
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public ConfigRoot writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public ConfigRoot write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeUTF(revision);
         list.write(dest);
@@ -180,21 +185,20 @@ public final class ConfigRoot
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes  = new StringBuilder();
         attrs.append(" revision=\"");
         attrs.append(revision); attrs.append("\"");
-        nodes.append(list.toStringXml("list"));
-        nodes.append(dict.toStringXml("dict"));
-        nodes.append(nest.toStringXml("nest"));
-        nodes.append(info.toStringXml("info"));
-        nodes.append(infox.toStringXml("infox"));
+        nodes.append(list.toStringXML("list"));
+        nodes.append(dict.toStringXML("dict"));
+        nodes.append(nest.toStringXML("nest"));
+        nodes.append(info.toStringXML("info"));
+        nodes.append(infox.toStringXML("infox"));
         if (hotfix != null && hotfix.size() > 0) {
             nodes.append("<hotfix>");
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
@@ -217,8 +221,8 @@ public final class ConfigRoot
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //ConfigRoot::toStringXml (String name)
+        return result;
+    } //ConfigRoot::toStringXML (String name)
 
     public String toString ()
     {

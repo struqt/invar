@@ -16,7 +16,13 @@ import java.util.LinkedList;
 
 /** 自定义类型 */
 public final class Custom
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public Custom Create() { return new Custom(); }
+
     static public final long CRC32 = 0x355EC042;
 
     private Gender             x       ;/* 枚举值 */
@@ -176,12 +182,12 @@ public final class Custom
         return this;
     } //copyFrom(...)
 
-    public Custom read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public Custom read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         x = Gender.valueOf(from.readInt());
         test.read(from);
@@ -206,15 +212,14 @@ public final class Custom
             next.read(from);
         }
         emptyDoc = from.readUTF();
-        return this;
     }
 
-    public Custom writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public Custom write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(x.getValue());
         test.write(dest);
@@ -245,23 +250,22 @@ public final class Custom
             dest.writeByte((byte)0x00);
         }
         dest.writeUTF(emptyDoc);
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes  = new StringBuilder();
         attrs.append(" x=\"");
         attrs.append(x.toString()); attrs.append("\"");
-        nodes.append(test.toStringXml("test"));
-        nodes.append(xyz.toStringXml("xyz"));
-        nodes.append(abc.toStringXml("abc"));
+        nodes.append(test.toStringXML("test"));
+        nodes.append(xyz.toStringXML("xyz"));
+        nodes.append(abc.toStringXML("abc"));
         if (children.size() > 0) {
             nodes.append("<children>");
             for (Custom n1 : children) {
-                nodes.append(n1.toStringXml("n1"));
+                nodes.append(n1.toStringXML("n1"));
             }
             nodes.append("</children>");
         }
@@ -274,10 +278,10 @@ public final class Custom
             attrs.append(usePtr); attrs.append("\"");
         }
         if (prev != null) {
-            nodes.append(prev.toStringXml("prev"));
+            nodes.append(prev.toStringXML("prev"));
         }
         if (next != null) {
-            nodes.append(next.toStringXml("next"));
+            nodes.append(next.toStringXML("next"));
         }
         attrs.append(" emptyDoc=\"");
         attrs.append(emptyDoc); attrs.append("\"");
@@ -289,8 +293,8 @@ public final class Custom
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //Custom::toStringXml (String name)
+        return result;
+    } //Custom::toStringXML (String name)
 
     public String toString ()
     {

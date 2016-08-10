@@ -18,7 +18,14 @@ import java.util.Map;
 
 /** 客户端请求,服务端响应 */
 public final class TestUserLoginR2C
+implements
+invar.InvarCodec.ProtocResponse,
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestUserLoginR2C Create() { return new TestUserLoginR2C(); }
+
     static public final long CRC32 = 0x38180462;
 
     private java.lang.Integer            protocId   ;/* [AutoAdd] ProtocolID */
@@ -137,12 +144,12 @@ public final class TestUserLoginR2C
         return this;
     } //copyFrom(...)
 
-    public TestUserLoginR2C read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestUserLoginR2C read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
@@ -167,15 +174,14 @@ public final class TestUserLoginR2C
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public TestUserLoginR2C writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestUserLoginR2C write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeShort(protocId);
         dest.writeInt(protocCRC.intValue());
@@ -204,10 +210,9 @@ public final class TestUserLoginR2C
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -219,7 +224,7 @@ public final class TestUserLoginR2C
         attrs.append(" protocError=\"");
         attrs.append(protocError.toString()); attrs.append("\"");
         if (protoc2C != null) {
-            nodes.append(protoc2C.toStringXml("protoc2C"));
+            nodes.append(protoc2C.toStringXML("protoc2C"));
         }
         attrs.append(" userId=\"");
         attrs.append(userId); attrs.append("\"");
@@ -256,8 +261,8 @@ public final class TestUserLoginR2C
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestUserLoginR2C::toStringXml (String name)
+        return result;
+    } //TestUserLoginR2C::toStringXML (String name)
 
     public String toString ()
     {

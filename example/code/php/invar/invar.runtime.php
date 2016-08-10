@@ -29,12 +29,12 @@ static public function HandleProtocAsServer (&$bytes)
     $r = new BinaryReader($bytes);
     $id = $r->peekUInt16();
     switch ($id) {
-    case 65527: /* 客户端请求,服务端响应 */
-    { $req = new TestUserLogin2S; $req->read($r); $h = '\HandleTestUserLogin2S'; $rep = new TestUserLoginR2C; break; }
-    case 65531: /* 客户端通知服务端 */
-    { $ntf = new TestUserLocationN2S; $ntf->read($r); $h = '\HandleTestUserLocationN2S'; break; }
     case 65533: /* 服务端请求,客户端响应 */
     { $rep = new TestHeartBeatR2S; $rep->read($r); $h = '\HandleTestHeartBeatR2S'; break; }
+    case 65531: /* 客户端通知服务端 */
+    { $ntf = new TestUserLocationN2S; $ntf->read($r); $h = '\HandleTestUserLocationN2S'; break; }
+    case 65527: /* 客户端请求,服务端响应 */
+    { $req = new TestUserLogin2S; $req->read($r); $h = '\HandleTestUserLogin2S'; $rep = new TestUserLoginR2C; break; }
     default: throw new \Exception('Unsupported protocol id: ' . $id, 503/* Service Unavailable */);
     }
     if (!function_exists($h)) { throw new \Exception('No function: ' . $h, 501/* Not Implemented */); }
@@ -56,12 +56,12 @@ static public function HandleProtocAsClient (&$bytes)
     $r = new BinaryReader($bytes);
     $id = $r->peekUInt16();
     switch ($id) {
-    case 65528: /* 客户端请求,服务端响应 */
-    { $rep = new TestUserLoginR2C; $rep->read($r); $h = '\HandleTestUserLoginR2C'; break; }
-    case 65530: /* 服务器通知客户端 */
-    { $ntf = new TestServerTimeN2C; $ntf->read($r); $h = '\HandleTestServerTimeN2C'; break; }
     case 65534: /* 服务端请求,客户端响应 */
     { $req = new TestHeartBeat2C; $req->read($r); $h = '\HandleTestHeartBeat2C'; $rep = new TestHeartBeatR2S; break; }
+    case 65530: /* 服务器通知客户端 */
+    { $ntf = new TestServerTimeN2C; $ntf->read($r); $h = '\HandleTestServerTimeN2C'; break; }
+    case 65528: /* 客户端请求,服务端响应 */
+    { $rep = new TestUserLoginR2C; $rep->read($r); $h = '\HandleTestUserLoginR2C'; break; }
     default: throw new \Exception('Unsupported protocol id: ' . $id, 503/* Service Unavailable */);
     }
     if (!function_exists($h)) { throw new \Exception('No function: ' . $h, 501/* Not Implemented */); }

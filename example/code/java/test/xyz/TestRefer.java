@@ -21,7 +21,13 @@ import test.abc.Gender;
 
 /** 引用类型测试 */
 public final class TestRefer
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestRefer Create() { return new TestRefer(); }
+
     static public final long CRC32 = 0xBBD63AFD;
 
     private java.lang.Byte           numberi08   ;
@@ -246,12 +252,12 @@ public final class TestRefer
         return this;
     } //copyFrom(...)
 
-    public TestRefer read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestRefer read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         numberi08 = from.readByte();
         numberi16 = from.readShort();
@@ -284,15 +290,14 @@ public final class TestRefer
             java.lang.Byte v1 = from.readByte();
             dictI08.put(k1,v1);
         }
-        return this;
     }
 
-    public TestRefer writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestRefer write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeByte(numberi08);
         dest.writeShort(numberi16);
@@ -325,10 +330,9 @@ public final class TestRefer
             java.lang.Byte v1 = dictI08Iter.getValue();
             dest.writeByte(v1);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -359,9 +363,9 @@ public final class TestRefer
         attrs.append(stringValue); attrs.append("\"");
         attrs.append(" enumValue=\"");
         attrs.append(enumValue.toString()); attrs.append("\"");
-        nodes.append(other.toStringXml("other"));
+        nodes.append(other.toStringXML("other"));
         if (self != null) {
-            nodes.append(self.toStringXml("self"));
+            nodes.append(self.toStringXML("self"));
         }
         if (listI08.size() > 0) {
             nodes.append("<listI08>");
@@ -394,8 +398,8 @@ public final class TestRefer
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestRefer::toStringXml (String name)
+        return result;
+    } //TestRefer::toStringXML (String name)
 
     public String toString ()
     {

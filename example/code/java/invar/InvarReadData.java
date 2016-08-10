@@ -39,7 +39,7 @@ final public class InvarReadData
             throw new Exception("InvarReadData.aliasStructs is null");
         FilenameFilter filter = new FilenameFilter()
         {
-            @Override
+            //@Override
             public boolean accept (File dir, String name)
             {
                 File f = new File(dir, name);

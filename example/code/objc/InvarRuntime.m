@@ -55,17 +55,17 @@
     NSUInteger request = [r peekUInt16:&eof];
     if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
     switch (request) {
-     case 65527: /* 客户端请求,服务端响应 */ {
-        id req = [[TestUserLogin2S alloc] init]; resp = [[TestUserLoginR2C alloc] init];
-        if (INVAR_ERR_NONE == (code = [req read:r])) { HandleTestUserLogin2S(req, resp); }
+     case 65533: /* 服务端请求,客户端响应 */ {
+        id rep = [[TestHeartBeatR2S alloc] init];
+        if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestHeartBeatR2S(rep); }
         break; }
      case 65531: /* 客户端通知服务端 */ {
         id ntf = [[TestUserLocationN2S alloc] init];
         if (INVAR_ERR_NONE == (code = [ntf read:r])) { HandleTestUserLocationN2S(ntf); }
         break; }
-     case 65533: /* 服务端请求,客户端响应 */ {
-        id rep = [[TestHeartBeatR2S alloc] init];
-        if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestHeartBeatR2S(rep); }
+     case 65527: /* 客户端请求,服务端响应 */ {
+        id req = [[TestUserLogin2S alloc] init]; resp = [[TestUserLoginR2C alloc] init];
+        if (INVAR_ERR_NONE == (code = [req read:r])) { HandleTestUserLogin2S(req, resp); }
         break; }
      default: { code = INVAR_ERR_PROTOC_NO_HANDLER; break; }
     }
@@ -89,17 +89,17 @@ error:
     NSUInteger request = [r peekUInt16:&eof];
     if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
     switch (request) {
-     case 65528: /* 客户端请求,服务端响应 */ {
-        id rep = [[TestUserLoginR2C alloc] init];
-        if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestUserLoginR2C(rep); }
+     case 65534: /* 服务端请求,客户端响应 */ {
+        id req = [[TestHeartBeat2C alloc] init]; resp = [[TestHeartBeatR2S alloc] init];
+        if (INVAR_ERR_NONE == (code = [req read:r])) { HandleTestHeartBeat2C(req, resp); }
         break; }
      case 65530: /* 服务器通知客户端 */ {
         id ntf = [[TestServerTimeN2C alloc] init];
         if (INVAR_ERR_NONE == (code = [ntf read:r])) { HandleTestServerTimeN2C(ntf); }
         break; }
-     case 65534: /* 服务端请求,客户端响应 */ {
-        id req = [[TestHeartBeat2C alloc] init]; resp = [[TestHeartBeatR2S alloc] init];
-        if (INVAR_ERR_NONE == (code = [req read:r])) { HandleTestHeartBeat2C(req, resp); }
+     case 65528: /* 客户端请求,服务端响应 */ {
+        id rep = [[TestUserLoginR2C alloc] init];
+        if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestUserLoginR2C(rep); }
         break; }
      default: { code = INVAR_ERR_PROTOC_NO_HANDLER; break; }
     }

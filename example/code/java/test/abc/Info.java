@@ -19,7 +19,13 @@ import java.util.Map;
 
 /** Test comments */
 public final class Info
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public Info Create() { return new Info(); }
+
     static public final long CRC32 = 0x120FDCDB;
 
     private Integer                       key          ;
@@ -311,12 +317,12 @@ public final class Info
         return this;
     } //copyFrom(...)
 
-    public Info read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public Info read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         key = from.readInt();
         number01 = from.readByte();
@@ -388,15 +394,14 @@ public final class Info
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public Info writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public Info write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(key);
         dest.writeByte(number01);
@@ -464,10 +469,9 @@ public final class Info
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -510,13 +514,13 @@ public final class Info
         attrs.append(" gender=\"");
         attrs.append(gender.toString()); attrs.append("\"");
         if (next != null) {
-            nodes.append(next.toStringXml("next"));
+            nodes.append(next.toStringXML("next"));
         }
-        nodes.append(conflict.toStringXml("conflict"));
+        nodes.append(conflict.toStringXML("conflict"));
         if (conflicts.size() > 0) {
             nodes.append("<conflicts>");
             for (test.xyz.Conflict n1 : conflicts) {
-                nodes.append(n1.toStringXml("n1"));
+                nodes.append(n1.toStringXML("n1"));
             }
             nodes.append("</conflicts>");
         }
@@ -533,7 +537,7 @@ public final class Info
             nodes.append("<mapInfoG>");
             for (Map.Entry<Info,Gender> mapInfoGIter : mapInfoG.entrySet()) {
                 Info k1 = mapInfoGIter.getKey();
-                nodes.append(k1.toStringXml("k1"));
+                nodes.append(k1.toStringXML("k1"));
                 Gender v1 = mapInfoGIter.getValue();
                 nodes.append("<v1 value=\"");
                 nodes.append(v1.toString());
@@ -549,7 +553,7 @@ public final class Info
                 nodes.append(k1.toString());
                 nodes.append("\">");
                 Info v1 = mapGenderInfoIter.getValue();
-                nodes.append(v1.toStringXml("v1"));
+                nodes.append(v1.toStringXML("v1"));
             }
             nodes.append("</mapGenderInfo>");
         }
@@ -589,8 +593,8 @@ public final class Info
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //Info::toStringXml (String name)
+        return result;
+    } //Info::toStringXML (String name)
 
     public String toString ()
     {

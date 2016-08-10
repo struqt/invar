@@ -17,7 +17,13 @@ import java.util.Map;
 
 /** 客户端请求的公共数据 */
 public final class Protoc2S
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public Protoc2S Create() { return new Protoc2S(); }
+
     static public final long CRC32 = 0xC0869FC2;
 
     private java.lang.String             sessionId;/* 会话Id */
@@ -69,12 +75,12 @@ public final class Protoc2S
         return this;
     } //copyFrom(...)
 
-    public Protoc2S read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public Protoc2S read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         sessionId = from.readUTF();
         hotfix.clear();
@@ -86,15 +92,14 @@ public final class Protoc2S
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public Protoc2S writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public Protoc2S write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeUTF(sessionId);
         if (hotfix != null) {
@@ -109,10 +114,9 @@ public final class Protoc2S
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -141,8 +145,8 @@ public final class Protoc2S
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //Protoc2S::toStringXml (String name)
+        return result;
+    } //Protoc2S::toStringXML (String name)
 
     public String toString ()
     {

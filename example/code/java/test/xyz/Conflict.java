@@ -17,7 +17,13 @@ import java.util.Map;
 
 /**  */
 public final class Conflict
+implements
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public Conflict Create() { return new Conflict(); }
+
     static public final long CRC32 = 0x2126E985;
 
     private java.lang.Double             pi    ;
@@ -69,12 +75,12 @@ public final class Conflict
         return this;
     } //copyFrom(...)
 
-    public Conflict read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public Conflict read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         pi = from.readDouble();
         hotfix.clear();
@@ -86,15 +92,14 @@ public final class Conflict
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public Conflict writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public Conflict write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeDouble(pi);
         if (hotfix != null) {
@@ -109,10 +114,9 @@ public final class Conflict
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -141,8 +145,8 @@ public final class Conflict
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //Conflict::toStringXml (String name)
+        return result;
+    } //Conflict::toStringXML (String name)
 
     public String toString ()
     {

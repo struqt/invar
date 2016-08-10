@@ -17,7 +17,14 @@ import java.util.Map;
 
 /** 服务端请求,客户端响应 */
 public final class TestHeartBeatR2S
+implements
+invar.InvarCodec.ProtocResponse,
+invar.InvarCodec.BinaryDecode,
+invar.InvarCodec.BinaryEncode,
+invar.InvarCodec.XMLEncode
 {
+    static public TestHeartBeatR2S Create() { return new TestHeartBeatR2S(); }
+
     static public final long CRC32 = 0xD651F662;
 
     private java.lang.Integer            protocId   ;/* [AutoAdd] ProtocolID */
@@ -103,12 +110,12 @@ public final class TestHeartBeatR2S
         return this;
     } //copyFrom(...)
 
-    public TestHeartBeatR2S read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException
     {
-        return this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from));
     }
 
-    public TestHeartBeatR2S read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException
     {
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
@@ -125,15 +132,14 @@ public final class TestHeartBeatR2S
                 hotfix.put(k1,v1);
             }
         }
-        return this;
     }
 
-    public TestHeartBeatR2S writeStream(OutputStream from) throws IOException
+    public void write(OutputStream from) throws IOException
     {
-        return this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(from));
     }
 
-    public TestHeartBeatR2S write(DataOutput dest) throws IOException
+    public void write(DataOutput dest) throws IOException
     {
         dest.writeShort(protocId);
         dest.writeInt(protocCRC.intValue());
@@ -156,10 +162,9 @@ public final class TestHeartBeatR2S
         } else {
             dest.writeByte((byte)0x00);
         }
-        return this;
     }
 
-    public String toStringXml (String name)
+    public StringBuilder toStringXML (String name)
     {
         StringBuilder result = new StringBuilder();
         StringBuilder attrs  = new StringBuilder();
@@ -171,7 +176,7 @@ public final class TestHeartBeatR2S
         attrs.append(" protocError=\"");
         attrs.append(protocError.toString()); attrs.append("\"");
         if (protoc2S != null) {
-            nodes.append(protoc2S.toStringXml("protoc2S"));
+            nodes.append(protoc2S.toStringXML("protoc2S"));
         }
         if (hotfix != null && hotfix.size() > 0) {
             nodes.append("<hotfix>");
@@ -195,8 +200,8 @@ public final class TestHeartBeatR2S
             result.append(nodes);
             result.append("</"); result.append(name); result.append(">");
         }
-        return result.toString();
-    } //TestHeartBeatR2S::toStringXml (String name)
+        return result;
+    } //TestHeartBeatR2S::toStringXML (String name)
 
     public String toString ()
     {
