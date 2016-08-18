@@ -146,9 +146,9 @@ final public class InvarSnippet {
             String line = lines[i];
             line = line.replaceAll("(^\\s*|\\s*$)", empty);
             line = line.replaceAll("(\\s*)(" + Token.Indent //
-                    + "|" + Token.Blank//
-                    //+ "|" + Token.Body//
-                    + ")(\\s*)", "$2");
+                + "|" + Token.Blank//
+                //+ "|" + Token.Body//
+                + ")(\\s*)", "$2");
             if (!line.equals(empty)) {
                 line = line.replaceAll(Token.Br, br);
                 line = line.replaceAll(Token.Indent, indent);
@@ -162,8 +162,8 @@ final public class InvarSnippet {
 
     private Document getSnippetDoc(String path, InvarContext ctx) throws Exception {
         Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(new InputSource(new File(path).toURI().toURL().toString()));
+            .newDocumentBuilder()
+            .parse(new InputSource(new File(path).toURI().toURL().toString()));
         if (!doc.hasChildNodes())
             return null;
         System.out.println("read  <- " + path);
@@ -276,6 +276,8 @@ final public class InvarSnippet {
         final static String RuleLeft = wrapToken("typel");
         final static String RuleRight = wrapToken("typer");
         final static String NameReal = wrapToken("namer");
+        final static String NameTable = wrapToken("table");
+        final static String NameAlias = wrapToken("alias");
         final static String Request = wrapToken("req");
         final static String Response = wrapToken("resp");
         final static String ProtocId = wrapToken("protoc-id");

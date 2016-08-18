@@ -10,6 +10,7 @@ public class TypeStruct extends InvarType {
     private HashMap<String, InvarField> fields;
     private String charset;
     private String alias;
+    private String tableName;
     private String shortField;
     private Boolean noHotfix = false;
 
@@ -26,6 +27,7 @@ public class TypeStruct extends InvarType {
         fields = new LinkedHashMap<String, InvarField>();
         setCharset("UTF-8");
         setAlias("");
+        setTableName("");
     }
 
     public int numFields() {
@@ -81,7 +83,7 @@ public class TypeStruct extends InvarType {
     private void checkKey(String key) throws Exception {
         if (fields.containsKey(key)) {
             throw new Exception("Repeated key '" + key + //
-                    "' in struct '" + getName() + "'.");
+                "' in struct '" + getName() + "'.");
         }
     }
 
@@ -100,6 +102,18 @@ public class TypeStruct extends InvarType {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public boolean isTable() {
+        return tableName != null && tableName.length() > 0;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     public InvarType getSuperType() {

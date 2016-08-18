@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="java">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template"
+  language="java">
 
-  <export resPath="java/InvarReadData.java" destDir="invar" destName="InvarReadData.java"/>
-  <export resPath="java/InvarRule.java" destDir="invar" destName="InvarRule.java"/>
-  <export resPath="java/InvarCodec.java" destDir="invar" destName="InvarCodec.java"/>
+  <export resPath="java/InvarReadData.java" destDir="invar"
+          destName="InvarReadData.java"/>
+  <export resPath="java/InvarRule.java" destDir="invar"
+          destName="InvarRule.java"/>
+  <export resPath="java/InvarCodec.java" destDir="invar"
+          destName="InvarCodec.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -24,7 +28,6 @@
     <bool pack="   java.lang" type="Boolean      " initValue="false"/>
     <vec pack="    java.util" type="LinkedList   " generic="&lt;?&gt;"/>
     <map pack="    java.util" type="LinkedHashMap" generic="&lt;?,?&gt;"/>
-    <dialect pack="java.util" type="Map"/>
 
     <dialect pack="java.io" type="IOException"/>
     <dialect pack="java.io" type="InputStream"/>
@@ -33,6 +36,16 @@
     <dialect pack="java.io" type="OutputStream"/>
     <dialect pack="java.io" type="DataOutput"/>
     <dialect pack="java.io" type="DataOutputStream"/>
+
+    <dialect pack="java.util" type="Map"/>
+    <dialect pack="java.util" type="Set"/>
+    <dialect pack="java.util" type="List"/>
+    <dialect pack="java.util" type="ArrayList"/>
+    <dialect pack="java.util" type="HashSet"/>
+    <dialect pack="java.util" type="Iterator"/>
+
+    <dialect pack="java.sql" type="Timestamp"/>
+
   </redefine>
 
   <!-- Settings -->
@@ -68,7 +81,8 @@
   <template key="init.struct"> <![CDATA[ new (#type)()   ]]></template>
   <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
   <template key="init.map">    <![CDATA[ new (#type)()   ]]></template>
-  <template key="init.uint64"> <![CDATA[ new BigInteger("(#deft)", 10) ]]></template>
+  <template key="init.uint64">
+    <![CDATA[ new BigInteger("(#deft)", 10) ]]></template>
   <template key="init.protocCRC"><![CDATA[ (#deft)       ]]></template>
 
   <template key="import.exclude.conflict"> <![CDATA[ true ]]></template>
@@ -131,9 +145,12 @@
     (#tab)}
     }
   ]]></template>
-  <template key="struct.protoc.ntf"> <![CDATA[ (#brk)invar.InvarCodec.ProtocNotify,   ]]></template>
-  <template key="struct.protoc.req"> <![CDATA[ (#brk)invar.InvarCodec.ProtocRequest,  ]]></template>
-  <template key="struct.protoc.resp"><![CDATA[ (#brk)invar.InvarCodec.ProtocResponse, ]]></template>
+  <template key="struct.protoc.ntf">
+    <![CDATA[ (#brk)invar.InvarCodec.ProtocNotify,   ]]></template>
+  <template key="struct.protoc.req">
+    <![CDATA[ (#brk)invar.InvarCodec.ProtocRequest,  ]]></template>
+  <template key="struct.protoc.resp">
+    <![CDATA[ (#brk)invar.InvarCodec.ProtocResponse, ]]></template>
   <template key="struct"><![CDATA[
     [#addImport(struct; imports; java.io::IOException)]
     [#addImport(struct; imports; java.io::InputStream)]
@@ -161,9 +178,20 @@
     [#codeNested (write.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (tostr.; useFullName; struct; fields; imports)](#brk)
+
+    [#codeNested (sql.params.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.start.;   useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.vars.;    useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.alias.;   useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.insert.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.select.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.update.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.end.;     useFullName; struct; fields; imports)](#brk)
+
     }
 	]]></template>
-  <template key="struct.meta"><![CDATA[@invar.InvarRule(T="(#type)", S="f(#index)")]]></template>
+  <template key="struct.meta">
+    <![CDATA[@invar.InvarRule(T="(#type)", S="f(#index)")]]></template>
   <template key="struct.field"><![CDATA[
     (#tab)private [#clampLen(lenFieldType; 64; (#type))]
     (#concat) [#clampLen(lenFieldName; 16; (#namer) )];
@@ -224,8 +252,10 @@
       (#tab)(#tab)return this;
     (#tab)} //copyFrom(...)]]></template>
   <template key="copy.any"><![CDATA[ (#arg)(#split)(#name) ]]></template>
-  <template key="copy.vec"><![CDATA[ (#name).addAll((#arg)(#split)(#name)) ]]></template>
-  <template key="copy.map"><![CDATA[ (#name).putAll((#arg)(#split)(#name)) ]]></template>
+  <template key="copy.vec">
+    <![CDATA[ (#name).addAll((#arg)(#split)(#name)) ]]></template>
+  <template key="copy.map">
+    <![CDATA[ (#name).putAll((#arg)(#split)(#name)) ]]></template>
   <template key="copy.ref.any"><![CDATA[ (#name) = (#body); ]]></template>
   <template key="copy.ref.vec|copy.ref.map"><![CDATA[ (#name).clear();
     (#body); ]]></template>
@@ -262,31 +292,40 @@
   <template key="read.int16"> <![CDATA[ (#arg).readShort()   ]]></template>
   <template key="read.int32"> <![CDATA[ (#arg).readInt()     ]]></template>
   <template key="read.int64"> <![CDATA[ (#arg).readLong()    ]]></template>
-  <template key="read.uint8"> <![CDATA[ (#arg).readUnsignedByte()  ]]></template>
-  <template key="read.uint16"><![CDATA[ (#arg).readUnsignedShort() ]]></template>
-  <template key="read.uint32"><![CDATA[ (#arg).readInt() & 0xFFFFFFFFL ]]></template>
+  <template key="read.uint8">
+    <![CDATA[ (#arg).readUnsignedByte()  ]]></template>
+  <template key="read.uint16">
+    <![CDATA[ (#arg).readUnsignedShort() ]]></template>
+  <template key="read.uint32">
+    <![CDATA[ (#arg).readInt() & 0xFFFFFFFFL ]]></template>
   <template key="read.uint64"><![CDATA[ (#arg).readXXX()    ]]></template>
   <template key="read.float"> <![CDATA[ (#arg).readFloat()   ]]></template>
   <template key="read.double"><![CDATA[ (#arg).readDouble()  ]]></template>
   <template key="read.string"><![CDATA[ (#arg).readUTF()     ]]></template>
   <template key="read.bool">  <![CDATA[ (#arg).readBoolean() ]]></template>
-  <template key="read.enum">  <![CDATA[ (#type).valueOf((#arg).readInt()) ]]></template>
+  <template key="read.enum">
+    <![CDATA[ (#type).valueOf((#arg).readInt()) ]]></template>
   <template key="read.struct"><![CDATA[ (#name).read((#arg)) ]]></template>
-  <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[ (#type) (#name) = (#body); ]]></template>
-  <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
+  <template key="read.nest.n|read.nest.k|read.nest.v">
+    <![CDATA[ (#type) (#name) = (#body); ]]></template>
+  <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct">
+    <![CDATA[
     (#type) (#name) = new (#type)();(#brk)(#body); ]]></template>
-  <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64"><![CDATA[
+  <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64">
+    <![CDATA[
     byte[] (#name)Bytes = new byte[8]; from.readFully((#name)Bytes, 0, 8);
     (#type) (#name) = new (#type)((#namer)Bytes); ]]></template>
 
-  <template key="read.vec.head">  <![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
+  <template key="read.vec.head">
+    <![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
   <template key="read.vec.for"><![CDATA[
     Long (#len) = (#arg).readInt() & 0xFFFFFFFFL;
     for ((#sizetype) (#index) = 0L; (#index) < (#len); ++(#index)) {(#body)
     (#tab)(#name).add((#value));
     }
   ]]></template>
-  <template key="read.map.head"> <![CDATA[(#type) (#name) = new (#type)(); //read.map.head(#brk)]]></template>
+  <template key="read.map.head">
+    <![CDATA[(#type) (#name) = new (#type)(); //read.map.head(#brk)]]></template>
   <template key="read.map.for"><![CDATA[
     Long (#len) = (#arg).readInt() & 0xFFFFFFFFL;
     for ((#sizetype) (#index) = 0L; (#index) < (#len); ++(#index)) {(#body)
@@ -295,8 +334,10 @@
   ]]></template>
   <template key="read.ref.any"><![CDATA[ (#name) = (#body); ]]></template>
   <template key="read.ref.struct"><![CDATA[ (#body); ]]></template>
-  <template key="read.ref.vec"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
-  <template key="read.ref.map"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
+  <template key="read.ref.vec">
+    <![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
+  <template key="read.ref.map">
+    <![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
   <template key="read.ref.uint64"><![CDATA[
     byte[] (#namer)Bytes = new byte[8]; from.readFully((#namer)Bytes, 0, 8);
     (#name) = new (#type)((#namer)Bytes);
@@ -320,7 +361,8 @@
 
 
   <!-- Write bytes to a Stream -->
-  <template key="write.import"><![CDATA[ java.io::DataOutputStream, java.io::DataOutput, java.io::IOException ]]></template>
+  <template key="write.import">
+    <![CDATA[ java.io::DataOutputStream, java.io::DataOutput, java.io::IOException ]]></template>
   <template key="write.method.arg"><![CDATA[ dest ]]></template>
   <template key="write.method"><![CDATA[
     (#tab)public void write(OutputStream from) throws IOException
@@ -331,30 +373,47 @@
     (#tab)public void write(DataOutput dest) throws IOException
     (#tab){(#body)
     (#tab)}]]></template>
-  <template key="write.int8">  <![CDATA[ (#arg).writeByte((#name))  ]]></template>
-  <template key="write.int16"> <![CDATA[ (#arg).writeShort((#name)) ]]></template>
-  <template key="write.int32"> <![CDATA[ (#arg).writeInt((#name))   ]]></template>
-  <template key="write.int64"> <![CDATA[ (#arg).writeLong((#name))  ]]></template>
-  <template key="write.uint8"> <![CDATA[ (#arg).writeByte((#name))  ]]></template>
-  <template key="write.uint16"><![CDATA[ (#arg).writeShort((#name)) ]]></template>
-  <template key="write.uint32"><![CDATA[ (#arg).writeInt((#name).intValue()) ]]></template>
-  <template key="write.uint64"><![CDATA[ (#arg).writeLong((#name).longValue())  ]]></template>
-  <template key="write.float"> <![CDATA[ (#arg).writeFloat((#name)) ]]></template>
-  <template key="write.double"><![CDATA[ (#arg).writeDouble((#name))]]></template>
-  <template key="write.string"><![CDATA[ (#arg).writeUTF((#name))   ]]></template>
-  <template key="write.bool">  <![CDATA[ (#arg).writeBoolean((#name)) ]]></template>
-  <template key="write.enum">  <![CDATA[ (#arg).writeInt((#name).getValue()) ]]></template>
+  <template key="write.int8">
+    <![CDATA[ (#arg).writeByte((#name))  ]]></template>
+  <template key="write.int16">
+    <![CDATA[ (#arg).writeShort((#name)) ]]></template>
+  <template key="write.int32">
+    <![CDATA[ (#arg).writeInt((#name))   ]]></template>
+  <template key="write.int64">
+    <![CDATA[ (#arg).writeLong((#name))  ]]></template>
+  <template key="write.uint8">
+    <![CDATA[ (#arg).writeByte((#name))  ]]></template>
+  <template key="write.uint16">
+    <![CDATA[ (#arg).writeShort((#name)) ]]></template>
+  <template key="write.uint32">
+    <![CDATA[ (#arg).writeInt((#name).intValue()) ]]></template>
+  <template key="write.uint64">
+    <![CDATA[ (#arg).writeLong((#name).longValue())  ]]></template>
+  <template key="write.float">
+    <![CDATA[ (#arg).writeFloat((#name)) ]]></template>
+  <template key="write.double">
+    <![CDATA[ (#arg).writeDouble((#name))]]></template>
+  <template key="write.string">
+    <![CDATA[ (#arg).writeUTF((#name))   ]]></template>
+  <template key="write.bool">
+    <![CDATA[ (#arg).writeBoolean((#name)) ]]></template>
+  <template key="write.enum">
+    <![CDATA[ (#arg).writeInt((#name).getValue()) ]]></template>
   <template key="write.struct"><![CDATA[ (#name).write((#arg)) ]]></template>
   <template key="write.nest.n"><![CDATA[ (#body);]]></template>
-  <template key="write.nest.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)(#body);]]></template>
-  <template key="write.nest.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)(#body);]]></template>
+  <template key="write.nest.k">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)(#body);]]></template>
+  <template key="write.nest.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)(#body);]]></template>
   <template key="write.vec.head"><![CDATA[]]></template>
   <template key="write.vec.for"><![CDATA[
     (#arg).writeInt((#name).size());
     for ((#typer) (#value) : (#name)) {(#body)
     } ]]></template>
-  <template key="write.map.head.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)]]></template>
-  <template key="write.map.head.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)]]></template>
+  <template key="write.map.head.k">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)]]></template>
+  <template key="write.map.head.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)]]></template>
   <template key="write.map.for"><![CDATA[
     (#arg).writeInt((#name).size());
     for (Map.Entry<(#typer)> (#name)Iter : (#name).entrySet()) {(#body)
@@ -398,8 +457,10 @@
     (#tab)} //(#type)::toStringXML (String name) ]]></template>
   <template key="toxml.any">   <![CDATA[ (#name).toString() ]]></template>
   <template key="toxml.string"><![CDATA[ (#name) ]]></template>
-  <template key="toxml.struct"><![CDATA[ (#name).toStringXML("(#name)") ]]></template>
-  <template key="toxml.nest.n.struct"><![CDATA[ nodes.append((#body)); ]]></template>
+  <template key="toxml.struct">
+    <![CDATA[ (#name).toStringXML("(#name)") ]]></template>
+  <template key="toxml.nest.n.struct">
+    <![CDATA[ nodes.append((#body)); ]]></template>
   <template key="toxml.nest.k.struct"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();
     nodes.append((#body)); ]]></template>
   <template key="toxml.nest.v.struct"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();
@@ -423,8 +484,10 @@
     }
     nodes.append("</(#name)>");
   ]]></template>
-  <template key="toxml.map.head.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)]]></template>
-  <template key="toxml.map.head.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)]]></template>
+  <template key="toxml.map.head.k">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)]]></template>
+  <template key="toxml.map.head.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)]]></template>
   <template key="toxml.map.for"><![CDATA[
     nodes.append("<(#name)>");
     for (Map.Entry<(#typer)> (#name)Iter : (#name).entrySet()) {(#body)
@@ -433,7 +496,8 @@
   ]]></template>
   <template key="toxml.ref.any"><![CDATA[ attrs.append(" (#name)=\\"");
     attrs.append((#body)); attrs.append("\\""); ]]></template>
-  <template key="toxml.ref.struct"><![CDATA[ nodes.append((#body)); ]]></template>
+  <template key="toxml.ref.struct">
+    <![CDATA[ nodes.append((#body)); ]]></template>
   <template key="toxml.ref.vec | toxml.ref.map"><![CDATA[ if ((#name).size() > 0) {(#bodyindent)
     }]]></template>
   <template key="toxml.ptr.any"><![CDATA[ if ((#name) != (#null)) {
@@ -461,8 +525,10 @@
     (#tab)} //(#type)::toString () ]]></template>
   <template key="tostr.any">   <![CDATA[ (#name).toString() ]]></template>
   <template key="tostr.struct"><![CDATA[ "<(#type)>" ]]></template>
-  <template key="tostr.vec">   <![CDATA[ "(" + (#name).size() + ")" ]]></template>
-  <template key="tostr.map">   <![CDATA[ "[" + (#name).size() + "]" ]]></template>
+  <template key="tostr.vec">
+    <![CDATA[ "(" + (#name).size() + ")" ]]></template>
+  <template key="tostr.map">
+    <![CDATA[ "[" + (#name).size() + "]" ]]></template>
   <template key="tostr.string"><![CDATA[ "\\"" + (#name) + "\\"" ]]></template>
   <template key="tostr.ref.any"><![CDATA[ result.append(", (#name):");
     result.append((#body)); ]]></template>
@@ -484,9 +550,12 @@
     (#tab)(#tab)return map;
     (#tab)}
   ]]></template>
-  <template key="runtime.alias.basic"><![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
-  <template key="runtime.alias.list"><![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
-  <template key="runtime.alias.map"><![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
+  <template key="runtime.alias.basic">
+    <![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
+  <template key="runtime.alias.list">
+    <![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
+  <template key="runtime.alias.map">
+    <![CDATA[(#brk)(#tab)(#tab)map.put("(#name)", (#type).class);]]></template>
   <template key="runtime.body"><![CDATA[
     public final class InvarRuntime
     {
@@ -502,4 +571,167 @@
     (#tab)}
     (#body)
     } ]]></template>
+
+  <!-- SQL Params -->
+  <template key="sql.params.method"><![CDATA[
+    (#tab)public Object[] SqlParamsAll()
+    (#tab){
+    (#tab)(#tab)return new Object[] {(#body)
+    (#tab)(#tab)};
+    (#tab)} ]]></template>
+  <template key="sql.params.except.auto"><![CDATA[ true ]]></template>
+  <template key="sql.params.any"><![CDATA[ ]]></template>
+  <template key="sql.params.ref.any | sql.params.ptr.any"><![CDATA[
+    (#tab)(#namer), ]]></template>
+
+  <template key="sql.start.method"><![CDATA[
+    (#tab)static public final class SQL {
+    (#blank)
+    (#tab)(#tab)static public final String TABLE = "(#table)";
+  ]]></template>
+  <template key="sql.end.method"><![CDATA[ (#tab)} ]]></template>
+
+  <!-- SQL Alias -->
+  <template key="sql.alias.method"><![CDATA[
+    (#tab)(#tab)static private Map<String, String> aliasMap = null;
+    (#blank)
+    (#tab)(#tab)static Map<String, String> getAliasMap() {
+    (#tab)(#tab)(#tab)if (aliasMap != null) {
+    (#tab)(#tab)(#tab)(#tab)return aliasMap;
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)Map<String, String> map = new LinkedHashMap<String, String>();(#body)
+    (#tab)(#tab)(#tab)return aliasMap = map;
+    (#tab)(#tab)}
+  ]]></template>
+  <template key="sql.alias.any"><![CDATA[ ]]></template>
+  <template key="sql.alias.ref.any | sql.alias.ptr.any"><![CDATA[
+    (#tab)aliasMap.put("(#namer)", "(#alias)"); ]]></template>
+
+
+  <!-- SQL Vars -->
+  <template key="sql.vars.method"><![CDATA[
+    [#addImport(struct; imports; java.util::List)]
+    [#addImport(struct; imports; java.util::ArrayList)]
+    (#tab)(#tab)static private List<String> variableFields = null;
+    (#blank)
+    (#tab)(#tab)static List<String> getVariableFields() {
+    (#tab)(#tab)(#tab)if (variableFields != null) {
+    (#tab)(#tab)(#tab)(#tab)return variableFields;
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)List<String> list = new ArrayList<String>();(#body)
+    (#tab)(#tab)(#tab)return variableFields = list;
+    (#tab)(#tab)}
+  ]]></template>
+  <template key="sql.vars.except.auto"><![CDATA[ true ]]></template>
+  <template key="sql.vars.any"><![CDATA[ ]]></template>
+  <template key="sql.vars.ref.any | sql.alias.ptr.any"><![CDATA[
+    (#tab)variableFields.add("(#alias)"); ]]></template>
+
+
+  <!-- SQL Insert -->
+  <template key="sql.insert.method"><![CDATA[
+    (#tab)(#tab)public static StringBuilder buildInsert() {
+    (#tab)(#tab)(#tab)StringBuilder s = new StringBuilder(512);
+    (#tab)(#tab)(#tab)StringBuilder v = new StringBuilder(256);
+    (#tab)(#tab)(#tab)s.append("INSERT INTO ");
+    (#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)s.append(TABLE);
+    (#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)s.append('(');
+    (#tab)(#tab)(#tab)Iterator<String> iter = getVariableFields().iterator();
+    (#tab)(#tab)(#tab)while (iter.hasNext()) {
+    (#tab)(#tab)(#tab)(#tab)String field = iter.next();
+    (#tab)(#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)(#tab)s.append(field);
+    (#tab)(#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)(#tab)v.append('?');
+    (#tab)(#tab)(#tab)(#tab)if (iter.hasNext()) {
+    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(',');
+    (#tab)(#tab)(#tab)(#tab)(#tab)v.append(',');
+    (#tab)(#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)s.append(" VALUES ");
+    (#tab)(#tab)(#tab)s.append('(');
+    (#tab)(#tab)(#tab)s.append(v);
+    (#tab)(#tab)(#tab)s.append(')');
+    (#tab)(#tab)(#tab)return s;
+    (#tab)(#tab)}
+  ]]></template>
+
+  <!-- SQL Select -->
+  <template key="sql.select.method"><![CDATA[
+    [#addImport(struct; imports; java.util::Map)]
+    [#addImport(struct; imports; java.util::Set)]
+    [#addImport(struct; imports; java.util::HashSet)]
+    [#addImport(struct; imports; java.util::Iterator)]
+    (#tab)(#tab)public static StringBuilder buildSelect(String where, String... fields) {
+    (#tab)(#tab)(#tab)Set<String> includes = new HashSet<String>(fields.length);
+    (#tab)(#tab)(#tab)for (String f : fields) {
+    (#tab)(#tab)(#tab)(#tab)includes.add(f);
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)StringBuilder s = new StringBuilder(512);
+    (#tab)(#tab)(#tab)s.append("SELECT ");
+    (#tab)(#tab)(#tab)Iterator<Map.Entry<String, String>> iter = getAliasMap().entrySet().iterator();
+    (#tab)(#tab)(#tab)while (iter.hasNext()) {
+    (#tab)(#tab)(#tab)(#tab)Map.Entry<String, String> i = iter.next();
+    (#tab)(#tab)(#tab)(#tab)final String k = i.getKey();
+    (#tab)(#tab)(#tab)(#tab)final String v = i.getValue();
+    (#tab)(#tab)(#tab)(#tab)if (includes.size() > 0 && !includes.contains(k) && !includes.contains(v)) {
+    (#tab)(#tab)(#tab)(#tab)(#tab)continue;
+    (#tab)(#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)(#tab)s.append(k);
+    (#tab)(#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)(#tab)if (!k.equals(v)) {
+    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(" AS ");
+    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(v);
+    (#tab)(#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)(#tab)if (iter.hasNext()) {
+    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(", ");
+    (#tab)(#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)s.append(" FROM ");
+    (#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)s.append(TABLE);
+    (#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)s.append(" WHERE ");
+    (#tab)(#tab)(#tab)s.append(where);
+    (#tab)(#tab)(#tab)return s;
+    (#tab)(#tab)}
+  ]]></template>
+
+  <!-- SQL Update -->
+  <template key="sql.update.method"><![CDATA[
+    (#tab)(#tab)public static StringBuilder buildUpdate(String where, String... fields) {
+    (#tab)(#tab)(#tab)Set<String> includes = new HashSet<String>(fields.length);
+    (#tab)(#tab)(#tab)for (String f : fields) {
+    (#tab)(#tab)(#tab)(#tab)includes.add(f);
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)StringBuilder s = new StringBuilder(512);
+    (#tab)(#tab)(#tab)s.append("UPDATE ");
+    (#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)s.append(TABLE);
+    (#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)s.append(" SET ");
+    (#tab)(#tab)(#tab)Iterator<String> iter = getVariableFields().iterator();
+    (#tab)(#tab)(#tab)while (iter.hasNext()) {
+    (#tab)(#tab)(#tab)(#tab)String field = iter.next();
+    (#tab)(#tab)(#tab)(#tab)if (includes.size() > 0 && !includes.contains(field)) {
+    (#tab)(#tab)(#tab)(#tab)(#tab)continue;
+    (#tab)(#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)(#tab)s.append(field);
+    (#tab)(#tab)(#tab)(#tab)s.append('=');
+    (#tab)(#tab)(#tab)(#tab)s.append('?');
+    (#tab)(#tab)(#tab)(#tab)s.append('`');
+    (#tab)(#tab)(#tab)(#tab)if (iter.hasNext()) {
+    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(',');
+    (#tab)(#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)s.append(" WHERE ");
+    (#tab)(#tab)(#tab)s.append(where);
+    (#tab)(#tab)(#tab)return s;
+    (#tab)(#tab)}
+  ]]></template>
+
 </tns:root>

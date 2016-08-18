@@ -337,7 +337,7 @@ public final class InvarWriteCode extends InvarWrite {
         ifndef = replace(ifndef, "/", "_");
         ifndef = replace(ifndef, dotToken, "_");
         String s = snippet.tryGet(Key.FILE,
-                "//Error: No template named '" + Key.FILE + "' in " + snippet.getSnippetPath());
+            "//Error: No template named '" + Key.FILE + "' in " + snippet.getSnippetPath());
         s = replace(s, Token.Define, ifndef);
         s = replace(s, Token.Pack, codeOneFilePack(packNames, body));
         s = replace(s, Token.Includes, includes.toString());
@@ -374,7 +374,7 @@ public final class InvarWriteCode extends InvarWrite {
             return empty;
         }
         String s = snippet.tryGet(Key.FILE_BODY,
-                "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
+            "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
         s = replace(s, Token.Import, makeImorts(imps));
         s = replace(s, Token.Enums, blockEnums);
         s = replace(s, Token.Structs, blockStructs);
@@ -396,7 +396,7 @@ public final class InvarWriteCode extends InvarWrite {
             name = replace(name, dotToken, split);
         }
         String s = snippet.tryGet(Key.FILE_PACK,
-                "//Error: No template named '" + Key.FILE_PACK + "' in " + snippet.getSnippetPath());
+            "//Error: No template named '" + Key.FILE_PACK + "' in " + snippet.getSnippetPath());
         s = replace(s, Token.Name, name);
         s = replace(s, Token.Body, body);
         return codeOneFilePack(packNames, s);
@@ -418,7 +418,7 @@ public final class InvarWriteCode extends InvarWrite {
         TreeSet<String> imps = new TreeSet<String>();
         String body = makeRuntimeBlock(imps);
         String s = snippet.tryGet(Key.FILE_BODY,
-                "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
+            "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
         s = replace(s, Token.Import, makeImorts(imps));
         s = replace(s, Token.Enums, empty);
         s = replace(s, Token.Structs, body);
@@ -726,8 +726,8 @@ public final class InvarWriteCode extends InvarWrite {
                 meBasic.append(s);
         }
         return makeRuntimeAliasFunc("aliasBasic", meBasic.toString())
-                + makeRuntimeAliasFunc("aliasEnum", meEnums.toString())
-                + makeRuntimeAliasFunc("aliasStruct", meStruct.toString());
+            + makeRuntimeAliasFunc("aliasEnum", meEnums.toString())
+            + makeRuntimeAliasFunc("aliasStruct", meStruct.toString());
     }
 
     private String makeRuntimeAliasFunc(String name, String block) {
@@ -751,7 +751,7 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     private String makeRuntimeProtocHandleFunc(
-            String key, TreeSet<String> imps, Iterator<Integer> protocIds, Boolean isServer, Boolean isClient) {
+        String key, TreeSet<String> imps, Iterator<Integer> protocIds, Boolean isServer, Boolean isClient) {
         if (isClient && isServer) {
             return empty;
         }
@@ -1117,9 +1117,12 @@ public final class InvarWriteCode extends InvarWrite {
     private class NestedCoder {
         final private TypeID sizeType = TypeID.UINT32;
         private Boolean useFullName = false;
+        private Boolean isSql = false;
+        private Boolean exceptAuto;
         private String prefix = empty;
         private String snippetMet = empty;
         private String snippetArg = empty;
+
 
         public String code(String prefix, Boolean useFullName, TypeStruct type, List<InvarField> fs) {
             this.prefix = prefix;
@@ -1129,17 +1132,28 @@ public final class InvarWriteCode extends InvarWrite {
             if (empty.equals(snippetMet)) {
                 return empty;
             }
+            this.isSql = prefix.startsWith("sql.");
+            this.exceptAuto = Boolean.parseBoolean(snippetTryGet(prefix + "except.auto", empty));
+            if (isSql && !type.isTable()) {
+                return empty;
+            }
             List<String> lines = new ArrayList<String>();
             int len = snippetMet.contains("(#body)") ? fs.size() : 0;
             for (int i = 0; i < len; i++) {
                 InvarField f = fs.get(i);
+                if (isSql && type.isTable() &&
+                    (f.isMap() || f.isVec() ||
+                        (exceptAuto && f.getAuto()))) {
+                    continue;
+                }
                 lines.addAll(makeField(f, i == 0, i == len - 1));
             }
-            String typeName = uniqueTypeName && type.getConflict(context) ? type.getUniqueName() : type.getName();
-            return makeCodeMethod(lines, typeName, snippetMet);
+
+            return makeCodeMethod(lines, type, snippetMet);
         }
 
-        private String makeCodeMethod(List<String> lines, String returnType, String snippet) {
+        private String makeCodeMethod(List<String> lines, TypeStruct type, String snippet) {
+            String returnType = uniqueTypeName && type.getConflict(context) ? type.getUniqueName() : type.getName();
             indentLines(lines, methodIndentNum);
             StringBuilder body = new StringBuilder();
             for (String line : lines) {
@@ -1156,6 +1170,7 @@ public final class InvarWriteCode extends InvarWrite {
             s = replace(s, Token.ByteNull, snippetTryGet("byte.non"));
             s = replace(s, Token.ByteNotNull, snippetTryGet("byte.yes"));
             s = replace(s, Token.Argument, snippetArg);
+            s = replace(s, Token.NameTable, type.getTableName());
             return s;
         }
 
@@ -1249,6 +1264,7 @@ public final class InvarWriteCode extends InvarWrite {
                     s = replace(s, Token.Specifier, spec);
                     s = replace(s, Token.Default, makeStructFieldInit(p.field, true));
                     s = replace(s, Token.Index, p.field.getIndex().toString());
+                    s = replace(s, Token.NameAlias, f.hasAlias() ? f.getAlias() : p.nameReal);
                     lines.addAll(indentLines(s));
                     return;
                 }

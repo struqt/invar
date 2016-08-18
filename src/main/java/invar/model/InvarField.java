@@ -29,6 +29,8 @@ public class InvarField {
 
     private Boolean useReference = false;
     private Boolean usePointer = false;
+    private Boolean auto = false;
+    private String alias = "";
     private String shortName = "";
     private String defaultVal = "";
     private String typeFormatted = "";
@@ -142,6 +144,26 @@ public class InvarField {
 
     public int getWidthDefault() {
         return Math.min(widthDefault, 48);
+    }
+
+    public boolean hasAlias() {
+        return alias != null && alias.length() > 0;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public Boolean getAuto() {
+        return auto;
+    }
+
+    public void setAuto(Boolean auto) {
+        this.auto = auto;
     }
 
     public void setWidthType(int widthType) {

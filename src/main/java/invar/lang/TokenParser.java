@@ -72,9 +72,11 @@ public class TokenParser {
             } else if (n.getName().equals("struct")) {
                 String name = getAttr(n, "name");
                 String comment = getAttrOptional(n, "doc");
+                String table = getAttrOptional(n, "table");
                 TypeStruct t = new TypeStruct(name, pack, comment);
                 addToPack(pack, t, n);
                 t.setAlias(alias);
+                t.setTableName(table);
                 structNodes.put(n, t);
                 t.setShortField(getAttrOptional(n, "short"));
                 t.setNoHotfix(Boolean.parseBoolean(getAttrOptional(n, "nohotfix")));
@@ -171,7 +173,8 @@ public class TokenParser {
             String type = getAttr(n, "type");
             String deft = getAttrOptional(n, "value");
             String doc = getAttrOptional(n, "doc");
-
+            String alias = getAttrOptional(n, "alias");
+            boolean auto = Boolean.parseBoolean(getAttrOptional(n, "auto"));
             LinkedList<InvarType> types = parseFieldType(type, n, ctx);
             if (types == null || types.size() <= 0) {
                 throw new Exception(error(n, "Field type is invalid"));
@@ -201,6 +204,8 @@ public class TokenParser {
             }
             InvarField field = new InvarField(tStruct.numFields(), typeMain, name, doc, disableSetter, false);
             field.setDefault(deft);
+            field.setAlias(alias);
+            field.setAuto(auto);
             field.setUseReference(useRef);
             field.setUsePointer(usePtr);
             if (tid == TypeID.VEC) {
