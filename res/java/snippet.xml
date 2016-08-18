@@ -78,7 +78,7 @@
   <template key="init.float">  <![CDATA[ (#deft)F        ]]></template>
   <template key="init.string"> <![CDATA[ "(#deft)"       ]]></template>
   <template key="init.enum">   <![CDATA[ (#type).(#name) ]]></template>
-  <template key="init.struct"> <![CDATA[ new (#type)()   ]]></template>
+  <template key="init.struct"> <![CDATA[ (#type).Create()]]></template>
   <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
   <template key="init.map">    <![CDATA[ new (#type)()   ]]></template>
   <template key="init.uint64">
@@ -310,7 +310,7 @@
     <![CDATA[ (#type) (#name) = (#body); ]]></template>
   <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct">
     <![CDATA[
-    (#type) (#name) = new (#type)();(#brk)(#body); ]]></template>
+    (#type) (#name) = (#type).Create();(#brk)(#body); ]]></template>
   <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64">
     <![CDATA[
     byte[] (#name)Bytes = new byte[8]; from.readFully((#name)Bytes, 0, 8);
