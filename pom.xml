@@ -1,12 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.struqt</groupId>
   <artifactId>invar</artifactId>
-  <version>1.0.1</version>
-  <packaging>jar</packaging>
+  <version>1.0.2-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>invar-standalone</module>
+    <module>invar-core</module>
+    <module>invar-example</module>
+  </modules>
 
   <name>invar</name>
   <url>http://maven.apache.org</url>
@@ -14,84 +23,31 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-    <dir.deps>lib</dir.deps>
+    <version.junit>4.12</version.junit>
   </properties>
 
   <dependencies>
-    <!-- $ mvn dependency:sources -DdownloadSources=true -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
-
   <build>
-    <!-- http://maven.oschina.net/content/groups/public/org/apache/maven/plugins/ -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.5</version>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.2</version>
         <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>${dir.deps}/</classpathPrefix>
-              <mainClass>invar.Invar</mainClass>
-            </manifest>
-          </archive>
-          <excludes>
-            <exclude>**/*.xml</exclude>
-          </excludes>
+          <source>1.7</source>
+          <target>1.7</target>
+          <encoding>UTF-8</encoding>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptor>src/assembly/bin.xml</descriptor>
-          <finalName>${project.name}</finalName>
-          <!-- .${maven.build.timestamp} -->
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
-
 
 </project>
