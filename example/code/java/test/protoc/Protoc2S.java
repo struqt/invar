@@ -22,9 +22,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public Protoc2S Create() { return new Protoc2S(); }
-
     static public final long CRC32 = 0xC0869FC2;
+
+    static public Protoc2S Create() {
+        return new Protoc2S();
+    }
 
     private java.lang.String             sessionId;/* 会话Id */
     private LinkedHashMap<String,String> hotfix   ;/* [AutoAdd] Hotfix */

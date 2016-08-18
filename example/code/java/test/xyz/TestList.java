@@ -24,9 +24,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestList Create() { return new TestList(); }
-
     static public final long CRC32 = 0x5FD1194A;
+
+    static public TestList Create() {
+        return new TestList();
+    }
 
     private LinkedList<Byte>       listI08    ;/* 有符号的8位整数 */
     private LinkedList<Short>      listI16    ;/* 有符号的16位整数 */
@@ -261,7 +263,7 @@ invar.InvarCodec.XMLEncode
         listStruct.clear();
         Long lenListStruct = from.readInt() & 0xFFFFFFFFL;
         for (Long iListStruct = 0L; iListStruct < lenListStruct; ++iListStruct) {
-            Custom n1 = new Custom();
+            Custom n1 = Custom.Create();
             n1.read(from);
             listStruct.add(n1);
         }

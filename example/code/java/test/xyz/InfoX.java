@@ -25,9 +25,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public InfoX Create() { return new InfoX(); }
-
     static public final long CRC32 = 0xF55867E1;
+
+    static public InfoX Create() {
+        return new InfoX();
+    }
 
     private LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> infos     ;
     private test.xyz.Conflict                                                conflict_x;/* Two types with the same name. */
@@ -46,8 +48,8 @@ invar.InvarCodec.XMLEncode
     public InfoX()
     {
         infos      = new LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>>();
-        conflict_x = new test.xyz.Conflict();
-        conflict_a = new test.abc.Conflict();
+        conflict_x = test.xyz.Conflict.Create();
+        conflict_a = test.abc.Conflict.Create();
         mConflict  = new LinkedHashMap<Integer,test.abc.Conflict>();
         info2d     = new LinkedList<LinkedList<Info>>();
         info3d     = new LinkedList<LinkedList<LinkedList<Info>>>();
@@ -202,7 +204,7 @@ invar.InvarCodec.XMLEncode
                         LinkedList<Info> n4 = new LinkedList<Info>(); //read.vec.head
                         Long lenN4 = from.readInt() & 0xFFFFFFFFL;
                         for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
-                            Info n5 = new Info();
+                            Info n5 = Info.Create();
                             n5.read(from);
                             n4.add(n5);
                         }
@@ -220,7 +222,7 @@ invar.InvarCodec.XMLEncode
         Long lenMConflict = from.readInt() & 0xFFFFFFFFL;
         for (Long iMConflict = 0L; iMConflict < lenMConflict; ++iMConflict) {
             Integer k1 = from.readUnsignedShort();
-            test.abc.Conflict v1 = new test.abc.Conflict();
+            test.abc.Conflict v1 = test.abc.Conflict.Create();
             v1.read(from);
             mConflict.put(k1,v1);
         }
@@ -230,7 +232,7 @@ invar.InvarCodec.XMLEncode
             LinkedList<Info> n1 = new LinkedList<Info>(); //read.vec.head
             Long lenN1 = from.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
-                Info n2 = new Info();
+                Info n2 = Info.Create();
                 n2.read(from);
                 n1.add(n2);
             }
@@ -245,7 +247,7 @@ invar.InvarCodec.XMLEncode
                 LinkedList<Info> n2 = new LinkedList<Info>(); //read.vec.head
                 Long lenN2 = from.readInt() & 0xFFFFFFFFL;
                 for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
-                    Info n3 = new Info();
+                    Info n3 = Info.Create();
                     n3.read(from);
                     n2.add(n3);
                 }
@@ -268,7 +270,7 @@ invar.InvarCodec.XMLEncode
                         LinkedList<Info> n4 = new LinkedList<Info>(); //read.vec.head
                         Long lenN4 = from.readInt() & 0xFFFFFFFFL;
                         for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
-                            Info n5 = new Info();
+                            Info n5 = Info.Create();
                             n5.read(from);
                             n4.add(n5);
                         }
@@ -287,7 +289,7 @@ invar.InvarCodec.XMLEncode
             Long lenN1 = from.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
                 Short k2 = from.readShort();
-                Info v2 = new Info();
+                Info v2 = Info.Create();
                 v2.read(from);
                 n1.put(k2,v2);
             }
@@ -302,14 +304,14 @@ invar.InvarCodec.XMLEncode
                 Gender n2 = Gender.valueOf(from.readInt());
                 k1.add(n2);
             }
-            Info v1 = new Info();
+            Info v1 = Info.Create();
             v1.read(from);
             mvei.put(k1,v1);
         }
         mive.clear();
         Long lenMive = from.readInt() & 0xFFFFFFFFL;
         for (Long iMive = 0L; iMive < lenMive; ++iMive) {
-            Info k1 = new Info();
+            Info k1 = Info.Create();
             k1.read(from);
             LinkedList<Gender> v1 = new LinkedList<Gender>(); //read.map.head
             Long lenV1 = from.readInt() & 0xFFFFFFFFL;
@@ -325,7 +327,7 @@ invar.InvarCodec.XMLEncode
             LinkedList<Info> k1 = new LinkedList<Info>(); //read.map.head
             Long lenK1 = from.readInt() & 0xFFFFFFFFL;
             for (Long iK1 = 0L; iK1 < lenK1; ++iK1) {
-                Info n2 = new Info();
+                Info n2 = Info.Create();
                 n2.read(from);
                 k1.add(n2);
             }
@@ -346,7 +348,7 @@ invar.InvarCodec.XMLEncode
                 LinkedList<Info> k2 = new LinkedList<Info>(); //read.map.head
                 Long lenK2 = from.readInt() & 0xFFFFFFFFL;
                 for (Long iK2 = 0L; iK2 < lenK2; ++iK2) {
-                    Info n3 = new Info();
+                    Info n3 = Info.Create();
                     n3.read(from);
                     k2.add(n3);
                 }

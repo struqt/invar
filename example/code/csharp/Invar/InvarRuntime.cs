@@ -9,6 +9,7 @@ namespace Invar {
 using System.Collections.Generic;
 using System;
 using Test.Abc;
+using Test.Db;
 using Test.Protoc;
 using Test.Xyz;
 
@@ -89,6 +90,7 @@ static private Dictionary<String,Type> aliasStruct()
     map.Add("Custom", typeof(Test.Abc.Custom));
     map.Add("Info", typeof(Test.Abc.Info));
     map.Add("InfoX", typeof(Test.Xyz.InfoX));
+    map.Add("MemberEntry", typeof(Test.Db.MemberEntry));
     map.Add("TestAbcConflict", typeof(Test.Abc.Conflict));
     map.Add("TestBasic", typeof(Test.Abc.TestBasic));
     map.Add("TestDict", typeof(Test.Xyz.TestDict));

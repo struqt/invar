@@ -21,9 +21,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestBasic Create() { return new TestBasic(); }
-
     static public final long CRC32 = 0xF60C9915;
+
+    static public TestBasic Create() {
+        return new TestBasic();
+    }
 
     private java.lang.Byte    numberI08   ;/* 有符号的8位整数 */
     private Short             numberI16   ;/* 有符号的16位整数 */

@@ -20,7 +20,7 @@
 @interface Custom : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
 
 - (Gender           ) x       ; /* 枚举值 */
-- (TestBasic       *) test    ; /* 其他类型 */
+- (TestBasic       *) test_   ; /* 其他类型 */
 - (TestXyzConflict *) xyz     ; /* 同名的类型 */
 - (TestAbcConflict *) abc     ; /* 同名的类型 */
 - (NSMutableArray  *) children; /* 自身类型容器 */
@@ -32,7 +32,7 @@
 - (NSString        *) emptyDoc; /*  */
 
 - (Custom *) setX       : (Gender           ) value; /* 0 Test.Abc.Gender */
-- (Custom *) setTest    : (TestBasic       *) value; /* 1 Test.Abc.TestBasic */
+- (Custom *) setTest_   : (TestBasic       *) value; /* 1 Test.Abc.TestBasic */
 - (Custom *) setXyz     : (TestXyzConflict *) value; /* 2 Test.Xyz.Conflict */
 - (Custom *) setAbc     : (TestAbcConflict *) value; /* 3 Test.Abc.Conflict */
 - (Custom *) setUseRef  : (NSString        *) value; /* 6 string */

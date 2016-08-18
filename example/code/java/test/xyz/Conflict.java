@@ -22,9 +22,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public Conflict Create() { return new Conflict(); }
-
     static public final long CRC32 = 0x2126E985;
+
+    static public Conflict Create() {
+        return new Conflict();
+    }
 
     private java.lang.Double             pi    ;
     private LinkedHashMap<String,String> hotfix;/* [AutoAdd] Hotfix */

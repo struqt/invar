@@ -24,9 +24,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestNest Create() { return new TestNest(); }
-
     static public final long CRC32 = 0x6F0C2598;
+
+    static public TestNest Create() {
+        return new TestNest();
+    }
 
     private LinkedList<LinkedHashMap<String,Custom>>                         listDict;
     private LinkedHashMap<LinkedList<String>,LinkedList<Custom>>             dictList;
@@ -87,7 +89,7 @@ invar.InvarCodec.XMLEncode
             Long lenN1 = from.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
                 java.lang.String k2 = from.readUTF();
-                Custom v2 = new Custom();
+                Custom v2 = Custom.Create();
                 v2.read(from);
                 n1.put(k2,v2);
             }
@@ -105,7 +107,7 @@ invar.InvarCodec.XMLEncode
             LinkedList<Custom> v1 = new LinkedList<Custom>(); //read.map.head
             Long lenV1 = from.readInt() & 0xFFFFFFFFL;
             for (Long iV1 = 0L; iV1 < lenV1; ++iV1) {
-                Custom n2 = new Custom();
+                Custom n2 = Custom.Create();
                 n2.read(from);
                 v1.add(n2);
             }
@@ -126,7 +128,7 @@ invar.InvarCodec.XMLEncode
                         LinkedList<Custom> n4 = new LinkedList<Custom>(); //read.vec.head
                         Long lenN4 = from.readInt() & 0xFFFFFFFFL;
                         for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
-                            Custom n5 = new Custom();
+                            Custom n5 = Custom.Create();
                             n5.read(from);
                             n4.add(n5);
                         }

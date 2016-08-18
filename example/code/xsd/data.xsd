@@ -17,6 +17,31 @@ xmlns:tns="invar.data" targetNamespace="invar.data">
 <xs:complexType name="bool"><xs:attribute type="xs:boolean" name="value" use="required"/></xs:complexType>
 <xs:complexType name="string"><xs:attribute type="xs:string" name="value" use="required"/></xs:complexType>
 
+<xs:complexType name="test.db.MemberEntry">
+  <xs:sequence>
+    <xs:element name="id" minOccurs="0" maxOccurs="2048" type="tns:uint32" />
+    <xs:element name="phone" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="nickName" minOccurs="0" maxOccurs="2048" type="tns:string" />
+    <xs:element name="createTime" minOccurs="0" maxOccurs="2048" type="tns:int64" />
+    <xs:element name="updateTime" minOccurs="0" maxOccurs="2048" type="tns:int64" />
+    <xs:element name="hotfix" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType>
+      <xs:sequence>
+      <xs:element name="string" minOccurs="0" maxOccurs="2048" >
+      <xs:complexType><xs:complexContent>
+      <xs:extension base="tns:string">
+      <xs:attribute name="key" type="xs:string" use="required" />
+      </xs:extension></xs:complexContent></xs:complexType>
+      </xs:element>
+      </xs:sequence></xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="id" type="xs:unsignedInt" />
+  <xs:attribute name="phone" type="xs:string" />
+  <xs:attribute name="nickName" type="xs:string" />
+  <xs:attribute name="createTime" type="xs:long" />
+  <xs:attribute name="updateTime" type="xs:long" />
+</xs:complexType>
 <xs:complexType name="test.xyz.InfoX">
   <xs:sequence>
     <xs:element name="infos" minOccurs="0" maxOccurs="2048" >
@@ -765,7 +790,7 @@ xmlns:tns="invar.data" targetNamespace="invar.data">
 <xs:complexType name="test.abc.Custom">
   <xs:sequence>
     <xs:element name="x" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Gender" />
-    <xs:element name="test" minOccurs="0" maxOccurs="2048" type="tns:test.abc.TestBasic" />
+    <xs:element name="test_" minOccurs="0" maxOccurs="2048" type="tns:test.abc.TestBasic" />
     <xs:element name="xyz" minOccurs="0" maxOccurs="2048" type="tns:test.xyz.Conflict" />
     <xs:element name="abc" minOccurs="0" maxOccurs="2048" type="tns:test.abc.Conflict" />
     <xs:element name="children" minOccurs="0" maxOccurs="2048" >

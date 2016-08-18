@@ -21,7 +21,7 @@ public sealed class Custom
     public const uint CRC32 = 0x355EC042;
 
     private Gender            x        = Gender.NONE; // 枚举值.
-    private TestBasic         test     = new TestBasic(); // 其他类型.
+    private TestBasic         test_    = new TestBasic(); // 其他类型.
     private Test.Xyz.Conflict xyz      = new Test.Xyz.Conflict(); // 同名的类型.
     private Test.Abc.Conflict abc      = new Test.Abc.Conflict(); // 同名的类型.
     private List<Custom>      children = new List<Custom>(); // 自身类型容器.
@@ -38,7 +38,7 @@ public sealed class Custom
 
     /// 其他类型.
     [Invar.InvarRule("Test.Abc.TestBasic", "1")]
-    public TestBasic GetTest() { return this.test; }
+    public TestBasic GetTest_() { return this.test_; }
 
     /// 同名的类型.
     [Invar.InvarRule("Test.Xyz.Conflict", "2")]
@@ -82,7 +82,7 @@ public sealed class Custom
 
     /// 其他类型.
     [Invar.InvarRule("Test.Abc.TestBasic", "1")]
-    public Custom SetTest(TestBasic value) { this.test = value; return this; }
+    public Custom SetTest_(TestBasic value) { this.test_ = value; return this; }
 
     /// 同名的类型.
     [Invar.InvarRule("Test.Xyz.Conflict", "2")]
@@ -115,7 +115,7 @@ public sealed class Custom
     public Custom Reuse()
     {
         this.x        = Gender.NONE;
-        this.test.Reuse();
+        this.test_.Reuse();
         this.xyz.Reuse();
         this.abc.Reuse();
         this.children.Clear();
@@ -134,7 +134,7 @@ public sealed class Custom
             return this;
         }
         this.x = from_.x;
-        this.test.Copy(from_.test);
+        this.test_.Copy(from_.test_);
         this.xyz.Copy(from_.xyz);
         this.abc.Copy(from_.abc);
         this.children.Clear();
@@ -161,7 +161,7 @@ public sealed class Custom
     public void Read(BinaryReader r)
     {
         this.x = (Gender)Enum.ToObject(typeof(Gender), r.ReadInt32());
-        this.test.Read(r);
+        this.test_.Read(r);
         this.xyz.Read(r);
         this.abc.Read(r);
         UInt32 lenChildren = r.ReadUInt32();
@@ -198,7 +198,7 @@ public sealed class Custom
     public void Write(BinaryWriter w)
     {
         w.Write((Int32)this.x);
-        this.test.Write(w);
+        this.test_.Write(w);
         this.xyz.Write(w);
         this.abc.Write(w);
         w.Write(this.children.Count);
@@ -241,7 +241,7 @@ public sealed class Custom
         result.Append(GetType().ToString());
         result.Append(',').Append(' ').Append("x").Append(':');
         result.Append(this.x.ToString());
-        result.Append(',').Append(' ').Append("test").Append(':');
+        result.Append(',').Append(' ').Append("test_").Append(':');
         result.Append("<TestBasic>");
         result.Append(',').Append(' ').Append("xyz").Append(':');
         result.Append("<Test.Xyz.Conflict>");
@@ -280,10 +280,10 @@ public sealed class Custom
         s.Append('\n').Append('{');
         string comma = null;
         s.Append('"').Append("x").Append('"').Append(':'); comma = ","; s.Append((int)this.x);;
-        bool testExists = (null != this.test);
-        if (!String.IsNullOrEmpty(comma) && testExists) { s.Append(comma); comma = null; }
-        if (testExists) {
-            s.Append('"').Append("test").Append('"').Append(':'); comma = ","; this.test.WriteJSON(s);
+        bool test_Exists = (null != this.test_);
+        if (!String.IsNullOrEmpty(comma) && test_Exists) { s.Append(comma); comma = null; }
+        if (test_Exists) {
+            s.Append('"').Append("test_").Append('"').Append(':'); comma = ","; this.test_.WriteJSON(s);
         }
         bool xyzExists = (null != this.xyz);
         if (!String.IsNullOrEmpty(comma) && xyzExists) { s.Append(comma); comma = null; }
@@ -354,10 +354,10 @@ public sealed class Custom
         s.Append('\n').Append('{');
         string comma = null;
         s.Append("x").Append('='); comma = ","; s.Append((int)this.x);;
-        bool testExists = (null != this.test);
-        if (!String.IsNullOrEmpty(comma) && testExists) { s.Append(comma); comma = null; }
-        if (testExists) {
-            s.Append("test").Append('='); comma = ","; this.test.WriteLua(s);
+        bool test_Exists = (null != this.test_);
+        if (!String.IsNullOrEmpty(comma) && test_Exists) { s.Append(comma); comma = null; }
+        if (test_Exists) {
+            s.Append("test_").Append('='); comma = ","; this.test_.WriteLua(s);
         }
         bool xyzExists = (null != this.xyz);
         if (!String.IsNullOrEmpty(comma) && xyzExists) { s.Append(comma); comma = null; }
@@ -429,10 +429,10 @@ public sealed class Custom
         string comma = null;
         s.Append('\'').Append("x").Append('\'').Append("=>"); comma = ","; s.Append((int)this.x);
         s.Append("/*Gender::").Append(this.x.ToString()).Append("*/");
-        bool testExists = (null != this.test);
-        if (!String.IsNullOrEmpty(comma) && testExists) { s.Append(comma).Append('\n'); comma = null; }
-        if (testExists) {
-            s.Append('\'').Append("test").Append('\'').Append("=>"); comma = ","; this.test.WritePHP(s);
+        bool test_Exists = (null != this.test_);
+        if (!String.IsNullOrEmpty(comma) && test_Exists) { s.Append(comma).Append('\n'); comma = null; }
+        if (test_Exists) {
+            s.Append('\'').Append("test_").Append('\'').Append("=>"); comma = ","; this.test_.WritePHP(s);
         }
         bool xyzExists = (null != this.xyz);
         if (!String.IsNullOrEmpty(comma) && xyzExists) { s.Append(comma).Append('\n'); comma = null; }
@@ -504,7 +504,7 @@ public sealed class Custom
         StringBuilder attrs = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
         attrs.Append(' ').Append("x").Append('=').Append('"').Append(this.x.ToString()).Append('"');
-        this.test.WriteXML(nodes, "test");
+        this.test_.WriteXML(nodes, "test_");
         this.xyz.WriteXML(nodes, "xyz");
         this.abc.WriteXML(nodes, "abc");
         if (this.children.Count > 0) {

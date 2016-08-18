@@ -12,6 +12,7 @@ import test.abc.Custom;
 import test.abc.Gender;
 import test.abc.Info;
 import test.abc.TestBasic;
+import test.db.MemberEntry;
 import test.protoc.Protoc2C;
 import test.protoc.Protoc2S;
 import test.protoc.TestHeartBeat2C;
@@ -72,6 +73,7 @@ public final class InvarRuntime
         map.put("Custom", Custom.class);
         map.put("Info", Info.class);
         map.put("InfoX", InfoX.class);
+        map.put("MemberEntry", MemberEntry.class);
         map.put("TestAbcConflict", test.abc.Conflict.class);
         map.put("TestBasic", TestBasic.class);
         map.put("TestDict", TestDict.class);

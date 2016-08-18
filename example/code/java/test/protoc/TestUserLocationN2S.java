@@ -23,9 +23,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestUserLocationN2S Create() { return new TestUserLocationN2S(); }
-
     static public final long CRC32 = 0xEC953457;
+
+    static public TestUserLocationN2S Create() {
+        return new TestUserLocationN2S();
+    }
 
     private java.lang.Integer            protocId ;/* [AutoAdd] ProtocolID */
     private java.lang.Long               protocCRC;/* [AutoAdd] Protocol CRC32 */

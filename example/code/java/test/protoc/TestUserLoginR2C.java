@@ -24,9 +24,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestUserLoginR2C Create() { return new TestUserLoginR2C(); }
-
     static public final long CRC32 = 0x38180462;
+
+    static public TestUserLoginR2C Create() {
+        return new TestUserLoginR2C();
+    }
 
     private java.lang.Integer            protocId   ;/* [AutoAdd] ProtocolID */
     private java.lang.Long               protocCRC  ;/* [AutoAdd] Protocol CRC32 */

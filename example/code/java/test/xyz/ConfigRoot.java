@@ -23,9 +23,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public ConfigRoot Create() { return new ConfigRoot(); }
-
     static public final long CRC32 = 0x6D03BB9B;
+
+    static public ConfigRoot Create() {
+        return new ConfigRoot();
+    }
 
     private java.lang.String             revision;
     private TestList                     list    ;
@@ -38,11 +40,11 @@ invar.InvarCodec.XMLEncode
     public ConfigRoot()
     {
         revision = "1.0.0";
-        list     = new TestList();
-        dict     = new TestDict();
-        nest     = new TestNest();
-        info     = new Info();
-        infox    = new InfoX();
+        list     = TestList.Create();
+        dict     = TestDict.Create();
+        nest     = TestNest.Create();
+        info     = Info.Create();
+        infox    = InfoX.Create();
         hotfix   = null;
     }
 

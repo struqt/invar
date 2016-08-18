@@ -23,9 +23,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public Conflict Create() { return new Conflict(); }
-
     static public final long CRC32 = 0xCC7A29B9;
+
+    static public Conflict Create() {
+        return new Conflict();
+    }
 
     private Gender                       key   ;
     private java.lang.String             text  ;

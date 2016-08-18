@@ -23,7 +23,7 @@ class Custom(object):
 
     __slots__ = (
         '_x',
-        '_test',
+        '_test_',
         '_xyz',
         '_abc',
         '_children',
@@ -37,7 +37,7 @@ class Custom(object):
 
     def __init__(self):
         self._x        = Gender.NONE
-        self._test     = TestBasic()
+        self._test_    = TestBasic()
         self._xyz      = TestXyzConflict()
         self._abc      = TestAbcConflict()
         self._children = []
@@ -61,7 +61,7 @@ class Custom(object):
         s.write(unicode(self._x))
         s.write(u',')
         s.write(u' ')
-        s.write(u'test')
+        s.write(u'test_')
         s.write(u':')
         s.write(u'<')
         s.write(u'TestBasic')
@@ -145,7 +145,7 @@ class Custom(object):
 
     def __len__(self):
         size = Custom.SIZE_
-        size += len(self._test)
+        size += len(self._test_)
         size += len(self._xyz)
         size += len(self._abc)
         size += 4
@@ -164,7 +164,7 @@ class Custom(object):
 
     def read(r):
         self._x = r.readInt32()
-        self._test.read(r)
+        self._test_.read(r)
         self._xyz.read(r)
         self._abc.read(r)
         lenChildren = r.readUInt32()
@@ -206,7 +206,7 @@ class Custom(object):
 
     def write(w):
         w.writeInt32(self._x)
-        self._test.write(w)
+        self._test_.write(w)
         self._xyz.write(w)
         self._abc.write(w)
         w.writeUInt32(len(self._children))

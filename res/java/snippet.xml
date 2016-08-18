@@ -166,8 +166,12 @@
     invar.InvarCodec.BinaryEncode,
     invar.InvarCodec.XMLEncode
     {
-    (#tab)static public (#name) Create() { return new (#name)(); }(#brk)
-    (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)];(#brk)
+    (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)];
+    (#blank)
+    (#tab)static public (#name) Create() {
+    (#tab)(#tab)return new (#name)();
+    (#tab)}
+    (#blank)
     [#codeFields (struct; fields)]
     [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)

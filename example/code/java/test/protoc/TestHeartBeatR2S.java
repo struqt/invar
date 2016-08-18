@@ -23,9 +23,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestHeartBeatR2S Create() { return new TestHeartBeatR2S(); }
-
     static public final long CRC32 = 0xD651F662;
+
+    static public TestHeartBeatR2S Create() {
+        return new TestHeartBeatR2S();
+    }
 
     private java.lang.Integer            protocId   ;/* [AutoAdd] ProtocolID */
     private java.lang.Long               protocCRC  ;/* [AutoAdd] Protocol CRC32 */

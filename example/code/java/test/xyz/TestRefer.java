@@ -26,9 +26,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestRefer Create() { return new TestRefer(); }
-
     static public final long CRC32 = 0xBBD63AFD;
+
+    static public TestRefer Create() {
+        return new TestRefer();
+    }
 
     private java.lang.Byte           numberi08   ;
     private Short                    numberi16   ;
@@ -63,7 +65,7 @@ invar.InvarCodec.XMLEncode
         boolValue    = false;
         stringValue  = "";
         enumValue    = Gender.NONE;
-        other        = new Custom();
+        other        = Custom.Create();
         self         = null;
         listI08      = new LinkedList<Byte>();
         dictI08      = new LinkedHashMap<Byte,Byte>();

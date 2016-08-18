@@ -23,9 +23,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestServerTimeN2C Create() { return new TestServerTimeN2C(); }
-
     static public final long CRC32 = 0x85E08773;
+
+    static public TestServerTimeN2C Create() {
+        return new TestServerTimeN2C();
+    }
 
     private java.lang.Integer            protocId ;/* [AutoAdd] ProtocolID */
     private java.lang.Long               protocCRC;/* [AutoAdd] Protocol CRC32 */

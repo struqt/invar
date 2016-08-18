@@ -24,9 +24,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public Info Create() { return new Info(); }
-
     static public final long CRC32 = 0x120FDCDB;
+
+    static public Info Create() {
+        return new Info();
+    }
 
     private Integer                       key          ;
     private java.lang.Byte                number01     ;
@@ -70,7 +72,7 @@ invar.InvarCodec.XMLEncode
         world         = new LinkedList<String>();
         gender        = Gender.NONE;
         next          = null;
-        conflict      = new test.abc.Conflict();
+        conflict      = test.abc.Conflict.Create();
         conflicts     = new LinkedList<test.xyz.Conflict>();
         numbers       = new LinkedList<Double>();
         mapInfoG      = new LinkedHashMap<Info,Gender>();
@@ -352,7 +354,7 @@ invar.InvarCodec.XMLEncode
         conflicts.clear();
         Long lenConflicts = from.readInt() & 0xFFFFFFFFL;
         for (Long iConflicts = 0L; iConflicts < lenConflicts; ++iConflicts) {
-            test.xyz.Conflict n1 = new test.xyz.Conflict();
+            test.xyz.Conflict n1 = test.xyz.Conflict.Create();
             n1.read(from);
             conflicts.add(n1);
         }
@@ -365,7 +367,7 @@ invar.InvarCodec.XMLEncode
         mapInfoG.clear();
         Long lenMapInfoG = from.readInt() & 0xFFFFFFFFL;
         for (Long iMapInfoG = 0L; iMapInfoG < lenMapInfoG; ++iMapInfoG) {
-            Info k1 = new Info();
+            Info k1 = Info.Create();
             k1.read(from);
             Gender v1 = Gender.valueOf(from.readInt());
             mapInfoG.put(k1,v1);
@@ -374,7 +376,7 @@ invar.InvarCodec.XMLEncode
         Long lenMapGenderInfo = from.readInt() & 0xFFFFFFFFL;
         for (Long iMapGenderInfo = 0L; iMapGenderInfo < lenMapGenderInfo; ++iMapGenderInfo) {
             Gender k1 = Gender.valueOf(from.readInt());
-            Info v1 = new Info();
+            Info v1 = Info.Create();
             v1.read(from);
             mapGenderInfo.put(k1,v1);
         }

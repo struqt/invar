@@ -21,12 +21,14 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public Custom Create() { return new Custom(); }
-
     static public final long CRC32 = 0x355EC042;
 
+    static public Custom Create() {
+        return new Custom();
+    }
+
     private Gender             x       ;/* 枚举值 */
-    private TestBasic          test    ;/* 其他类型 */
+    private TestBasic          test_   ;/* 其他类型 */
     private test.xyz.Conflict  xyz     ;/* 同名的类型 */
     private test.abc.Conflict  abc     ;/* 同名的类型 */
     private LinkedList<Custom> children;/* 自身类型容器 */
@@ -40,9 +42,9 @@ invar.InvarCodec.XMLEncode
     public Custom()
     {
         x        = Gender.NONE;
-        test     = new TestBasic();
-        xyz      = new test.xyz.Conflict();
-        abc      = new test.abc.Conflict();
+        test_    = TestBasic.Create();
+        xyz      = test.xyz.Conflict.Create();
+        abc      = test.abc.Conflict.Create();
         children = new LinkedList<Custom>();
         noSetter = -1;
         useRef   = "";
@@ -55,7 +57,7 @@ invar.InvarCodec.XMLEncode
     public Custom reuse()
     {
         x = Gender.NONE;
-        test.reuse();
+        test_.reuse();
         xyz.reuse();
         abc.reuse();
         children.clear();
@@ -80,7 +82,7 @@ invar.InvarCodec.XMLEncode
 
     /** 其他类型 */
     @invar.InvarRule(T="test.abc.TestBasic", S="f1")
-    public TestBasic getTest() { return test; }
+    public TestBasic getTest_() { return test_; }
 
     /** 同名的类型 */
     @invar.InvarRule(T="test.xyz.Conflict", S="f2")
@@ -124,7 +126,7 @@ invar.InvarCodec.XMLEncode
 
     /** 其他类型 */
     @invar.InvarRule(T="test.abc.TestBasic", S="f1")
-    public Custom setTest(TestBasic value) { this.test = value; return this; }
+    public Custom setTest_(TestBasic value) { this.test_ = value; return this; }
 
     /** 同名的类型 */
     @invar.InvarRule(T="test.xyz.Conflict", S="f2")
@@ -160,7 +162,7 @@ invar.InvarCodec.XMLEncode
             return this;
         }
         x = from.x;
-        test = from.test;
+        test_ = from.test_;
         xyz = from.xyz;
         abc = from.abc;
         children.clear();
@@ -190,13 +192,13 @@ invar.InvarCodec.XMLEncode
     public void read(DataInput from) throws IOException
     {
         x = Gender.valueOf(from.readInt());
-        test.read(from);
+        test_.read(from);
         xyz.read(from);
         abc.read(from);
         children.clear();
         Long lenChildren = from.readInt() & 0xFFFFFFFFL;
         for (Long iChildren = 0L; iChildren < lenChildren; ++iChildren) {
-            Custom n1 = new Custom();
+            Custom n1 = Custom.Create();
             n1.read(from);
             children.add(n1);
         }
@@ -222,7 +224,7 @@ invar.InvarCodec.XMLEncode
     public void write(DataOutput dest) throws IOException
     {
         dest.writeInt(x.getValue());
-        test.write(dest);
+        test_.write(dest);
         xyz.write(dest);
         abc.write(dest);
         dest.writeInt(children.size());
@@ -259,7 +261,7 @@ invar.InvarCodec.XMLEncode
         StringBuilder nodes  = new StringBuilder();
         attrs.append(" x=\"");
         attrs.append(x.toString()); attrs.append("\"");
-        nodes.append(test.toStringXML("test"));
+        nodes.append(test_.toStringXML("test_"));
         nodes.append(xyz.toStringXML("xyz"));
         nodes.append(abc.toStringXML("abc"));
         if (children.size() > 0) {
@@ -303,7 +305,7 @@ invar.InvarCodec.XMLEncode
         result.append(getClass().getName());
         result.append(", x:");
         result.append(x.toString());
-        result.append(", test:");
+        result.append(", test_:");
         result.append("<TestBasic>");
         result.append(", xyz:");
         result.append("<test.xyz.Conflict>");

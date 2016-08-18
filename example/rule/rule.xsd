@@ -43,6 +43,8 @@
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="doc" type="xs:string" use="required"/>
     <xs:attribute name="value" type="xs:string" use="optional"/>
+    <xs:attribute name="alias" type="xs:string" use="optional"/>
+    <xs:attribute name="auto" type="xs:boolean" use="optional"/>
     <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
     <xs:attribute name="nosetter" type="xs:boolean" use="optional"/>
     <xs:attribute name="useref" type="xs:boolean" use="optional"/>
@@ -67,6 +69,7 @@
     <xs:attribute name="short" type="xs:string" use="optional"/>
     <xs:attribute name="alias" type="xs:string" use="optional"/>
     <xs:attribute name="nohotfix" type="xs:string" use="optional"/>
+    <xs:attribute name="table" type="xs:string" use="optional"/>
   </xs:complexType>
   <xs:complexType name="rule.enum">
     <xs:sequence>

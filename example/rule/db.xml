@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:package
+  name="test.db"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="invar.rule rule.xsd"
+  xmlns:tns="invar.rule">
+
+  <struct name="MemberEntry" table="tbl_member" doc="名字冲突的类型">
+    <field name="id" type="Uint32" doc="主键，自增长" auto="true"/>
+    <field name="phone" type="String" doc="手机号码"/>
+    <field name="nickName" type="String" doc="会员昵称" alias="nick_name"/>
+    <field name="createTime" type="Int64" doc="创建时间" alias="create_time" auto="true"/>
+    <field name="updateTime" type="Int64" doc="创建时间" alias="update_time" auto="true"/>
+  </struct>
+
+</tns:package>

@@ -22,9 +22,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public Protoc2C Create() { return new Protoc2C(); }
-
     static public final long CRC32 = 0xC716EAFC;
+
+    static public Protoc2C Create() {
+        return new Protoc2C();
+    }
 
     private LinkedHashMap<String,String> hotfix;/* [AutoAdd] Hotfix */
 

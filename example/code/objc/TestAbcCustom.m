@@ -16,7 +16,7 @@
 @interface Custom ()
 {
     Gender            _x       ; /* 0 &-Test.Abc.Gender */
-    TestBasic       * _test    ; /* 1 &-Test.Abc.TestBasic */
+    TestBasic       * _test_   ; /* 1 &-Test.Abc.TestBasic */
     TestXyzConflict * _xyz     ; /* 2 &-Test.Xyz.Conflict */
     TestAbcConflict * _abc     ; /* 3 &-Test.Abc.Conflict */
     NSMutableArray  * _children; /* 4 &-vec<Test.Abc.Custom> */
@@ -36,7 +36,7 @@
     self = [super init];
     if (!self) { return self; }
     _x        = GenderNONE;
-    _test     = [[TestBasic alloc] init];
+    _test_    = [[TestBasic alloc] init];
     _xyz      = [[TestXyzConflict alloc] init];
     _abc      = [[TestAbcConflict alloc] init];
     _children = [[NSMutableArray alloc] init];
@@ -52,7 +52,7 @@
 
 - (void) dealloc
 {
-    if (_test    ) { _test     = nil; }
+    if (_test_   ) { _test_    = nil; }
     if (_xyz     ) { _xyz      = nil; }
     if (_abc     ) { _abc      = nil; }
     if (_children) { _children = nil; }
@@ -75,7 +75,7 @@
 /* Custom::copyWithZone */
 
 - (Gender           ) x        { return _x       ; }
-- (TestBasic       *) test     { return _test    ; }
+- (TestBasic       *) test_    { return _test_   ; }
 - (TestXyzConflict *) xyz      { return _xyz     ; }
 - (TestAbcConflict *) abc      { return _abc     ; }
 - (NSMutableArray  *) children { return _children; }
@@ -87,7 +87,7 @@
 - (NSString        *) emptyDoc { return _emptyDoc; }
 
 - (Custom *) setX        : (Gender           )v { _x        = v; return self; }
-- (Custom *) setTest     : (TestBasic       *)v { _test     = v; return self; }
+- (Custom *) setTest_    : (TestBasic       *)v { _test_    = v; return self; }
 - (Custom *) setXyz      : (TestXyzConflict *)v { _xyz      = v; return self; }
 - (Custom *) setAbc      : (TestAbcConflict *)v { _abc      = v; return self; }
 - (Custom *) setUseRef   : (NSString        *)v { _useRef   = v; return self; }
@@ -100,7 +100,7 @@
 {
     BOOL eof = false;
     _x = (Gender)[r readInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
-    NSInteger testErr = [_test read:r]; if (testErr != 0) { return testErr; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    NSInteger test_Err = [_test_ read:r]; if (test_Err != 0) { return test_Err; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     NSInteger xyzErr = [_xyz read:r]; if (xyzErr != 0) { return xyzErr; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     NSInteger abcErr = [_abc read:r]; if (abcErr != 0) { return abcErr; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     uint32_t lenChildren = [r readUInt32:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
@@ -139,7 +139,7 @@
 - (NSInteger)write:(DataWriter *)w
 {
     [w writeInt32:_x];
-    [_test write:w];
+    [_test_ write:w];
     [_xyz write:w];
     [_abc write:w];
     [w writeUInt32:(uint32_t)[_children count]];
@@ -162,7 +162,7 @@
 - (NSUInteger)byteSize
 {
     NSUInteger size = SIZE__;
-    size += [_test byteSize];
+    size += [_test_ byteSize];
     size += [_xyz byteSize];
     size += [_abc byteSize];
     size += sizeof(uint32_t);
@@ -191,11 +191,11 @@
     NSString *comma = nil;
     [s appendString:QUOTATION_S]; [s appendString:@"x"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
     comma = COMMA_S; [s appendFormat:FORMAT_S, @(_x)];
-    BOOL testExists = (nil != _test);
-    if (comma && testExists) { [s appendString:comma]; comma = nil; }
-    if (testExists) {
-        [s appendString:QUOTATION_S]; [s appendString:@"test"]; [s appendString:QUOTATION_S];
-        [s appendString:COLON_S]; [_test writeJSON:s]; comma = COMMA_S;
+    BOOL test_Exists = (nil != _test_);
+    if (comma && test_Exists) { [s appendString:comma]; comma = nil; }
+    if (test_Exists) {
+        [s appendString:QUOTATION_S]; [s appendString:@"test_"]; [s appendString:QUOTATION_S];
+        [s appendString:COLON_S]; [_test_ writeJSON:s]; comma = COMMA_S;
     }
     BOOL xyzExists = (nil != _xyz);
     if (comma && xyzExists) { [s appendString:comma]; comma = nil; }

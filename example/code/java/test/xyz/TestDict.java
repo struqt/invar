@@ -25,9 +25,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestDict Create() { return new TestDict(); }
-
     static public final long CRC32 = 0x969046DE;
+
+    static public TestDict Create() {
+        return new TestDict();
+    }
 
     private LinkedHashMap<Byte,Byte>             dictI08    ;/* 有符号的8位整数 */
     private LinkedHashMap<Short,Short>           dictI16    ;/* 有符号的16位整数 */
@@ -295,9 +297,9 @@ invar.InvarCodec.XMLEncode
         dictStruct.clear();
         Long lenDictStruct = from.readInt() & 0xFFFFFFFFL;
         for (Long iDictStruct = 0L; iDictStruct < lenDictStruct; ++iDictStruct) {
-            Custom k1 = new Custom();
+            Custom k1 = Custom.Create();
             k1.read(from);
-            Custom v1 = new Custom();
+            Custom v1 = Custom.Create();
             v1.read(from);
             dictStruct.put(k1,v1);
         }

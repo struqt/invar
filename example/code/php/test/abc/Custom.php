@@ -28,7 +28,7 @@ final class Custom
     }
 
     private $x        ;/* 0 test.abc.Gender // 枚举值 */
-    private $test     ;/* 1 test.abc.TestBasic // 其他类型 */
+    private $test_    ;/* 1 test.abc.TestBasic // 其他类型 */
     private $xyz      ;/* 2 test.xyz.Conflict // 同名的类型 */
     private $abc      ;/* 3 test.abc.Conflict // 同名的类型 */
     private $children ;/* 4 vec<test.abc.Custom> // 自身类型容器 */
@@ -42,7 +42,7 @@ final class Custom
     function __construct()
     {
         $this->x        = Gender::NONE;
-        $this->test     = new TestBasic;
+        $this->test_    = new TestBasic;
         $this->xyz      = new test\xyz\Conflict;
         $this->abc      = new test\abc\Conflict;
         $this->children = array();
@@ -61,7 +61,7 @@ final class Custom
             return this;
         }
         $this->x = $from->x;
-        $this->test = $from->test;
+        $this->test_ = $from->test_;
         $this->xyz = $from->xyz;
         $this->abc = $from->abc;
         if ($from->children != NULL) {
@@ -90,7 +90,7 @@ final class Custom
     public function &read (& $r)
     {
         $this->x = $r->readInt32();
-        $this->test->read($r);
+        $this->test_->read($r);
         $this->xyz->read($r);
         $this->abc->read($r);
         $this->children = array();
@@ -128,7 +128,7 @@ final class Custom
     public function write (& $str)
     {
         BinaryWriter::writeInt32($this->x, $str);
-        $this->test->write($str);
+        $this->test_->write($str);
         $this->xyz->write($str);
         $this->abc->write($str);
         BinaryWriter::writeInt32(count($this->children), $str);
@@ -163,7 +163,7 @@ final class Custom
     public function  getX() { return $this->x; }
 
     /** 其他类型 */
-    public function &getTest() { return $this->test; }
+    public function &getTest_() { return $this->test_; }
 
     /** 同名的类型 */
     public function &getXyz() { return $this->xyz; }
@@ -196,7 +196,7 @@ final class Custom
     public function setX($value) { $this->x = $value; return $this; }
 
     /** 其他类型 */
-    public function setTest($value) { $this->test = $value; return $this; }
+    public function setTest_($value) { $this->test_ = $value; return $this; }
 
     /** 同名的类型 */
     public function setXyz($value) { $this->xyz = $value; return $this; }
@@ -224,7 +224,7 @@ final class Custom
         $s  = '{'; $s .= get_class($this);
         $s .= ','; $s .= 'x'; $s .= ':';
         $s .= $this->x;
-        $s .= ','; $s .= 'test'; $s .= ':';
+        $s .= ','; $s .= 'test_'; $s .= ':';
         $s .= '<'; $s .= 'TestBasic'; $s .= '>';
         $s .= ','; $s .= 'xyz'; $s .= ':';
         $s .= '<'; $s .= 'testxyzConflict'; $s .= '>';
@@ -264,11 +264,11 @@ final class Custom
         $s .= "\n"; $s .= '{';
         $s .= '"'; $s .= 'x'; $s .= '"'; $s .= ':'; $comma = ',';
         $s .= $this->x;
-        $testExists = isset($this->test);
-        if (!empty($comma) && $testExists) { $s .= $comma; $comma = ''; }
-        if ($testExists) {
-            $s .= '"'; $s .= 'test'; $s .= '"'; $s .= ':'; $comma = ',';
-            $this->test->writeJSON($s);
+        $test_Exists = isset($this->test_);
+        if (!empty($comma) && $test_Exists) { $s .= $comma; $comma = ''; }
+        if ($test_Exists) {
+            $s .= '"'; $s .= 'test_'; $s .= '"'; $s .= ':'; $comma = ',';
+            $this->test_->writeJSON($s);
         }
         $xyzExists = isset($this->xyz);
         if (!empty($comma) && $xyzExists) { $s .= $comma; $comma = ''; }
@@ -347,7 +347,7 @@ final class Custom
         $attrs = ''; $nodes = '';
         $attrs .= ' '; $attrs .= 'x'; $attrs .= '=';
         $attrs .= '"'; $attrs .= $this->x; $attrs .= '"';
-        $this->test->writeXML($nodes, 'test');
+        $this->test_->writeXML($nodes, 'test_');
         $this->xyz->writeXML($nodes, 'xyz');
         $this->abc->writeXML($nodes, 'abc');
         if (count($this->children) > 0) {

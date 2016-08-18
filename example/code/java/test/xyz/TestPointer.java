@@ -25,9 +25,11 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public TestPointer Create() { return new TestPointer(); }
-
     static public final long CRC32 = 0x6348C9B7;
+
+    static public TestPointer Create() {
+        return new TestPointer();
+    }
 
     private TestPointer                                                 self        ;
     private java.lang.String                                            stringValue ;
@@ -243,7 +245,7 @@ invar.InvarCodec.XMLEncode
                         LinkedList<TestPointer> n3 = new LinkedList<TestPointer>(); //read.vec.head
                         Long lenN3 = from.readInt() & 0xFFFFFFFFL;
                         for (Long iN3 = 0L; iN3 < lenN3; ++iN3) {
-                            TestPointer n4 = new TestPointer();
+                            TestPointer n4 = TestPointer.Create();
                             n4.read(from);
                             n3.add(n4);
                         }
