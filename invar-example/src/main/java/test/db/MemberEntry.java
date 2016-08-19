@@ -13,12 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /** 名字冲突的类型 */
 public final class MemberEntry
@@ -256,124 +253,53 @@ invar.InvarCodec.XMLEncode
 
         static public final String TABLE = "tbl_member";
 
-        static private List<String> variableFields = null;
+        static public StringBuilder buildInsert() {
+            return getBuilder().buildInsert();
+        }
 
-        static List<String> getVariableFields() {
-            if (variableFields != null) {
-                return variableFields;
+        static public StringBuilder buildSelect(String where, String... fields) {
+            return getBuilder().buildSelect(where, fields);
+        }
+
+        static public StringBuilder buildUpdate(String where, String... fields) {
+            return getBuilder().buildUpdate(where, fields);
+        }
+
+        static public invar.InvarSQL getBuilder() {
+            if (builder == null) {
+                builder = invar.InvarSQL.Create(
+                    TABLE, getWritableFields(), getAliasMap());
+            }
+            return builder;
+        }
+
+        static private invar.InvarSQL builder = null;
+
+        static private List<String> writableFields = null;
+
+        static private List<String> getWritableFields() {
+            if (writableFields != null) {
+                return writableFields;
             }
             List<String> list = new ArrayList<String>();
-            variableFields.add("phone");
-            variableFields.add("nick_name");
-            return variableFields = list;
+            list.add("phone");
+            list.add("nick_name");
+            return writableFields = list;
         }
 
         static private Map<String, String> aliasMap = null;
 
-        static Map<String, String> getAliasMap() {
+        static private Map<String, String> getAliasMap() {
             if (aliasMap != null) {
                 return aliasMap;
             }
             Map<String, String> map = new LinkedHashMap<String, String>();
-            aliasMap.put("id", "id");
-            aliasMap.put("phone", "phone");
-            aliasMap.put("nickName", "nick_name");
-            aliasMap.put("createTime", "create_time");
-            aliasMap.put("updateTime", "update_time");
+            map.put("id", "id");
+            map.put("phone", "phone");
+            map.put("nick_name", "nickName");
+            map.put("create_time", "createTime");
+            map.put("update_time", "updateTime");
             return aliasMap = map;
-        }
-
-        public static StringBuilder buildInsert() {
-            StringBuilder s = new StringBuilder(512);
-            StringBuilder v = new StringBuilder(256);
-            s.append("INSERT INTO ");
-            s.append('`');
-            s.append(TABLE);
-            s.append('`');
-            s.append('(');
-            Iterator<String> iter = getVariableFields().iterator();
-            while (iter.hasNext()) {
-                String field = iter.next();
-                s.append('`');
-                s.append(field);
-                s.append('`');
-                v.append('?');
-                if (iter.hasNext()) {
-                    s.append(',');
-                    v.append(',');
-                }
-            }
-            s.append(" VALUES ");
-            s.append('(');
-            s.append(v);
-            s.append(')');
-            return s;
-        }
-
-        public static StringBuilder buildSelect(String where, String... fields) {
-            Set<String> includes = new HashSet<String>(fields.length);
-            for (String f : fields) {
-                includes.add(f);
-            }
-            StringBuilder s = new StringBuilder(512);
-            s.append("SELECT ");
-            Iterator<Map.Entry<String, String>> iter = getAliasMap().entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry<String, String> i = iter.next();
-                final String k = i.getKey();
-                final String v = i.getValue();
-                if (includes.size() > 0 && !includes.contains(k) && !includes.contains(v)) {
-                    continue;
-                }
-                s.append('`');
-                s.append(k);
-                s.append('`');
-                if (!k.equals(v)) {
-                    s.append(" AS ");
-                    s.append(v);
-                }
-                if (iter.hasNext()) {
-                    s.append(", ");
-                }
-            }
-            s.append(" FROM ");
-            s.append('`');
-            s.append(TABLE);
-            s.append('`');
-            s.append(" WHERE ");
-            s.append(where);
-            return s;
-        }
-
-        public static StringBuilder buildUpdate(String where, String... fields) {
-            Set<String> includes = new HashSet<String>(fields.length);
-            for (String f : fields) {
-                includes.add(f);
-            }
-            StringBuilder s = new StringBuilder(512);
-            s.append("UPDATE ");
-            s.append('`');
-            s.append(TABLE);
-            s.append('`');
-            s.append(" SET ");
-            Iterator<String> iter = getVariableFields().iterator();
-            while (iter.hasNext()) {
-                String field = iter.next();
-                if (includes.size() > 0 && !includes.contains(field)) {
-                    continue;
-                }
-                s.append('`');
-                s.append(field);
-                s.append('=');
-                s.append('?');
-                s.append('`');
-                if (iter.hasNext()) {
-                    s.append(',');
-                }
-            }
-            s.append(" WHERE ");
-            s.append(where);
-            return s;
         }
 
     }

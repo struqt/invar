@@ -4,12 +4,11 @@
   xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template"
   language="java">
 
-  <export resPath="java/InvarReadData.java" destDir="invar"
-          destName="InvarReadData.java"/>
-  <export resPath="java/InvarRule.java" destDir="invar"
-          destName="InvarRule.java"/>
-  <export resPath="java/InvarCodec.java" destDir="invar"
-          destName="InvarCodec.java"/>
+  <export resPath="java/invar/InvarReadData.java" destDir="invar" destName="InvarReadData.java"/>
+  <export resPath="java/invar/InvarRule.java" destDir="invar" destName="InvarRule.java"/>
+  <export resPath="java/invar/InvarCodec.java" destDir="invar" destName="InvarCodec.java"/>
+  <export resPath="java/invar/InvarSQL.java" destDir="invar" destName="InvarSQL.java"/>
+  <export resPath="java/invar/InvarMySQL.java" destDir="invar" destName="InvarMySQL.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -43,6 +42,7 @@
     <dialect pack="java.util" type="ArrayList"/>
     <dialect pack="java.util" type="HashSet"/>
     <dialect pack="java.util" type="Iterator"/>
+    <dialect pack="java.util" type="Collections"/>
 
     <dialect pack="java.sql" type="Timestamp"/>
 
@@ -183,13 +183,10 @@
     [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (tostr.; useFullName; struct; fields; imports)](#brk)
 
-    [#codeNested (sql.params.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (sql.start.;   useFullName; struct; fields; imports)](#brk)
-    [#codeNested (sql.vars.;    useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.params.;   useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.start.;    useFullName; struct; fields; imports)](#brk)
+    [#codeNested (sql.writable.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (sql.alias.;   useFullName; struct; fields; imports)](#brk)
-    [#codeNested (sql.insert.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (sql.select.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (sql.update.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (sql.end.;     useFullName; struct; fields; imports)](#brk)
 
     }
@@ -592,14 +589,57 @@
     (#tab)static public final class SQL {
     (#blank)
     (#tab)(#tab)static public final String TABLE = "(#table)";
+    (#blank)
+    (#tab)(#tab)static public StringBuilder buildInsert() {
+    (#tab)(#tab)(#tab)return getBuilder().buildInsert();
+    (#tab)(#tab)}
+    (#blank)
+    (#tab)(#tab)static public StringBuilder buildSelect(String where, String... fields) {
+    (#tab)(#tab)(#tab)return getBuilder().buildSelect(where, fields);
+    (#tab)(#tab)}
+    (#blank)
+    (#tab)(#tab)static public StringBuilder buildUpdate(String where, String... fields) {
+    (#tab)(#tab)(#tab)return getBuilder().buildUpdate(where, fields);
+    (#tab)(#tab)}
+    (#blank)
+    (#tab)(#tab)static public invar.InvarSQL getBuilder() {
+    (#tab)(#tab)(#tab)if (builder == null) {
+    (#tab)(#tab)(#tab)(#tab)builder = invar.InvarSQL.Create(
+    (#tab)(#tab)(#tab)(#tab)(#tab)TABLE, getWritableFields(), getAliasMap());
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)return builder;
+    (#tab)(#tab)}
+    (#blank)
+    (#tab)(#tab)static private invar.InvarSQL builder = null;
   ]]></template>
   <template key="sql.end.method"><![CDATA[ (#tab)} ]]></template>
+
+  <!-- SQL: fields that can be updated -->
+  <template key="sql.writable.method.arg">
+    <![CDATA[ writableFields ]]></template>
+  <template key="sql.writable.except.auto"><![CDATA[ true ]]></template>
+  <template key="sql.writable.method"><![CDATA[
+    [#addImport(struct; imports; java.util::List)]
+    [#addImport(struct; imports; java.util::ArrayList)]
+    (#tab)(#tab)static private List<String> (#arg) = null;
+    (#blank)
+    (#tab)(#tab)static private List<String> getWritableFields() {
+    (#tab)(#tab)(#tab)if ((#arg) != null) {
+    (#tab)(#tab)(#tab)(#tab)return (#arg);
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)(#tab)List<String> list = new ArrayList<String>();(#body)
+    (#tab)(#tab)(#tab)return (#arg) = list;
+    (#tab)(#tab)}
+  ]]></template>
+  <template key="sql.writable.any"><![CDATA[ ]]></template>
+  <template key="sql.writable.ref.any | sql.writable.ptr.any"><![CDATA[
+    (#tab)list.add("(#alias)"); ]]></template>
 
   <!-- SQL Alias -->
   <template key="sql.alias.method"><![CDATA[
     (#tab)(#tab)static private Map<String, String> aliasMap = null;
     (#blank)
-    (#tab)(#tab)static Map<String, String> getAliasMap() {
+    (#tab)(#tab)static private Map<String, String> getAliasMap() {
     (#tab)(#tab)(#tab)if (aliasMap != null) {
     (#tab)(#tab)(#tab)(#tab)return aliasMap;
     (#tab)(#tab)(#tab)}
@@ -609,133 +649,7 @@
   ]]></template>
   <template key="sql.alias.any"><![CDATA[ ]]></template>
   <template key="sql.alias.ref.any | sql.alias.ptr.any"><![CDATA[
-    (#tab)aliasMap.put("(#namer)", "(#alias)"); ]]></template>
+    (#tab)map.put("(#alias)", "(#namer)"); ]]></template>
 
-
-  <!-- SQL Vars -->
-  <template key="sql.vars.method"><![CDATA[
-    [#addImport(struct; imports; java.util::List)]
-    [#addImport(struct; imports; java.util::ArrayList)]
-    (#tab)(#tab)static private List<String> variableFields = null;
-    (#blank)
-    (#tab)(#tab)static List<String> getVariableFields() {
-    (#tab)(#tab)(#tab)if (variableFields != null) {
-    (#tab)(#tab)(#tab)(#tab)return variableFields;
-    (#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)List<String> list = new ArrayList<String>();(#body)
-    (#tab)(#tab)(#tab)return variableFields = list;
-    (#tab)(#tab)}
-  ]]></template>
-  <template key="sql.vars.except.auto"><![CDATA[ true ]]></template>
-  <template key="sql.vars.any"><![CDATA[ ]]></template>
-  <template key="sql.vars.ref.any | sql.alias.ptr.any"><![CDATA[
-    (#tab)variableFields.add("(#alias)"); ]]></template>
-
-
-  <!-- SQL Insert -->
-  <template key="sql.insert.method"><![CDATA[
-    (#tab)(#tab)public static StringBuilder buildInsert() {
-    (#tab)(#tab)(#tab)StringBuilder s = new StringBuilder(512);
-    (#tab)(#tab)(#tab)StringBuilder v = new StringBuilder(256);
-    (#tab)(#tab)(#tab)s.append("INSERT INTO ");
-    (#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)s.append(TABLE);
-    (#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)s.append('(');
-    (#tab)(#tab)(#tab)Iterator<String> iter = getVariableFields().iterator();
-    (#tab)(#tab)(#tab)while (iter.hasNext()) {
-    (#tab)(#tab)(#tab)(#tab)String field = iter.next();
-    (#tab)(#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)(#tab)s.append(field);
-    (#tab)(#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)(#tab)v.append('?');
-    (#tab)(#tab)(#tab)(#tab)if (iter.hasNext()) {
-    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(',');
-    (#tab)(#tab)(#tab)(#tab)(#tab)v.append(',');
-    (#tab)(#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)s.append(" VALUES ");
-    (#tab)(#tab)(#tab)s.append('(');
-    (#tab)(#tab)(#tab)s.append(v);
-    (#tab)(#tab)(#tab)s.append(')');
-    (#tab)(#tab)(#tab)return s;
-    (#tab)(#tab)}
-  ]]></template>
-
-  <!-- SQL Select -->
-  <template key="sql.select.method"><![CDATA[
-    [#addImport(struct; imports; java.util::Map)]
-    [#addImport(struct; imports; java.util::Set)]
-    [#addImport(struct; imports; java.util::HashSet)]
-    [#addImport(struct; imports; java.util::Iterator)]
-    (#tab)(#tab)public static StringBuilder buildSelect(String where, String... fields) {
-    (#tab)(#tab)(#tab)Set<String> includes = new HashSet<String>(fields.length);
-    (#tab)(#tab)(#tab)for (String f : fields) {
-    (#tab)(#tab)(#tab)(#tab)includes.add(f);
-    (#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)StringBuilder s = new StringBuilder(512);
-    (#tab)(#tab)(#tab)s.append("SELECT ");
-    (#tab)(#tab)(#tab)Iterator<Map.Entry<String, String>> iter = getAliasMap().entrySet().iterator();
-    (#tab)(#tab)(#tab)while (iter.hasNext()) {
-    (#tab)(#tab)(#tab)(#tab)Map.Entry<String, String> i = iter.next();
-    (#tab)(#tab)(#tab)(#tab)final String k = i.getKey();
-    (#tab)(#tab)(#tab)(#tab)final String v = i.getValue();
-    (#tab)(#tab)(#tab)(#tab)if (includes.size() > 0 && !includes.contains(k) && !includes.contains(v)) {
-    (#tab)(#tab)(#tab)(#tab)(#tab)continue;
-    (#tab)(#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)(#tab)s.append(k);
-    (#tab)(#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)(#tab)if (!k.equals(v)) {
-    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(" AS ");
-    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(v);
-    (#tab)(#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)(#tab)if (iter.hasNext()) {
-    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(", ");
-    (#tab)(#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)s.append(" FROM ");
-    (#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)s.append(TABLE);
-    (#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)s.append(" WHERE ");
-    (#tab)(#tab)(#tab)s.append(where);
-    (#tab)(#tab)(#tab)return s;
-    (#tab)(#tab)}
-  ]]></template>
-
-  <!-- SQL Update -->
-  <template key="sql.update.method"><![CDATA[
-    (#tab)(#tab)public static StringBuilder buildUpdate(String where, String... fields) {
-    (#tab)(#tab)(#tab)Set<String> includes = new HashSet<String>(fields.length);
-    (#tab)(#tab)(#tab)for (String f : fields) {
-    (#tab)(#tab)(#tab)(#tab)includes.add(f);
-    (#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)StringBuilder s = new StringBuilder(512);
-    (#tab)(#tab)(#tab)s.append("UPDATE ");
-    (#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)s.append(TABLE);
-    (#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)s.append(" SET ");
-    (#tab)(#tab)(#tab)Iterator<String> iter = getVariableFields().iterator();
-    (#tab)(#tab)(#tab)while (iter.hasNext()) {
-    (#tab)(#tab)(#tab)(#tab)String field = iter.next();
-    (#tab)(#tab)(#tab)(#tab)if (includes.size() > 0 && !includes.contains(field)) {
-    (#tab)(#tab)(#tab)(#tab)(#tab)continue;
-    (#tab)(#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)(#tab)s.append(field);
-    (#tab)(#tab)(#tab)(#tab)s.append('=');
-    (#tab)(#tab)(#tab)(#tab)s.append('?');
-    (#tab)(#tab)(#tab)(#tab)s.append('`');
-    (#tab)(#tab)(#tab)(#tab)if (iter.hasNext()) {
-    (#tab)(#tab)(#tab)(#tab)(#tab)s.append(',');
-    (#tab)(#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)}
-    (#tab)(#tab)(#tab)s.append(" WHERE ");
-    (#tab)(#tab)(#tab)s.append(where);
-    (#tab)(#tab)(#tab)return s;
-    (#tab)(#tab)}
-  ]]></template>
 
 </tns:root>
