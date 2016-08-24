@@ -12,9 +12,9 @@
   </parent>
 
   <artifactId>invar-standalone</artifactId>
+  <packaging>pom</packaging>
 
   <dependencies>
-    <!-- $ mvn dependency:sources -DdownloadSources=true -->
     <dependency>
       <groupId>com.struqt</groupId>
       <artifactId>invar-core</artifactId>
@@ -23,24 +23,7 @@
   </dependencies>
 
   <build>
-    <!-- http://maven.oschina.net/content/groups/public/org/apache/maven/plugins/ -->
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>invar.Invar</mainClass>
-            </manifest>
-          </archive>
-          <excludes>
-            <exclude>**/*.xml</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -63,8 +46,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptor>assembly.xml</descriptor>
-          <finalName>${project.name}</finalName>
-          <!-- .${maven.build.timestamp} -->
+          <finalName>invar-${maven.build.timestamp}</finalName>
         </configuration>
         <executions>
           <execution>

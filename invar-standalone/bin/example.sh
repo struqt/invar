@@ -1,16 +1,19 @@
 #!/bin/sh
 
-OutDir="output/"
+DirOut="example/out/"
+DirIn="example/rule/"
 
 java \
- -jar     "lib/invar-1.0.1.jar" \
+ -cp      ".:lib/*" \
+ invar.Invar \
  -snippet "res/" \
- -rule    "example/rule/" \
- -xsd     ${OutDir}."xsd/" \
- -cpp     ${OutDir}."cpp/" \
- -java    ${OutDir}."java/" \
- -csharp  ${OutDir}."csharp/" \
- -php     ${OutDir}."php/" \
- -flash   ${OutDir}."flash/" \
+ -rule    ${DirIn} \
+ -xsd     ${DirOut}"xsd/" \
+ -cpp     ${DirOut}"cpp/" \
+ -java    ${DirOut}"java/" \
+ -csharp  ${DirOut}"csharp/" \
+ -python  ${DirOut}"python/" \
+ -php     ${DirOut}"php/" \
+ -flash   ${DirOut}"flash/" \
 
 exit 0

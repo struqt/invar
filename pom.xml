@@ -3,7 +3,6 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.struqt</groupId>
@@ -12,38 +11,51 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>invar-standalone</module>
     <module>invar-core</module>
     <module>invar-example</module>
+    <module>invar-standalone</module>
   </modules>
 
   <name>invar</name>
-  <url>http://maven.apache.org</url>
+  <url>http://struqt.com/invar</url>
+  <description>
+    Invar is a lightweight transpiler that can translate source files to many
+    different programming language source code and you can interchange custom
+    data format between them.
+  </description>
+
+  <organization>
+    <name>The Struqt Project</name>
+    <url>http://struqt.com/</url>
+  </organization>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
     <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-    <version.junit>4.12</version.junit>
   </properties>
-
-  <dependencies>
-    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.5</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${version.junit}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>invar-core</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
@@ -128,5 +140,30 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+  <inceptionYear>2015</inceptionYear>
+
+  <developers>
+    <developer>
+      <name>Kang Wang</name>
+      <email>wkang2015@163.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>
+      scm:git:ssh://git@github.com:struqt/invar.git
+    </connection>
+    <developerConnection>
+      scm:git:ssh://git@github.com:struqt/invar.git
+    </developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
 </project>

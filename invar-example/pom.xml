@@ -3,8 +3,8 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <artifactId>invar</artifactId>
     <groupId>com.struqt</groupId>
@@ -13,6 +13,7 @@
 
   <artifactId>invar-example</artifactId>
   <packaging>jar</packaging>
+
   <properties>
     <path.example.code>${project.basedir}/example/code</path.example.code>
   </properties>
@@ -21,7 +22,11 @@
     <dependency>
       <groupId>com.struqt</groupId>
       <artifactId>invar-core</artifactId>
-      <version>1.0.2-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -32,7 +37,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.5.0</version>
         <executions>
           <execution>
             <goals>
@@ -63,25 +67,6 @@
             <argument>${path.example.code}/python</argument>
           </arguments>
         </configuration>
-      </plugin>
-      <!-- http://www.mojohaus.org/build-helper-maven-plugin/ -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.12</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>src/main/java</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <!-- http://maven.apache.org/components/plugins/maven-source-plugin/ -->
       <plugin>
