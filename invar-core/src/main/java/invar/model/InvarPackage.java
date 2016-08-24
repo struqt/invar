@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar.model;
 
 import invar.model.InvarType.TypeID;

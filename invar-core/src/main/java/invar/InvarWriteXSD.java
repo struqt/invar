@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar;
 
 import invar.model.*;
@@ -11,7 +16,6 @@ import java.util.TreeMap;
 
 public class InvarWriteXSD {
     private String nsKey = "tns";
-    private String nsValue = "invar.data";
     private InvarContext context;
     private TreeMap<TypeID, String> typeXsd;
     private TreeMap<String, TypeID> typeBasic;
@@ -36,6 +40,7 @@ public class InvarWriteXSD {
 
     public void write(InvarContext c, TreeMap<TypeID, String> basics, String dirRootPath) throws IOException {
         this.context = c;
+        final String nsValue = "invar.data";
         StringBuilder code = new StringBuilder();
         code.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         code.append(br + "<schema xmlns=\"http://www.w3.org/2001/XMLSchema\"");

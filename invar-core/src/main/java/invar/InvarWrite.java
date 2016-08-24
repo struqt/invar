@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar;
 
 import invar.model.*;
@@ -10,7 +15,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 abstract public class InvarWrite {
-    abstract void resetCodePathes(Boolean merge, String suffix);
+
+    abstract void resetCodePaths(Boolean merge, String suffix);
 
     abstract void codeRuntime(String suffix);
 
@@ -24,7 +30,7 @@ abstract public class InvarWrite {
     final static String indent = whiteSpace + whiteSpace + whiteSpace + whiteSpace;
     final static String dotToken = "\\.";
     final static String ruleTypeSplit = "::";
-    final static String rulePackSplit = ".";
+    //final static String rulePackSplit = ".";
     final static private String GENERIC_LEFT = "<";
     final static private String GENERIC_RIGHT = ">";
 
@@ -89,7 +95,7 @@ abstract public class InvarWrite {
             else
                 makePackageDirs();
 
-            resetCodePathes(merge, suffix);
+            resetCodePaths(merge, suffix);
             startWriting(suffix);
         }
     }
@@ -382,6 +388,7 @@ abstract public class InvarWrite {
         return cb.array();
     }
 
+    /*
     static protected byte[] getBytes(char[] chars) {
         Charset cs = Charset.forName("UTF-8");
         CharBuffer cb = CharBuffer.allocate(chars.length);
@@ -395,7 +402,7 @@ abstract public class InvarWrite {
         if (Arrays.binarySearch(ks, s) >= 0) {
             throw new Exception(s + " is a reserved word.");
         }
-    }
+    } //*/
 
     final protected String ruleLeft(String rule) {
         String name = rule;

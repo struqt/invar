@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar;
 
 import invar.model.InvarType;
@@ -54,9 +59,7 @@ final public class InvarSnippet {
                 buildTemplates(n);
             } else if (nameNode.equals("export")) {
                 buildExport(n);
-            } else {
-                // ignore
-            }
+            } //else {}
         }
     }
 
@@ -189,16 +192,15 @@ final public class InvarSnippet {
         final static public String IMPORT = "import";
         final static public String IMPORT_SPLIT = "import.split";
         final static public String IMPORT_BODY = "import.body";
-
+        /*
         final static public String NULL_BYTE_YES = "null.byte.yes";
         final static public String NULL_BYTE_NO = "null.byte.no";
         final static public String INIT_STRUCT = "init.struct";
         final static public String INIT_ENUM = "init.enum";
+        final static public String CODE_FOREACH = "code.foreach";
+        final static public String CODE_FORI = "code.fori"; //*/
         final static public String CODE_ASSIGNMENT = "code.assignment";
         final static public String CODE_DEFINITION = "code.definition";
-
-        final static public String CODE_FOREACH = "code.foreach";
-        final static public String CODE_FORI = "code.fori";
 
         final static public String RUNTIME_FILE = "runtime.file";
         final static public String RUNTIME_PACK = "runtime.pack";
@@ -284,7 +286,7 @@ final public class InvarSnippet {
         final static String ProtocType = wrapToken("protoc-type");
         final static String ConstCRC = wrapToken("const-crc");
 
-        final static String wrapToken(String name) {
+        static String wrapToken(String name) {
             return "\\(#" + name + "\\)";
         }
     }

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar;
 
 import invar.lang.xml.TokensFromXml;
@@ -7,10 +12,10 @@ import java.util.Date;
 import java.util.TreeMap;
 
 final public class Invar {
+
     static final String ARG_HELP = "help";
     static final String ARG_SNIPPET_PATH = "snippet";
     static final String ARG_RULE_PATH = "rule";
-    //static final String ARG_RULE_DOM = "rule.dom";
     static final String ARG_XSD_PATH = "xsd";
     static final String ARG_JAVA_PATH = "java";
     static final String ARG_FLASH_PATH = "flash";
@@ -21,6 +26,7 @@ final public class Invar {
     static final String ARG_PYTHON_PATH = "python";
 
     static public void main(String[] args) {
+
         long startMS = System.currentTimeMillis();
         log("Invar start: " + new Date().toString() + " " + (Runtime.getRuntime().freeMemory() >> 20) + "MB");
 
@@ -50,9 +56,7 @@ final public class Invar {
             log("");
             if (a.has(ARG_RULE_PATH)) {
                 TokensFromXml.start(ctx);
-            }// else {
-            //    InvarReadRule.start(ctx, ".xml");
-            //}
+            }
             if (a.has(ARG_XSD_PATH)) {
                 log("");
                 new InvarWriteXSD().write(ctx, basics, a.get(ARG_XSD_PATH));
@@ -135,26 +139,6 @@ final public class Invar {
 
     static void log(Object txt) {
         System.out.println(txt);
-    }
-
-    private final static char[] hexChars = "0123456789ABCDEF".toCharArray();
-
-    public static String bytesToHex(byte[] bs, int width) {
-        StringBuilder sb = new StringBuilder();
-        int count = 0;
-        for (byte b : bs) {
-            width = Math.max(width, 4);
-            if (count == width) {
-                count = 0;
-                sb.append('\n');
-            } else {
-                sb.append(' ');
-            }
-            sb.append(hexChars[b >> 4]);
-            sb.append(hexChars[b & 0x0F]);
-            ++count;
-        }
-        return sb.toString().trim().toUpperCase();
     }
 
 }

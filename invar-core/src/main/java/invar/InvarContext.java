@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar;
 
 import invar.model.InvarPackage;
@@ -34,12 +39,12 @@ final public class InvarContext {
             String name = map.get(id);
             InvarType type = new InvarType(id, name, pack, name + "[buildin]", true);
             pack.put(type);
-            if (TypeID.VEC == id)
+            if (TypeID.VEC == id) {
                 type.setGeneric("<?>");
-            else if (TypeID.MAP == id)
+            } else if (TypeID.MAP == id) {
                 type.setGeneric("<?,?>");
-            else {
             }
+            //else {}
         }
         packAll.put(pack.getName(), pack);
         return pack;
@@ -118,7 +123,7 @@ final public class InvarContext {
 
     public List<InvarType> findTypes(String typeName, boolean ignoreBuildin) {
         Iterator<String> i = packAll.keySet().iterator();
-        InvarType type = null;
+        InvarType type;
         List<InvarType> types = new ArrayList<InvarType>();
         while (i.hasNext()) {
             InvarPackage pack = packAll.get(i.next());
@@ -200,16 +205,4 @@ final public class InvarContext {
         return ruleDir;
     }
 
-    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    public static char[] bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int i = j * 2;
-            int v = bytes[j] & 0xFF;
-            hexChars[i] = hexArray[v >>> 4];
-            hexChars[i + 1] = hexArray[v & 0x0F];
-        }
-        return hexChars;
-    }
 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar.model;
 
 import java.util.HashMap;
@@ -74,9 +79,13 @@ public class TypeProtocol extends InvarType {
             t.setProtocType("ntf");
         } else if (len == 2) {
             request = this.resetByName(nodes.get(0), "");
-            request.setProtocType("req");
+            if (request != null) {
+                request.setProtocType("req");
+            }
             response = this.resetByName(nodes.get(1), "R");
-            response.setProtocType("resp");
+            if (response != null) {
+                response.setProtocType("resp");
+            }
         }
     }
 

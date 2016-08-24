@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
+
 package invar;
 
 import invar.InvarSnippet.Key;
@@ -230,7 +235,7 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     @Override
-    void resetCodePathes(Boolean merge, String suffix) {
+    void resetCodePaths(Boolean merge, String suffix) {
         Iterator<String> iPack = context.getPackNames();
         while (iPack.hasNext()) {
             InvarPackage pack = context.getPack(iPack.next());
