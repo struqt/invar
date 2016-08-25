@@ -189,6 +189,7 @@
       scm:git:ssh://git@github.com/struqt/invar.git
     </developerConnection>
     <tag>HEAD</tag>
+    <url>https://github.com/struqt/invar/tree/${project.scm.tag}</url>
   </scm>
 
   <distributionManagement>
