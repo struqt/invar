@@ -14,7 +14,8 @@
   <packaging>jar</packaging>
 
   <properties>
-    <path.example.code>${project.basedir}/example/code</path.example.code>
+    <path.example.code>${project.basedir}/target/generated-sources/example/
+    </path.example.code>
     <path.example.snippet>
       ${project.basedir}/../invar-core/src/main/resources/snippet
     </path.example.snippet>
@@ -24,11 +25,6 @@
     <dependency>
       <groupId>com.struqt</groupId>
       <artifactId>invar-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -44,7 +40,7 @@
             <goals>
               <goal>java</goal>
             </goals>
-            <phase>validate</phase>
+            <phase>generate-sources</phase>
           </execution>
         </executions>
         <configuration>
@@ -58,7 +54,7 @@
             <argument>-xsd</argument>
             <argument>${path.example.code}/xsd</argument>
             <argument>-java</argument>
-            <argument>${project.basedir}/src/main/java</argument>
+            <argument>${path.example.code}/java</argument>
             <argument>-csharp</argument>
             <argument>${path.example.code}/csharp</argument>
             <argument>-objc</argument>
@@ -70,6 +66,24 @@
           </arguments>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${path.example.code}/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <!-- http://maven.apache.org/components/plugins/maven-source-plugin/ -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -77,7 +91,7 @@
         <executions>
           <execution>
             <id>attach-sources</id>
-            <phase>package</phase>
+            <phase>post-integration-test</phase>
             <goals>
               <goal>jar-no-fork</goal>
             </goals>
@@ -91,7 +105,7 @@
         <executions>
           <execution>
             <id>attach-javadocs</id>
-            <phase>package</phase>
+            <phase>post-integration-test</phase>
             <goals>
               <goal>jar</goal>
             </goals>

@@ -23,7 +23,7 @@ public class InvarTest {
             "-csharp ", dirOut + "csharp/",
             "-python ", dirOut + "snippet/python/",
             "-php    ", dirOut + "php/",
-            "-flash  ", dirOut + "flash/",
+            //"-flash  ", dirOut + "flash/",
         };
         Invar.main(args);
         Assert.assertTrue(true);
