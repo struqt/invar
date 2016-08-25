@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:package
   name="test.db"
+  xmlns:tns="http://struqt.com/invar/1.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="invar.rule rule.xsd"
-  xmlns:tns="invar.rule">
+  xsi:schemaLocation="http://struqt.com/invar/1.0 http://struqt.com/xsd/invar-rule-1.0.xsd">
 
   <struct name="MemberEntry" table="tbl_member" doc="名字冲突的类型">
     <field name="id" type="Uint32" doc="主键，自增长" auto="true"/>

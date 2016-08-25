@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:package name="test.xyz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.rule rule.xsd"
-  xmlns:tns="invar.rule">
+<tns:package
+  name="test.xyz"
+  xmlns:tns="http://struqt.com/invar/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://struqt.com/invar/1.0 http://struqt.com/xsd/invar-rule-1.0.xsd">
+
   <struct name="TestList" doc="测试基本的列表类型" nohotfix="true">
     <field name="listI08" type="Vec-Int8" doc="有符号的8位整数"/>
     <field name="listI16" type="Vec-Int16" doc="有符号的16位整数"/>

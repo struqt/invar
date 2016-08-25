@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:package
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="invar.rule rule.xsd"
-    xmlns:tns="invar.rule"
-    name="test.protoc">
+  name="test.protoc"
+  xmlns:tns="http://struqt.com/invar/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://struqt.com/invar/1.0 http://struqt.com/xsd/invar-rule-1.0.xsd">
 
   <struct name="Protoc2S" doc="客户端请求的公共数据" alias="protoc2S">
     <field name="sessionId" type="String" doc="会话Id"/>
