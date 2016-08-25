@@ -2,4 +2,4 @@ image: maven:3-jdk-7
 
 package:
   script:
-    - mvn clean package
+    - mvn clean verify
