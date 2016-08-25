@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="csharp">
+  language="csharp"
+  xmlns:tns="http://invar.struqt.com/snippet/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
   <export resPath="csharp/InvarReadData.cs" destDir="Invar" destName="InvarReadData.cs"/>
   <export resPath="csharp/InvarRule.cs" destDir="Invar" destName="InvarRule.cs"/>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="invar.template ../snippet.xsd"
-  xmlns:tns="invar.template" language="flash">
+<tns:root
+  language="flash"
+  xmlns:tns="http://invar.struqt.com/snippet/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
+
   <export resPath="flash/InvarReadData.as" destDir="invar" destName="InvarReadData.as"/>
   
   <!-- Redefine 14 Invar buildin types to adapt AS3 language  -->
@@ -17,7 +21,7 @@
     <uint64 pack="" type="Number" initValue="0"/>
     <float pack="" type="Number" initValue="0.0"/>
     <double pack="" type="Number" initValue="0.00"/>
-    <string pack="" type="String" initValue="&quot;&quot;" initPrefix="&quot;" initSuffix="&quot;"/>
+    <string pack="" type="String" initValue="&quot;&quot;"/>
     <bool pack="" type="Boolean" initValue="false"/>
     <vec pack="" type="Vector" generic=".&lt;?&gt;" initValue=""/>
     <map pack="flash.utils" type="Dictionary" generic="" initValue=""/>

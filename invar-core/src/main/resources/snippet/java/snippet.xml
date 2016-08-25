@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root
+  language="java"
+  xmlns:tns="http://invar.struqt.com/snippet/1.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template"
-  language="java">
+  xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
   <export resPath="java/invar/InvarReadData.java" destDir="invar" destName="InvarReadData.java"/>
   <export resPath="java/invar/InvarRule.java" destDir="invar" destName="InvarRule.java"/>

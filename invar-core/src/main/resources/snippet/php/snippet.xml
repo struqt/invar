@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="php">
+  language="php"
+  xmlns:tns="http://invar.struqt.com/snippet/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
   <export resPath="php/invar.codec.php" destDir="" destName="invar/invar.codec.php"/>

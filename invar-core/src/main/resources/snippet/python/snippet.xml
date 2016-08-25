@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="invar.template ../snippet.xsd" xmlns:tns="invar.template" language="python">
+  language="python"
+  xmlns:tns="http://invar.struqt.com/snippet/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
   <export resPath="python/__init__.py" destDir="." destName="__init__.py"/>
   <export resPath="python/InvarCodec.py" destDir="." destName="InvarCodec.py"/>
