@@ -32,7 +32,7 @@ final public class Invar {
 
         InvarMainArgs a = new InvarMainArgs();
         a.addDefault(ARG_RULE_PATH, "rule/");
-        a.addDefault(ARG_SNIPPET_PATH, "res/");
+        a.addDefault(ARG_SNIPPET_PATH, "");
         a.addDefault(ARG_XSD_PATH, "code/xsd/");
         a.addDefault(ARG_JAVA_PATH, "code/java/");
         a.addDefault(ARG_FLASH_PATH, "code/flash/");

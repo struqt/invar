@@ -13,11 +13,12 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
+import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 final public class InvarSnippet {
+
     final static String empty = "";
     final static String whiteSpace = " ";
     final static String br = "\n";
@@ -38,7 +39,7 @@ final public class InvarSnippet {
         this.writer = writer;
         this.snippetDir = dir;
         this.snippetPath = dir + path;
-        this.snippetDoc = getSnippetDoc(this.snippetPath, ctx);
+        this.snippetDoc = getSnippetDoc(this.snippetPath);
         this.snippetMap = new LinkedHashMap<String, String>();
     }
 
@@ -138,7 +139,15 @@ final public class InvarSnippet {
         String resPath = this.snippetDir + getAttrOptional(n, "resPath");
         String destDir = getAttrOptional(n, "destDir");
         String destName = getAttrOptional(n, "destName");
-        writer.exportFile(resPath, destDir, destName);
+        InputStream stream = getSnippetStream(resPath);
+        if (stream != null) {
+            writer.exportFile(destDir, destName, stream);
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void snippetAdd(String key, String s) {
@@ -157,20 +166,41 @@ final public class InvarSnippet {
                 line = line.replaceAll(Token.Indent, indent);
                 line = line.replaceAll(Token.Blank, empty);
                 line = line.replaceAll(Token.Space, whiteSpace);
-                code.append(line + (i != len - 1 ? br : empty));
+                code.append(line);
+                code.append(i != len - 1 ? br : empty);
             }
         }
         snippetMap.put(key, code.toString());
     }
 
-    private Document getSnippetDoc(String path, InvarContext ctx) throws Exception {
+    private Document getSnippetDoc(String path/*, InvarContext ctx*/) throws Exception {
+        InputStream stream = getSnippetStream(path);
+        if (stream == null) {
+            System.out.println("error X---------> " + path);
+            return null;
+        }
+        InputSource input = new InputSource(stream);
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
-            .parse(new InputSource(new File(path).toURI().toURL().toString()));
+            .parse(input);
         if (!doc.hasChildNodes())
             return null;
         System.out.println("read  <- " + path);
         return doc;
+    }
+
+    private InputStream getSnippetStream(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            try {
+                return new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            return getClass().getResourceAsStream("/snippet/" + path);
+        }
+        return null;
     }
 
     static public class Key {

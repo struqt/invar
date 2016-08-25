@@ -47,6 +47,7 @@ final public class InvarMainArgs {
         userArgs = new HashMap<String, List<String>>();
         List<String> listCurrent = null;
         for (String arg : args) {
+            arg = arg.trim();
             if (arg.charAt(0) == '-') {
                 listCurrent = new ArrayList<String>();
                 userArgs.put(arg.substring(1), listCurrent);

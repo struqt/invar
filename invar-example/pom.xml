@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -13,6 +15,9 @@
 
   <properties>
     <path.example.code>${project.basedir}/example/code</path.example.code>
+    <path.example.snippet>
+      ${project.basedir}/../invar-core/src/main/resources/snippet
+    </path.example.snippet>
   </properties>
 
   <dependencies>
@@ -49,7 +54,7 @@
             <argument>-rule</argument>
             <argument>${project.basedir}/example/rule</argument>
             <argument>-snippet</argument>
-            <argument>${project.basedir}/../invar-core/res/</argument>
+            <argument>${path.example.snippet}/</argument>
             <argument>-xsd</argument>
             <argument>${path.example.code}/xsd</argument>
             <argument>-java</argument>

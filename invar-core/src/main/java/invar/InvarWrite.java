@@ -197,10 +197,9 @@ abstract public class InvarWrite {
         exports.put(packName + ruleTypeSplit + fileName, content);
     }
 
-    final public void exportFile(String resPath, String fileDir, String fileName) {
+    final public void exportFile(String fileDir, String fileName, InputStream res) {
         byte[] bs;
         try {
-            InputStream res = new FileInputStream(resPath);
             int len = res.available();
             bs = new byte[len];
             if (res.read(bs) == -1) {

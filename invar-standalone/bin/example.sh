@@ -6,7 +6,7 @@ DirIn="example/rule/"
 java \
  -cp      ".:lib/*" \
  invar.Invar \
- -snippet "res/" \
+ -snippet "custom/" \
  -rule    ${DirIn} \
  -xsd     ${DirOut}"xsd/" \
  -cpp     ${DirOut}"cpp/" \

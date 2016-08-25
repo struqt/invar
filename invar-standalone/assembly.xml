@@ -37,8 +37,10 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${project.basedir}/../invar-core/res/</directory>
-      <outputDirectory>res</outputDirectory>
+      <directory>
+        ${project.basedir}/../invar-core/src/main/resources/snippet
+      </directory>
+      <outputDirectory>custom</outputDirectory>
       <useDefaultExcludes>true</useDefaultExcludes>
       <includes>
         <include>**/*</include>
