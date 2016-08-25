@@ -42,9 +42,9 @@ public final class TokensFromXml {
                 public boolean accept(File dir, String name) {
                     File f = new File(dir, name);
                     return !f.getName().startsWith(".")
-                            && !f.getName().startsWith("_")
-                            && (f.isDirectory()
-                            || name.endsWith(TokensFromXml.suffix));
+                        && !f.getName().startsWith("_")
+                        && (f.isDirectory()
+                        || name.endsWith(TokensFromXml.suffix));
                 }
             };
             List<File> files = new ArrayList<File>();

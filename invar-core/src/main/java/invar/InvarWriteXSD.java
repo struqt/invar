@@ -184,8 +184,8 @@ public class InvarWriteXSD {
                 InvarField f = ts == null ? null : ts.getField(ATTR_MAP_KEY);
                 if (f == null) {
                     String typeName = id == TypeID.ENUM//
-                            ? nsKey + ":" + kType.fullName(TYPE_SPLIT) + "Attr"
-                            : typeXsd.get(id);
+                        ? nsKey + ":" + kType.fullName(TYPE_SPLIT) + "Attr"
+                        : typeXsd.get(id);
                     codeExt = new StringBuilder();
                     codeExt.append(brIndent3);
                     codeExt.append("<xs:attribute name=\"" + ATTR_MAP_KEY + "\" ");

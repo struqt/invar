@@ -243,7 +243,7 @@ public class TokenParser {
     }
 
     private InvarField makeAutoAddField(
-            TypeStruct struct, InvarType typeBasic, String name, String doc, Boolean noSetter) {
+        TypeStruct struct, InvarType typeBasic, String name, String doc, Boolean noSetter) {
         return new InvarField(struct.numFields(), typeBasic, name, "[AutoAdd] " + doc, noSetter, true);
     }
 
@@ -334,7 +334,7 @@ public class TokenParser {
                         s.append(t.getName());
                     }
                     throw new Exception(error(n,
-                            "Find " + types.size() + " types. You should select one:" + s.toString()));
+                        "Find " + types.size() + " types. You should select one:" + s.toString()));
                 }
             }
         }

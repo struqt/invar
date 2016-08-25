@@ -23,11 +23,11 @@ public class TypeEnum extends InvarType {
     public TypeEnum addOption(String key, Integer value, String comment) throws Exception {
         if (options.containsKey(key)) {
             throw new Exception("Repeated key '" + key + //
-                    "' in enum '" + getName() + "'.");
+                "' in enum '" + getName() + "'.");
         }
         if (options.containsValue(value)) {
             throw new Exception("Repeated value '" + value + //
-                    "' in enum '" + getName() + "'.");
+                "' in enum '" + getName() + "'.");
         }
         options.put(key, value);
         optionComments.put(key, comment);
