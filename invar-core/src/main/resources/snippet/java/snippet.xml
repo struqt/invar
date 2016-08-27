@@ -178,11 +178,12 @@
     [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
     [#codeGetters(struct; fields)]
     [#codeSetters(struct; fields)]
-    [#codeNested (copy.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (read.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (write.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (toxml.; useFullName; struct; fields; imports)](#brk)
-    [#codeNested (tostr.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (copy.;   useFullName; struct; fields; imports)](#brk)
+    [#codeNested (read.;   useFullName; struct; fields; imports)](#brk)
+    [#codeNested (write.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tojson.; useFullName; struct; fields; imports)](#brk)
+    [#codeNested (toxml.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tostr.;  useFullName; struct; fields; imports)](#brk)
 
     [#codeNested (sql.params.;   useFullName; struct; fields; imports)](#brk)
     [#codeNested (sql.start.;    useFullName; struct; fields; imports)](#brk)
@@ -540,6 +541,95 @@
     } else {
       (#tab)result.append("null");
     } ]]></template>
+
+
+  <!-- Write data to JSON data format -->
+  <template key="tojson.import">      <![CDATA[ System.Text::StringBuilder ]]></template>
+  <template key="tojson.method.arg">  <![CDATA[ s ]]></template>
+  <template key="tojson.method"><![CDATA[
+    (#tab)public StringBuilder toStringJSON()
+    (#tab){
+    (#tab)(#tab)StringBuilder code = new StringBuilder();
+    (#tab)(#tab)this.writeJSON(code);
+    (#tab)(#tab)return code;
+    (#tab)}(#brk)
+    (#tab)public void writeJSON(StringBuilder s)
+    (#tab){
+    (#tab)(#tab)s.append('\\n').append('{');
+    (#tab)(#tab)char comma = '\\0';(#body)
+    (#tab)(#tab)s.append('}').append('\\n');
+    (#tab)} /* (#type)::writeJSON(...) */ ]]></template>
+  <template key="tojson.any"> <![CDATA[ (#arg).append((#name).toString()) ]]></template>
+  <template key="tojson.enum"><![CDATA[ (#arg).append((#name).ordinal()); ]]></template>
+  <template key="tojson.bool"><![CDATA[ (#arg).append((#name).toString().toLowerCase()) ]]></template>
+  <template key="tojson.string"><![CDATA[ (#arg).append('"').append((#name).toString()).append('"') ]]></template>
+  <template key="tojson.struct"><![CDATA[ (#name).writeJSON((#arg)) ]]></template>
+  <template key="tojson.vec.for"><![CDATA[
+    int (#namer)Size = (null == (#name) ? 0 : (#name).size());
+    if ((#namer)Size > 0) {
+    (#tab)(#arg).append('\\n').append('[');
+    (#tab)int (#namer)Idx = 0;
+    (#tab)for ((#typer) (#value) : (#name)) { /* vec.for: (#name) */
+    (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
+    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { (#arg).append(','); }
+    (#tab)}
+    (#tab)(#arg).append(']');
+    }
+  ]]></template>
+  <template key="tojson.map.for"><![CDATA[
+    int (#namer)Size = (null == (#name) ? 0 : (#name).size());
+    if ((#namer)Size > 0) {
+    (#tab)(#arg).append('\\n').append('{');
+    (#tab)int (#namer)Idx = 0;
+    (#tab)for (Map.Entry<(#typer)> (#namer)Iter : (#name).entrySet()) { /* map.for: (#name) */
+    (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
+    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { (#arg).append(','); }
+    (#tab)}
+    (#tab)(#arg).append('}');
+    }
+  ]]></template>
+  <template key="tojson.map.head.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.getKey();(#brk)]]></template>
+  <template key="tojson.map.head.v"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.getValue();(#brk)]]></template>
+  <template key="tojson.nest.n"><![CDATA[ (#body); ]]></template>
+  <template key="tojson.nest.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.getKey(); /* nest.k */
+    (#arg).append('"'); (#body); (#arg).append('"').append(':'); ]]></template>
+  <template key="tojson.nest.v">
+    <![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue(); /* nest.v */(#brk)(#body); ]]></template>
+
+  <template key="tojson.ref.any"><![CDATA[
+    (#arg).append('"').append("(#namer)").append('"').append(':'); comma = ','; (#body); ]]></template>
+  <template key="tojson.ref.vec | tojson.ref.map"><![CDATA[
+    if ((#namer)Exists) { (#arg).append('"').append("(#namer)").append('"').append(':'); comma = ','; }
+    (#body) ]]></template>
+  <template key="tojson.ref.string | tojson.ref.struct |
+                 tojson.ptr.string | tojson.ptr.struct"><![CDATA[
+    if ((#namer)Exists) {
+    (#tab)(#arg).append('"').append("(#namer)").append('"').append(':'); comma = ','; (#body);
+    }
+  ]]></template>
+  <template key="tojson.ptr.vec | tojson.ptr.map"><![CDATA[
+    if ((#namer)Exists) {(#bodyindent) comma = ',';
+    }
+  ]]></template>
+  <template key="tojson.field.head.string"><![CDATA[
+    boolean (#namer)Exists = (#name) != null && (#name).length() > 0;
+  ]]></template>
+  <template key="tojson.field.head.struct"><![CDATA[
+    boolean (#namer)Exists = (null != (#name));
+  ]]></template>
+  <template key="tojson.field.head.vec | tojson.field.head.map"><![CDATA[
+    boolean (#namer)Exists = (null != (#name) && (#name).size() > 0);
+  ]]></template>
+  <template key="tojson.field.space.any"><![CDATA[
+    if ('\\0' != comma) { (#arg).append(comma); comma = '\\0'; }
+  ]]></template>
+  <template key="tojson.field.space.string | tojson.field.space.vec |
+                 tojson.field.space.struct | tojson.field.space.map"><![CDATA[
+    if ('\\0' != comma && (#namer)Exists) { (#arg).append(comma); comma = '\\0'; }
+  ]]></template>
 
   <!-- InvarRuntime Class -->
   <template key="runtime.pack"><![CDATA[ invar ]]></template>
