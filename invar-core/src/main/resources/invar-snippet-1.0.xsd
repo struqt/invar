@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:tns="invar.template" targetNamespace="invar.template">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://invar.struqt.com/snippet/1.0"
+        targetNamespace="http://invar.struqt.com/snippet/1.0">
 
 	<xs:element name="root" type="tns:root">
 		<xs:annotation>

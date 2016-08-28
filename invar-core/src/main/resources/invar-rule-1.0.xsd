@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="invar.rule"
-  targetNamespace="invar.rule">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://struqt.com/invar/1.0"
+        targetNamespace="http://struqt.com/invar/1.0">
+
   <xs:element name="package" type="tns:rule.package">
     <xs:annotation>
       <xs:documentation>Define a package</xs:documentation>
