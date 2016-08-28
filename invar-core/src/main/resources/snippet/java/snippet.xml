@@ -247,13 +247,15 @@
 
   <!-- CopyFrom Method -->
   <template key="copy.method.arg"><![CDATA[from]]></template>
-  <template key="copy.method"><![CDATA[ (#tab)public (#type) copy ((#type) from)
+  <template key="copy.method"><![CDATA[
+    (#tab)/** Shallow copy */
+    (#tab)public (#type) copy((#type) from)
     (#tab){
       (#tab)(#tab)if (this == from || from == (#null)) {
       (#tab)(#tab)(#tab)return this;
       (#tab)(#tab)}(#body)
       (#tab)(#tab)return this;
-    (#tab)} //copyFrom(...)]]></template>
+    (#tab)} /* copyFrom(...) */ ]]></template>
   <template key="copy.any"><![CDATA[ (#arg)(#split)(#name) ]]></template>
   <template key="copy.vec">
     <![CDATA[ (#name).addAll((#arg)(#split)(#name)) ]]></template>
@@ -271,11 +273,11 @@
     }
   ]]></template>
   <template key="copy.ptr.vec|copy.ptr.map"><![CDATA[
-    if ((#arg).(#name) != (#null)) {
-    (#tab)(#name).clear();
-    (#tab)(#body);
-    } else {
+    if (null == (#arg).(#name)) {
     (#tab)(#name) = (#null);
+    } else {
+    (#tab)if ((#null) == (#name)) { (#name) = new (#type)(); }
+    (#tab)else { (#name).clear(); }(#bodyindent);
     }
   ]]></template>
 
