@@ -315,6 +315,7 @@ final public class InvarSnippet {
         final static String ProtocId = wrapToken("protoc-id");
         final static String ProtocType = wrapToken("protoc-type");
         final static String ConstCRC = wrapToken("const-crc");
+        final static String Struct = wrapToken("struct");
 
         static String wrapToken(String name) {
             return "\\(#" + name + "\\)";

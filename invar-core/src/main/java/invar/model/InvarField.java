@@ -87,6 +87,10 @@ public class InvarField {
             typeFormatted += evalGenerics(ctx, type.getRedirect(), split, fullName);
         }
         typeFormatted = typeFormatted.trim();
+        ///* FIXME a trick for java
+        if (typeFormatted.startsWith("java.lang.")) {
+            typeFormatted = typeFormatted.substring(10, typeFormatted.length());
+        } //*/
         return typeFormatted;
     }
 

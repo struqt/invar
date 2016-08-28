@@ -26,12 +26,16 @@ public abstract class InvarCodec {
 
     public interface JSONEncode {
 
-        StringBuilder toStringJSON();
+        String toStringJSON();
+
+        void writeJSON(StringBuilder s);
     }
 
     public interface XMLEncode {
 
-        StringBuilder toStringXML(String name);
+        String toStringXML();
+
+        void writeXML(StringBuilder s, String name);
     }
 
     public interface InvarProtoc {

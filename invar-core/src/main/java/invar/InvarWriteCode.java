@@ -1159,7 +1159,14 @@ public final class InvarWriteCode extends InvarWrite {
 
         private String makeCodeMethod(List<String> lines, TypeStruct type, String snippet) {
             String returnType = uniqueTypeName && type.getConflict(context) ? type.getUniqueName() : type.getName();
-            indentLines(lines, methodIndentNum);
+            String sNum = snippetTryGet(prefix + "indent.num", null);
+            Integer iNum = 0;
+            if (sNum != null) {
+                iNum = Math.max(0, Integer.parseInt(sNum));
+            } else {
+                iNum = methodIndentNum;
+            }
+            indentLines(lines, iNum);
             StringBuilder body = new StringBuilder();
             for (String line : lines) {
                 if (line.trim().equals(empty)) {
@@ -1176,6 +1183,7 @@ public final class InvarWriteCode extends InvarWrite {
             s = replace(s, Token.ByteNotNull, snippetTryGet("byte.yes"));
             s = replace(s, Token.Argument, snippetArg);
             s = replace(s, Token.NameTable, type.getTableName());
+            s = replace(s, Token.Struct, getUniqueTypeName(type));
             return s;
         }
 

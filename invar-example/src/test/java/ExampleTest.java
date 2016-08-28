@@ -4,14 +4,27 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import test.db.MemberEntry;
 
-/**
- * Created by wangkang on 8/18/16
- */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ExampleTest {
 
     @Test
-    public void testSqlInsert() {
+    public void test_01_ToJSON() {
+        String hint = "MemberEntry.Create().toStringJSON()";
+        String json = MemberEntry.Create().toStringJSON().trim();
+        log(hint, json);
+        Assert.assertEquals(json, "{\"id\":0,\"createTime\":-1,\"updateTime\":-1}");
+    }
+
+    @Test
+    public void test_02_ToXML() {
+        String hint = "MemberEntry.Create().toStringJSON()";
+        String json = MemberEntry.Create().toStringXML().trim();
+        log(hint, json);
+        //Assert.assertEquals(json, "{\"id\":0,\"createTime\":-1,\"updateTime\":-1}");
+    }
+
+    @Test
+    public void test_11_SqlInsert() {
         String hint = "MemberEntry.SQL.buildInsert()";
         String sql = MemberEntry.SQL.buildInsert().toString();
         Assert.assertEquals(sql,
@@ -20,7 +33,7 @@ public class ExampleTest {
     }
 
     @Test
-    public void testSqlSelect() {
+    public void test_12_SqlSelect() {
         String hint = "MemberEntry.SQL.buildSelect()";
         String where = "`id`=1";
         String sql;
@@ -39,7 +52,7 @@ public class ExampleTest {
     }
 
     @Test
-    public void testSqlUpdate() {
+    public void test_13_SqlUpdate() {
         String hint = "MemberEntry.SQL.buildUpdate()";
         String where = "`id`=2";
         String sql;

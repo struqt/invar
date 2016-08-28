@@ -5,11 +5,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
-  <export resPath="java/invar/InvarReadData.java" destDir="invar" destName="InvarReadData.java"/>
   <export resPath="java/invar/InvarRule.java" destDir="invar" destName="InvarRule.java"/>
   <export resPath="java/invar/InvarCodec.java" destDir="invar" destName="InvarCodec.java"/>
   <export resPath="java/invar/InvarSQL.java" destDir="invar" destName="InvarSQL.java"/>
   <export resPath="java/invar/InvarMySQL.java" destDir="invar" destName="InvarMySQL.java"/>
+  <export resPath="java/invar/InvarReadData.java" destDir="invar"
+          destName="InvarReadData.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -82,8 +83,7 @@
   <template key="init.struct"> <![CDATA[ (#type).Create()]]></template>
   <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
   <template key="init.map">    <![CDATA[ new (#type)()   ]]></template>
-  <template key="init.uint64">
-    <![CDATA[ new BigInteger("(#deft)", 10) ]]></template>
+  <template key="init.uint64"> <![CDATA[ BigInteger.valueOf(0L) ]]></template>
   <template key="init.protocCRC"><![CDATA[ (#deft)       ]]></template>
 
   <template key="import.exclude.conflict"> <![CDATA[ true ]]></template>
@@ -146,12 +146,12 @@
     (#tab)}
     }
   ]]></template>
-  <template key="struct.protoc.ntf">
-    <![CDATA[ (#brk)invar.InvarCodec.ProtocNotify,   ]]></template>
-  <template key="struct.protoc.req">
-    <![CDATA[ (#brk)invar.InvarCodec.ProtocRequest,  ]]></template>
-  <template key="struct.protoc.resp">
-    <![CDATA[ (#brk)invar.InvarCodec.ProtocResponse, ]]></template>
+  <template key="struct.protoc.ntf"><![CDATA[
+    (#brk)invar.InvarCodec.ProtocNotify, ]]></template>
+  <template key="struct.protoc.req"><![CDATA[
+    (#brk)invar.InvarCodec.ProtocRequest, ]]></template>
+  <template key="struct.protoc.resp"><![CDATA[
+    (#brk)invar.InvarCodec.ProtocResponse, ]]></template>
   <template key="struct"><![CDATA[
     [#addImport(struct; imports; java.io::IOException)]
     [#addImport(struct; imports; java.io::InputStream)]
@@ -167,9 +167,10 @@
     invar.InvarCodec.BinaryEncode,
     invar.InvarCodec.XMLEncode
     {
-    (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)];
+    (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)]L;
     (#blank)
-    (#tab)static public (#name) Create() {
+    (#tab)static public (#name) Create()
+    (#tab){
     (#tab)(#tab)return new (#name)();
     (#tab)}
     (#blank)
@@ -177,13 +178,14 @@
     [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
     [#codeGetters(struct; fields)]
-    [#codeSetters(struct; fields)]
+    [#codeNested (setter.; useFullName; struct; fields; imports)](#brk)
+
     [#codeNested (copy.;   useFullName; struct; fields; imports)](#brk)
     [#codeNested (read.;   useFullName; struct; fields; imports)](#brk)
     [#codeNested (write.;  useFullName; struct; fields; imports)](#brk)
+    [#codeNested (tostr.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (tojson.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (toxml.;  useFullName; struct; fields; imports)](#brk)
-    [#codeNested (tostr.;  useFullName; struct; fields; imports)](#brk)
 
     [#codeNested (sql.params.;   useFullName; struct; fields; imports)](#brk)
     [#codeNested (sql.start.;    useFullName; struct; fields; imports)](#brk)
@@ -281,6 +283,74 @@
     }
   ]]></template>
 
+  <!-- Setters -->
+  <template key="setter.indent.num"><![CDATA[ 0 ]]></template>
+  <template key="setter.import"><![CDATA[ ]]></template>
+  <template key="setter.method.arg"><![CDATA[ ]]></template>
+  <template key="setter.method"><![CDATA[ (#body) ]]></template>
+  <template key="setter.ptr.any | setter.ref.any"><![CDATA[
+    (#blank)
+    [#codeDoc(fields; (#index))]
+    [#codeMetaData(fields; (#index))]
+    (#body)
+  ]]></template>
+  <template key="setter.any | setter.vec | setter.map"><![CDATA[
+    public (#struct) set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; return this; } ]]></template>
+  <template key="setter.int8"><![CDATA[
+    public (#struct) set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; return this; }
+    (#blank)
+    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    {
+    (#tab)if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
+    (#tab)(#tab)throw new NumberFormatException("int8 value out of range: " + value);
+    (#tab)}
+    (#tab)this.(#name) = Integer.valueOf(value).byteValue();
+    (#tab)return this;
+    }
+  ]]></template>
+  <template key="setter.int16"><![CDATA[
+    public (#struct) set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; return this; }
+    (#blank)
+    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    {
+    (#tab)if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+    (#tab)(#tab)throw new NumberFormatException("int16 value out of range: " + value);
+    (#tab)}
+    (#tab)this.(#name) = Integer.valueOf(value).shortValue();
+    (#tab)return this;
+    }
+  ]]></template>
+  <template key="setter.uint8"><![CDATA[
+    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    {
+    (#tab)if (value < 0 || value > 0xFF) {
+    (#tab)(#tab)throw new NumberFormatException("uint8 value out of range: " + value);
+    (#tab)}
+    (#tab)this.(#name) = value;
+    (#tab)return this;
+    }
+  ]]></template>
+  <template key="setter.uint16"><![CDATA[
+    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    {
+    (#tab)if (value < 0 || value > 0xFFFF) {
+    (#tab)(#tab)throw new NumberFormatException("uint16 value out of range: " + value);
+    (#tab)}
+    (#tab)this.(#name) = value;
+    (#tab)return this;
+    }
+  ]]></template>
+  <template key="setter.uint32"><![CDATA[
+    public (#struct) set[#upperHeadChar( (#name) )](long value) throws NumberFormatException
+    {
+    (#tab)if (value < 0 || value > 0xFFFFFFFFL) {
+    (#tab)(#tab)throw new NumberFormatException("uint32 value out of range: " + value);
+    (#tab)}
+    (#tab)this.(#name) = value;
+    (#tab)return this;
+    }
+  ]]></template>
+
   <!-- Read bytes from a Stream -->
   <template key="read.import"><![CDATA[  ]]></template>
   <template key="read.method.arg"><![CDATA[from]]></template>
@@ -319,7 +389,7 @@
   <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64">
     <![CDATA[
     byte[] (#name)Bytes = new byte[8]; from.readFully((#name)Bytes, 0, 8);
-    (#type) (#name) = new (#type)((#namer)Bytes); ]]></template>
+    (#type) (#name) = new (#type)(1, (#namer)Bytes); ]]></template>
 
   <template key="read.vec.head">
     <![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
@@ -345,7 +415,7 @@
     <![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
   <template key="read.ref.uint64"><![CDATA[
     byte[] (#namer)Bytes = new byte[8]; from.readFully((#namer)Bytes, 0, 8);
-    (#name) = new (#type)((#namer)Bytes);
+    (#name) = new (#type)(1, (#namer)Bytes);
   ]]></template>
 
   <template key="read.ptr.string"><![CDATA[
@@ -378,10 +448,8 @@
     (#tab)public void write(DataOutput dest) throws IOException
     (#tab){(#body)
     (#tab)}]]></template>
-  <template key="write.int8">
-    <![CDATA[ (#arg).writeByte((#name))  ]]></template>
-  <template key="write.int16">
-    <![CDATA[ (#arg).writeShort((#name)) ]]></template>
+  <template key="write.int8"><![CDATA[ (#arg).writeByte((#name))  ]]></template>
+  <template key="write.int16"><![CDATA[ (#arg).writeShort((#name)) ]]></template>
   <template key="write.int32">
     <![CDATA[ (#arg).writeInt((#name))   ]]></template>
   <template key="write.int64">
@@ -444,73 +512,76 @@
 
   <!-- To XML String -->
   <template key="toxml.import"><![CDATA[]]></template>
-  <template key="toxml.method.arg"><![CDATA[name]]></template>
-  <template key="toxml.method"><![CDATA[ (#tab)public StringBuilder toStringXML (String name)
+  <template key="toxml.method.arg"><![CDATA[ nodes ]]></template>
+  <template key="toxml.method"><![CDATA[
+    (#tab)public String toStringXML()
     (#tab){
-    (#tab)(#tab)StringBuilder result = new StringBuilder();
+    (#tab)(#tab)StringBuilder code = new StringBuilder();
+    (#tab)(#tab)this.writeXML(code, "(#type)");
+    (#tab)(#tab)return code.toString();
+    (#tab)}
+    (#blank)
+    (#tab)public void writeXML(StringBuilder result, String name)
+    (#tab){
     (#tab)(#tab)StringBuilder attrs  = new StringBuilder();
-    (#tab)(#tab)StringBuilder nodes  = new StringBuilder();(#body)
-    (#tab)(#tab)result.append("<"); result.append(name); result.append(attrs);
-    (#tab)(#tab)if (nodes.length() == 0) {
-    (#tab)(#tab)(#tab)result.append("/>");
+    (#tab)(#tab)StringBuilder (#arg) = new StringBuilder();(#body)
+    (#tab)(#tab)result.append('<').append(name).append(attrs);
+    (#tab)(#tab)if ((#arg).length() == 0) {
+    (#tab)(#tab)(#tab)result.append('/').append('>');
     (#tab)(#tab)} else {
-    (#tab)(#tab)(#tab)result.append(">");
-    (#tab)(#tab)(#tab)result.append(nodes);
-    (#tab)(#tab)(#tab)result.append("</"); result.append(name); result.append(">");
+    (#tab)(#tab)(#tab)result.append('>').append((#arg));
+    (#tab)(#tab)(#tab)result.append('<').append('/').append(name).append('>');
     (#tab)(#tab)}
-    (#tab)(#tab)return result;
-    (#tab)} //(#type)::toStringXML (String name) ]]></template>
+    (#tab)} /* (#type)::writeXML(...) */ ]]></template>
   <template key="toxml.any">   <![CDATA[ (#name).toString() ]]></template>
   <template key="toxml.string"><![CDATA[ (#name) ]]></template>
-  <template key="toxml.struct">
-    <![CDATA[ (#name).toStringXML("(#name)") ]]></template>
-  <template key="toxml.nest.n.struct">
-    <![CDATA[ nodes.append((#body)); ]]></template>
+  <template key="toxml.struct"><![CDATA[
+    (#name).writeXML((#arg), "(#name)")]]></template>
+  <template key="toxml.nest.n.struct"><![CDATA[
+    (#body); ]]></template>
   <template key="toxml.nest.k.struct"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();
-    nodes.append((#body)); ]]></template>
+    (#body); ]]></template>
   <template key="toxml.nest.v.struct"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();
-    nodes.append((#body)); ]]></template>
+    (#body); ]]></template>
   <template key="toxml.nest.n"><![CDATA[
-    nodes.append("<(#name) value=\\"");
-    nodes.append((#body));
-    nodes.append("\\">"); ]]></template>
+    (#arg).append('<').append("(#name)").append(' ').append("value").append('=').append('"');
+    (#arg).append((#body)).append('"').append('>'); ]]></template>
   <template key="toxml.nest.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();
-    nodes.append("<(#name) value=\\"");
-    nodes.append((#body));
-    nodes.append("\\">"); ]]></template>
+    (#arg).append('<').append("(#name)").append(' ').append("value").append('=').append('"');
+    (#arg).append((#body)).append('"').append('>'); ]]></template>
   <template key="toxml.nest.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();
-    nodes.append("<(#name) value=\\"");
-    nodes.append((#body));
-    nodes.append("\\">"); ]]></template>
+    (#arg).append('<').append("(#name)").append(' ').append("value").append('=').append('"');
+    (#arg).append((#body)).append('"').append('>'); ]]></template>
   <template key="toxml.vec.head"><![CDATA[]]></template>
   <template key="toxml.vec.for"><![CDATA[
-    nodes.append("<(#name)>");
+    (#arg).append('<').append("(#name)").append('>');
     for ((#typer) (#value) : (#name)) {(#body)
     }
-    nodes.append("</(#name)>");
+    (#arg).append('<').append('/').append("(#name)").append('>');
   ]]></template>
   <template key="toxml.map.head.k">
     <![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();(#brk)]]></template>
   <template key="toxml.map.head.v">
     <![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();(#brk)]]></template>
   <template key="toxml.map.for"><![CDATA[
-    nodes.append("<(#name)>");
+    (#arg).append('<').append("(#name)").append('>');
     for (Map.Entry<(#typer)> (#name)Iter : (#name).entrySet()) {(#body)
     }[#addImport(struct; imports; java.util::Map)]
-    nodes.append("</(#name)>");
+    (#arg).append('<').append('/').append("(#name)").append('>');
   ]]></template>
-  <template key="toxml.ref.any"><![CDATA[ attrs.append(" (#name)=\\"");
-    attrs.append((#body)); attrs.append("\\""); ]]></template>
+  <template key="toxml.ref.any"><![CDATA[
+    attrs.append(' ').append("(#name)").append('=').append('"');
+    attrs.append((#body)).append('"'); ]]></template>
   <template key="toxml.ref.struct">
-    <![CDATA[ nodes.append((#body)); ]]></template>
+    <![CDATA[ (#body); ]]></template>
   <template key="toxml.ref.vec | toxml.ref.map"><![CDATA[ if ((#name).size() > 0) {(#bodyindent)
     }]]></template>
   <template key="toxml.ptr.any"><![CDATA[ if ((#name) != (#null)) {
-    (#tab)attrs.append(" (#name)=\\"");
-    (#tab)attrs.append((#body)); attrs.append("\\"");
+    (#tab)attrs.append(' ').append("(#name)").append('=').append('"');
+    (#tab)attrs.append((#body)).append('"');
     }]]></template>
   <template key="toxml.ptr.struct"><![CDATA[ if ((#name) != (#null)) {
-    (#tab)nodes.append((#body));
+    (#tab)(#body);
     }]]></template>
   <template key="toxml.ptr.vec | toxml.ptr.map"><![CDATA[
     (#concat)if ((#name) != (#null) && (#name).size() > 0) {(#bodyindent)
@@ -519,41 +590,45 @@
 
   <!-- To String -->
   <template key="tostr.import"><![CDATA[]]></template>
-  <template key="tostr.method.arg"><![CDATA[]]></template>
-  <template key="tostr.method"><![CDATA[ (#tab)public String toString ()
+  <template key="tostr.method.arg"><![CDATA[ s ]]></template>
+  <template key="tostr.method"><![CDATA[ (#tab)public String toString()
     (#tab){
-    (#tab)(#tab)StringBuilder result = new StringBuilder();
-    (#tab)(#tab)result.append("{ ");
-    (#tab)(#tab)result.append(getClass().getName());(#body)
-    (#tab)(#tab)result.append(" }");
-    (#tab)(#tab)return result.toString();
+    (#tab)(#tab)StringBuilder (#arg) = new StringBuilder();
+    (#tab)(#tab)(#arg).append('{');
+    (#tab)(#tab)(#arg).append(getClass().getName());(#body)
+    (#tab)(#tab)(#arg).append('}');
+    (#tab)(#tab)return (#arg).toString();
     (#tab)} //(#type)::toString () ]]></template>
-  <template key="tostr.any">   <![CDATA[ (#name).toString() ]]></template>
-  <template key="tostr.struct"><![CDATA[ "<(#type)>" ]]></template>
-  <template key="tostr.vec">
-    <![CDATA[ "(" + (#name).size() + ")" ]]></template>
-  <template key="tostr.map">
-    <![CDATA[ "[" + (#name).size() + "]" ]]></template>
-  <template key="tostr.string"><![CDATA[ "\\"" + (#name) + "\\"" ]]></template>
-  <template key="tostr.ref.any"><![CDATA[ result.append(", (#name):");
-    result.append((#body)); ]]></template>
-  <template key="tostr.ptr.any"><![CDATA[ result.append(", (#name):");
+  <template key="tostr.any"><![CDATA[ (#arg).append((#name).toString()) ]]></template>
+  <template key="tostr.struct"><![CDATA[
+    (#arg).append('<').append("(#type)").append('>') ]]></template>
+  <template key="tostr.vec"><![CDATA[
+    (#arg).append('(').append((#name).size()).append(')') ]]></template>
+  <template key="tostr.map"><![CDATA[
+    (#arg).append('[').append((#name).size()).append(']') ]]></template>
+  <template key="tostr.string"><![CDATA[
+    (#arg).append('"').append((#name)).append('"') ]]></template>
+  <template key="tostr.ref.any"><![CDATA[
+    (#arg).append(',').append("(#name)").append(':');
+    (#body); ]]></template>
+  <template key="tostr.ptr.any"><![CDATA[ (#arg).append(", (#name):");
     if ((#name) != (#null)) {
-      (#tab)result.append((#body));
+      (#tab)(#body);
     } else {
-      (#tab)result.append("null");
+      (#tab)(#arg).append("null");
     } ]]></template>
 
 
   <!-- Write data to JSON data format -->
-  <template key="tojson.import">      <![CDATA[ System.Text::StringBuilder ]]></template>
+  <template key="tojson.import">
+    <![CDATA[ System.Text::StringBuilder ]]></template>
   <template key="tojson.method.arg">  <![CDATA[ s ]]></template>
   <template key="tojson.method"><![CDATA[
-    (#tab)public StringBuilder toStringJSON()
+    (#tab)public String toStringJSON()
     (#tab){
     (#tab)(#tab)StringBuilder code = new StringBuilder();
     (#tab)(#tab)this.writeJSON(code);
-    (#tab)(#tab)return code;
+    (#tab)(#tab)return code.toString();
     (#tab)}(#brk)
     (#tab)public void writeJSON(StringBuilder s)
     (#tab){
@@ -561,10 +636,12 @@
     (#tab)(#tab)char comma = '\\0';(#body)
     (#tab)(#tab)s.append('}').append('\\n');
     (#tab)} /* (#type)::writeJSON(...) */ ]]></template>
-  <template key="tojson.any"> <![CDATA[ (#arg).append((#name).toString()) ]]></template>
-  <template key="tojson.enum"><![CDATA[ (#arg).append((#name).ordinal()); ]]></template>
-  <template key="tojson.bool"><![CDATA[ (#arg).append((#name).toString().toLowerCase()) ]]></template>
-  <template key="tojson.string"><![CDATA[ (#arg).append('"').append((#name).toString()).append('"') ]]></template>
+  <template key="tojson.any"><![CDATA[ (#arg).append((#name).toString()) ]]></template>
+  <template key="tojson.enum"><![CDATA[ (#arg).append((#name).ordinal()) ]]></template>
+  <template key="tojson.bool"><![CDATA[
+    (#arg).append((#name).toString().toLowerCase()) ]]></template>
+  <template key="tojson.string"><![CDATA[
+    (#arg).append('"').append((#name).toString()).append('"') ]]></template>
   <template key="tojson.struct"><![CDATA[ (#name).writeJSON((#arg)) ]]></template>
   <template key="tojson.vec.for"><![CDATA[
     int (#namer)Size = (null == (#name) ? 0 : (#name).size());
