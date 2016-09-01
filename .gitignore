@@ -2,6 +2,7 @@
 
 __puchache__
 *.pyc
+.vscode
 
 
 ### Java template
