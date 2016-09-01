@@ -14,6 +14,11 @@ import java.math.BigInteger;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class InvarTest {
 
+    private void print(String s) {
+        System.out.print("| ");
+        System.out.println(s.trim());
+    }
+
     @Test
     public void test_001_SingleInt08() throws IOException {
         SingleInt8 o = SingleInt8.Create();
@@ -32,6 +37,9 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":127}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleInt8 number=\"127\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -53,6 +61,9 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":32767}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleInt16 number=\"32767\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -76,6 +87,9 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":2147483647}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleInt32 number=\"2147483647\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -103,6 +117,9 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":9223372036854775807}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleInt64 number=\"9223372036854775807\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -123,6 +140,9 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":255}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleUInt8 number=\"255\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -144,6 +164,9 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":65535}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleUInt16 number=\"65535\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -166,6 +189,9 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":4294967295}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleUInt32 number=\"4294967295\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -191,6 +217,61 @@ public class InvarTest {
         inp.read(new ByteArrayInputStream(bytes));
         Assert.assertEquals("{\"number\":18446744073709551615}", inp.toStringJSON().trim());
         Assert.assertEquals("<SingleUInt64 number=\"18446744073709551615\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
+    }
+
+
+    @Test
+    public void test_009_SingleFloat32() throws IOException {
+        SingleFloat32 o = SingleFloat32.Create();
+        o.setNumber(3.14f);
+        Assert.assertEquals(o.getNumber().doubleValue(), 3.14, 0.0001);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream(4);
+        o.write(out);
+        Assert.assertEquals(4, out.size());
+        byte[] bytes = out.toByteArray();
+        Assert.assertEquals(64, bytes[0]);
+        Assert.assertEquals(72, bytes[1]);
+        Assert.assertEquals(-11, bytes[2]);
+        Assert.assertEquals(-61, bytes[3]);
+
+        SingleFloat32 inp = SingleFloat32.Create();
+        inp.read(new ByteArrayInputStream(bytes));
+        Assert.assertEquals("{\"number\":3.14}", inp.toStringJSON().trim());
+        Assert.assertEquals("<SingleFloat32 number=\"3.14\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
+    }
+
+    @Test
+    public void test_010_SingleFloat64() throws IOException {
+        SingleFloat64 o = SingleFloat64.Create();
+        o.setNumber(3.141592654);
+        Assert.assertEquals(o.getNumber(), 3.141592654, 0.0000000001);
+        ByteArrayOutputStream out = new ByteArrayOutputStream(8);
+        o.write(out);
+        Assert.assertEquals(8, out.size());
+        byte[] bytes = out.toByteArray();
+        Assert.assertEquals(64, bytes[0]);
+        Assert.assertEquals(9, bytes[1]);
+        Assert.assertEquals(33, bytes[2]);
+        Assert.assertEquals(-5, bytes[3]);
+        Assert.assertEquals(84, bytes[4]);
+        Assert.assertEquals(82, bytes[5]);
+        Assert.assertEquals(69, bytes[6]);
+        Assert.assertEquals(80, bytes[7]);
+
+        SingleFloat64 inp = SingleFloat64.Create();
+        inp.read(new ByteArrayInputStream(bytes));
+        Assert.assertEquals("{\"number\":3.141592654}", inp.toStringJSON().trim());
+        Assert.assertEquals("<SingleFloat64 number=\"3.141592654\"/>", inp.toStringXML());
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
     @Test
@@ -224,6 +305,9 @@ public class InvarTest {
         Assert.assertEquals(17, inp.getNumber7().longValue());
         Assert.assertEquals(18.0, inp.getNumber8().doubleValue(), 0.00001);
         Assert.assertEquals(19.0, inp.getNumber9(), 0.00001);
+
+        print(inp.toStringJSON());
+        print(inp.toStringXML());
     }
 
 }

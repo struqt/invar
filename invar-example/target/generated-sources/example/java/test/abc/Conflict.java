@@ -23,14 +23,15 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0xCC7A29B9;
+    static public final long CRC32 = 0xCC7A29B9L;
 
-    static public Conflict Create() {
+    static public Conflict Create()
+    {
         return new Conflict();
     }
 
     private Gender                       key   ;
-    private java.lang.String             text  ;
+    private String                       text  ;
     private LinkedList<Byte>             bytes ;
     private LinkedHashMap<String,String> hotfix;/* [AutoAdd] Hotfix */
 
@@ -59,7 +60,7 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="string", S="f1")
-    public java.lang.String getText() { return text; }
+    public String getText() { return text; }
 
     /**  */
     @invar.InvarRule(T="vec<int8>", S="f2")
@@ -72,16 +73,18 @@ invar.InvarCodec.XMLEncode
     /**  */
     @invar.InvarRule(T="test.abc.Gender", S="f0")
     public Conflict setKey(Gender value) { this.key = value; return this; }
-
     /**  */
     @invar.InvarRule(T="string", S="f1")
-    public Conflict setText(java.lang.String value) { this.text = value; return this; }
-
+    public Conflict setText(String value) { this.text = value; return this; }
+    /**  */
+    @invar.InvarRule(T="vec<int8>", S="f2")
+    public Conflict setBytes(LinkedList<java.lang.Byte> value) { this.bytes = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f3")
-    public Conflict setHotfix(LinkedHashMap<String,String> value) { this.hotfix = value; return this; }
+    public Conflict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
-    public Conflict copy (Conflict from)
+    /** Shallow copy */
+    public Conflict copy(Conflict from)
     {
         if (this == from || from == null) {
             return this;
@@ -90,14 +93,15 @@ invar.InvarCodec.XMLEncode
         text = from.text;
         bytes.clear();
         bytes.addAll(from.bytes);
-        if (from.hotfix != null) {
-            hotfix.clear();
-            hotfix.putAll(from.hotfix);
-        } else {
+        if (null == from.hotfix) {
             hotfix = null;
+        } else {
+            if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
+            else { hotfix.clear(); }
+            hotfix.putAll(from.hotfix);
         }
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -152,69 +156,123 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" key=\"");
-        attrs.append(key.toString()); attrs.append("\"");
-        attrs.append(" text=\"");
-        attrs.append(text); attrs.append("\"");
-        if (bytes.size() > 0) {
-            nodes.append("<bytes>");
-            for (java.lang.Byte n1 : bytes) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("key").append(':');
+        s.append(key.toString());
+        s.append(',').append("text").append(':');
+        s.append('"').append(text).append('"');
+        s.append(',').append("bytes").append(':');
+        s.append('(').append(bytes.size()).append(')');
+        s.append(", hotfix:");
+        if (hotfix != null) {
+            s.append('[').append(hotfix.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append('}');
+        return s.toString();
+    } //Conflict::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        s.append('"').append("key").append('"').append(':');
+        s.append(key.ordinal()); comma = ',';
+        boolean textExists = text != null && text.length() > 0;
+        if ('\0' != comma && textExists) { s.append(comma); comma = '\0'; }
+        if (textExists) {
+            s.append('"').append("text").append('"').append(':'); comma = ','; s.append('"').append(text.toString()).append('"');
+        }
+        boolean bytesExists = (null != bytes && bytes.size() > 0);
+        if ('\0' != comma && bytesExists) { s.append(comma); comma = '\0'; }
+        if (bytesExists) { s.append('"').append("bytes").append('"').append(':'); comma = ','; }
+        int bytesSize = (null == bytes ? 0 : bytes.size());
+        if (bytesSize > 0) {
+            s.append('\n').append('[');
+            int bytesIdx = 0;
+            for (java.lang.Byte n1 : bytes) { /* vec.for: bytes */
+                ++bytesIdx;
+                s.append(n1.toString());
+                if (bytesIdx != bytesSize) { s.append(','); }
             }
-            nodes.append("</bytes>");
+            s.append(']');
+        }
+        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if (hotfixExists) {
+            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
+            if (hotfixSize > 0) {
+                s.append('\n').append('{');
+                int hotfixIdx = 0;
+                for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
+                    ++hotfixIdx;
+                    java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
+                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
+                    s.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        s.append('}').append('\n');
+    } /* Conflict::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "Conflict");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("key").append('=').append('"');
+        attrs.append(key.toString()).append('"');
+        attrs.append(' ').append("text").append('=').append('"');
+        attrs.append(text).append('"');
+        if (bytes.size() > 0) {
+            nodes.append('<').append("bytes").append('>');
+            for (java.lang.Byte n1 : bytes) {
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
+            }
+            nodes.append('<').append('/').append("bytes").append('>');
         }
         if (hotfix != null && hotfix.size() > 0) {
-            nodes.append("<hotfix>");
+            nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1);
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1).append('"').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1);
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1).append('"').append('>');
             }
-            nodes.append("</hotfix>");
+            nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //Conflict::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", key:");
-        result.append(key.toString());
-        result.append(", text:");
-        result.append("\"" + text + "\"");
-        result.append(", bytes:");
-        result.append("(" + bytes.size() + ")");
-        result.append(", hotfix:");
-        if (hotfix != null) {
-            result.append("[" + hotfix.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(" }");
-        return result.toString();
-    } //Conflict::toString ()
+    } /* Conflict::writeXML(...) */
 
 }
 

@@ -25,14 +25,15 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x6348C9B7;
+    static public final long CRC32 = 0x6348C9B7L;
 
-    static public TestPointer Create() {
+    static public TestPointer Create()
+    {
         return new TestPointer();
     }
 
     private TestPointer                                                 self        ;
-    private java.lang.String                                            stringValue ;
+    private String                                                      stringValue ;
     private Custom                                                      other       ;
     private LinkedList<Byte>                                            listI08     ;
     private LinkedHashMap<Byte,Byte>                                    dictI08     ;
@@ -88,7 +89,7 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="string", S="f1")
-    public java.lang.String getStringValue() { return stringValue; }
+    public String getStringValue() { return stringValue; }
 
     /**  */
     @invar.InvarRule(T="test.abc.Custom", S="f2")
@@ -121,40 +122,33 @@ invar.InvarCodec.XMLEncode
     /**  */
     @invar.InvarRule(T="test.xyz.TestPointer", S="f0")
     public TestPointer setSelf(TestPointer value) { this.self = value; return this; }
-
     /**  */
     @invar.InvarRule(T="string", S="f1")
-    public TestPointer setStringValue(java.lang.String value) { this.stringValue = value; return this; }
-
+    public TestPointer setStringValue(String value) { this.stringValue = value; return this; }
     /**  */
     @invar.InvarRule(T="test.abc.Custom", S="f2")
     public TestPointer setOther(Custom value) { this.other = value; return this; }
-
     /**  */
     @invar.InvarRule(T="vec<int8>", S="f3")
-    public TestPointer setListI08(LinkedList<Byte> value) { this.listI08 = value; return this; }
-
+    public TestPointer setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; return this; }
     /**  */
     @invar.InvarRule(T="map<int8,int8>", S="f4")
-    public TestPointer setDictI08(LinkedHashMap<Byte,Byte> value) { this.dictI08 = value; return this; }
-
+    public TestPointer setDictI08(LinkedHashMap<java.lang.Byte,java.lang.Byte> value) { this.dictI08 = value; return this; }
     /**  */
     @invar.InvarRule(T="vec<vec<vec<vec<test.xyz.TestPointer>>>>", S="f5")
     public TestPointer setListNested(LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>> value) { this.listNested = value; return this; }
-
     /**  */
     @invar.InvarRule(T="float", S="f6")
     public TestPointer setNumberSingle(Float value) { this.numberSingle = value; return this; }
-
     /**  */
     @invar.InvarRule(T="test.abc.Gender", S="f7")
     public TestPointer setEnumValue(Gender value) { this.enumValue = value; return this; }
-
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f8")
-    public TestPointer setHotfix(LinkedHashMap<String,String> value) { this.hotfix = value; return this; }
+    public TestPointer setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
-    public TestPointer copy (TestPointer from)
+    /** Shallow copy */
+    public TestPointer copy(TestPointer from)
     {
         if (this == from || from == null) {
             return this;
@@ -170,34 +164,38 @@ invar.InvarCodec.XMLEncode
         } else {
             other = null;
         }
-        if (from.listI08 != null) {
-            listI08.clear();
-            listI08.addAll(from.listI08);
-        } else {
+        if (null == from.listI08) {
             listI08 = null;
-        }
-        if (from.dictI08 != null) {
-            dictI08.clear();
-            dictI08.putAll(from.dictI08);
         } else {
+            if (null == listI08) { listI08 = new LinkedList<java.lang.Byte>(); }
+            else { listI08.clear(); }
+            listI08.addAll(from.listI08);
+        }
+        if (null == from.dictI08) {
             dictI08 = null;
-        }
-        if (from.listNested != null) {
-            listNested.clear();
-            listNested.addAll(from.listNested);
         } else {
+            if (null == dictI08) { dictI08 = new LinkedHashMap<java.lang.Byte,java.lang.Byte>(); }
+            else { dictI08.clear(); }
+            dictI08.putAll(from.dictI08);
+        }
+        if (null == from.listNested) {
             listNested = null;
+        } else {
+            if (null == listNested) { listNested = new LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>>(); }
+            else { listNested.clear(); }
+            listNested.addAll(from.listNested);
         }
         numberSingle = from.numberSingle;
         enumValue = from.enumValue;
-        if (from.hotfix != null) {
-            hotfix.clear();
-            hotfix.putAll(from.hotfix);
-        } else {
+        if (null == from.hotfix) {
             hotfix = null;
+        } else {
+            if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
+            else { hotfix.clear(); }
+            hotfix.putAll(from.hotfix);
         }
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -349,146 +347,275 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(", self:");
         if (self != null) {
-            nodes.append(self.toStringXML("self"));
+            s.append('<').append("TestPointer").append('>');
+        } else {
+            s.append("null");
+        }
+        s.append(", stringValue:");
+        if (stringValue != null) {
+            s.append('"').append(stringValue).append('"');
+        } else {
+            s.append("null");
+        }
+        s.append(", other:");
+        if (other != null) {
+            s.append('<').append("Custom").append('>');
+        } else {
+            s.append("null");
+        }
+        s.append(", listI08:");
+        if (listI08 != null) {
+            s.append('(').append(listI08.size()).append(')');
+        } else {
+            s.append("null");
+        }
+        s.append(", dictI08:");
+        if (dictI08 != null) {
+            s.append('[').append(dictI08.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append(", listNested:");
+        if (listNested != null) {
+            s.append('(').append(listNested.size()).append(')');
+        } else {
+            s.append("null");
+        }
+        s.append(',').append("numberSingle").append(':');
+        s.append(numberSingle.toString());
+        s.append(',').append("enumValue").append(':');
+        s.append(enumValue.toString());
+        s.append(", hotfix:");
+        if (hotfix != null) {
+            s.append('[').append(hotfix.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append('}');
+        return s.toString();
+    } //TestPointer::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        boolean selfExists = (null != self);
+        if (selfExists) {
+            s.append('"').append("self").append('"').append(':'); comma = ','; self.writeJSON(s);
+        }
+        boolean stringValueExists = stringValue != null && stringValue.length() > 0;
+        if ('\0' != comma && stringValueExists) { s.append(comma); comma = '\0'; }
+        if (stringValueExists) {
+            s.append('"').append("stringValue").append('"').append(':'); comma = ','; s.append('"').append(stringValue.toString()).append('"');
+        }
+        boolean otherExists = (null != other);
+        if ('\0' != comma && otherExists) { s.append(comma); comma = '\0'; }
+        if (otherExists) {
+            s.append('"').append("other").append('"').append(':'); comma = ','; other.writeJSON(s);
+        }
+        boolean listI08Exists = (null != listI08 && listI08.size() > 0);
+        if ('\0' != comma && listI08Exists) { s.append(comma); comma = '\0'; }
+        if (listI08Exists) {
+            int listI08Size = (null == listI08 ? 0 : listI08.size());
+            if (listI08Size > 0) {
+                s.append('\n').append('[');
+                int listI08Idx = 0;
+                for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
+                    ++listI08Idx;
+                    s.append(n1.toString());
+                    if (listI08Idx != listI08Size) { s.append(','); }
+                }
+                s.append(']');
+            } comma = ',';
+        }
+        boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
+        if ('\0' != comma && dictI08Exists) { s.append(comma); comma = '\0'; }
+        if (dictI08Exists) {
+            int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
+            if (dictI08Size > 0) {
+                s.append('\n').append('{');
+                int dictI08Idx = 0;
+                for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
+                    ++dictI08Idx;
+                    java.lang.Byte k1 = dictI08Iter.getKey(); /* nest.k */
+                    s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                    java.lang.Byte v1 = dictI08Iter.getValue(); /* nest.v */
+                    s.append(v1.toString());
+                    if (dictI08Idx != dictI08Size) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        boolean listNestedExists = (null != listNested && listNested.size() > 0);
+        if ('\0' != comma && listNestedExists) { s.append(comma); comma = '\0'; }
+        if (listNestedExists) {
+            int listNestedSize = (null == listNested ? 0 : listNested.size());
+            if (listNestedSize > 0) {
+                s.append('\n').append('[');
+                int listNestedIdx = 0;
+                for (LinkedList<LinkedList<LinkedList<TestPointer>>> n1 : listNested) { /* vec.for: listNested */
+                    ++listNestedIdx;
+                    int n1Size = (null == n1 ? 0 : n1.size());
+                    if (n1Size > 0) {
+                        s.append('\n').append('[');
+                        int n1Idx = 0;
+                        for (LinkedList<LinkedList<TestPointer>> n2 : n1) { /* vec.for: n1 */
+                            ++n1Idx;
+                            int n2Size = (null == n2 ? 0 : n2.size());
+                            if (n2Size > 0) {
+                                s.append('\n').append('[');
+                                int n2Idx = 0;
+                                for (LinkedList<TestPointer> n3 : n2) { /* vec.for: n2 */
+                                    ++n2Idx;
+                                    int n3Size = (null == n3 ? 0 : n3.size());
+                                    if (n3Size > 0) {
+                                        s.append('\n').append('[');
+                                        int n3Idx = 0;
+                                        for (TestPointer n4 : n3) { /* vec.for: n3 */
+                                            ++n3Idx;
+                                            n4.writeJSON(s);
+                                            if (n3Idx != n3Size) { s.append(','); }
+                                        }
+                                        s.append(']');
+                                    }
+                                    if (n2Idx != n2Size) { s.append(','); }
+                                }
+                                s.append(']');
+                            }
+                            if (n1Idx != n1Size) { s.append(','); }
+                        }
+                        s.append(']');
+                    }
+                    if (listNestedIdx != listNestedSize) { s.append(','); }
+                }
+                s.append(']');
+            } comma = ',';
+        }
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberSingle").append('"').append(':');
+        s.append(numberSingle.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("enumValue").append('"').append(':');
+        s.append(enumValue.ordinal()); comma = ',';
+        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if (hotfixExists) {
+            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
+            if (hotfixSize > 0) {
+                s.append('\n').append('{');
+                int hotfixIdx = 0;
+                for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
+                    ++hotfixIdx;
+                    java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
+                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
+                    s.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        s.append('}').append('\n');
+    } /* TestPointer::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "TestPointer");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        if (self != null) {
+            self.writeXML(nodes, "self");
         }
         if (stringValue != null) {
-            attrs.append(" stringValue=\"");
-            attrs.append(stringValue); attrs.append("\"");
+            attrs.append(' ').append("stringValue").append('=').append('"');
+            attrs.append(stringValue).append('"');
         }
         if (other != null) {
-            nodes.append(other.toStringXML("other"));
+            other.writeXML(nodes, "other");
         }
         if (listI08 != null && listI08.size() > 0) {
-            nodes.append("<listI08>");
+            nodes.append('<').append("listI08").append('>');
             for (java.lang.Byte n1 : listI08) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listI08>");
+            nodes.append('<').append('/').append("listI08").append('>');
         }
         if (dictI08 != null && dictI08.size() > 0) {
-            nodes.append("<dictI08>");
+            nodes.append('<').append("dictI08").append('>');
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) {
                 java.lang.Byte k1 = dictI08Iter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1.toString()).append('"').append('>');
                 java.lang.Byte v1 = dictI08Iter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1.toString()).append('"').append('>');
             }
-            nodes.append("</dictI08>");
+            nodes.append('<').append('/').append("dictI08").append('>');
         }
         if (listNested != null && listNested.size() > 0) {
-            nodes.append("<listNested>");
+            nodes.append('<').append("listNested").append('>');
             for (LinkedList<LinkedList<LinkedList<TestPointer>>> n1 : listNested) {
-                nodes.append("<n1>");
+                nodes.append('<').append("n1").append('>');
                 for (LinkedList<LinkedList<TestPointer>> n2 : n1) {
-                    nodes.append("<n2>");
+                    nodes.append('<').append("n2").append('>');
                     for (LinkedList<TestPointer> n3 : n2) {
-                        nodes.append("<n3>");
+                        nodes.append('<').append("n3").append('>');
                         for (TestPointer n4 : n3) {
-                            nodes.append(n4.toStringXML("n4"));
+                            n4.writeXML(nodes, "n4");
                         }
-                        nodes.append("</n3>");
+                        nodes.append('<').append('/').append("n3").append('>');
                     }
-                    nodes.append("</n2>");
+                    nodes.append('<').append('/').append("n2").append('>');
                 }
-                nodes.append("</n1>");
+                nodes.append('<').append('/').append("n1").append('>');
             }
-            nodes.append("</listNested>");
+            nodes.append('<').append('/').append("listNested").append('>');
         }
-        attrs.append(" numberSingle=\"");
-        attrs.append(numberSingle.toString()); attrs.append("\"");
-        attrs.append(" enumValue=\"");
-        attrs.append(enumValue.toString()); attrs.append("\"");
+        attrs.append(' ').append("numberSingle").append('=').append('"');
+        attrs.append(numberSingle.toString()).append('"');
+        attrs.append(' ').append("enumValue").append('=').append('"');
+        attrs.append(enumValue.toString()).append('"');
         if (hotfix != null && hotfix.size() > 0) {
-            nodes.append("<hotfix>");
+            nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1);
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1).append('"').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1);
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1).append('"').append('>');
             }
-            nodes.append("</hotfix>");
+            nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //TestPointer::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", self:");
-        if (self != null) {
-            result.append("<TestPointer>");
-        } else {
-            result.append("null");
-        }
-        result.append(", stringValue:");
-        if (stringValue != null) {
-            result.append("\"" + stringValue + "\"");
-        } else {
-            result.append("null");
-        }
-        result.append(", other:");
-        if (other != null) {
-            result.append("<Custom>");
-        } else {
-            result.append("null");
-        }
-        result.append(", listI08:");
-        if (listI08 != null) {
-            result.append("(" + listI08.size() + ")");
-        } else {
-            result.append("null");
-        }
-        result.append(", dictI08:");
-        if (dictI08 != null) {
-            result.append("[" + dictI08.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(", listNested:");
-        if (listNested != null) {
-            result.append("(" + listNested.size() + ")");
-        } else {
-            result.append("null");
-        }
-        result.append(", numberSingle:");
-        result.append(numberSingle.toString());
-        result.append(", enumValue:");
-        result.append(enumValue.toString());
-        result.append(", hotfix:");
-        if (hotfix != null) {
-            result.append("[" + hotfix.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(" }");
-        return result.toString();
-    } //TestPointer::toString ()
+    } /* TestPointer::writeXML(...) */
 
 }
 

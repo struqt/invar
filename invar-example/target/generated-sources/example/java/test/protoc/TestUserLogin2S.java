@@ -23,17 +23,18 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0xB29912EF;
+    static public final long CRC32 = 0xB29912EFL;
 
-    static public TestUserLogin2S Create() {
+    static public TestUserLogin2S Create()
+    {
         return new TestUserLogin2S();
     }
 
-    private java.lang.Integer            protocId ;/* [AutoAdd] ProtocolID */
-    private java.lang.Long               protocCRC;/* [AutoAdd] Protocol CRC32 */
+    private Integer                      protocId ;/* [AutoAdd] ProtocolID */
+    private Long                         protocCRC;/* [AutoAdd] Protocol CRC32 */
     private Protoc2S                     protoc2S ;/* [AutoAdd] 客户端请求的公共数据 */
     private Long                         userId   ;
-    private java.lang.String             platform ;
+    private String                       platform ;
     private LinkedHashMap<String,String> hotfix   ;/* [AutoAdd] Hotfix */
 
     public TestUserLogin2S()
@@ -63,11 +64,11 @@ invar.InvarCodec.XMLEncode
 
     /** [AutoAdd] ProtocolID */
     @invar.InvarRule(T="uint16", S="f0")
-    public java.lang.Integer getProtocId() { return protocId; }
+    public Integer getProtocId() { return protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
     @invar.InvarRule(T="uint32", S="f1")
-    public java.lang.Long getProtocCRC() { return protocCRC; }
+    public Long getProtocCRC() { return protocCRC; }
 
     /** [AutoAdd] 客户端请求的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2S", S="f2")
@@ -79,29 +80,47 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="string", S="f4")
-    public java.lang.String getPlatform() { return platform; }
+    public String getPlatform() { return platform; }
 
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f5")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
+    /** [AutoAdd] ProtocolID */
+    @invar.InvarRule(T="uint16", S="f0")
+    public TestUserLogin2S setProtocId(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFF) {
+            throw new NumberFormatException("uint16 value out of range: " + value);
+        }
+        this.protocId = value;
+        return this;
+    }
+    /** [AutoAdd] Protocol CRC32 */
+    @invar.InvarRule(T="uint32", S="f1")
+    public TestUserLogin2S setProtocCRC(long value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFFFFFFL) {
+            throw new NumberFormatException("uint32 value out of range: " + value);
+        }
+        this.protocCRC = value;
+        return this;
+    }
     /** [AutoAdd] 客户端请求的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2S", S="f2")
     public TestUserLogin2S setProtoc2S(Protoc2S value) { this.protoc2S = value; return this; }
-
     /**  */
     @invar.InvarRule(T="int64", S="f3")
     public TestUserLogin2S setUserId(Long value) { this.userId = value; return this; }
-
     /**  */
     @invar.InvarRule(T="string", S="f4")
-    public TestUserLogin2S setPlatform(java.lang.String value) { this.platform = value; return this; }
-
+    public TestUserLogin2S setPlatform(String value) { this.platform = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f5")
-    public TestUserLogin2S setHotfix(LinkedHashMap<String,String> value) { this.hotfix = value; return this; }
+    public TestUserLogin2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
-    public TestUserLogin2S copy (TestUserLogin2S from)
+    /** Shallow copy */
+    public TestUserLogin2S copy(TestUserLogin2S from)
     {
         if (this == from || from == null) {
             return this;
@@ -115,14 +134,15 @@ invar.InvarCodec.XMLEncode
         }
         userId = from.userId;
         platform = from.platform;
-        if (from.hotfix != null) {
-            hotfix.clear();
-            hotfix.putAll(from.hotfix);
-        } else {
+        if (null == from.hotfix) {
             hotfix = null;
+        } else {
+            if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
+            else { hotfix.clear(); }
+            hotfix.putAll(from.hotfix);
         }
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -180,75 +200,127 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" protocId=\"");
-        attrs.append(protocId.toString()); attrs.append("\"");
-        attrs.append(" protocCRC=\"");
-        attrs.append(protocCRC.toString()); attrs.append("\"");
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("protocId").append(':');
+        s.append(protocId.toString());
+        s.append(',').append("protocCRC").append(':');
+        s.append(protocCRC.toString());
+        s.append(", protoc2S:");
         if (protoc2S != null) {
-            nodes.append(protoc2S.toStringXML("protoc2S"));
+            s.append('<').append("Protoc2S").append('>');
+        } else {
+            s.append("null");
         }
-        attrs.append(" userId=\"");
-        attrs.append(userId.toString()); attrs.append("\"");
-        attrs.append(" platform=\"");
-        attrs.append(platform); attrs.append("\"");
+        s.append(',').append("userId").append(':');
+        s.append(userId.toString());
+        s.append(',').append("platform").append(':');
+        s.append('"').append(platform).append('"');
+        s.append(", hotfix:");
+        if (hotfix != null) {
+            s.append('[').append(hotfix.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append('}');
+        return s.toString();
+    } //TestUserLogin2S::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        s.append('"').append("protocId").append('"').append(':');
+        s.append(protocId.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("protocCRC").append('"').append(':');
+        s.append(protocCRC.toString()); comma = ',';
+        boolean protoc2SExists = (null != protoc2S);
+        if ('\0' != comma && protoc2SExists) { s.append(comma); comma = '\0'; }
+        if (protoc2SExists) {
+            s.append('"').append("protoc2S").append('"').append(':'); comma = ','; protoc2S.writeJSON(s);
+        }
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("userId").append('"').append(':');
+        s.append(userId.toString()); comma = ',';
+        boolean platformExists = platform != null && platform.length() > 0;
+        if ('\0' != comma && platformExists) { s.append(comma); comma = '\0'; }
+        if (platformExists) {
+            s.append('"').append("platform").append('"').append(':'); comma = ','; s.append('"').append(platform.toString()).append('"');
+        }
+        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if (hotfixExists) {
+            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
+            if (hotfixSize > 0) {
+                s.append('\n').append('{');
+                int hotfixIdx = 0;
+                for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
+                    ++hotfixIdx;
+                    java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
+                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
+                    s.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        s.append('}').append('\n');
+    } /* TestUserLogin2S::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "TestUserLogin2S");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("protocId").append('=').append('"');
+        attrs.append(protocId.toString()).append('"');
+        attrs.append(' ').append("protocCRC").append('=').append('"');
+        attrs.append(protocCRC.toString()).append('"');
+        if (protoc2S != null) {
+            protoc2S.writeXML(nodes, "protoc2S");
+        }
+        attrs.append(' ').append("userId").append('=').append('"');
+        attrs.append(userId.toString()).append('"');
+        attrs.append(' ').append("platform").append('=').append('"');
+        attrs.append(platform).append('"');
         if (hotfix != null && hotfix.size() > 0) {
-            nodes.append("<hotfix>");
+            nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1);
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1).append('"').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1);
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1).append('"').append('>');
             }
-            nodes.append("</hotfix>");
+            nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //TestUserLogin2S::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", protocId:");
-        result.append(protocId.toString());
-        result.append(", protocCRC:");
-        result.append(protocCRC.toString());
-        result.append(", protoc2S:");
-        if (protoc2S != null) {
-            result.append("<Protoc2S>");
-        } else {
-            result.append("null");
-        }
-        result.append(", userId:");
-        result.append(userId.toString());
-        result.append(", platform:");
-        result.append("\"" + platform + "\"");
-        result.append(", hotfix:");
-        if (hotfix != null) {
-            result.append("[" + hotfix.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(" }");
-        return result.toString();
-    } //TestUserLogin2S::toString ()
+    } /* TestUserLogin2S::writeXML(...) */
 
 }
 

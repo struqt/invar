@@ -24,9 +24,10 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x5FD1194A;
+    static public final long CRC32 = 0x5FD1194AL;
 
-    static public TestList Create() {
+    static public TestList Create()
+    {
         return new TestList();
     }
 
@@ -138,7 +139,51 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="vec<test.abc.Custom>", S="f13")
     public LinkedList<Custom> getListStruct() { return listStruct; }
 
-    public TestList copy (TestList from)
+    /** 有符号的8位整数 */
+    @invar.InvarRule(T="vec<int8>", S="f0")
+    public TestList setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; return this; }
+    /** 有符号的16位整数 */
+    @invar.InvarRule(T="vec<int16>", S="f1")
+    public TestList setListI16(LinkedList<Short> value) { this.listI16 = value; return this; }
+    /** 有符号的32位整数 */
+    @invar.InvarRule(T="vec<int32>", S="f2")
+    public TestList setListI32(LinkedList<Integer> value) { this.listI32 = value; return this; }
+    /** 有符号的64位整数 */
+    @invar.InvarRule(T="vec<int64>", S="f3")
+    public TestList setListI64(LinkedList<Long> value) { this.listI64 = value; return this; }
+    /** 无符号的8位整数 */
+    @invar.InvarRule(T="vec<uint8>", S="f4")
+    public TestList setListU08(LinkedList<java.lang.Integer> value) { this.listU08 = value; return this; }
+    /** 无符号的16位整数 */
+    @invar.InvarRule(T="vec<uint16>", S="f5")
+    public TestList setListU16(LinkedList<java.lang.Integer> value) { this.listU16 = value; return this; }
+    /** 无符号的32位整数 */
+    @invar.InvarRule(T="vec<uint32>", S="f6")
+    public TestList setListU32(LinkedList<java.lang.Long> value) { this.listU32 = value; return this; }
+    /** 无符号的64位整数 */
+    @invar.InvarRule(T="vec<uint64>", S="f7")
+    public TestList setListU64(LinkedList<BigInteger> value) { this.listU64 = value; return this; }
+    /** 单精度浮点小数 */
+    @invar.InvarRule(T="vec<float>", S="f8")
+    public TestList setListSingle(LinkedList<Float> value) { this.listSingle = value; return this; }
+    /** 双精度浮点小数 */
+    @invar.InvarRule(T="vec<double>", S="f9")
+    public TestList setListDouble(LinkedList<java.lang.Double> value) { this.listDouble = value; return this; }
+    /** 布尔值 */
+    @invar.InvarRule(T="vec<bool>", S="f10")
+    public TestList setListBoolean(LinkedList<java.lang.Boolean> value) { this.listBoolean = value; return this; }
+    /** 字符串 */
+    @invar.InvarRule(T="vec<string>", S="f11")
+    public TestList setListString(LinkedList<java.lang.String> value) { this.listString = value; return this; }
+    /** 枚举值 */
+    @invar.InvarRule(T="vec<test.abc.Gender>", S="f12")
+    public TestList setListEnum(LinkedList<Gender> value) { this.listEnum = value; return this; }
+    /** 自定义结构 */
+    @invar.InvarRule(T="vec<test.abc.Custom>", S="f13")
+    public TestList setListStruct(LinkedList<Custom> value) { this.listStruct = value; return this; }
+
+    /** Shallow copy */
+    public TestList copy(TestList from)
     {
         if (this == from || from == null) {
             return this;
@@ -172,7 +217,7 @@ invar.InvarCodec.XMLEncode
         listStruct.clear();
         listStruct.addAll(from.listStruct);
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -227,7 +272,7 @@ invar.InvarCodec.XMLEncode
         Long lenListU64 = from.readInt() & 0xFFFFFFFFL;
         for (Long iListU64 = 0L; iListU64 < lenListU64; ++iListU64) {
             byte[] n1Bytes = new byte[8]; from.readFully(n1Bytes, 0, 8);
-            BigInteger n1 = new BigInteger(n1Bytes);
+            BigInteger n1 = new BigInteger(1, n1Bytes);
             listU64.add(n1);
         }
         listSingle.clear();
@@ -334,182 +379,382 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        if (listI08.size() > 0) {
-            nodes.append("<listI08>");
-            for (java.lang.Byte n1 : listI08) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("listI08").append(':');
+        s.append('(').append(listI08.size()).append(')');
+        s.append(',').append("listI16").append(':');
+        s.append('(').append(listI16.size()).append(')');
+        s.append(',').append("listI32").append(':');
+        s.append('(').append(listI32.size()).append(')');
+        s.append(',').append("listI64").append(':');
+        s.append('(').append(listI64.size()).append(')');
+        s.append(',').append("listU08").append(':');
+        s.append('(').append(listU08.size()).append(')');
+        s.append(',').append("listU16").append(':');
+        s.append('(').append(listU16.size()).append(')');
+        s.append(',').append("listU32").append(':');
+        s.append('(').append(listU32.size()).append(')');
+        s.append(',').append("listU64").append(':');
+        s.append('(').append(listU64.size()).append(')');
+        s.append(',').append("listSingle").append(':');
+        s.append('(').append(listSingle.size()).append(')');
+        s.append(',').append("listDouble").append(':');
+        s.append('(').append(listDouble.size()).append(')');
+        s.append(',').append("listBoolean").append(':');
+        s.append('(').append(listBoolean.size()).append(')');
+        s.append(',').append("listString").append(':');
+        s.append('(').append(listString.size()).append(')');
+        s.append(',').append("listEnum").append(':');
+        s.append('(').append(listEnum.size()).append(')');
+        s.append(',').append("listStruct").append(':');
+        s.append('(').append(listStruct.size()).append(')');
+        s.append('}');
+        return s.toString();
+    } //TestList::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        boolean listI08Exists = (null != listI08 && listI08.size() > 0);
+        if (listI08Exists) { s.append('"').append("listI08").append('"').append(':'); comma = ','; }
+        int listI08Size = (null == listI08 ? 0 : listI08.size());
+        if (listI08Size > 0) {
+            s.append('\n').append('[');
+            int listI08Idx = 0;
+            for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
+                ++listI08Idx;
+                s.append(n1.toString());
+                if (listI08Idx != listI08Size) { s.append(','); }
             }
-            nodes.append("</listI08>");
+            s.append(']');
+        }
+        boolean listI16Exists = (null != listI16 && listI16.size() > 0);
+        if ('\0' != comma && listI16Exists) { s.append(comma); comma = '\0'; }
+        if (listI16Exists) { s.append('"').append("listI16").append('"').append(':'); comma = ','; }
+        int listI16Size = (null == listI16 ? 0 : listI16.size());
+        if (listI16Size > 0) {
+            s.append('\n').append('[');
+            int listI16Idx = 0;
+            for (Short n1 : listI16) { /* vec.for: listI16 */
+                ++listI16Idx;
+                s.append(n1.toString());
+                if (listI16Idx != listI16Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listI32Exists = (null != listI32 && listI32.size() > 0);
+        if ('\0' != comma && listI32Exists) { s.append(comma); comma = '\0'; }
+        if (listI32Exists) { s.append('"').append("listI32").append('"').append(':'); comma = ','; }
+        int listI32Size = (null == listI32 ? 0 : listI32.size());
+        if (listI32Size > 0) {
+            s.append('\n').append('[');
+            int listI32Idx = 0;
+            for (Integer n1 : listI32) { /* vec.for: listI32 */
+                ++listI32Idx;
+                s.append(n1.toString());
+                if (listI32Idx != listI32Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listI64Exists = (null != listI64 && listI64.size() > 0);
+        if ('\0' != comma && listI64Exists) { s.append(comma); comma = '\0'; }
+        if (listI64Exists) { s.append('"').append("listI64").append('"').append(':'); comma = ','; }
+        int listI64Size = (null == listI64 ? 0 : listI64.size());
+        if (listI64Size > 0) {
+            s.append('\n').append('[');
+            int listI64Idx = 0;
+            for (Long n1 : listI64) { /* vec.for: listI64 */
+                ++listI64Idx;
+                s.append(n1.toString());
+                if (listI64Idx != listI64Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listU08Exists = (null != listU08 && listU08.size() > 0);
+        if ('\0' != comma && listU08Exists) { s.append(comma); comma = '\0'; }
+        if (listU08Exists) { s.append('"').append("listU08").append('"').append(':'); comma = ','; }
+        int listU08Size = (null == listU08 ? 0 : listU08.size());
+        if (listU08Size > 0) {
+            s.append('\n').append('[');
+            int listU08Idx = 0;
+            for (java.lang.Integer n1 : listU08) { /* vec.for: listU08 */
+                ++listU08Idx;
+                s.append(n1.toString());
+                if (listU08Idx != listU08Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listU16Exists = (null != listU16 && listU16.size() > 0);
+        if ('\0' != comma && listU16Exists) { s.append(comma); comma = '\0'; }
+        if (listU16Exists) { s.append('"').append("listU16").append('"').append(':'); comma = ','; }
+        int listU16Size = (null == listU16 ? 0 : listU16.size());
+        if (listU16Size > 0) {
+            s.append('\n').append('[');
+            int listU16Idx = 0;
+            for (java.lang.Integer n1 : listU16) { /* vec.for: listU16 */
+                ++listU16Idx;
+                s.append(n1.toString());
+                if (listU16Idx != listU16Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listU32Exists = (null != listU32 && listU32.size() > 0);
+        if ('\0' != comma && listU32Exists) { s.append(comma); comma = '\0'; }
+        if (listU32Exists) { s.append('"').append("listU32").append('"').append(':'); comma = ','; }
+        int listU32Size = (null == listU32 ? 0 : listU32.size());
+        if (listU32Size > 0) {
+            s.append('\n').append('[');
+            int listU32Idx = 0;
+            for (java.lang.Long n1 : listU32) { /* vec.for: listU32 */
+                ++listU32Idx;
+                s.append(n1.toString());
+                if (listU32Idx != listU32Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listU64Exists = (null != listU64 && listU64.size() > 0);
+        if ('\0' != comma && listU64Exists) { s.append(comma); comma = '\0'; }
+        if (listU64Exists) { s.append('"').append("listU64").append('"').append(':'); comma = ','; }
+        int listU64Size = (null == listU64 ? 0 : listU64.size());
+        if (listU64Size > 0) {
+            s.append('\n').append('[');
+            int listU64Idx = 0;
+            for (BigInteger n1 : listU64) { /* vec.for: listU64 */
+                ++listU64Idx;
+                s.append(n1.toString());
+                if (listU64Idx != listU64Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listSingleExists = (null != listSingle && listSingle.size() > 0);
+        if ('\0' != comma && listSingleExists) { s.append(comma); comma = '\0'; }
+        if (listSingleExists) { s.append('"').append("listSingle").append('"').append(':'); comma = ','; }
+        int listSingleSize = (null == listSingle ? 0 : listSingle.size());
+        if (listSingleSize > 0) {
+            s.append('\n').append('[');
+            int listSingleIdx = 0;
+            for (Float n1 : listSingle) { /* vec.for: listSingle */
+                ++listSingleIdx;
+                s.append(n1.toString());
+                if (listSingleIdx != listSingleSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listDoubleExists = (null != listDouble && listDouble.size() > 0);
+        if ('\0' != comma && listDoubleExists) { s.append(comma); comma = '\0'; }
+        if (listDoubleExists) { s.append('"').append("listDouble").append('"').append(':'); comma = ','; }
+        int listDoubleSize = (null == listDouble ? 0 : listDouble.size());
+        if (listDoubleSize > 0) {
+            s.append('\n').append('[');
+            int listDoubleIdx = 0;
+            for (java.lang.Double n1 : listDouble) { /* vec.for: listDouble */
+                ++listDoubleIdx;
+                s.append(n1.toString());
+                if (listDoubleIdx != listDoubleSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listBooleanExists = (null != listBoolean && listBoolean.size() > 0);
+        if ('\0' != comma && listBooleanExists) { s.append(comma); comma = '\0'; }
+        if (listBooleanExists) { s.append('"').append("listBoolean").append('"').append(':'); comma = ','; }
+        int listBooleanSize = (null == listBoolean ? 0 : listBoolean.size());
+        if (listBooleanSize > 0) {
+            s.append('\n').append('[');
+            int listBooleanIdx = 0;
+            for (java.lang.Boolean n1 : listBoolean) { /* vec.for: listBoolean */
+                ++listBooleanIdx;
+                s.append(n1.toString().toLowerCase());
+                if (listBooleanIdx != listBooleanSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listStringExists = (null != listString && listString.size() > 0);
+        if ('\0' != comma && listStringExists) { s.append(comma); comma = '\0'; }
+        if (listStringExists) { s.append('"').append("listString").append('"').append(':'); comma = ','; }
+        int listStringSize = (null == listString ? 0 : listString.size());
+        if (listStringSize > 0) {
+            s.append('\n').append('[');
+            int listStringIdx = 0;
+            for (java.lang.String n1 : listString) { /* vec.for: listString */
+                ++listStringIdx;
+                s.append('"').append(n1.toString()).append('"');
+                if (listStringIdx != listStringSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listEnumExists = (null != listEnum && listEnum.size() > 0);
+        if ('\0' != comma && listEnumExists) { s.append(comma); comma = '\0'; }
+        if (listEnumExists) { s.append('"').append("listEnum").append('"').append(':'); comma = ','; }
+        int listEnumSize = (null == listEnum ? 0 : listEnum.size());
+        if (listEnumSize > 0) {
+            s.append('\n').append('[');
+            int listEnumIdx = 0;
+            for (Gender n1 : listEnum) { /* vec.for: listEnum */
+                ++listEnumIdx;
+                s.append(n1.ordinal());
+                if (listEnumIdx != listEnumSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean listStructExists = (null != listStruct && listStruct.size() > 0);
+        if ('\0' != comma && listStructExists) { s.append(comma); comma = '\0'; }
+        if (listStructExists) { s.append('"').append("listStruct").append('"').append(':'); comma = ','; }
+        int listStructSize = (null == listStruct ? 0 : listStruct.size());
+        if (listStructSize > 0) {
+            s.append('\n').append('[');
+            int listStructIdx = 0;
+            for (Custom n1 : listStruct) { /* vec.for: listStruct */
+                ++listStructIdx;
+                n1.writeJSON(s);
+                if (listStructIdx != listStructSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        s.append('}').append('\n');
+    } /* TestList::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "TestList");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        if (listI08.size() > 0) {
+            nodes.append('<').append("listI08").append('>');
+            for (java.lang.Byte n1 : listI08) {
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
+            }
+            nodes.append('<').append('/').append("listI08").append('>');
         }
         if (listI16.size() > 0) {
-            nodes.append("<listI16>");
+            nodes.append('<').append("listI16").append('>');
             for (Short n1 : listI16) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listI16>");
+            nodes.append('<').append('/').append("listI16").append('>');
         }
         if (listI32.size() > 0) {
-            nodes.append("<listI32>");
+            nodes.append('<').append("listI32").append('>');
             for (Integer n1 : listI32) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listI32>");
+            nodes.append('<').append('/').append("listI32").append('>');
         }
         if (listI64.size() > 0) {
-            nodes.append("<listI64>");
+            nodes.append('<').append("listI64").append('>');
             for (Long n1 : listI64) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listI64>");
+            nodes.append('<').append('/').append("listI64").append('>');
         }
         if (listU08.size() > 0) {
-            nodes.append("<listU08>");
+            nodes.append('<').append("listU08").append('>');
             for (java.lang.Integer n1 : listU08) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listU08>");
+            nodes.append('<').append('/').append("listU08").append('>');
         }
         if (listU16.size() > 0) {
-            nodes.append("<listU16>");
+            nodes.append('<').append("listU16").append('>');
             for (java.lang.Integer n1 : listU16) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listU16>");
+            nodes.append('<').append('/').append("listU16").append('>');
         }
         if (listU32.size() > 0) {
-            nodes.append("<listU32>");
+            nodes.append('<').append("listU32").append('>');
             for (java.lang.Long n1 : listU32) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listU32>");
+            nodes.append('<').append('/').append("listU32").append('>');
         }
         if (listU64.size() > 0) {
-            nodes.append("<listU64>");
+            nodes.append('<').append("listU64").append('>');
             for (BigInteger n1 : listU64) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listU64>");
+            nodes.append('<').append('/').append("listU64").append('>');
         }
         if (listSingle.size() > 0) {
-            nodes.append("<listSingle>");
+            nodes.append('<').append("listSingle").append('>');
             for (Float n1 : listSingle) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listSingle>");
+            nodes.append('<').append('/').append("listSingle").append('>');
         }
         if (listDouble.size() > 0) {
-            nodes.append("<listDouble>");
+            nodes.append('<').append("listDouble").append('>');
             for (java.lang.Double n1 : listDouble) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listDouble>");
+            nodes.append('<').append('/').append("listDouble").append('>');
         }
         if (listBoolean.size() > 0) {
-            nodes.append("<listBoolean>");
+            nodes.append('<').append("listBoolean").append('>');
             for (java.lang.Boolean n1 : listBoolean) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listBoolean>");
+            nodes.append('<').append('/').append("listBoolean").append('>');
         }
         if (listString.size() > 0) {
-            nodes.append("<listString>");
+            nodes.append('<').append("listString").append('>');
             for (java.lang.String n1 : listString) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1);
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1).append('"').append('>');
             }
-            nodes.append("</listString>");
+            nodes.append('<').append('/').append("listString").append('>');
         }
         if (listEnum.size() > 0) {
-            nodes.append("<listEnum>");
+            nodes.append('<').append("listEnum").append('>');
             for (Gender n1 : listEnum) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listEnum>");
+            nodes.append('<').append('/').append("listEnum").append('>');
         }
         if (listStruct.size() > 0) {
-            nodes.append("<listStruct>");
+            nodes.append('<').append("listStruct").append('>');
             for (Custom n1 : listStruct) {
-                nodes.append(n1.toStringXML("n1"));
+                n1.writeXML(nodes, "n1");
             }
-            nodes.append("</listStruct>");
+            nodes.append('<').append('/').append("listStruct").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //TestList::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", listI08:");
-        result.append("(" + listI08.size() + ")");
-        result.append(", listI16:");
-        result.append("(" + listI16.size() + ")");
-        result.append(", listI32:");
-        result.append("(" + listI32.size() + ")");
-        result.append(", listI64:");
-        result.append("(" + listI64.size() + ")");
-        result.append(", listU08:");
-        result.append("(" + listU08.size() + ")");
-        result.append(", listU16:");
-        result.append("(" + listU16.size() + ")");
-        result.append(", listU32:");
-        result.append("(" + listU32.size() + ")");
-        result.append(", listU64:");
-        result.append("(" + listU64.size() + ")");
-        result.append(", listSingle:");
-        result.append("(" + listSingle.size() + ")");
-        result.append(", listDouble:");
-        result.append("(" + listDouble.size() + ")");
-        result.append(", listBoolean:");
-        result.append("(" + listBoolean.size() + ")");
-        result.append(", listString:");
-        result.append("(" + listString.size() + ")");
-        result.append(", listEnum:");
-        result.append("(" + listEnum.size() + ")");
-        result.append(", listStruct:");
-        result.append("(" + listStruct.size() + ")");
-        result.append(" }");
-        return result.toString();
-    } //TestList::toString ()
+    } /* TestList::writeXML(...) */
 
 }
 

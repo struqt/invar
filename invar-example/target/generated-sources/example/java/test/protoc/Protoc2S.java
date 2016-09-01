@@ -22,13 +22,14 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0xC0869FC2;
+    static public final long CRC32 = 0xC0869FC2L;
 
-    static public Protoc2S Create() {
+    static public Protoc2S Create()
+    {
         return new Protoc2S();
     }
 
-    private java.lang.String             sessionId;/* 会话Id */
+    private String                       sessionId;/* 会话Id */
     private LinkedHashMap<String,String> hotfix   ;/* [AutoAdd] Hotfix */
 
     public Protoc2S()
@@ -48,7 +49,7 @@ invar.InvarCodec.XMLEncode
 
     /** 会话Id */
     @invar.InvarRule(T="string", S="f0")
-    public java.lang.String getSessionId() { return sessionId; }
+    public String getSessionId() { return sessionId; }
 
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f1")
@@ -56,26 +57,27 @@ invar.InvarCodec.XMLEncode
 
     /** 会话Id */
     @invar.InvarRule(T="string", S="f0")
-    public Protoc2S setSessionId(java.lang.String value) { this.sessionId = value; return this; }
-
+    public Protoc2S setSessionId(String value) { this.sessionId = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f1")
-    public Protoc2S setHotfix(LinkedHashMap<String,String> value) { this.hotfix = value; return this; }
+    public Protoc2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
-    public Protoc2S copy (Protoc2S from)
+    /** Shallow copy */
+    public Protoc2S copy(Protoc2S from)
     {
         if (this == from || from == null) {
             return this;
         }
         sessionId = from.sessionId;
-        if (from.hotfix != null) {
-            hotfix.clear();
-            hotfix.putAll(from.hotfix);
-        } else {
+        if (null == from.hotfix) {
             hotfix = null;
+        } else {
+            if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
+            else { hotfix.clear(); }
+            hotfix.putAll(from.hotfix);
         }
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -118,54 +120,92 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("sessionId").append(':');
+        s.append('"').append(sessionId).append('"');
+        s.append(", hotfix:");
+        if (hotfix != null) {
+            s.append('[').append(hotfix.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append('}');
+        return s.toString();
+    } //Protoc2S::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        boolean sessionIdExists = sessionId != null && sessionId.length() > 0;
+        if (sessionIdExists) {
+            s.append('"').append("sessionId").append('"').append(':'); comma = ','; s.append('"').append(sessionId.toString()).append('"');
+        }
+        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if (hotfixExists) {
+            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
+            if (hotfixSize > 0) {
+                s.append('\n').append('{');
+                int hotfixIdx = 0;
+                for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
+                    ++hotfixIdx;
+                    java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
+                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
+                    s.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        s.append('}').append('\n');
+    } /* Protoc2S::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "Protoc2S");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
         StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" sessionId=\"");
-        attrs.append(sessionId); attrs.append("\"");
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("sessionId").append('=').append('"');
+        attrs.append(sessionId).append('"');
         if (hotfix != null && hotfix.size() > 0) {
-            nodes.append("<hotfix>");
+            nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1);
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1).append('"').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1);
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1).append('"').append('>');
             }
-            nodes.append("</hotfix>");
+            nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //Protoc2S::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", sessionId:");
-        result.append("\"" + sessionId + "\"");
-        result.append(", hotfix:");
-        if (hotfix != null) {
-            result.append("[" + hotfix.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(" }");
-        return result.toString();
-    } //Protoc2S::toString ()
+    } /* Protoc2S::writeXML(...) */
 
 }
 

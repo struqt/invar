@@ -21,9 +21,10 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x355EC042;
+    static public final long CRC32 = 0x355EC042L;
 
-    static public Custom Create() {
+    static public Custom Create()
+    {
         return new Custom();
     }
 
@@ -33,11 +34,11 @@ invar.InvarCodec.XMLEncode
     private test.abc.Conflict  abc     ;/* 同名的类型 */
     private LinkedList<Custom> children;/* 自身类型容器 */
     private Integer            noSetter;/* 屏蔽Setter */
-    private java.lang.String   useRef  ;/* 使用引用 */
-    private java.lang.String   usePtr  ;/* 使用指针 */
+    private String             useRef  ;/* 使用引用 */
+    private String             usePtr  ;/* 使用指针 */
     private Custom             prev    ;/* 自身类型 */
     private Custom             next    ;/* 自身类型 */
-    private java.lang.String   emptyDoc;
+    private String             emptyDoc;
 
     public Custom()
     {
@@ -102,11 +103,11 @@ invar.InvarCodec.XMLEncode
 
     /** 使用引用 */
     @invar.InvarRule(T="string", S="f6")
-    public java.lang.String getUseRef() { return useRef; }
+    public String getUseRef() { return useRef; }
 
     /** 使用指针 */
     @invar.InvarRule(T="string", S="f7")
-    public java.lang.String getUsePtr() { return usePtr; }
+    public String getUsePtr() { return usePtr; }
 
     /** 自身类型 */
     @invar.InvarRule(T="test.abc.Custom", S="f8")
@@ -118,45 +119,44 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="string", S="f10")
-    public java.lang.String getEmptyDoc() { return emptyDoc; }
+    public String getEmptyDoc() { return emptyDoc; }
 
     /** 枚举值 */
     @invar.InvarRule(T="test.abc.Gender", S="f0")
     public Custom setX(Gender value) { this.x = value; return this; }
-
     /** 其他类型 */
     @invar.InvarRule(T="test.abc.TestBasic", S="f1")
     public Custom setTest_(TestBasic value) { this.test_ = value; return this; }
-
     /** 同名的类型 */
     @invar.InvarRule(T="test.xyz.Conflict", S="f2")
     public Custom setXyz(test.xyz.Conflict value) { this.xyz = value; return this; }
-
     /** 同名的类型 */
     @invar.InvarRule(T="test.abc.Conflict", S="f3")
     public Custom setAbc(test.abc.Conflict value) { this.abc = value; return this; }
-
+    /** 自身类型容器 */
+    @invar.InvarRule(T="vec<test.abc.Custom>", S="f4")
+    public Custom setChildren(LinkedList<Custom> value) { this.children = value; return this; }
+    /** 屏蔽Setter */
+    @invar.InvarRule(T="int32", S="f5")
+    public Custom setNoSetter(Integer value) { this.noSetter = value; return this; }
     /** 使用引用 */
     @invar.InvarRule(T="string", S="f6")
-    public Custom setUseRef(java.lang.String value) { this.useRef = value; return this; }
-
+    public Custom setUseRef(String value) { this.useRef = value; return this; }
     /** 使用指针 */
     @invar.InvarRule(T="string", S="f7")
-    public Custom setUsePtr(java.lang.String value) { this.usePtr = value; return this; }
-
+    public Custom setUsePtr(String value) { this.usePtr = value; return this; }
     /** 自身类型 */
     @invar.InvarRule(T="test.abc.Custom", S="f8")
     public Custom setPrev(Custom value) { this.prev = value; return this; }
-
     /** 自身类型 */
     @invar.InvarRule(T="test.abc.Custom", S="f9")
     public Custom setNext(Custom value) { this.next = value; return this; }
-
     /**  */
     @invar.InvarRule(T="string", S="f10")
-    public Custom setEmptyDoc(java.lang.String value) { this.emptyDoc = value; return this; }
+    public Custom setEmptyDoc(String value) { this.emptyDoc = value; return this; }
 
-    public Custom copy (Custom from)
+    /** Shallow copy */
+    public Custom copy(Custom from)
     {
         if (this == from || from == null) {
             return this;
@@ -182,7 +182,7 @@ invar.InvarCodec.XMLEncode
         }
         emptyDoc = from.emptyDoc;
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -254,92 +254,169 @@ invar.InvarCodec.XMLEncode
         dest.writeUTF(emptyDoc);
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" x=\"");
-        attrs.append(x.toString()); attrs.append("\"");
-        nodes.append(test_.toStringXML("test_"));
-        nodes.append(xyz.toStringXML("xyz"));
-        nodes.append(abc.toStringXML("abc"));
-        if (children.size() > 0) {
-            nodes.append("<children>");
-            for (Custom n1 : children) {
-                nodes.append(n1.toStringXML("n1"));
-            }
-            nodes.append("</children>");
-        }
-        attrs.append(" noSetter=\"");
-        attrs.append(noSetter.toString()); attrs.append("\"");
-        attrs.append(" useRef=\"");
-        attrs.append(useRef); attrs.append("\"");
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("x").append(':');
+        s.append(x.toString());
+        s.append(',').append("test_").append(':');
+        s.append('<').append("TestBasic").append('>');
+        s.append(',').append("xyz").append(':');
+        s.append('<').append("test.xyz.Conflict").append('>');
+        s.append(',').append("abc").append(':');
+        s.append('<').append("test.abc.Conflict").append('>');
+        s.append(',').append("children").append(':');
+        s.append('(').append(children.size()).append(')');
+        s.append(',').append("noSetter").append(':');
+        s.append(noSetter.toString());
+        s.append(',').append("useRef").append(':');
+        s.append('"').append(useRef).append('"');
+        s.append(", usePtr:");
         if (usePtr != null) {
-            attrs.append(" usePtr=\"");
-            attrs.append(usePtr); attrs.append("\"");
+            s.append('"').append(usePtr).append('"');
+        } else {
+            s.append("null");
         }
+        s.append(", prev:");
         if (prev != null) {
-            nodes.append(prev.toStringXML("prev"));
+            s.append('<').append("Custom").append('>');
+        } else {
+            s.append("null");
         }
+        s.append(", next:");
         if (next != null) {
-            nodes.append(next.toStringXML("next"));
-        }
-        attrs.append(" emptyDoc=\"");
-        attrs.append(emptyDoc); attrs.append("\"");
-        result.append("<"); result.append(name); result.append(attrs);
-        if (nodes.length() == 0) {
-            result.append("/>");
+            s.append('<').append("Custom").append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            s.append("null");
         }
-        return result;
-    } //Custom::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", x:");
-        result.append(x.toString());
-        result.append(", test_:");
-        result.append("<TestBasic>");
-        result.append(", xyz:");
-        result.append("<test.xyz.Conflict>");
-        result.append(", abc:");
-        result.append("<test.abc.Conflict>");
-        result.append(", children:");
-        result.append("(" + children.size() + ")");
-        result.append(", noSetter:");
-        result.append(noSetter.toString());
-        result.append(", useRef:");
-        result.append("\"" + useRef + "\"");
-        result.append(", usePtr:");
-        if (usePtr != null) {
-            result.append("\"" + usePtr + "\"");
-        } else {
-            result.append("null");
-        }
-        result.append(", prev:");
-        if (prev != null) {
-            result.append("<Custom>");
-        } else {
-            result.append("null");
-        }
-        result.append(", next:");
-        if (next != null) {
-            result.append("<Custom>");
-        } else {
-            result.append("null");
-        }
-        result.append(", emptyDoc:");
-        result.append("\"" + emptyDoc + "\"");
-        result.append(" }");
-        return result.toString();
+        s.append(',').append("emptyDoc").append(':');
+        s.append('"').append(emptyDoc).append('"');
+        s.append('}');
+        return s.toString();
     } //Custom::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        s.append('"').append("x").append('"').append(':');
+        s.append(x.ordinal()); comma = ',';
+        boolean test_Exists = (null != test_);
+        if ('\0' != comma && test_Exists) { s.append(comma); comma = '\0'; }
+        if (test_Exists) {
+            s.append('"').append("test_").append('"').append(':'); comma = ','; test_.writeJSON(s);
+        }
+        boolean xyzExists = (null != xyz);
+        if ('\0' != comma && xyzExists) { s.append(comma); comma = '\0'; }
+        if (xyzExists) {
+            s.append('"').append("xyz").append('"').append(':'); comma = ','; xyz.writeJSON(s);
+        }
+        boolean abcExists = (null != abc);
+        if ('\0' != comma && abcExists) { s.append(comma); comma = '\0'; }
+        if (abcExists) {
+            s.append('"').append("abc").append('"').append(':'); comma = ','; abc.writeJSON(s);
+        }
+        boolean childrenExists = (null != children && children.size() > 0);
+        if ('\0' != comma && childrenExists) { s.append(comma); comma = '\0'; }
+        if (childrenExists) { s.append('"').append("children").append('"').append(':'); comma = ','; }
+        int childrenSize = (null == children ? 0 : children.size());
+        if (childrenSize > 0) {
+            s.append('\n').append('[');
+            int childrenIdx = 0;
+            for (Custom n1 : children) { /* vec.for: children */
+                ++childrenIdx;
+                n1.writeJSON(s);
+                if (childrenIdx != childrenSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("noSetter").append('"').append(':');
+        s.append(noSetter.toString()); comma = ',';
+        boolean useRefExists = useRef != null && useRef.length() > 0;
+        if ('\0' != comma && useRefExists) { s.append(comma); comma = '\0'; }
+        if (useRefExists) {
+            s.append('"').append("useRef").append('"').append(':'); comma = ','; s.append('"').append(useRef.toString()).append('"');
+        }
+        boolean usePtrExists = usePtr != null && usePtr.length() > 0;
+        if ('\0' != comma && usePtrExists) { s.append(comma); comma = '\0'; }
+        if (usePtrExists) {
+            s.append('"').append("usePtr").append('"').append(':'); comma = ','; s.append('"').append(usePtr.toString()).append('"');
+        }
+        boolean prevExists = (null != prev);
+        if ('\0' != comma && prevExists) { s.append(comma); comma = '\0'; }
+        if (prevExists) {
+            s.append('"').append("prev").append('"').append(':'); comma = ','; prev.writeJSON(s);
+        }
+        boolean nextExists = (null != next);
+        if ('\0' != comma && nextExists) { s.append(comma); comma = '\0'; }
+        if (nextExists) {
+            s.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(s);
+        }
+        boolean emptyDocExists = emptyDoc != null && emptyDoc.length() > 0;
+        if ('\0' != comma && emptyDocExists) { s.append(comma); comma = '\0'; }
+        if (emptyDocExists) {
+            s.append('"').append("emptyDoc").append('"').append(':'); comma = ','; s.append('"').append(emptyDoc.toString()).append('"');
+        }
+        s.append('}').append('\n');
+    } /* Custom::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "Custom");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("x").append('=').append('"');
+        attrs.append(x.toString()).append('"');
+        test_.writeXML(nodes, "test_");
+        xyz.writeXML(nodes, "xyz");
+        abc.writeXML(nodes, "abc");
+        if (children.size() > 0) {
+            nodes.append('<').append("children").append('>');
+            for (Custom n1 : children) {
+                n1.writeXML(nodes, "n1");
+            }
+            nodes.append('<').append('/').append("children").append('>');
+        }
+        attrs.append(' ').append("noSetter").append('=').append('"');
+        attrs.append(noSetter.toString()).append('"');
+        attrs.append(' ').append("useRef").append('=').append('"');
+        attrs.append(useRef).append('"');
+        if (usePtr != null) {
+            attrs.append(' ').append("usePtr").append('=').append('"');
+            attrs.append(usePtr).append('"');
+        }
+        if (prev != null) {
+            prev.writeXML(nodes, "prev");
+        }
+        if (next != null) {
+            next.writeXML(nodes, "next");
+        }
+        attrs.append(' ').append("emptyDoc").append('=').append('"');
+        attrs.append(emptyDoc).append('"');
+        result.append('<').append(name).append(attrs);
+        if (nodes.length() == 0) {
+            result.append('/').append('>');
+        } else {
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
+        }
+    } /* Custom::writeXML(...) */
 
 }
 

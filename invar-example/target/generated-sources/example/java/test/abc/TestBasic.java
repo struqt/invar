@@ -21,26 +21,27 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0xF60C9915;
+    static public final long CRC32 = 0xF60C9915L;
 
-    static public TestBasic Create() {
+    static public TestBasic Create()
+    {
         return new TestBasic();
     }
 
-    private java.lang.Byte    numberI08   ;/* 有符号的8位整数 */
-    private Short             numberI16   ;/* 有符号的16位整数 */
-    private Integer           numberI32   ;/* 有符号的32位整数 */
-    private Long              numberI64   ;/* 有符号的64位整数 */
-    private java.lang.Integer numberU08   ;/* 无符号的8位整数 */
-    private java.lang.Integer numberU16   ;/* 无符号的16位整数 */
-    private java.lang.Long    numberU32   ;/* 无符号的32位整数 */
-    private BigInteger        numberU64   ;/* 无符号的64位整数 */
-    private Float             numberSingle;/* 单精度浮点小数 */
-    private java.lang.Double  numberDouble;/* 双精度浮点小数 */
-    private java.lang.Boolean boolValue   ;/* 布尔值 */
-    private java.lang.String  stringValue ;/* 字符串 */
-    private Gender            enumValue   ;/* 枚举值 */
-    private Gender            enumDeft    ;/* 枚举值制定默认值 */
+    private Byte       numberI08   ;/* 有符号的8位整数 */
+    private Short      numberI16   ;/* 有符号的16位整数 */
+    private Integer    numberI32   ;/* 有符号的32位整数 */
+    private Long       numberI64   ;/* 有符号的64位整数 */
+    private Integer    numberU08   ;/* 无符号的8位整数 */
+    private Integer    numberU16   ;/* 无符号的16位整数 */
+    private Long       numberU32   ;/* 无符号的32位整数 */
+    private BigInteger numberU64   ;/* 无符号的64位整数 */
+    private Float      numberSingle;/* 单精度浮点小数 */
+    private Double     numberDouble;/* 双精度浮点小数 */
+    private Boolean    boolValue   ;/* 布尔值 */
+    private String     stringValue ;/* 字符串 */
+    private Gender     enumValue   ;/* 枚举值 */
+    private Gender     enumDeft    ;/* 枚举值制定默认值 */
 
     public TestBasic()
     {
@@ -51,7 +52,7 @@ invar.InvarCodec.XMLEncode
         numberU08    = 255;
         numberU16    = 65535;
         numberU32    = 4294967295L;
-        numberU64    = new BigInteger("18446744073709551615", 10);
+        numberU64    = BigInteger.valueOf(0L);
         numberSingle = 3.14159F;
         numberDouble = 3.1415926;
         boolValue    = false;
@@ -69,7 +70,7 @@ invar.InvarCodec.XMLEncode
         numberU08 = 255;
         numberU16 = 65535;
         numberU32 = 4294967295L;
-        numberU64 = new BigInteger("18446744073709551615", 10);
+        numberU64 = BigInteger.valueOf(0L);
         numberSingle = 3.14159F;
         numberDouble = 3.1415926;
         boolValue = false;
@@ -81,7 +82,7 @@ invar.InvarCodec.XMLEncode
 
     /** 有符号的8位整数 */
     @invar.InvarRule(T="int8", S="f0")
-    public java.lang.Byte getNumberI08() { return numberI08; }
+    public Byte getNumberI08() { return numberI08; }
 
     /** 有符号的16位整数 */
     @invar.InvarRule(T="int16", S="f1")
@@ -97,15 +98,15 @@ invar.InvarCodec.XMLEncode
 
     /** 无符号的8位整数 */
     @invar.InvarRule(T="uint8", S="f4")
-    public java.lang.Integer getNumberU08() { return numberU08; }
+    public Integer getNumberU08() { return numberU08; }
 
     /** 无符号的16位整数 */
     @invar.InvarRule(T="uint16", S="f5")
-    public java.lang.Integer getNumberU16() { return numberU16; }
+    public Integer getNumberU16() { return numberU16; }
 
     /** 无符号的32位整数 */
     @invar.InvarRule(T="uint32", S="f6")
-    public java.lang.Long getNumberU32() { return numberU32; }
+    public Long getNumberU32() { return numberU32; }
 
     /** 无符号的64位整数 */
     @invar.InvarRule(T="uint64", S="f7")
@@ -117,15 +118,15 @@ invar.InvarCodec.XMLEncode
 
     /** 双精度浮点小数 */
     @invar.InvarRule(T="double", S="f9")
-    public java.lang.Double getNumberDouble() { return numberDouble; }
+    public Double getNumberDouble() { return numberDouble; }
 
     /** 布尔值 */
     @invar.InvarRule(T="bool", S="f10")
-    public java.lang.Boolean getBoolValue() { return boolValue; }
+    public Boolean getBoolValue() { return boolValue; }
 
     /** 字符串 */
     @invar.InvarRule(T="string", S="f11")
-    public java.lang.String getStringValue() { return stringValue; }
+    public String getStringValue() { return stringValue; }
 
     /** 枚举值 */
     @invar.InvarRule(T="test.abc.Gender", S="f12")
@@ -137,61 +138,86 @@ invar.InvarCodec.XMLEncode
 
     /** 有符号的8位整数 */
     @invar.InvarRule(T="int8", S="f0")
-    public TestBasic setNumberI08(java.lang.Byte value) { this.numberI08 = value; return this; }
-
+    public TestBasic setNumberI08(Byte value) { this.numberI08 = value; return this; }
+    public TestBasic setNumberI08(int value) throws NumberFormatException
+    {
+        if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
+            throw new NumberFormatException("int8 value out of range: " + value);
+        }
+        this.numberI08 = Integer.valueOf(value).byteValue();
+        return this;
+    }
     /** 有符号的16位整数 */
     @invar.InvarRule(T="int16", S="f1")
     public TestBasic setNumberI16(Short value) { this.numberI16 = value; return this; }
-
+    public TestBasic setNumberI16(int value) throws NumberFormatException
+    {
+        if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+            throw new NumberFormatException("int16 value out of range: " + value);
+        }
+        this.numberI16 = Integer.valueOf(value).shortValue();
+        return this;
+    }
     /** 有符号的32位整数 */
     @invar.InvarRule(T="int32", S="f2")
     public TestBasic setNumberI32(Integer value) { this.numberI32 = value; return this; }
-
     /** 有符号的64位整数 */
     @invar.InvarRule(T="int64", S="f3")
     public TestBasic setNumberI64(Long value) { this.numberI64 = value; return this; }
-
     /** 无符号的8位整数 */
     @invar.InvarRule(T="uint8", S="f4")
-    public TestBasic setNumberU08(java.lang.Integer value) { this.numberU08 = value; return this; }
-
+    public TestBasic setNumberU08(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFF) {
+            throw new NumberFormatException("uint8 value out of range: " + value);
+        }
+        this.numberU08 = value;
+        return this;
+    }
     /** 无符号的16位整数 */
     @invar.InvarRule(T="uint16", S="f5")
-    public TestBasic setNumberU16(java.lang.Integer value) { this.numberU16 = value; return this; }
-
+    public TestBasic setNumberU16(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFF) {
+            throw new NumberFormatException("uint16 value out of range: " + value);
+        }
+        this.numberU16 = value;
+        return this;
+    }
     /** 无符号的32位整数 */
     @invar.InvarRule(T="uint32", S="f6")
-    public TestBasic setNumberU32(java.lang.Long value) { this.numberU32 = value; return this; }
-
+    public TestBasic setNumberU32(long value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFFFFFFL) {
+            throw new NumberFormatException("uint32 value out of range: " + value);
+        }
+        this.numberU32 = value;
+        return this;
+    }
     /** 无符号的64位整数 */
     @invar.InvarRule(T="uint64", S="f7")
     public TestBasic setNumberU64(BigInteger value) { this.numberU64 = value; return this; }
-
     /** 单精度浮点小数 */
     @invar.InvarRule(T="float", S="f8")
     public TestBasic setNumberSingle(Float value) { this.numberSingle = value; return this; }
-
     /** 双精度浮点小数 */
     @invar.InvarRule(T="double", S="f9")
-    public TestBasic setNumberDouble(java.lang.Double value) { this.numberDouble = value; return this; }
-
+    public TestBasic setNumberDouble(Double value) { this.numberDouble = value; return this; }
     /** 布尔值 */
     @invar.InvarRule(T="bool", S="f10")
-    public TestBasic setBoolValue(java.lang.Boolean value) { this.boolValue = value; return this; }
-
+    public TestBasic setBoolValue(Boolean value) { this.boolValue = value; return this; }
     /** 字符串 */
     @invar.InvarRule(T="string", S="f11")
-    public TestBasic setStringValue(java.lang.String value) { this.stringValue = value; return this; }
-
+    public TestBasic setStringValue(String value) { this.stringValue = value; return this; }
     /** 枚举值 */
     @invar.InvarRule(T="test.abc.Gender", S="f12")
     public TestBasic setEnumValue(Gender value) { this.enumValue = value; return this; }
-
     /** 枚举值制定默认值 */
     @invar.InvarRule(T="test.abc.Gender", S="f13")
     public TestBasic setEnumDeft(Gender value) { this.enumDeft = value; return this; }
 
-    public TestBasic copy (TestBasic from)
+    /** Shallow copy */
+    public TestBasic copy(TestBasic from)
     {
         if (this == from || from == null) {
             return this;
@@ -211,7 +237,7 @@ invar.InvarCodec.XMLEncode
         enumValue = from.enumValue;
         enumDeft = from.enumDeft;
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -228,7 +254,7 @@ invar.InvarCodec.XMLEncode
         numberU16 = from.readUnsignedShort();
         numberU32 = from.readInt() & 0xFFFFFFFFL;
         byte[] numberU64Bytes = new byte[8]; from.readFully(numberU64Bytes, 0, 8);
-        numberU64 = new BigInteger(numberU64Bytes);
+        numberU64 = new BigInteger(1, numberU64Bytes);
         numberSingle = from.readFloat();
         numberDouble = from.readDouble();
         boolValue = from.readBoolean();
@@ -260,86 +286,147 @@ invar.InvarCodec.XMLEncode
         dest.writeInt(enumDeft.getValue());
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" numberI08=\"");
-        attrs.append(numberI08.toString()); attrs.append("\"");
-        attrs.append(" numberI16=\"");
-        attrs.append(numberI16.toString()); attrs.append("\"");
-        attrs.append(" numberI32=\"");
-        attrs.append(numberI32.toString()); attrs.append("\"");
-        attrs.append(" numberI64=\"");
-        attrs.append(numberI64.toString()); attrs.append("\"");
-        attrs.append(" numberU08=\"");
-        attrs.append(numberU08.toString()); attrs.append("\"");
-        attrs.append(" numberU16=\"");
-        attrs.append(numberU16.toString()); attrs.append("\"");
-        attrs.append(" numberU32=\"");
-        attrs.append(numberU32.toString()); attrs.append("\"");
-        attrs.append(" numberU64=\"");
-        attrs.append(numberU64.toString()); attrs.append("\"");
-        attrs.append(" numberSingle=\"");
-        attrs.append(numberSingle.toString()); attrs.append("\"");
-        attrs.append(" numberDouble=\"");
-        attrs.append(numberDouble.toString()); attrs.append("\"");
-        attrs.append(" boolValue=\"");
-        attrs.append(boolValue.toString()); attrs.append("\"");
-        attrs.append(" stringValue=\"");
-        attrs.append(stringValue); attrs.append("\"");
-        attrs.append(" enumValue=\"");
-        attrs.append(enumValue.toString()); attrs.append("\"");
-        attrs.append(" enumDeft=\"");
-        attrs.append(enumDeft.toString()); attrs.append("\"");
-        result.append("<"); result.append(name); result.append(attrs);
-        if (nodes.length() == 0) {
-            result.append("/>");
-        } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
-        }
-        return result;
-    } //TestBasic::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", numberI08:");
-        result.append(numberI08.toString());
-        result.append(", numberI16:");
-        result.append(numberI16.toString());
-        result.append(", numberI32:");
-        result.append(numberI32.toString());
-        result.append(", numberI64:");
-        result.append(numberI64.toString());
-        result.append(", numberU08:");
-        result.append(numberU08.toString());
-        result.append(", numberU16:");
-        result.append(numberU16.toString());
-        result.append(", numberU32:");
-        result.append(numberU32.toString());
-        result.append(", numberU64:");
-        result.append(numberU64.toString());
-        result.append(", numberSingle:");
-        result.append(numberSingle.toString());
-        result.append(", numberDouble:");
-        result.append(numberDouble.toString());
-        result.append(", boolValue:");
-        result.append(boolValue.toString());
-        result.append(", stringValue:");
-        result.append("\"" + stringValue + "\"");
-        result.append(", enumValue:");
-        result.append(enumValue.toString());
-        result.append(", enumDeft:");
-        result.append(enumDeft.toString());
-        result.append(" }");
-        return result.toString();
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("numberI08").append(':');
+        s.append(numberI08.toString());
+        s.append(',').append("numberI16").append(':');
+        s.append(numberI16.toString());
+        s.append(',').append("numberI32").append(':');
+        s.append(numberI32.toString());
+        s.append(',').append("numberI64").append(':');
+        s.append(numberI64.toString());
+        s.append(',').append("numberU08").append(':');
+        s.append(numberU08.toString());
+        s.append(',').append("numberU16").append(':');
+        s.append(numberU16.toString());
+        s.append(',').append("numberU32").append(':');
+        s.append(numberU32.toString());
+        s.append(',').append("numberU64").append(':');
+        s.append(numberU64.toString());
+        s.append(',').append("numberSingle").append(':');
+        s.append(numberSingle.toString());
+        s.append(',').append("numberDouble").append(':');
+        s.append(numberDouble.toString());
+        s.append(',').append("boolValue").append(':');
+        s.append(boolValue.toString());
+        s.append(',').append("stringValue").append(':');
+        s.append('"').append(stringValue).append('"');
+        s.append(',').append("enumValue").append(':');
+        s.append(enumValue.toString());
+        s.append(',').append("enumDeft").append(':');
+        s.append(enumDeft.toString());
+        s.append('}');
+        return s.toString();
     } //TestBasic::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        s.append('"').append("numberI08").append('"').append(':');
+        s.append(numberI08.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberI16").append('"').append(':');
+        s.append(numberI16.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberI32").append('"').append(':');
+        s.append(numberI32.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberI64").append('"').append(':');
+        s.append(numberI64.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberU08").append('"').append(':');
+        s.append(numberU08.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberU16").append('"').append(':');
+        s.append(numberU16.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberU32").append('"').append(':');
+        s.append(numberU32.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberU64").append('"').append(':');
+        s.append(numberU64.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberSingle").append('"').append(':');
+        s.append(numberSingle.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberDouble").append('"').append(':');
+        s.append(numberDouble.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("boolValue").append('"').append(':');
+        s.append(boolValue.toString().toLowerCase()); comma = ',';
+        boolean stringValueExists = stringValue != null && stringValue.length() > 0;
+        if ('\0' != comma && stringValueExists) { s.append(comma); comma = '\0'; }
+        if (stringValueExists) {
+            s.append('"').append("stringValue").append('"').append(':'); comma = ','; s.append('"').append(stringValue.toString()).append('"');
+        }
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("enumValue").append('"').append(':');
+        s.append(enumValue.ordinal()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("enumDeft").append('"').append(':');
+        s.append(enumDeft.ordinal()); comma = ',';
+        s.append('}').append('\n');
+    } /* TestBasic::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "TestBasic");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("numberI08").append('=').append('"');
+        attrs.append(numberI08.toString()).append('"');
+        attrs.append(' ').append("numberI16").append('=').append('"');
+        attrs.append(numberI16.toString()).append('"');
+        attrs.append(' ').append("numberI32").append('=').append('"');
+        attrs.append(numberI32.toString()).append('"');
+        attrs.append(' ').append("numberI64").append('=').append('"');
+        attrs.append(numberI64.toString()).append('"');
+        attrs.append(' ').append("numberU08").append('=').append('"');
+        attrs.append(numberU08.toString()).append('"');
+        attrs.append(' ').append("numberU16").append('=').append('"');
+        attrs.append(numberU16.toString()).append('"');
+        attrs.append(' ').append("numberU32").append('=').append('"');
+        attrs.append(numberU32.toString()).append('"');
+        attrs.append(' ').append("numberU64").append('=').append('"');
+        attrs.append(numberU64.toString()).append('"');
+        attrs.append(' ').append("numberSingle").append('=').append('"');
+        attrs.append(numberSingle.toString()).append('"');
+        attrs.append(' ').append("numberDouble").append('=').append('"');
+        attrs.append(numberDouble.toString()).append('"');
+        attrs.append(' ').append("boolValue").append('=').append('"');
+        attrs.append(boolValue.toString()).append('"');
+        attrs.append(' ').append("stringValue").append('=').append('"');
+        attrs.append(stringValue).append('"');
+        attrs.append(' ').append("enumValue").append('=').append('"');
+        attrs.append(enumValue.toString()).append('"');
+        attrs.append(' ').append("enumDeft").append('=').append('"');
+        attrs.append(enumDeft.toString()).append('"');
+        result.append('<').append(name).append(attrs);
+        if (nodes.length() == 0) {
+            result.append('/').append('>');
+        } else {
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
+        }
+    } /* TestBasic::writeXML(...) */
 
 }
 

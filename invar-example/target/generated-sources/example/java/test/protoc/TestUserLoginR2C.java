@@ -24,18 +24,19 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x38180462;
+    static public final long CRC32 = 0x38180462L;
 
-    static public TestUserLoginR2C Create() {
+    static public TestUserLoginR2C Create()
+    {
         return new TestUserLoginR2C();
     }
 
-    private java.lang.Integer            protocId   ;/* [AutoAdd] ProtocolID */
-    private java.lang.Long               protocCRC  ;/* [AutoAdd] Protocol CRC32 */
-    private java.lang.Integer            protocError;/* [AutoAdd] Protocol error code */
+    private Integer                      protocId   ;/* [AutoAdd] ProtocolID */
+    private Long                         protocCRC  ;/* [AutoAdd] Protocol CRC32 */
+    private Integer                      protocError;/* [AutoAdd] Protocol error code */
     private Protoc2C                     protoc2C   ;/* [AutoAdd] 服务端响应的公共数据 */
-    private java.lang.String             userId     ;
-    private java.lang.String             userName   ;
+    private String                       userId     ;
+    private String                       userName   ;
     private LinkedList<Integer>          roles      ;
     private LinkedHashMap<String,String> hotfix     ;/* [AutoAdd] Hotfix */
 
@@ -70,15 +71,15 @@ invar.InvarCodec.XMLEncode
 
     /** [AutoAdd] ProtocolID */
     @invar.InvarRule(T="uint16", S="f0")
-    public java.lang.Integer getProtocId() { return protocId; }
+    public Integer getProtocId() { return protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
     @invar.InvarRule(T="uint32", S="f1")
-    public java.lang.Long getProtocCRC() { return protocCRC; }
+    public Long getProtocCRC() { return protocCRC; }
 
     /** [AutoAdd] Protocol error code */
     @invar.InvarRule(T="uint16", S="f2")
-    public java.lang.Integer getProtocError() { return protocError; }
+    public Integer getProtocError() { return protocError; }
 
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2C", S="f3")
@@ -86,11 +87,11 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="string", S="f4")
-    public java.lang.String getUserId() { return userId; }
+    public String getUserId() { return userId; }
 
     /**  */
     @invar.InvarRule(T="string", S="f5")
-    public java.lang.String getUserName() { return userName; }
+    public String getUserName() { return userName; }
 
     /**  */
     @invar.InvarRule(T="vec<int32>", S="f6")
@@ -100,27 +101,54 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="map<string,string>", S="f7")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
+    /** [AutoAdd] ProtocolID */
+    @invar.InvarRule(T="uint16", S="f0")
+    public TestUserLoginR2C setProtocId(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFF) {
+            throw new NumberFormatException("uint16 value out of range: " + value);
+        }
+        this.protocId = value;
+        return this;
+    }
+    /** [AutoAdd] Protocol CRC32 */
+    @invar.InvarRule(T="uint32", S="f1")
+    public TestUserLoginR2C setProtocCRC(long value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFFFFFFL) {
+            throw new NumberFormatException("uint32 value out of range: " + value);
+        }
+        this.protocCRC = value;
+        return this;
+    }
     /** [AutoAdd] Protocol error code */
     @invar.InvarRule(T="uint16", S="f2")
-    public TestUserLoginR2C setProtocError(java.lang.Integer value) { this.protocError = value; return this; }
-
+    public TestUserLoginR2C setProtocError(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFF) {
+            throw new NumberFormatException("uint16 value out of range: " + value);
+        }
+        this.protocError = value;
+        return this;
+    }
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2C", S="f3")
     public TestUserLoginR2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }
-
     /**  */
     @invar.InvarRule(T="string", S="f4")
-    public TestUserLoginR2C setUserId(java.lang.String value) { this.userId = value; return this; }
-
+    public TestUserLoginR2C setUserId(String value) { this.userId = value; return this; }
     /**  */
     @invar.InvarRule(T="string", S="f5")
-    public TestUserLoginR2C setUserName(java.lang.String value) { this.userName = value; return this; }
-
+    public TestUserLoginR2C setUserName(String value) { this.userName = value; return this; }
+    /**  */
+    @invar.InvarRule(T="vec<int32>", S="f6")
+    public TestUserLoginR2C setRoles(LinkedList<Integer> value) { this.roles = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f7")
-    public TestUserLoginR2C setHotfix(LinkedHashMap<String,String> value) { this.hotfix = value; return this; }
+    public TestUserLoginR2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
-    public TestUserLoginR2C copy (TestUserLoginR2C from)
+    /** Shallow copy */
+    public TestUserLoginR2C copy(TestUserLoginR2C from)
     {
         if (this == from || from == null) {
             return this;
@@ -137,14 +165,15 @@ invar.InvarCodec.XMLEncode
         userName = from.userName;
         roles.clear();
         roles.addAll(from.roles);
-        if (from.hotfix != null) {
-            hotfix.clear();
-            hotfix.putAll(from.hotfix);
-        } else {
+        if (null == from.hotfix) {
             hotfix = null;
+        } else {
+            if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
+            else { hotfix.clear(); }
+            hotfix.putAll(from.hotfix);
         }
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -214,90 +243,160 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" protocId=\"");
-        attrs.append(protocId.toString()); attrs.append("\"");
-        attrs.append(" protocCRC=\"");
-        attrs.append(protocCRC.toString()); attrs.append("\"");
-        attrs.append(" protocError=\"");
-        attrs.append(protocError.toString()); attrs.append("\"");
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("protocId").append(':');
+        s.append(protocId.toString());
+        s.append(',').append("protocCRC").append(':');
+        s.append(protocCRC.toString());
+        s.append(',').append("protocError").append(':');
+        s.append(protocError.toString());
+        s.append(", protoc2C:");
         if (protoc2C != null) {
-            nodes.append(protoc2C.toStringXML("protoc2C"));
+            s.append('<').append("Protoc2C").append('>');
+        } else {
+            s.append("null");
         }
-        attrs.append(" userId=\"");
-        attrs.append(userId); attrs.append("\"");
-        attrs.append(" userName=\"");
-        attrs.append(userName); attrs.append("\"");
-        if (roles.size() > 0) {
-            nodes.append("<roles>");
-            for (Integer n1 : roles) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+        s.append(',').append("userId").append(':');
+        s.append('"').append(userId).append('"');
+        s.append(',').append("userName").append(':');
+        s.append('"').append(userName).append('"');
+        s.append(',').append("roles").append(':');
+        s.append('(').append(roles.size()).append(')');
+        s.append(", hotfix:");
+        if (hotfix != null) {
+            s.append('[').append(hotfix.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append('}');
+        return s.toString();
+    } //TestUserLoginR2C::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        s.append('"').append("protocId").append('"').append(':');
+        s.append(protocId.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("protocCRC").append('"').append(':');
+        s.append(protocCRC.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("protocError").append('"').append(':');
+        s.append(protocError.toString()); comma = ',';
+        boolean protoc2CExists = (null != protoc2C);
+        if ('\0' != comma && protoc2CExists) { s.append(comma); comma = '\0'; }
+        if (protoc2CExists) {
+            s.append('"').append("protoc2C").append('"').append(':'); comma = ','; protoc2C.writeJSON(s);
+        }
+        boolean userIdExists = userId != null && userId.length() > 0;
+        if ('\0' != comma && userIdExists) { s.append(comma); comma = '\0'; }
+        if (userIdExists) {
+            s.append('"').append("userId").append('"').append(':'); comma = ','; s.append('"').append(userId.toString()).append('"');
+        }
+        boolean userNameExists = userName != null && userName.length() > 0;
+        if ('\0' != comma && userNameExists) { s.append(comma); comma = '\0'; }
+        if (userNameExists) {
+            s.append('"').append("userName").append('"').append(':'); comma = ','; s.append('"').append(userName.toString()).append('"');
+        }
+        boolean rolesExists = (null != roles && roles.size() > 0);
+        if ('\0' != comma && rolesExists) { s.append(comma); comma = '\0'; }
+        if (rolesExists) { s.append('"').append("roles").append('"').append(':'); comma = ','; }
+        int rolesSize = (null == roles ? 0 : roles.size());
+        if (rolesSize > 0) {
+            s.append('\n').append('[');
+            int rolesIdx = 0;
+            for (Integer n1 : roles) { /* vec.for: roles */
+                ++rolesIdx;
+                s.append(n1.toString());
+                if (rolesIdx != rolesSize) { s.append(','); }
             }
-            nodes.append("</roles>");
+            s.append(']');
+        }
+        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if (hotfixExists) {
+            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
+            if (hotfixSize > 0) {
+                s.append('\n').append('{');
+                int hotfixIdx = 0;
+                for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
+                    ++hotfixIdx;
+                    java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
+                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
+                    s.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        s.append('}').append('\n');
+    } /* TestUserLoginR2C::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "TestUserLoginR2C");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("protocId").append('=').append('"');
+        attrs.append(protocId.toString()).append('"');
+        attrs.append(' ').append("protocCRC").append('=').append('"');
+        attrs.append(protocCRC.toString()).append('"');
+        attrs.append(' ').append("protocError").append('=').append('"');
+        attrs.append(protocError.toString()).append('"');
+        if (protoc2C != null) {
+            protoc2C.writeXML(nodes, "protoc2C");
+        }
+        attrs.append(' ').append("userId").append('=').append('"');
+        attrs.append(userId).append('"');
+        attrs.append(' ').append("userName").append('=').append('"');
+        attrs.append(userName).append('"');
+        if (roles.size() > 0) {
+            nodes.append('<').append("roles").append('>');
+            for (Integer n1 : roles) {
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
+            }
+            nodes.append('<').append('/').append("roles").append('>');
         }
         if (hotfix != null && hotfix.size() > 0) {
-            nodes.append("<hotfix>");
+            nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1);
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1).append('"').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1);
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1).append('"').append('>');
             }
-            nodes.append("</hotfix>");
+            nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //TestUserLoginR2C::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", protocId:");
-        result.append(protocId.toString());
-        result.append(", protocCRC:");
-        result.append(protocCRC.toString());
-        result.append(", protocError:");
-        result.append(protocError.toString());
-        result.append(", protoc2C:");
-        if (protoc2C != null) {
-            result.append("<Protoc2C>");
-        } else {
-            result.append("null");
-        }
-        result.append(", userId:");
-        result.append("\"" + userId + "\"");
-        result.append(", userName:");
-        result.append("\"" + userName + "\"");
-        result.append(", roles:");
-        result.append("(" + roles.size() + ")");
-        result.append(", hotfix:");
-        if (hotfix != null) {
-            result.append("[" + hotfix.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(" }");
-        return result.toString();
-    } //TestUserLoginR2C::toString ()
+    } /* TestUserLoginR2C::writeXML(...) */
 
 }
 

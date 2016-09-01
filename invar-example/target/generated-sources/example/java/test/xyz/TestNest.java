@@ -24,9 +24,10 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x6F0C2598;
+    static public final long CRC32 = 0x6F0C2598L;
 
-    static public TestNest Create() {
+    static public TestNest Create()
+    {
         return new TestNest();
     }
 
@@ -61,7 +62,18 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Custom>>>>>", S="f2")
     public LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>>> getList5d() { return list5d; }
 
-    public TestNest copy (TestNest from)
+    /**  */
+    @invar.InvarRule(T="vec<map<string,test.abc.Custom>>", S="f0")
+    public TestNest setListDict(LinkedList<LinkedHashMap<java.lang.String,Custom>> value) { this.listDict = value; return this; }
+    /**  */
+    @invar.InvarRule(T="map<vec<string>,vec<test.abc.Custom>>", S="f1")
+    public TestNest setDictList(LinkedHashMap<LinkedList<java.lang.String>,LinkedList<Custom>> value) { this.dictList = value; return this; }
+    /** 五维列表 */
+    @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Custom>>>>>", S="f2")
+    public TestNest setList5d(LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>>> value) { this.list5d = value; return this; }
+
+    /** Shallow copy */
+    public TestNest copy(TestNest from)
     {
         if (this == from || from == null) {
             return this;
@@ -73,7 +85,7 @@ invar.InvarCodec.XMLEncode
         list5d.clear();
         list5d.addAll(from.list5d);
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -190,95 +202,228 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("listDict").append(':');
+        s.append('(').append(listDict.size()).append(')');
+        s.append(',').append("dictList").append(':');
+        s.append('[').append(dictList.size()).append(']');
+        s.append(',').append("list5d").append(':');
+        s.append('(').append(list5d.size()).append(')');
+        s.append('}');
+        return s.toString();
+    } //TestNest::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        boolean listDictExists = (null != listDict && listDict.size() > 0);
+        if (listDictExists) { s.append('"').append("listDict").append('"').append(':'); comma = ','; }
+        int listDictSize = (null == listDict ? 0 : listDict.size());
+        if (listDictSize > 0) {
+            s.append('\n').append('[');
+            int listDictIdx = 0;
+            for (LinkedHashMap<java.lang.String,Custom> n1 : listDict) { /* vec.for: listDict */
+                ++listDictIdx;
+                int n1Size = (null == n1 ? 0 : n1.size());
+                if (n1Size > 0) {
+                    s.append('\n').append('{');
+                    int n1Idx = 0;
+                    for (Map.Entry<java.lang.String,Custom> n1Iter : n1.entrySet()) { /* map.for: n1 */
+                        ++n1Idx;
+                        java.lang.String k2 = n1Iter.getKey(); /* nest.k */
+                        s.append('"'); s.append('"').append(k2.toString()).append('"'); s.append('"').append(':');
+                        Custom v2 = n1Iter.getValue(); /* nest.v */
+                        v2.writeJSON(s);
+                        if (n1Idx != n1Size) { s.append(','); }
+                    }
+                    s.append('}');
+                }
+                if (listDictIdx != listDictSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean dictListExists = (null != dictList && dictList.size() > 0);
+        if ('\0' != comma && dictListExists) { s.append(comma); comma = '\0'; }
+        if (dictListExists) { s.append('"').append("dictList").append('"').append(':'); comma = ','; }
+        int dictListSize = (null == dictList ? 0 : dictList.size());
+        if (dictListSize > 0) {
+            s.append('\n').append('{');
+            int dictListIdx = 0;
+            for (Map.Entry<LinkedList<java.lang.String>,LinkedList<Custom>> dictListIter : dictList.entrySet()) { /* map.for: dictList */
+                ++dictListIdx;
+                LinkedList<java.lang.String> k1 = dictListIter.getKey();
+                int k1Size = (null == k1 ? 0 : k1.size());
+                if (k1Size > 0) {
+                    s.append('\n').append('[');
+                    int k1Idx = 0;
+                    for (java.lang.String n2 : k1) { /* vec.for: k1 */
+                        ++k1Idx;
+                        s.append('"').append(n2.toString()).append('"');
+                        if (k1Idx != k1Size) { s.append(','); }
+                    }
+                    s.append(']');
+                }
+                LinkedList<Custom> v1 = dictListIter.getValue();
+                int v1Size = (null == v1 ? 0 : v1.size());
+                if (v1Size > 0) {
+                    s.append('\n').append('[');
+                    int v1Idx = 0;
+                    for (Custom n2 : v1) { /* vec.for: v1 */
+                        ++v1Idx;
+                        n2.writeJSON(s);
+                        if (v1Idx != v1Size) { s.append(','); }
+                    }
+                    s.append(']');
+                }
+                if (dictListIdx != dictListSize) { s.append(','); }
+            }
+            s.append('}');
+        }
+        boolean list5dExists = (null != list5d && list5d.size() > 0);
+        if ('\0' != comma && list5dExists) { s.append(comma); comma = '\0'; }
+        if (list5dExists) { s.append('"').append("list5d").append('"').append(':'); comma = ','; }
+        int list5dSize = (null == list5d ? 0 : list5d.size());
+        if (list5dSize > 0) {
+            s.append('\n').append('[');
+            int list5dIdx = 0;
+            for (LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>> n1 : list5d) { /* vec.for: list5d */
+                ++list5dIdx;
+                int n1Size = (null == n1 ? 0 : n1.size());
+                if (n1Size > 0) {
+                    s.append('\n').append('[');
+                    int n1Idx = 0;
+                    for (LinkedList<LinkedList<LinkedList<Custom>>> n2 : n1) { /* vec.for: n1 */
+                        ++n1Idx;
+                        int n2Size = (null == n2 ? 0 : n2.size());
+                        if (n2Size > 0) {
+                            s.append('\n').append('[');
+                            int n2Idx = 0;
+                            for (LinkedList<LinkedList<Custom>> n3 : n2) { /* vec.for: n2 */
+                                ++n2Idx;
+                                int n3Size = (null == n3 ? 0 : n3.size());
+                                if (n3Size > 0) {
+                                    s.append('\n').append('[');
+                                    int n3Idx = 0;
+                                    for (LinkedList<Custom> n4 : n3) { /* vec.for: n3 */
+                                        ++n3Idx;
+                                        int n4Size = (null == n4 ? 0 : n4.size());
+                                        if (n4Size > 0) {
+                                            s.append('\n').append('[');
+                                            int n4Idx = 0;
+                                            for (Custom n5 : n4) { /* vec.for: n4 */
+                                                ++n4Idx;
+                                                n5.writeJSON(s);
+                                                if (n4Idx != n4Size) { s.append(','); }
+                                            }
+                                            s.append(']');
+                                        }
+                                        if (n3Idx != n3Size) { s.append(','); }
+                                    }
+                                    s.append(']');
+                                }
+                                if (n2Idx != n2Size) { s.append(','); }
+                            }
+                            s.append(']');
+                        }
+                        if (n1Idx != n1Size) { s.append(','); }
+                    }
+                    s.append(']');
+                }
+                if (list5dIdx != list5dSize) { s.append(','); }
+            }
+            s.append(']');
+        }
+        s.append('}').append('\n');
+    } /* TestNest::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "TestNest");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
         StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
         if (listDict.size() > 0) {
-            nodes.append("<listDict>");
+            nodes.append('<').append("listDict").append('>');
             for (LinkedHashMap<java.lang.String,Custom> n1 : listDict) {
-                nodes.append("<n1>");
+                nodes.append('<').append("n1").append('>');
                 for (Map.Entry<java.lang.String,Custom> n1Iter : n1.entrySet()) {
                     java.lang.String k2 = n1Iter.getKey();
-                    nodes.append("<k2 value=\"");
-                    nodes.append(k2);
-                    nodes.append("\">");
+                    nodes.append('<').append("k2").append(' ').append("value").append('=').append('"');
+                    nodes.append(k2).append('"').append('>');
                     Custom v2 = n1Iter.getValue();
-                    nodes.append(v2.toStringXML("v2"));
+                    v2.writeXML(nodes, "v2");
                 }
-                nodes.append("</n1>");
+                nodes.append('<').append('/').append("n1").append('>');
             }
-            nodes.append("</listDict>");
+            nodes.append('<').append('/').append("listDict").append('>');
         }
         if (dictList.size() > 0) {
-            nodes.append("<dictList>");
+            nodes.append('<').append("dictList").append('>');
             for (Map.Entry<LinkedList<java.lang.String>,LinkedList<Custom>> dictListIter : dictList.entrySet()) {
                 LinkedList<java.lang.String> k1 = dictListIter.getKey();
-                nodes.append("<k1>");
+                nodes.append('<').append("k1").append('>');
                 for (java.lang.String n2 : k1) {
-                    nodes.append("<n2 value=\"");
-                    nodes.append(n2);
-                    nodes.append("\">");
+                    nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
+                    nodes.append(n2).append('"').append('>');
                 }
-                nodes.append("</k1>");
+                nodes.append('<').append('/').append("k1").append('>');
                 LinkedList<Custom> v1 = dictListIter.getValue();
-                nodes.append("<v1>");
+                nodes.append('<').append("v1").append('>');
                 for (Custom n2 : v1) {
-                    nodes.append(n2.toStringXML("n2"));
+                    n2.writeXML(nodes, "n2");
                 }
-                nodes.append("</v1>");
+                nodes.append('<').append('/').append("v1").append('>');
             }
-            nodes.append("</dictList>");
+            nodes.append('<').append('/').append("dictList").append('>');
         }
         if (list5d.size() > 0) {
-            nodes.append("<list5d>");
+            nodes.append('<').append("list5d").append('>');
             for (LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>> n1 : list5d) {
-                nodes.append("<n1>");
+                nodes.append('<').append("n1").append('>');
                 for (LinkedList<LinkedList<LinkedList<Custom>>> n2 : n1) {
-                    nodes.append("<n2>");
+                    nodes.append('<').append("n2").append('>');
                     for (LinkedList<LinkedList<Custom>> n3 : n2) {
-                        nodes.append("<n3>");
+                        nodes.append('<').append("n3").append('>');
                         for (LinkedList<Custom> n4 : n3) {
-                            nodes.append("<n4>");
+                            nodes.append('<').append("n4").append('>');
                             for (Custom n5 : n4) {
-                                nodes.append(n5.toStringXML("n5"));
+                                n5.writeXML(nodes, "n5");
                             }
-                            nodes.append("</n4>");
+                            nodes.append('<').append('/').append("n4").append('>');
                         }
-                        nodes.append("</n3>");
+                        nodes.append('<').append('/').append("n3").append('>');
                     }
-                    nodes.append("</n2>");
+                    nodes.append('<').append('/').append("n2").append('>');
                 }
-                nodes.append("</n1>");
+                nodes.append('<').append('/').append("n1").append('>');
             }
-            nodes.append("</list5d>");
+            nodes.append('<').append('/').append("list5d").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //TestNest::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", listDict:");
-        result.append("(" + listDict.size() + ")");
-        result.append(", dictList:");
-        result.append("[" + dictList.size() + "]");
-        result.append(", list5d:");
-        result.append("(" + list5d.size() + ")");
-        result.append(" }");
-        return result.toString();
-    } //TestNest::toString ()
+    } /* TestNest::writeXML(...) */
 
 }
 

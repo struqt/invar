@@ -679,7 +679,8 @@
     <![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue(); /* nest.v */(#brk)(#body); ]]></template>
 
   <template key="tojson.ref.any"><![CDATA[
-    (#arg).append('"').append("(#namer)").append('"').append(':'); comma = ','; (#body); ]]></template>
+    (#arg).append('"').append("(#namer)").append('"').append(':');
+    (#body); comma = ','; ]]></template>
   <template key="tojson.ref.vec | tojson.ref.map"><![CDATA[
     if ((#namer)Exists) { (#arg).append('"').append("(#namer)").append('"').append(':'); comma = ','; }
     (#body) ]]></template>

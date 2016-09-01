@@ -23,13 +23,14 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x6D03BB9B;
+    static public final long CRC32 = 0x6D03BB9BL;
 
-    static public ConfigRoot Create() {
+    static public ConfigRoot Create()
+    {
         return new ConfigRoot();
     }
 
-    private java.lang.String             revision;
+    private String                       revision;
     private TestList                     list    ;
     private TestDict                     dict    ;
     private TestNest                     nest    ;
@@ -64,7 +65,7 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="string", S="f0")
-    public java.lang.String getRevision() { return revision; }
+    public String getRevision() { return revision; }
 
     /**  */
     @invar.InvarRule(T="test.xyz.TestList", S="f1")
@@ -92,33 +93,28 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="string", S="f0")
-    public ConfigRoot setRevision(java.lang.String value) { this.revision = value; return this; }
-
+    public ConfigRoot setRevision(String value) { this.revision = value; return this; }
     /**  */
     @invar.InvarRule(T="test.xyz.TestList", S="f1")
     public ConfigRoot setList(TestList value) { this.list = value; return this; }
-
     /**  */
     @invar.InvarRule(T="test.xyz.TestDict", S="f2")
     public ConfigRoot setDict(TestDict value) { this.dict = value; return this; }
-
     /**  */
     @invar.InvarRule(T="test.xyz.TestNest", S="f3")
     public ConfigRoot setNest(TestNest value) { this.nest = value; return this; }
-
     /**  */
     @invar.InvarRule(T="test.abc.Info", S="f4")
     public ConfigRoot setInfo(Info value) { this.info = value; return this; }
-
     /**  */
     @invar.InvarRule(T="test.xyz.InfoX", S="f5")
     public ConfigRoot setInfox(InfoX value) { this.infox = value; return this; }
-
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f6")
-    public ConfigRoot setHotfix(LinkedHashMap<String,String> value) { this.hotfix = value; return this; }
+    public ConfigRoot setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
-    public ConfigRoot copy (ConfigRoot from)
+    /** Shallow copy */
+    public ConfigRoot copy(ConfigRoot from)
     {
         if (this == from || from == null) {
             return this;
@@ -129,14 +125,15 @@ invar.InvarCodec.XMLEncode
         nest = from.nest;
         info = from.info;
         infox = from.infox;
-        if (from.hotfix != null) {
-            hotfix.clear();
-            hotfix.putAll(from.hotfix);
-        } else {
+        if (null == from.hotfix) {
             hotfix = null;
+        } else {
+            if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
+            else { hotfix.clear(); }
+            hotfix.putAll(from.hotfix);
         }
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -189,69 +186,132 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("revision").append(':');
+        s.append('"').append(revision).append('"');
+        s.append(',').append("list").append(':');
+        s.append('<').append("TestList").append('>');
+        s.append(',').append("dict").append(':');
+        s.append('<').append("TestDict").append('>');
+        s.append(',').append("nest").append(':');
+        s.append('<').append("TestNest").append('>');
+        s.append(',').append("info").append(':');
+        s.append('<').append("Info").append('>');
+        s.append(',').append("infox").append(':');
+        s.append('<').append("InfoX").append('>');
+        s.append(", hotfix:");
+        if (hotfix != null) {
+            s.append('[').append(hotfix.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append('}');
+        return s.toString();
+    } //ConfigRoot::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        boolean revisionExists = revision != null && revision.length() > 0;
+        if (revisionExists) {
+            s.append('"').append("revision").append('"').append(':'); comma = ','; s.append('"').append(revision.toString()).append('"');
+        }
+        boolean listExists = (null != list);
+        if ('\0' != comma && listExists) { s.append(comma); comma = '\0'; }
+        if (listExists) {
+            s.append('"').append("list").append('"').append(':'); comma = ','; list.writeJSON(s);
+        }
+        boolean dictExists = (null != dict);
+        if ('\0' != comma && dictExists) { s.append(comma); comma = '\0'; }
+        if (dictExists) {
+            s.append('"').append("dict").append('"').append(':'); comma = ','; dict.writeJSON(s);
+        }
+        boolean nestExists = (null != nest);
+        if ('\0' != comma && nestExists) { s.append(comma); comma = '\0'; }
+        if (nestExists) {
+            s.append('"').append("nest").append('"').append(':'); comma = ','; nest.writeJSON(s);
+        }
+        boolean infoExists = (null != info);
+        if ('\0' != comma && infoExists) { s.append(comma); comma = '\0'; }
+        if (infoExists) {
+            s.append('"').append("info").append('"').append(':'); comma = ','; info.writeJSON(s);
+        }
+        boolean infoxExists = (null != infox);
+        if ('\0' != comma && infoxExists) { s.append(comma); comma = '\0'; }
+        if (infoxExists) {
+            s.append('"').append("infox").append('"').append(':'); comma = ','; infox.writeJSON(s);
+        }
+        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if (hotfixExists) {
+            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
+            if (hotfixSize > 0) {
+                s.append('\n').append('{');
+                int hotfixIdx = 0;
+                for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
+                    ++hotfixIdx;
+                    java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
+                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
+                    s.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        s.append('}').append('\n');
+    } /* ConfigRoot::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "ConfigRoot");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
         StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" revision=\"");
-        attrs.append(revision); attrs.append("\"");
-        nodes.append(list.toStringXML("list"));
-        nodes.append(dict.toStringXML("dict"));
-        nodes.append(nest.toStringXML("nest"));
-        nodes.append(info.toStringXML("info"));
-        nodes.append(infox.toStringXML("infox"));
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("revision").append('=').append('"');
+        attrs.append(revision).append('"');
+        list.writeXML(nodes, "list");
+        dict.writeXML(nodes, "dict");
+        nest.writeXML(nodes, "nest");
+        info.writeXML(nodes, "info");
+        infox.writeXML(nodes, "infox");
         if (hotfix != null && hotfix.size() > 0) {
-            nodes.append("<hotfix>");
+            nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1);
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1).append('"').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1);
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1).append('"').append('>');
             }
-            nodes.append("</hotfix>");
+            nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //ConfigRoot::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", revision:");
-        result.append("\"" + revision + "\"");
-        result.append(", list:");
-        result.append("<TestList>");
-        result.append(", dict:");
-        result.append("<TestDict>");
-        result.append(", nest:");
-        result.append("<TestNest>");
-        result.append(", info:");
-        result.append("<Info>");
-        result.append(", infox:");
-        result.append("<InfoX>");
-        result.append(", hotfix:");
-        if (hotfix != null) {
-            result.append("[" + hotfix.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(" }");
-        return result.toString();
-    } //ConfigRoot::toString ()
+    } /* ConfigRoot::writeXML(...) */
 
 }
 

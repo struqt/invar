@@ -26,24 +26,25 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0xBBD63AFD;
+    static public final long CRC32 = 0xBBD63AFDL;
 
-    static public TestRefer Create() {
+    static public TestRefer Create()
+    {
         return new TestRefer();
     }
 
-    private java.lang.Byte           numberi08   ;
+    private Byte                     numberi08   ;
     private Short                    numberi16   ;
     private Integer                  numberi32   ;
     private Long                     numberi64   ;
-    private java.lang.Integer        numberu08   ;
-    private java.lang.Integer        numberu16   ;
-    private java.lang.Long           numberu32   ;
+    private Integer                  numberu08   ;
+    private Integer                  numberu16   ;
+    private Long                     numberu32   ;
     private BigInteger               numberu64   ;
     private Float                    numberSingle;
-    private java.lang.Double         numberDouble;
-    private java.lang.Boolean        boolValue   ;
-    private java.lang.String         stringValue ;
+    private Double                   numberDouble;
+    private Boolean                  boolValue   ;
+    private String                   stringValue ;
     private Gender                   enumValue   ;
     private Custom                   other       ;
     private TestRefer                self        ;
@@ -59,7 +60,7 @@ invar.InvarCodec.XMLEncode
         numberu08    = 0;
         numberu16    = 0;
         numberu32    = 0L;
-        numberu64    = new BigInteger("0", 10);
+        numberu64    = BigInteger.valueOf(0L);
         numberSingle = 0.0F;
         numberDouble = 0.00;
         boolValue    = false;
@@ -80,7 +81,7 @@ invar.InvarCodec.XMLEncode
         numberu08 = 0;
         numberu16 = 0;
         numberu32 = 0L;
-        numberu64 = new BigInteger("0", 10);
+        numberu64 = BigInteger.valueOf(0L);
         numberSingle = 0.0F;
         numberDouble = 0.00;
         boolValue = false;
@@ -97,7 +98,7 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="int8", S="f0")
-    public java.lang.Byte getNumberi08() { return numberi08; }
+    public Byte getNumberi08() { return numberi08; }
 
     /**  */
     @invar.InvarRule(T="int16", S="f1")
@@ -113,15 +114,15 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="uint8", S="f4")
-    public java.lang.Integer getNumberu08() { return numberu08; }
+    public Integer getNumberu08() { return numberu08; }
 
     /**  */
     @invar.InvarRule(T="uint16", S="f5")
-    public java.lang.Integer getNumberu16() { return numberu16; }
+    public Integer getNumberu16() { return numberu16; }
 
     /**  */
     @invar.InvarRule(T="uint32", S="f6")
-    public java.lang.Long getNumberu32() { return numberu32; }
+    public Long getNumberu32() { return numberu32; }
 
     /**  */
     @invar.InvarRule(T="uint64", S="f7")
@@ -133,15 +134,15 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="double", S="f9")
-    public java.lang.Double getNumberDouble() { return numberDouble; }
+    public Double getNumberDouble() { return numberDouble; }
 
     /**  */
     @invar.InvarRule(T="bool", S="f10")
-    public java.lang.Boolean getBoolValue() { return boolValue; }
+    public Boolean getBoolValue() { return boolValue; }
 
     /**  */
     @invar.InvarRule(T="string", S="f11")
-    public java.lang.String getStringValue() { return stringValue; }
+    public String getStringValue() { return stringValue; }
 
     /**  */
     @invar.InvarRule(T="test.abc.Gender", S="f12")
@@ -165,65 +166,95 @@ invar.InvarCodec.XMLEncode
 
     /**  */
     @invar.InvarRule(T="int8", S="f0")
-    public TestRefer setNumberi08(java.lang.Byte value) { this.numberi08 = value; return this; }
-
+    public TestRefer setNumberi08(Byte value) { this.numberi08 = value; return this; }
+    public TestRefer setNumberi08(int value) throws NumberFormatException
+    {
+        if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
+            throw new NumberFormatException("int8 value out of range: " + value);
+        }
+        this.numberi08 = Integer.valueOf(value).byteValue();
+        return this;
+    }
     /**  */
     @invar.InvarRule(T="int16", S="f1")
     public TestRefer setNumberi16(Short value) { this.numberi16 = value; return this; }
-
+    public TestRefer setNumberi16(int value) throws NumberFormatException
+    {
+        if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
+            throw new NumberFormatException("int16 value out of range: " + value);
+        }
+        this.numberi16 = Integer.valueOf(value).shortValue();
+        return this;
+    }
     /**  */
     @invar.InvarRule(T="int32", S="f2")
     public TestRefer setNumberi32(Integer value) { this.numberi32 = value; return this; }
-
     /**  */
     @invar.InvarRule(T="int64", S="f3")
     public TestRefer setNumberi64(Long value) { this.numberi64 = value; return this; }
-
     /**  */
     @invar.InvarRule(T="uint8", S="f4")
-    public TestRefer setNumberu08(java.lang.Integer value) { this.numberu08 = value; return this; }
-
+    public TestRefer setNumberu08(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFF) {
+            throw new NumberFormatException("uint8 value out of range: " + value);
+        }
+        this.numberu08 = value;
+        return this;
+    }
     /**  */
     @invar.InvarRule(T="uint16", S="f5")
-    public TestRefer setNumberu16(java.lang.Integer value) { this.numberu16 = value; return this; }
-
+    public TestRefer setNumberu16(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFF) {
+            throw new NumberFormatException("uint16 value out of range: " + value);
+        }
+        this.numberu16 = value;
+        return this;
+    }
     /**  */
     @invar.InvarRule(T="uint32", S="f6")
-    public TestRefer setNumberu32(java.lang.Long value) { this.numberu32 = value; return this; }
-
+    public TestRefer setNumberu32(long value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFFFFFFL) {
+            throw new NumberFormatException("uint32 value out of range: " + value);
+        }
+        this.numberu32 = value;
+        return this;
+    }
     /**  */
     @invar.InvarRule(T="uint64", S="f7")
     public TestRefer setNumberu64(BigInteger value) { this.numberu64 = value; return this; }
-
     /**  */
     @invar.InvarRule(T="float", S="f8")
     public TestRefer setNumberSingle(Float value) { this.numberSingle = value; return this; }
-
     /**  */
     @invar.InvarRule(T="double", S="f9")
-    public TestRefer setNumberDouble(java.lang.Double value) { this.numberDouble = value; return this; }
-
+    public TestRefer setNumberDouble(Double value) { this.numberDouble = value; return this; }
     /**  */
     @invar.InvarRule(T="bool", S="f10")
-    public TestRefer setBoolValue(java.lang.Boolean value) { this.boolValue = value; return this; }
-
+    public TestRefer setBoolValue(Boolean value) { this.boolValue = value; return this; }
     /**  */
     @invar.InvarRule(T="string", S="f11")
-    public TestRefer setStringValue(java.lang.String value) { this.stringValue = value; return this; }
-
+    public TestRefer setStringValue(String value) { this.stringValue = value; return this; }
     /**  */
     @invar.InvarRule(T="test.abc.Gender", S="f12")
     public TestRefer setEnumValue(Gender value) { this.enumValue = value; return this; }
-
     /**  */
     @invar.InvarRule(T="test.abc.Custom", S="f13")
     public TestRefer setOther(Custom value) { this.other = value; return this; }
-
     /**  */
     @invar.InvarRule(T="test.xyz.TestRefer", S="f14")
     public TestRefer setSelf(TestRefer value) { this.self = value; return this; }
+    /**  */
+    @invar.InvarRule(T="vec<int8>", S="f15")
+    public TestRefer setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; return this; }
+    /**  */
+    @invar.InvarRule(T="map<int8,int8>", S="f16")
+    public TestRefer setDictI08(LinkedHashMap<java.lang.Byte,java.lang.Byte> value) { this.dictI08 = value; return this; }
 
-    public TestRefer copy (TestRefer from)
+    /** Shallow copy */
+    public TestRefer copy(TestRefer from)
     {
         if (this == from || from == null) {
             return this;
@@ -252,7 +283,7 @@ invar.InvarCodec.XMLEncode
         dictI08.clear();
         dictI08.putAll(from.dictI08);
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -269,7 +300,7 @@ invar.InvarCodec.XMLEncode
         numberu16 = from.readUnsignedShort();
         numberu32 = from.readInt() & 0xFFFFFFFFL;
         byte[] numberu64Bytes = new byte[8]; from.readFully(numberu64Bytes, 0, 8);
-        numberu64 = new BigInteger(numberu64Bytes);
+        numberu64 = new BigInteger(1, numberu64Bytes);
         numberSingle = from.readFloat();
         numberDouble = from.readDouble();
         boolValue = from.readBoolean();
@@ -334,121 +365,217 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
-        StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" numberi08=\"");
-        attrs.append(numberi08.toString()); attrs.append("\"");
-        attrs.append(" numberi16=\"");
-        attrs.append(numberi16.toString()); attrs.append("\"");
-        attrs.append(" numberi32=\"");
-        attrs.append(numberi32.toString()); attrs.append("\"");
-        attrs.append(" numberi64=\"");
-        attrs.append(numberi64.toString()); attrs.append("\"");
-        attrs.append(" numberu08=\"");
-        attrs.append(numberu08.toString()); attrs.append("\"");
-        attrs.append(" numberu16=\"");
-        attrs.append(numberu16.toString()); attrs.append("\"");
-        attrs.append(" numberu32=\"");
-        attrs.append(numberu32.toString()); attrs.append("\"");
-        attrs.append(" numberu64=\"");
-        attrs.append(numberu64.toString()); attrs.append("\"");
-        attrs.append(" numberSingle=\"");
-        attrs.append(numberSingle.toString()); attrs.append("\"");
-        attrs.append(" numberDouble=\"");
-        attrs.append(numberDouble.toString()); attrs.append("\"");
-        attrs.append(" boolValue=\"");
-        attrs.append(boolValue.toString()); attrs.append("\"");
-        attrs.append(" stringValue=\"");
-        attrs.append(stringValue); attrs.append("\"");
-        attrs.append(" enumValue=\"");
-        attrs.append(enumValue.toString()); attrs.append("\"");
-        nodes.append(other.toStringXML("other"));
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("numberi08").append(':');
+        s.append(numberi08.toString());
+        s.append(',').append("numberi16").append(':');
+        s.append(numberi16.toString());
+        s.append(',').append("numberi32").append(':');
+        s.append(numberi32.toString());
+        s.append(',').append("numberi64").append(':');
+        s.append(numberi64.toString());
+        s.append(',').append("numberu08").append(':');
+        s.append(numberu08.toString());
+        s.append(',').append("numberu16").append(':');
+        s.append(numberu16.toString());
+        s.append(',').append("numberu32").append(':');
+        s.append(numberu32.toString());
+        s.append(',').append("numberu64").append(':');
+        s.append(numberu64.toString());
+        s.append(',').append("numberSingle").append(':');
+        s.append(numberSingle.toString());
+        s.append(',').append("numberDouble").append(':');
+        s.append(numberDouble.toString());
+        s.append(',').append("boolValue").append(':');
+        s.append(boolValue.toString());
+        s.append(',').append("stringValue").append(':');
+        s.append('"').append(stringValue).append('"');
+        s.append(',').append("enumValue").append(':');
+        s.append(enumValue.toString());
+        s.append(',').append("other").append(':');
+        s.append('<').append("Custom").append('>');
+        s.append(", self:");
         if (self != null) {
-            nodes.append(self.toStringXML("self"));
+            s.append('<').append("TestRefer").append('>');
+        } else {
+            s.append("null");
+        }
+        s.append(',').append("listI08").append(':');
+        s.append('(').append(listI08.size()).append(')');
+        s.append(',').append("dictI08").append(':');
+        s.append('[').append(dictI08.size()).append(']');
+        s.append('}');
+        return s.toString();
+    } //TestRefer::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        s.append('"').append("numberi08").append('"').append(':');
+        s.append(numberi08.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberi16").append('"').append(':');
+        s.append(numberi16.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberi32").append('"').append(':');
+        s.append(numberi32.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberi64").append('"').append(':');
+        s.append(numberi64.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberu08").append('"').append(':');
+        s.append(numberu08.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberu16").append('"').append(':');
+        s.append(numberu16.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberu32").append('"').append(':');
+        s.append(numberu32.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberu64").append('"').append(':');
+        s.append(numberu64.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberSingle").append('"').append(':');
+        s.append(numberSingle.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("numberDouble").append('"').append(':');
+        s.append(numberDouble.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("boolValue").append('"').append(':');
+        s.append(boolValue.toString().toLowerCase()); comma = ',';
+        boolean stringValueExists = stringValue != null && stringValue.length() > 0;
+        if ('\0' != comma && stringValueExists) { s.append(comma); comma = '\0'; }
+        if (stringValueExists) {
+            s.append('"').append("stringValue").append('"').append(':'); comma = ','; s.append('"').append(stringValue.toString()).append('"');
+        }
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("enumValue").append('"').append(':');
+        s.append(enumValue.ordinal()); comma = ',';
+        boolean otherExists = (null != other);
+        if ('\0' != comma && otherExists) { s.append(comma); comma = '\0'; }
+        if (otherExists) {
+            s.append('"').append("other").append('"').append(':'); comma = ','; other.writeJSON(s);
+        }
+        boolean selfExists = (null != self);
+        if ('\0' != comma && selfExists) { s.append(comma); comma = '\0'; }
+        if (selfExists) {
+            s.append('"').append("self").append('"').append(':'); comma = ','; self.writeJSON(s);
+        }
+        boolean listI08Exists = (null != listI08 && listI08.size() > 0);
+        if ('\0' != comma && listI08Exists) { s.append(comma); comma = '\0'; }
+        if (listI08Exists) { s.append('"').append("listI08").append('"').append(':'); comma = ','; }
+        int listI08Size = (null == listI08 ? 0 : listI08.size());
+        if (listI08Size > 0) {
+            s.append('\n').append('[');
+            int listI08Idx = 0;
+            for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
+                ++listI08Idx;
+                s.append(n1.toString());
+                if (listI08Idx != listI08Size) { s.append(','); }
+            }
+            s.append(']');
+        }
+        boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
+        if ('\0' != comma && dictI08Exists) { s.append(comma); comma = '\0'; }
+        if (dictI08Exists) { s.append('"').append("dictI08").append('"').append(':'); comma = ','; }
+        int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
+        if (dictI08Size > 0) {
+            s.append('\n').append('{');
+            int dictI08Idx = 0;
+            for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
+                ++dictI08Idx;
+                java.lang.Byte k1 = dictI08Iter.getKey(); /* nest.k */
+                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                java.lang.Byte v1 = dictI08Iter.getValue(); /* nest.v */
+                s.append(v1.toString());
+                if (dictI08Idx != dictI08Size) { s.append(','); }
+            }
+            s.append('}');
+        }
+        s.append('}').append('\n');
+    } /* TestRefer::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "TestRefer");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
+        StringBuilder attrs  = new StringBuilder();
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("numberi08").append('=').append('"');
+        attrs.append(numberi08.toString()).append('"');
+        attrs.append(' ').append("numberi16").append('=').append('"');
+        attrs.append(numberi16.toString()).append('"');
+        attrs.append(' ').append("numberi32").append('=').append('"');
+        attrs.append(numberi32.toString()).append('"');
+        attrs.append(' ').append("numberi64").append('=').append('"');
+        attrs.append(numberi64.toString()).append('"');
+        attrs.append(' ').append("numberu08").append('=').append('"');
+        attrs.append(numberu08.toString()).append('"');
+        attrs.append(' ').append("numberu16").append('=').append('"');
+        attrs.append(numberu16.toString()).append('"');
+        attrs.append(' ').append("numberu32").append('=').append('"');
+        attrs.append(numberu32.toString()).append('"');
+        attrs.append(' ').append("numberu64").append('=').append('"');
+        attrs.append(numberu64.toString()).append('"');
+        attrs.append(' ').append("numberSingle").append('=').append('"');
+        attrs.append(numberSingle.toString()).append('"');
+        attrs.append(' ').append("numberDouble").append('=').append('"');
+        attrs.append(numberDouble.toString()).append('"');
+        attrs.append(' ').append("boolValue").append('=').append('"');
+        attrs.append(boolValue.toString()).append('"');
+        attrs.append(' ').append("stringValue").append('=').append('"');
+        attrs.append(stringValue).append('"');
+        attrs.append(' ').append("enumValue").append('=').append('"');
+        attrs.append(enumValue.toString()).append('"');
+        other.writeXML(nodes, "other");
+        if (self != null) {
+            self.writeXML(nodes, "self");
         }
         if (listI08.size() > 0) {
-            nodes.append("<listI08>");
+            nodes.append('<').append("listI08").append('>');
             for (java.lang.Byte n1 : listI08) {
-                nodes.append("<n1 value=\"");
-                nodes.append(n1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
+                nodes.append(n1.toString()).append('"').append('>');
             }
-            nodes.append("</listI08>");
+            nodes.append('<').append('/').append("listI08").append('>');
         }
         if (dictI08.size() > 0) {
-            nodes.append("<dictI08>");
+            nodes.append('<').append("dictI08").append('>');
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) {
                 java.lang.Byte k1 = dictI08Iter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1.toString()).append('"').append('>');
                 java.lang.Byte v1 = dictI08Iter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1.toString());
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1.toString()).append('"').append('>');
             }
-            nodes.append("</dictI08>");
+            nodes.append('<').append('/').append("dictI08").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //TestRefer::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", numberi08:");
-        result.append(numberi08.toString());
-        result.append(", numberi16:");
-        result.append(numberi16.toString());
-        result.append(", numberi32:");
-        result.append(numberi32.toString());
-        result.append(", numberi64:");
-        result.append(numberi64.toString());
-        result.append(", numberu08:");
-        result.append(numberu08.toString());
-        result.append(", numberu16:");
-        result.append(numberu16.toString());
-        result.append(", numberu32:");
-        result.append(numberu32.toString());
-        result.append(", numberu64:");
-        result.append(numberu64.toString());
-        result.append(", numberSingle:");
-        result.append(numberSingle.toString());
-        result.append(", numberDouble:");
-        result.append(numberDouble.toString());
-        result.append(", boolValue:");
-        result.append(boolValue.toString());
-        result.append(", stringValue:");
-        result.append("\"" + stringValue + "\"");
-        result.append(", enumValue:");
-        result.append(enumValue.toString());
-        result.append(", other:");
-        result.append("<Custom>");
-        result.append(", self:");
-        if (self != null) {
-            result.append("<TestRefer>");
-        } else {
-            result.append("null");
-        }
-        result.append(", listI08:");
-        result.append("(" + listI08.size() + ")");
-        result.append(", dictI08:");
-        result.append("[" + dictI08.size() + "]");
-        result.append(" }");
-        return result.toString();
-    } //TestRefer::toString ()
+    } /* TestRefer::writeXML(...) */
 
 }
 

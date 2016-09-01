@@ -24,15 +24,16 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x240151;
+    static public final long CRC32 = 0x240151L;
 
-    static public MemberEntry Create() {
+    static public MemberEntry Create()
+    {
         return new MemberEntry();
     }
 
-    private java.lang.Long               id        ;/* 主键，自增长 */
-    private java.lang.String             phone     ;/* 手机号码 */
-    private java.lang.String             nickName  ;/* 会员昵称 */
+    private Long                         id        ;/* 主键，自增长 */
+    private String                       phone     ;/* 手机号码 */
+    private String                       nickName  ;/* 会员昵称 */
     private Long                         createTime;/* 创建时间 */
     private Long                         updateTime;/* 创建时间 */
     private LinkedHashMap<String,String> hotfix    ;/* [AutoAdd] Hotfix */
@@ -62,15 +63,15 @@ invar.InvarCodec.XMLEncode
 
     /** 主键，自增长 */
     @invar.InvarRule(T="uint32", S="f0")
-    public java.lang.Long getId() { return id; }
+    public Long getId() { return id; }
 
     /** 手机号码 */
     @invar.InvarRule(T="string", S="f1")
-    public java.lang.String getPhone() { return phone; }
+    public String getPhone() { return phone; }
 
     /** 会员昵称 */
     @invar.InvarRule(T="string", S="f2")
-    public java.lang.String getNickName() { return nickName; }
+    public String getNickName() { return nickName; }
 
     /** 创建时间 */
     @invar.InvarRule(T="int64", S="f3")
@@ -86,29 +87,32 @@ invar.InvarCodec.XMLEncode
 
     /** 主键，自增长 */
     @invar.InvarRule(T="uint32", S="f0")
-    public MemberEntry setId(java.lang.Long value) { this.id = value; return this; }
-
+    public MemberEntry setId(long value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFFFFFFL) {
+            throw new NumberFormatException("uint32 value out of range: " + value);
+        }
+        this.id = value;
+        return this;
+    }
     /** 手机号码 */
     @invar.InvarRule(T="string", S="f1")
-    public MemberEntry setPhone(java.lang.String value) { this.phone = value; return this; }
-
+    public MemberEntry setPhone(String value) { this.phone = value; return this; }
     /** 会员昵称 */
     @invar.InvarRule(T="string", S="f2")
-    public MemberEntry setNickName(java.lang.String value) { this.nickName = value; return this; }
-
+    public MemberEntry setNickName(String value) { this.nickName = value; return this; }
     /** 创建时间 */
     @invar.InvarRule(T="int64", S="f3")
     public MemberEntry setCreateTime(Long value) { this.createTime = value; return this; }
-
     /** 创建时间 */
     @invar.InvarRule(T="int64", S="f4")
     public MemberEntry setUpdateTime(Long value) { this.updateTime = value; return this; }
-
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f5")
-    public MemberEntry setHotfix(LinkedHashMap<String,String> value) { this.hotfix = value; return this; }
+    public MemberEntry setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
-    public MemberEntry copy (MemberEntry from)
+    /** Shallow copy */
+    public MemberEntry copy(MemberEntry from)
     {
         if (this == from || from == null) {
             return this;
@@ -118,14 +122,15 @@ invar.InvarCodec.XMLEncode
         nickName = from.nickName;
         createTime = from.createTime;
         updateTime = from.updateTime;
-        if (from.hotfix != null) {
-            hotfix.clear();
-            hotfix.putAll(from.hotfix);
-        } else {
+        if (null == from.hotfix) {
             hotfix = null;
+        } else {
+            if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
+            else { hotfix.clear(); }
+            hotfix.putAll(from.hotfix);
         }
         return this;
-    } //copyFrom(...)
+    } /* copyFrom(...) */
 
     public void read(InputStream from) throws IOException
     {
@@ -176,70 +181,122 @@ invar.InvarCodec.XMLEncode
         }
     }
 
-    public StringBuilder toStringXML (String name)
+    public String toString()
     {
-        StringBuilder result = new StringBuilder();
+        StringBuilder s = new StringBuilder();
+        s.append('{');
+        s.append(getClass().getName());
+        s.append(',').append("id").append(':');
+        s.append(id.toString());
+        s.append(',').append("phone").append(':');
+        s.append('"').append(phone).append('"');
+        s.append(',').append("nickName").append(':');
+        s.append('"').append(nickName).append('"');
+        s.append(',').append("createTime").append(':');
+        s.append(createTime.toString());
+        s.append(',').append("updateTime").append(':');
+        s.append(updateTime.toString());
+        s.append(", hotfix:");
+        if (hotfix != null) {
+            s.append('[').append(hotfix.size()).append(']');
+        } else {
+            s.append("null");
+        }
+        s.append('}');
+        return s.toString();
+    } //MemberEntry::toString ()
+
+    public String toStringJSON()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeJSON(code);
+        return code.toString();
+    }
+
+    public void writeJSON(StringBuilder s)
+    {
+        s.append('\n').append('{');
+        char comma = '\0';
+        s.append('"').append("id").append('"').append(':');
+        s.append(id.toString()); comma = ',';
+        boolean phoneExists = phone != null && phone.length() > 0;
+        if ('\0' != comma && phoneExists) { s.append(comma); comma = '\0'; }
+        if (phoneExists) {
+            s.append('"').append("phone").append('"').append(':'); comma = ','; s.append('"').append(phone.toString()).append('"');
+        }
+        boolean nickNameExists = nickName != null && nickName.length() > 0;
+        if ('\0' != comma && nickNameExists) { s.append(comma); comma = '\0'; }
+        if (nickNameExists) {
+            s.append('"').append("nickName").append('"').append(':'); comma = ','; s.append('"').append(nickName.toString()).append('"');
+        }
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("createTime").append('"').append(':');
+        s.append(createTime.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
+        s.append('"').append("updateTime").append('"').append(':');
+        s.append(updateTime.toString()); comma = ',';
+        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if (hotfixExists) {
+            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
+            if (hotfixSize > 0) {
+                s.append('\n').append('{');
+                int hotfixIdx = 0;
+                for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
+                    ++hotfixIdx;
+                    java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
+                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
+                    s.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                }
+                s.append('}');
+            } comma = ',';
+        }
+        s.append('}').append('\n');
+    } /* MemberEntry::writeJSON(...) */
+
+    public String toStringXML()
+    {
+        StringBuilder code = new StringBuilder();
+        this.writeXML(code, "MemberEntry");
+        return code.toString();
+    }
+
+    public void writeXML(StringBuilder result, String name)
+    {
         StringBuilder attrs  = new StringBuilder();
-        StringBuilder nodes  = new StringBuilder();
-        attrs.append(" id=\"");
-        attrs.append(id.toString()); attrs.append("\"");
-        attrs.append(" phone=\"");
-        attrs.append(phone); attrs.append("\"");
-        attrs.append(" nickName=\"");
-        attrs.append(nickName); attrs.append("\"");
-        attrs.append(" createTime=\"");
-        attrs.append(createTime.toString()); attrs.append("\"");
-        attrs.append(" updateTime=\"");
-        attrs.append(updateTime.toString()); attrs.append("\"");
+        StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("id").append('=').append('"');
+        attrs.append(id.toString()).append('"');
+        attrs.append(' ').append("phone").append('=').append('"');
+        attrs.append(phone).append('"');
+        attrs.append(' ').append("nickName").append('=').append('"');
+        attrs.append(nickName).append('"');
+        attrs.append(' ').append("createTime").append('=').append('"');
+        attrs.append(createTime.toString()).append('"');
+        attrs.append(' ').append("updateTime").append('=').append('"');
+        attrs.append(updateTime.toString()).append('"');
         if (hotfix != null && hotfix.size() > 0) {
-            nodes.append("<hotfix>");
+            nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                nodes.append("<k1 value=\"");
-                nodes.append(k1);
-                nodes.append("\">");
+                nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
+                nodes.append(k1).append('"').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
-                nodes.append("<v1 value=\"");
-                nodes.append(v1);
-                nodes.append("\">");
+                nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
+                nodes.append(v1).append('"').append('>');
             }
-            nodes.append("</hotfix>");
+            nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append("<"); result.append(name); result.append(attrs);
+        result.append('<').append(name).append(attrs);
         if (nodes.length() == 0) {
-            result.append("/>");
+            result.append('/').append('>');
         } else {
-            result.append(">");
-            result.append(nodes);
-            result.append("</"); result.append(name); result.append(">");
+            result.append('>').append(nodes);
+            result.append('<').append('/').append(name).append('>');
         }
-        return result;
-    } //MemberEntry::toStringXML (String name)
-
-    public String toString ()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append("{ ");
-        result.append(getClass().getName());
-        result.append(", id:");
-        result.append(id.toString());
-        result.append(", phone:");
-        result.append("\"" + phone + "\"");
-        result.append(", nickName:");
-        result.append("\"" + nickName + "\"");
-        result.append(", createTime:");
-        result.append(createTime.toString());
-        result.append(", updateTime:");
-        result.append(updateTime.toString());
-        result.append(", hotfix:");
-        if (hotfix != null) {
-            result.append("[" + hotfix.size() + "]");
-        } else {
-            result.append("null");
-        }
-        result.append(" }");
-        return result.toString();
-    } //MemberEntry::toString ()
+    } /* MemberEntry::writeXML(...) */
 
     public Object[] SqlParamsAll()
     {
