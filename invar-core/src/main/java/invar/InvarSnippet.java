@@ -58,9 +58,24 @@ final public class InvarSnippet {
                 buildTypeRedefine(n.getChildNodes(), c);
             } else if (nameNode.equals("template")) {
                 buildTemplates(n);
-            } else if (nameNode.equals("export")) {
-                buildExport(n);
             } //else {}
+        }
+    }
+
+    public void buildExportFiles() {
+        if (!snippetDoc.hasChildNodes())
+            return;
+        String fileHead = this.tryGet(Key.FILE_HEAD, empty);
+        Node root = snippetDoc.getFirstChild();
+        NodeList nodes = root.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node n = nodes.item(i);
+            if (Node.ELEMENT_NODE != n.getNodeType())
+                continue;
+            String nameNode = n.getNodeName().toLowerCase();
+            if (nameNode.equals("export")) {
+                buildExport(n, fileHead);
+            }
         }
     }
 
@@ -135,13 +150,13 @@ final public class InvarSnippet {
         }
     }
 
-    private void buildExport(Node n) {
+    private void buildExport(Node n, String fileHead) {
         String resPath = this.snippetDir + getAttrOptional(n, "resPath");
         String destDir = getAttrOptional(n, "destDir");
         String destName = getAttrOptional(n, "destName");
         InputStream stream = getSnippetStream(resPath);
         if (stream != null) {
-            writer.exportFile(destDir, destName, stream);
+            writer.exportFile(destDir, destName, fileHead, stream);
             try {
                 stream.close();
             } catch (IOException e) {
@@ -212,6 +227,7 @@ final public class InvarSnippet {
         final static public String POINTER_INVOKE = "pointer.invoke";
 
         final static public String FILE = "file";
+        final static public String FILE_HEAD = "file.head";
         final static public String FILE_PACK = "file.pack";
         final static public String FILE_PACK_SPLIT = "file.pack.split";
         final static public String FILE_BODY = "file.body";
@@ -275,6 +291,7 @@ final public class InvarSnippet {
         final static String Debug = wrapToken("debug");
 
         final static String Define = wrapToken("define");
+        final static String Head = wrapToken("head");
         final static String Pack = wrapToken("pack");
         final static String Import = wrapToken("import");
         final static String Includes = wrapToken("includes");

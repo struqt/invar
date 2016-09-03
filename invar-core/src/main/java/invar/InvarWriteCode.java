@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("unused")
 public final class InvarWriteCode extends InvarWrite {
 
     final private InvarSnippet snippet;
@@ -214,6 +215,7 @@ public final class InvarWriteCode extends InvarWrite {
         uniqueTypeName = (Boolean.parseBoolean(snippetTryGet("unique.type.name")));
         noGenericType = (Boolean.parseBoolean(snippetTryGet("no.generic.type")));
         InvarField.setPrefix(snippet.tryGet("struct.field.prefix", null));
+        snippet.buildExportFiles();
         return true;
     }
 
@@ -349,6 +351,7 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Import, makeImorts(imps));
         s = replace(s, "[\r|\n]*" + Token.Concat, empty);
         s = replace(s, "[\\s]*" + Token.ConcatAll, empty);
+        s = replace(s, Token.Head, snippetTryGet(Key.FILE_HEAD, empty));
         return s;
     }
 

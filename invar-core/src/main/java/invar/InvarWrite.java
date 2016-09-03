@@ -46,7 +46,6 @@ abstract public class InvarWrite {
     Boolean uniqueTypeName = false;
     Boolean noGenericType = false;
     Boolean flattenCodeDir = false;
-    String flattenCodeSplit = "";
     Boolean onePackOneFile = false;
     Boolean lowerFileName = false;
     Boolean packNameNested = false;
@@ -56,6 +55,7 @@ abstract public class InvarWrite {
     Boolean impExcludeConflict = false;
     Boolean impExcludeSamePack = false;
     Integer methodIndentNum = 1;
+    String flattenCodeSplit = "";
     List<String> impExcludePacks = null;
 
     public InvarWrite(InvarContext context, String dirRootPath) {
@@ -193,11 +193,11 @@ abstract public class InvarWrite {
         System.out.println("error X---------> " + txt);
     }
 
-    final protected void addExportFile(String packName, String fileName, String content) {
+    final public void addExportFile(String packName, String fileName, String content) {
         exports.put(packName + ruleTypeSplit + fileName, content);
     }
 
-    final public void exportFile(String fileDir, String fileName, InputStream res) {
+    final public void exportFile(String fileDir, String fileName, String fileHead, InputStream res) {
         byte[] bs;
         try {
             int len = res.available();
@@ -206,7 +206,13 @@ abstract public class InvarWrite {
                 return;
             }
             char[] chars = getChars(bs);
-            StringBuilder s = new StringBuilder(len);
+            StringBuilder s;
+            if (fileHead != null && fileHead.length() > 0) {
+                s = new StringBuilder(len + fileHead.length());
+                s.append(fileHead);
+            } else {
+                s = new StringBuilder(len);
+            }
             for (char c : chars) {
                 if (c == '\0')
                     break;
@@ -378,7 +384,7 @@ abstract public class InvarWrite {
         return fixedLen(blank, len, "");
     }
 
-    static protected char[] getChars(byte[] bytes) {
+    static public char[] getChars(byte[] bytes) {
         Charset cs = Charset.forName("UTF-8");
         ByteBuffer bb = ByteBuffer.allocate(bytes.length);
         bb.put(bytes);
