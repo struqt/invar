@@ -1,4 +1,5 @@
 package test.cases;
+///*
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -311,3 +312,4 @@ public class InvarTest {
     }
 
 }
+//*/

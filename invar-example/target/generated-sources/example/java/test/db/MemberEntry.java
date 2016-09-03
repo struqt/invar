@@ -310,18 +310,6 @@ invar.InvarCodec.XMLEncode
 
         static public final String TABLE = "tbl_member";
 
-        static public StringBuilder buildInsert() {
-            return getBuilder().buildInsert();
-        }
-
-        static public StringBuilder buildSelect(String where, String... fields) {
-            return getBuilder().buildSelect(where, fields);
-        }
-
-        static public StringBuilder buildUpdate(String where, String... fields) {
-            return getBuilder().buildUpdate(where, fields);
-        }
-
         static public invar.InvarSQL getBuilder() {
             if (builder == null) {
                 builder = invar.InvarSQL.Create(

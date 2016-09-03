@@ -13,21 +13,20 @@ public final class InvarMySQL extends InvarSQL {
         super(tableName, writable, fieldMap);
     }
 
-    public final StringBuilder buildInsert() {
+    public final String jdbcDriver() {
+        return "com.mysql.jdbc.Driver";
+    }
+
+    public StringBuilder buildInsert() {
         StringBuilder s = new StringBuilder(512);
         StringBuilder v = new StringBuilder(256);
         s.append("INSERT INTO ");
-        s.append('`');
-        s.append(tableName);
-        s.append('`');
-        s.append(' ');
-        s.append('(');
+        s.append('`').append(tableName).append('`');
+        s.append(' ').append('(');
         int len = super.writable.size();
         for (int i = 0; i < len; i++) {
             String field = super.writable.get(i);
-            s.append('`');
-            s.append(field);
-            s.append('`');
+            s.append('`').append(field).append('`');
             v.append('?');
             if (i < len - 1) {
                 s.append(',');
@@ -36,13 +35,23 @@ public final class InvarMySQL extends InvarSQL {
         }
         s.append(')');
         s.append(" VALUES ");
-        s.append('(');
-        s.append(v);
-        s.append(')');
+        s.append('(').append(v).append(')');
         return s;
     }
 
-    public final StringBuilder buildSelect(String where, String... fields) {
+    public StringBuilder buildSelect(String where, int pageNumber, int pageSize, String... fields) {
+        int offset = pageSize * (Math.max(0, pageNumber) - 1);
+        StringBuilder s = buildSelect(where, -1, fields);
+        s.append(" LIMIT ");
+        s.append(Math.max(1, pageSize));
+        if (offset >= 0) {
+            s.append(" OFFSET ");
+            s.append(Math.max(0, offset));
+        }
+        return s;
+    }
+
+    public StringBuilder buildSelect(String where, int limit, String... fields) {
         StringBuilder s = new StringBuilder(512);
         List<String> filtered = filterFields(fields);
         if (filtered == null || filtered.size() <= 0) {
@@ -53,29 +62,25 @@ public final class InvarMySQL extends InvarSQL {
         for (int i = 0; i < len; i++) {
             String field = filtered.get(i);
             String name = fieldMap.get(field);
-            s.append('`');
-            s.append(field);
-            s.append('`');
+            s.append('`').append(field).append('`');
             if (!name.equals(field)) {
                 s.append("AS");
-                s.append('`');
-                s.append(name);
-                s.append('`');
+                s.append('`').append(name).append('`');
             }
             if (i < len - 1) {
                 s.append(',');
             }
         }
         s.append(" FROM ");
-        s.append('`');
-        s.append(tableName);
-        s.append('`');
-        s.append(" WHERE ");
-        s.append(where);
+        s.append('`').append(tableName).append('`');
+        buildWhereClause(s, where);
+        if (limit > 0) {
+            s.append(" LIMIT ").append(limit);
+        }
         return s;
     }
 
-    public final StringBuilder buildUpdate(String where, String... fields) {
+    public StringBuilder buildUpdate(String where, String... fields) {
         StringBuilder s = new StringBuilder(512);
         List<String> filtered = filterFields(fields);
         if (filtered.size() <= 0) {
@@ -91,25 +96,27 @@ public final class InvarMySQL extends InvarSQL {
             return s;
         }
         s.append("UPDATE ");
-        s.append('`');
-        s.append(tableName);
-        s.append('`');
+        s.append('`').append(tableName).append('`');
         s.append(" SET ");
         int len = result.size();
         for (int i = 0; i < len; i++) {
             String field = result.get(i);
-            s.append('`');
-            s.append(field);
-            s.append('`');
-            s.append('=');
-            s.append('?');
+            s.append('`').append(field).append('`');
+            s.append('=').append('?');
             if (i < len - 1) {
                 s.append(',');
             }
         }
+        buildWhereClause(s, where);
+        return s;
+    }
+
+    private void buildWhereClause(StringBuilder s, String where) {
+        if (where == null || where.length() <= 0) {
+            return;
+        }
         s.append(" WHERE ");
         s.append(where);
-        return s;
     }
 
     private List<String> filterFields(String... fields) {

@@ -757,21 +757,11 @@
     (#tab)(#namer), ]]></template>
 
   <template key="sql.start.method"><![CDATA[
+    [#addImport(struct; imports; java.util::Map)]
+    [#addImport(struct; imports; java.util::LinkedHashMap)]
     (#tab)static public final class SQL {
     (#blank)
     (#tab)(#tab)static public final String TABLE = "(#table)";
-    (#blank)
-    (#tab)(#tab)static public StringBuilder buildInsert() {
-    (#tab)(#tab)(#tab)return getBuilder().buildInsert();
-    (#tab)(#tab)}
-    (#blank)
-    (#tab)(#tab)static public StringBuilder buildSelect(String where, String... fields) {
-    (#tab)(#tab)(#tab)return getBuilder().buildSelect(where, fields);
-    (#tab)(#tab)}
-    (#blank)
-    (#tab)(#tab)static public StringBuilder buildUpdate(String where, String... fields) {
-    (#tab)(#tab)(#tab)return getBuilder().buildUpdate(where, fields);
-    (#tab)(#tab)}
     (#blank)
     (#tab)(#tab)static public invar.InvarSQL getBuilder() {
     (#tab)(#tab)(#tab)if (builder == null) {
