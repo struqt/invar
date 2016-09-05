@@ -18,6 +18,7 @@ final public class Invar {
     static final String ARG_RULE_PATH = "rule";
     static final String ARG_XSD_PATH = "xsd";
     static final String ARG_JAVA_PATH = "java";
+    static final String ARG_TS_PATH = "ts";
     static final String ARG_FLASH_PATH = "flash";
     static final String ARG_CSHARP_PATH = "csharp";
     static final String ARG_CPP_PATH = "cpp";
@@ -41,6 +42,7 @@ final public class Invar {
         a.addDefault(ARG_PHP_PATH, "code/php/");
         a.addDefault(ARG_OBJC_PATH, "code/objc/");
         a.addDefault(ARG_PYTHON_PATH, "code/objc/");
+        a.addDefault(ARG_TS_PATH, "code/typescript/");
         a.parseArguments(args);
 
         if (a.has(ARG_HELP)) {
@@ -68,6 +70,10 @@ final public class Invar {
             if (a.has(ARG_JAVA_PATH)) {
                 log("");
                 new InvarWriteCode(ctx, a.get(ARG_JAVA_PATH), "java/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".java");
+            }
+            if (a.has(ARG_TS_PATH)) {
+                log("");
+                new InvarWriteCode(ctx, a.get(ARG_TS_PATH), "typescript/snippet.ts.xml", a.get(ARG_SNIPPET_PATH)).write(".ts");
             }
             if (a.has(ARG_OBJC_PATH)) {
                 log("");

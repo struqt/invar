@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:package
+  name="test.list"
+  xmlns:tns="http://struqt.com/invar/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://struqt.com/invar/1.0 http://struqt.com/xsd/invar-rule-1.0.xsd">
+
+  <!-- Database Schema -->
+
+  <struct name="SimpleList" nohotfix="true" doc="Struct with list fields">
+    <field name="number0"   type="Vec-Int8" doc="Field with int8 type"/>
+    <field name="number1"   type="Vec-Int16" doc="Field with int16 type"/>
+    <field name="number2"   type="Vec-Int32" doc="Field with int32 type"/>
+    <field name="number3"   type="Vec-Int64" doc="Field with int64 type"/>
+    <field name="number4"   type="Vec-Uint8" doc="Field with uint8 type"/>
+    <field name="number5"   type="Vec-Uint16" doc="Field with uint16 type"/>
+    <field name="number6"   type="Vec-Uint32" doc="Field with uint32 type"/>
+    <field name="number7"   type="Vec-Uint64" doc="Field with uint64 type"/>
+    <field name="number8"   type="Vec-Float" doc="Field with Float type"/>
+    <field name="number9"   type="Vec-Double" doc="Field with Double type"/>
+    <field name="boolValue" type="Vec-Bool" doc="Field with Boolean type"/>
+  </struct>
+
+  <struct name="NestedList" nohotfix="true" doc="Struct with list fields">
+    <field name="number0"   type="Vec-Vec-Int8" doc="Field with int8 type"/>
+    <field name="number1"   type="Vec-Vec-Int16" doc="Field with int16 type"/>
+    <field name="number2"   type="Vec-Vec-Int32" doc="Field with int32 type"/>
+    <field name="number3"   type="Vec-Vec-Int64" doc="Field with int64 type"/>
+    <field name="number4"   type="Vec-Vec-Uint8" doc="Field with uint8 type"/>
+    <field name="number5"   type="Vec-Vec-Uint16" doc="Field with uint16 type"/>
+    <field name="number6"   type="Vec-Vec-Uint32" doc="Field with uint32 type"/>
+    <field name="number7"   type="Vec-Vec-Uint64" doc="Field with uint64 type"/>
+    <field name="number8"   type="Vec-Vec-Float" doc="Field with Float type"/>
+    <field name="number9"   type="Vec-Vec-Double" doc="Field with Double type"/>
+    <field name="boolValue" type="Vec-Vec-Bool" doc="Field with Boolean type"/>
+  </struct>
+
+  <struct name="NestedList3D" nohotfix="true" doc="Struct with list fields">
+    <field name="number0"   type="Vec-Vec-Vec-Int8" doc="Field with int8 type"/>
+    <field name="number1"   type="Vec-Vec-Vec-Int16" doc="Field with int16 type"/>
+    <field name="number2"   type="Vec-Vec-Vec-Int32" doc="Field with int32 type"/>
+    <field name="number3"   type="Vec-Vec-Vec-Int64" doc="Field with int64 type"/>
+    <field name="number4"   type="Vec-Vec-Vec-Uint8" doc="Field with uint8 type"/>
+    <field name="number5"   type="Vec-Vec-Vec-Uint16" doc="Field with uint16 type"/>
+    <field name="number6"   type="Vec-Vec-Vec-Uint32" doc="Field with uint32 type"/>
+    <field name="number7"   type="Vec-Vec-Vec-Uint64" doc="Field with uint64 type"/>
+    <field name="number8"   type="Vec-Vec-Vec-Float" doc="Field with Float type"/>
+    <field name="number9"   type="Vec-Vec-Vec-Double" doc="Field with Double type"/>
+    <field name="boolValue" type="Vec-Vec-Vec-Bool" doc="Field with Boolean type"/>
+  </struct>
+
+
+</tns:package>

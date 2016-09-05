@@ -1,10 +1,9 @@
 package test.cases;
 
-
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import test.sql.NumbersRecord;
+import test.sql.SimpleRecord;
 
 import java.io.IOException;
 
@@ -17,9 +16,9 @@ public class TestInvarSQL {
 
     @Test
     public void test_001_() throws IOException {
-        print(NumbersRecord.SQL.getBuilder().buildInsert());
-        print(NumbersRecord.SQL.getBuilder().buildUpdate(null));
-        print(NumbersRecord.SQL.getBuilder().buildSelect(null, 300));
-        print(NumbersRecord.SQL.getBuilder().buildSelect(null, 1, 20));
+        print(SimpleRecord.SQL.getBuilder().buildInsert());
+        print(SimpleRecord.SQL.getBuilder().buildUpdate(null));
+        print(SimpleRecord.SQL.getBuilder().buildSelect(null, 300));
+        print(SimpleRecord.SQL.getBuilder().buildSelect(null, 1, 20));
     }
 }

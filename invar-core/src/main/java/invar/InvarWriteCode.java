@@ -10,6 +10,7 @@ import invar.InvarSnippet.Token;
 import invar.model.*;
 import invar.model.InvarType.TypeID;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -434,6 +435,16 @@ public final class InvarWriteCode extends InvarWrite {
         addExportFile(fileDir, fileName, s);
     }
 
+    @Override
+    protected void codeManifest(Set<File> files) {
+        /*
+        int offset = dirRoot.getAbsolutePath().length() + 1;
+        for (File f : files) {
+            String path = f.getAbsolutePath().substring(offset);
+            log(path);
+        } //*/
+    }
+
     protected String makeDocLine(String comment) {
         if (comment == null || comment.equals(empty))
             return empty;
@@ -533,7 +544,7 @@ public final class InvarWriteCode extends InvarWrite {
         s = funcEvalAll(s, args);
         s = replace(s, Token.Debug, type.getCodecRule());
         if (type.getProtoc() != null) {
-            Integer id = 0;
+            Integer id;
             if (type.getProtoc().getClient() == type) {
                 id = type.getProtoc().getClientId();
             } else if (type.getProtoc().getServer() == type) {
@@ -1163,7 +1174,7 @@ public final class InvarWriteCode extends InvarWrite {
         private String makeCodeMethod(List<String> lines, TypeStruct type, String snippet) {
             String returnType = uniqueTypeName && type.getConflict(context) ? type.getUniqueName() : type.getName();
             String sNum = snippetTryGet(prefix + "indent.num", null);
-            Integer iNum = 0;
+            Integer iNum;
             if (sNum != null) {
                 iNum = Math.max(0, Integer.parseInt(sNum));
             } else {
@@ -1431,7 +1442,9 @@ public final class InvarWriteCode extends InvarWrite {
             s = replace(s, Token.RuleRight, ruleRight(p.rule));
             s = replace(s, Token.Name, p.name);
             s = replace(s, Token.NameReal, p.nameReal);
-            s = replace(s, Token.Value, pv.name);
+            if (pv != null) {
+                s = replace(s, Token.Value, pv.name);
+            }
             if (pk != null) {
                 s = replace(s, Token.Key, pk.name);
             }

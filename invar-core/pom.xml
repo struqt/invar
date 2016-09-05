@@ -63,6 +63,8 @@
             <argument>${project.basedir}/src/test/resources/rule/</argument>
             <argument>-java</argument>
             <argument>${project.basedir}/target/generated-test-sources/java</argument>
+            <argument>-ts</argument>
+            <argument>${project.basedir}/target/generated-test-sources/typescript/src</argument>
           </arguments>
         </configuration>
       </plugin>

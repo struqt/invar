@@ -20,6 +20,8 @@ abstract public class InvarWrite {
 
     abstract void codeRuntime(String suffix);
 
+    abstract void codeManifest(Set<File> files);
+
     abstract Boolean beforeWrite(InvarContext ctx);
 
     abstract String codeOneFile(String packName, String filePath, List<TypeEnum> enums, List<TypeStruct> structs);
@@ -39,7 +41,7 @@ abstract public class InvarWrite {
     final private HashMap<String, InvarType> typeForShort;
     final private String dirRootPath;
 
-    private File dirRoot;
+    File dirRoot;
 
     String dirPrefix = empty;
     Boolean traceAllTypes = false;
@@ -178,6 +180,7 @@ abstract public class InvarWrite {
             }
         } // while (i.hasNext())
         codeRuntime(suffix);
+        codeManifest(files.keySet());
         writeFiles(files);
     }
 
@@ -186,10 +189,12 @@ abstract public class InvarWrite {
     }
 
     final protected void log(Object txt) {
+        System.out.print("| ");
         System.out.println(txt);
     }
 
     final protected void logErr(Object txt) {
+        System.out.print("! ");
         System.out.println("error X---------> " + txt);
     }
 
