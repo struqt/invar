@@ -37,6 +37,7 @@
   <template key="one.pack.one.file">   <![CDATA[ true  ]]></template>
   <template key="pack.name.nested">    <![CDATA[ false ]]></template>
   <template key="file.name.lowercase"> <![CDATA[ true  ]]></template>
+  <template key="file.name.no.suffix"> <![CDATA[ true  ]]></template>
   <template key="include.self">        <![CDATA[ false ]]></template>
   <template key="code.dir.flatten">    <![CDATA[ true  ]]></template>
   <template key="no.generic.type">     <![CDATA[ false ]]></template>
@@ -193,11 +194,11 @@
     <![CDATA[ Encoding.UTF8.GetString((#arg).ReadBytes((#arg).ReadInt32())) ]]></template>
   <template key="read.enum">
     <![CDATA[ ((#type))Enum.ToObject(typeof((#type)), (#arg).ReadInt32()) ]]></template>
-  <template key="read.struct"><![CDATA[ (#name).Read((#arg)) ]]></template>
+  <template key="read.struct"><![CDATA[ (#name).read((#arg)) ]]></template>
   <template key="read.nest.n|read.nest.k|read.nest.v">
     <![CDATA[ let (#name): (#type) = (#body) ]]></template>
   <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
-    (#type) (#name) = new (#type)();
+    let (#name): (#type) = new (#type)();
     (#body);
   ]]></template>
   <template key="read.vec.head">

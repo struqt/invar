@@ -50,6 +50,7 @@ abstract public class InvarWrite {
     Boolean flattenCodeDir = false;
     Boolean onePackOneFile = false;
     Boolean lowerFileName = false;
+    Boolean fileNameNoSuffix = false;
     Boolean packNameNested = false;
     Boolean packHeadPrefix = false;
     Boolean useFullName = false;
@@ -96,8 +97,7 @@ abstract public class InvarWrite {
                 makeFlattenDirs();
             else
                 makePackageDirs();
-
-            resetCodePaths(merge, suffix);
+            resetCodePaths(merge, fileNameNoSuffix ? empty : suffix);
             startWriting(suffix);
         }
     }

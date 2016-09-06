@@ -209,6 +209,7 @@ public final class InvarWriteCode extends InvarWrite {
         impExcludePacks = Arrays.asList(snippetTryGet("import.exclude.packs").trim().split(","));
         dirPrefix = (snippetTryGet("code.dir.prefix"));
         lowerFileName = (Boolean.parseBoolean(snippetTryGet("file.name.lowercase")));
+        fileNameNoSuffix = (Boolean.parseBoolean(snippetTryGet("file.name.no.suffix")));
         onePackOneFile = (Boolean.parseBoolean(snippetTryGet("one.pack.one.file")));
         flattenCodeDir = (Boolean.parseBoolean(snippetTryGet("code.dir.flatten")));
         flattenCodeSplit = snippetTryGet("code.flatten.split");
