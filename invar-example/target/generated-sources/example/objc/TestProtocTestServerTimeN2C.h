@@ -7,11 +7,11 @@
 #ifndef TESTPROTOCTESTSERVERTIMEN2C_H_
 #define TESTPROTOCTESTSERVERTIMEN2C_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "TestProtocProtoc2C.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestProtocProtoc2C.h"
 
 /* 服务器通知客户端 */
 @interface TestServerTimeN2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocNotify>

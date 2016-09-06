@@ -7,12 +7,12 @@
 #ifndef TESTXYZTESTNEST_H_
 #define TESTXYZTESTNEST_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
-#import "TestAbcCustom.h"
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestAbcCustom.h"
 
 /* 测试泛型相互嵌套 */
 @interface TestNest : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

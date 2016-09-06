@@ -7,13 +7,13 @@
 #ifndef TESTXYZTESTLIST_H_
 #define TESTXYZTESTLIST_H_
 
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSArray.h>
-#import "TestAbcGender.h"
-#import "TestAbcCustom.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import "InvarProtoc.h"
+#import "TestAbcCustom.h"
+#import "TestAbcGender.h"
 
 /* 测试基本的列表类型 */
 @interface TestList : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

@@ -7,10 +7,10 @@
 #ifndef TESTXYZCONFLICT_H_
 #define TESTXYZCONFLICT_H_
 
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import "InvarProtoc.h"
 
 /*  */

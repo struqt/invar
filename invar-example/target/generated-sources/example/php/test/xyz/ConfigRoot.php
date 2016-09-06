@@ -7,12 +7,12 @@
 
 namespace test\xyz;
 
-require_once dirname(__FILE__) . '/../../test/xyz/TestNest.php';
-require_once dirname(__FILE__) . '/../../test/xyz/TestList.php';
-require_once dirname(__FILE__) . '/../../test/xyz/TestDict.php';
-require_once dirname(__FILE__) . '/../../test/xyz/InfoX.php';
-require_once dirname(__FILE__) . '/../../test/abc/Info.php';
 require_once dirname(__FILE__) . '/../../invar/invar.codec.php';
+require_once dirname(__FILE__) . '/../../test/abc/Info.php';
+require_once dirname(__FILE__) . '/../../test/xyz/InfoX.php';
+require_once dirname(__FILE__) . '/../../test/xyz/TestDict.php';
+require_once dirname(__FILE__) . '/../../test/xyz/TestList.php';
+require_once dirname(__FILE__) . '/../../test/xyz/TestNest.php';
 
 use \invar\BinaryReader;
 use \invar\BinaryWriter;

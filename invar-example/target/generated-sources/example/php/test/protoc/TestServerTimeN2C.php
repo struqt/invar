@@ -7,8 +7,8 @@
 
 namespace test\protoc;
 
-require_once dirname(__FILE__) . '/../../test/protoc/Protoc2C.php';
 require_once dirname(__FILE__) . '/../../invar/invar.codec.php';
+require_once dirname(__FILE__) . '/../../test/protoc/Protoc2C.php';
 
 use \invar\BinaryReader;
 use \invar\BinaryWriter;

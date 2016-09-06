@@ -7,10 +7,10 @@
 
 namespace test\abc;
 
-require_once dirname(__FILE__) . '/../../test/xyz/Conflict.php';
-require_once dirname(__FILE__) . '/../../test/abc/Gender.php';
-require_once dirname(__FILE__) . '/../../test/abc/Conflict.php';
 require_once dirname(__FILE__) . '/../../invar/invar.codec.php';
+require_once dirname(__FILE__) . '/../../test/abc/Conflict.php';
+require_once dirname(__FILE__) . '/../../test/abc/Gender.php';
+require_once dirname(__FILE__) . '/../../test/xyz/Conflict.php';
 
 use \invar\BinaryReader;
 use \invar\BinaryWriter;

@@ -7,11 +7,11 @@
 #ifndef TESTABCTESTBASIC_H_
 #define TESTABCTESTBASIC_H_
 
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSObject.h>
-#import "TestAbcGender.h"
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import "InvarProtoc.h"
+#import "TestAbcGender.h"
 
 /* 基础类型 */
 @interface TestBasic : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

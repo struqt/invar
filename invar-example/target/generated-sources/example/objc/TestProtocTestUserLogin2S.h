@@ -7,11 +7,11 @@
 #ifndef TESTPROTOCTESTUSERLOGIN2S_H_
 #define TESTPROTOCTESTUSERLOGIN2S_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "TestProtocProtoc2S.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestProtocProtoc2S.h"
 
 /* 客户端请求,服务端响应 */
 @interface TestUserLogin2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocRequest>

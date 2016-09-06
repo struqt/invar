@@ -7,12 +7,12 @@
 #ifndef TESTABCCONFLICT_H_
 #define TESTABCCONFLICT_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
-#import "TestAbcGender.h"
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestAbcGender.h"
 
 /* 名字冲突的类型 */
 @interface TestAbcConflict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

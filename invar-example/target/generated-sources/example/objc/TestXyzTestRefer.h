@@ -7,14 +7,14 @@
 #ifndef TESTXYZTESTREFER_H_
 #define TESTXYZTESTREFER_H_
 
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
-#import "TestAbcGender.h"
-#import "TestAbcCustom.h"
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import "InvarProtoc.h"
+#import "TestAbcCustom.h"
+#import "TestAbcGender.h"
 
 /* 引用类型测试 */
 @interface TestRefer : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

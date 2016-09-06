@@ -7,8 +7,8 @@
 
 namespace test\xyz;
 
-require_once dirname(__FILE__) . '/../../test/abc/Custom.php';
 require_once dirname(__FILE__) . '/../../invar/invar.codec.php';
+require_once dirname(__FILE__) . '/../../test/abc/Custom.php';
 
 use \invar\BinaryReader;
 use \invar\BinaryWriter;

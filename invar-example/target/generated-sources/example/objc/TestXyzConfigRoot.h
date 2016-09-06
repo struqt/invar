@@ -7,15 +7,15 @@
 #ifndef TESTXYZCONFIGROOT_H_
 #define TESTXYZCONFIGROOT_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "TestXyzTestNest.h"
-#import "TestXyzTestList.h"
-#import "TestXyzTestDict.h"
-#import "TestXyzInfoX.h"
-#import "TestAbcInfo.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestAbcInfo.h"
+#import "TestXyzInfoX.h"
+#import "TestXyzTestDict.h"
+#import "TestXyzTestList.h"
+#import "TestXyzTestNest.h"
 
 /*  */
 @interface ConfigRoot : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

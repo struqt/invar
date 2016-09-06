@@ -7,14 +7,14 @@
 #ifndef TESTABCCUSTOM_H_
 #define TESTABCCUSTOM_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSArray.h>
-#import "TestXyzConflict.h"
-#import "TestAbcTestBasic.h"
-#import "TestAbcGender.h"
-#import "TestAbcConflict.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestAbcConflict.h"
+#import "TestAbcGender.h"
+#import "TestAbcTestBasic.h"
+#import "TestXyzConflict.h"
 
 /* 自定义类型 */
 @interface Custom : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

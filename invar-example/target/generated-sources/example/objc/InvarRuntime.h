@@ -7,12 +7,12 @@
 #ifndef INVARRUNTIME_H_
 #define INVARRUNTIME_H_
 
-#import "TestProtocTestUserLoginR2C.h"
-#import "TestProtocTestUserLogin2S.h"
-#import "TestProtocTestUserLocationN2S.h"
-#import "TestProtocTestServerTimeN2C.h"
-#import "TestProtocTestHeartBeatR2S.h"
 #import "TestProtocTestHeartBeat2C.h"
+#import "TestProtocTestHeartBeatR2S.h"
+#import "TestProtocTestServerTimeN2C.h"
+#import "TestProtocTestUserLocationN2S.h"
+#import "TestProtocTestUserLogin2S.h"
+#import "TestProtocTestUserLoginR2C.h"
 
 typedef void (^RecvRequest)(id req, id resp);
 typedef void (^RecvResponse)(id resp);

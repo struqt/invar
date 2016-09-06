@@ -7,15 +7,15 @@
 #ifndef TESTXYZINFOX_H_
 #define TESTXYZINFOX_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
-#import "TestXyzConflict.h"
-#import "TestAbcInfo.h"
-#import "TestAbcGender.h"
-#import "TestAbcConflict.h"
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestAbcConflict.h"
+#import "TestAbcGender.h"
+#import "TestAbcInfo.h"
+#import "TestXyzConflict.h"
 
 /* Complex data structure */
 @interface InfoX : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

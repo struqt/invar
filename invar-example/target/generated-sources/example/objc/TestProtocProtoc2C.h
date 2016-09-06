@@ -7,9 +7,9 @@
 #ifndef TESTPROTOCPROTOC2C_H_
 #define TESTPROTOCPROTOC2C_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
 
 /* 服务端响应的公共数据 */

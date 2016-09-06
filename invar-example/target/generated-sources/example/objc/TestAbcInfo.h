@@ -7,15 +7,15 @@
 #ifndef TESTABCINFO_H_
 #define TESTABCINFO_H_
 
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
-#import "TestXyzConflict.h"
-#import "TestAbcGender.h"
-#import "TestAbcConflict.h"
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import "InvarProtoc.h"
+#import "TestAbcConflict.h"
+#import "TestAbcGender.h"
+#import "TestXyzConflict.h"
 
 /* Test comments */
 @interface Info : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>

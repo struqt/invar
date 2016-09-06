@@ -8,12 +8,12 @@
 #error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag
 #endif //*/
 
-#import "TestProtocTestUserLoginR2C.h"
-#import "TestProtocTestUserLogin2S.h"
-#import "TestProtocTestUserLocationN2S.h"
-#import "TestProtocTestServerTimeN2C.h"
-#import "TestProtocTestHeartBeatR2S.h"
 #import "TestProtocTestHeartBeat2C.h"
+#import "TestProtocTestHeartBeatR2S.h"
+#import "TestProtocTestServerTimeN2C.h"
+#import "TestProtocTestUserLocationN2S.h"
+#import "TestProtocTestUserLogin2S.h"
+#import "TestProtocTestUserLoginR2C.h"
 #import "InvarRuntime.h"
 
 @implementation InvarRuntime

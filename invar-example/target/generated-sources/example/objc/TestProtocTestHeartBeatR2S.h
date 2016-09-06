@@ -7,11 +7,11 @@
 #ifndef TESTPROTOCTESTHEARTBEATR2S_H_
 #define TESTPROTOCTESTHEARTBEATR2S_H_
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "TestProtocProtoc2S.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 #import "InvarProtoc.h"
+#import "TestProtocProtoc2S.h"
 
 /* 服务端请求,客户端响应 */
 @interface TestHeartBeatR2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocResponse>

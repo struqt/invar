@@ -7,12 +7,12 @@
 #ifndef TESTPROTOCTESTUSERLOCATIONN2S_H_
 #define TESTPROTOCTESTUSERLOCATIONN2S_H_
 
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "TestProtocProtoc2S.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import "InvarProtoc.h"
+#import "TestProtocProtoc2S.h"
 
 /* 客户端通知服务端 */
 @interface TestUserLocationN2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocNotify>

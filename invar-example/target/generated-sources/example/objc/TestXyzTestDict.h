@@ -7,13 +7,13 @@
 #ifndef TESTXYZTESTDICT_H_
 #define TESTXYZTESTDICT_H_
 
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
-#import "TestAbcGender.h"
-#import "TestAbcCustom.h"
+#import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import "InvarProtoc.h"
+#import "TestAbcCustom.h"
+#import "TestAbcGender.h"
 
 /* 测试基本的映射类型 */
 @interface TestDict : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON>
