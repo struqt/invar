@@ -230,8 +230,10 @@ final public class InvarSnippet {
         final static public String FILE_HEAD = "file.head";
         final static public String FILE_PACK = "file.pack";
         final static public String FILE_PACK_SPLIT = "file.pack.split";
+        final static public String FILE_TYPE_SPLIT = "file.type.split";
         final static public String FILE_BODY = "file.body";
         final static public String FILE_INCLUDE = "file.include";
+        final static public String FILE_INCLUDE_WRAP = "file.include.wrap";
 
         final static public String DOC = "doc";
         final static public String DOC_LINE = "doc.line";
@@ -316,6 +318,7 @@ final public class InvarSnippet {
         final static String Mark = wrapToken("mark");
         final static String Specifier = wrapToken("spec");
         final static String SpecUpper = wrapToken("specupper");
+        final static String Module = wrapToken("module");
         final static String Name = wrapToken("name");
         final static String NameUpper = wrapToken("nameupper");
         final static String NameUpper2 = wrapToken("nameupper2");

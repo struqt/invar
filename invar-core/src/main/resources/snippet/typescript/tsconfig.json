@@ -1,6 +1,8 @@
 {
     "files": [
         "invar.codec.ts",
+        "invar.types.ts",
+        "invar.dict.ts",
         "main.ts"
     ],
     "compilerOptions": {

@@ -1,9 +1,11 @@
 
-import { Invar } from "./invar.codec"
+import { InvarCodec } from "./invar.codec"
+import { InvarTypes } from "./invar.types"
+import { InvarDict } from "./invar.dict"
 
 function hello() {
     var data: DataView = new DataView(new ArrayBuffer(90))
-    var w: Invar.BinaryWriter = new Invar.BinaryWriter(data)
+    var w: InvarCodec.BinaryWriter = new InvarCodec.BinaryWriter(data)
     w.writeInt08(1);
     w.writeInt16(2);
     w.writeInt32(3);
@@ -25,7 +27,7 @@ function hello() {
     console.log(w.available())
 
     //////
-    var r: Invar.BinaryReader = new Invar.BinaryReader(data)
+    var r: InvarCodec.BinaryReader = new InvarCodec.BinaryReader(data)
     console.log('+-------------------------')
     console.log('| ' + r.readInt08())
     console.log('| ' + r.readInt16())

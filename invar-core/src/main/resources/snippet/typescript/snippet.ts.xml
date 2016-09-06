@@ -7,50 +7,61 @@
 
   <export resPath="typescript/invar.codec.ts" destDir="." destName="invar.codec.ts"/>
   <export resPath="typescript/invar.types.ts" destDir="." destName="invar.types.ts"/>
+  <export resPath="typescript/invar.dict.ts" destDir="." destName="invar.dict.ts"/>
 
   <!-- Redefine 14 Invar buildin types to adapt TypeScript language -->
   <redefine>
-    <int8 pack="  " type="Invar.Int08   " initValue="-1"/>
-    <int16 pack=" " type="Invar.Int16   " initValue="-1"/>
-    <int32 pack=" " type="Invar.Int32   " initValue="-1"/>
-    <int64 pack=" " type="Invar.Int64   " initValue="00"/>
-    <uint8 pack=" " type="Invar.Uint08  " initValue="0"/>
-    <uint16 pack="" type="Invar.Uint16  " initValue="0"/>
-    <uint32 pack="" type="Invar.Uint32  " initValue="0"/>
-    <uint64 pack="" type="Invar.Uint64  " initValue="00"/>
-    <float pack=" " type="Invar.Float32 " initValue="0.0"/>
-    <double pack="" type="Invar.Float64 " initValue="0.00"/>
+    <int8 pack="  Invar.Types" type="Int08   " include="Invar.Types" initValue="-1"/>
+    <int16 pack=" Invar.Types" type="Int16   " include="Invar.Types" initValue="-1"/>
+    <int32 pack=" Invar.Types" type="Int32   " include="Invar.Types" initValue="-1"/>
+    <int64 pack=" Invar.Types" type="Int64   " include="Invar.Types" initValue="00"/>
+    <uint8 pack=" Invar.Types" type="Uint08  " include="Invar.Types" initValue="0"/>
+    <uint16 pack="Invar.Types" type="Uint16  " include="Invar.Types" initValue="0"/>
+    <uint32 pack="Invar.Types" type="Uint32  " include="Invar.Types" initValue="0"/>
+    <uint64 pack="Invar.Types" type="Uint64  " include="Invar.Types" initValue="00"/>
+    <float pack=" Invar.Types" type="Float32 " include="Invar.Types" initValue="0.0"/>
+    <double pack="Invar.Types" type="Float64 " include="Invar.Types" initValue="0.00"/>
     <string pack="" type="string " initValue=""/>
     <bool pack="  " type="boolean" initValue="false"/>
     <vec pack="   " type="Array  " initValue="" generic="&lt;?&gt;"/>
     <map pack="   " type="Object " initValue="" generic="&lt;?,?&gt;"/>
+
+    <dialect pack="Invar.Codec" type="BinaryWriter" include="Invar.Codec" />
+    <dialect pack="Invar.Codec" type="BinaryReader" include="Invar.Codec" />
+
   </redefine>
 
   <!-- Settings -->
   <template key="trace.all.types">     <![CDATA[ false ]]></template>
-  <template key="unique.type.name">    <![CDATA[ true  ]]></template>
   <template key="capitalize.pack.head"><![CDATA[ true  ]]></template>
   <template key="one.pack.one.file">   <![CDATA[ true  ]]></template>
   <template key="pack.name.nested">    <![CDATA[ false ]]></template>
   <template key="file.name.lowercase"> <![CDATA[ true  ]]></template>
   <template key="include.self">        <![CDATA[ false ]]></template>
   <template key="code.dir.flatten">    <![CDATA[ true  ]]></template>
-  <template key="file.name.lowercase"> <![CDATA[ false ]]></template>
   <template key="no.generic.type">     <![CDATA[ false ]]></template>
+  <template key="use.full.type.name">  <![CDATA[ true  ]]></template>
   <template key="method.indent.num">   <![CDATA[ 1     ]]></template>
   <template key="code.dir.prefix">     <![CDATA[  ]]></template>
   <template key="import.exclude.same.pack"><![CDATA[ false ]]></template>
   <template key="import.exclude.conflict"> <![CDATA[ false  ]]></template>
 
   <!-- Common snippet -->
+  <template key="file.include">     <![CDATA[ import { (#module) } from (#name)(#brk) ]]></template>
+  <template key="file.include.wrap"><![CDATA[ "./(#value)" ]]></template>
+  <template key="file.pack.split">  <![CDATA[   ]]></template>
+  <template key="file.type.split">  <![CDATA[ . ]]></template>
+
+  <!--
   <template key="import">      <![CDATA[ (#body)(#brk) ]]></template>
-  <template key="import.body"> <![CDATA[ from (#pack) import (#name) ]]></template>
+  <template key="import.body"> <![CDATA[ let (#name) = (#module).(#name) ]]></template>
   <template key="import.split"><![CDATA[ ]]></template>
+  -->
 
   <template key="init.any">    <![CDATA[ (#deft)         ]]></template>
   <template key="init.string"> <![CDATA[ '(#deft)'       ]]></template>
-  <template key="init.int64">  <![CDATA[ new Invar.Int64('(#deft)')  ]]></template>
-  <template key="init.uint64"> <![CDATA[ new Invar.Uint64('(#deft)') ]]></template>
+  <template key="init.int64">  <![CDATA[ new InvarTypes.Int64('(#deft)')  ]]></template>
+  <template key="init.uint64"> <![CDATA[ new InvarTypes.Uint64('(#deft)') ]]></template>
   <template key="init.enum">   <![CDATA[ (#type).(#name) ]]></template>
   <template key="init.struct"> <![CDATA[ (#type)()       ]]></template>
   <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
@@ -61,13 +72,16 @@
   <template key="pointer.invoke"><![CDATA[ ?-> ]]></template>
   <template key="pointer.copy">  <![CDATA[ (#name) = (#arg) ]]></template>
 
-  <template key="refer.spec">    <![CDATA[&]]></template>
-  <template key="refer.invoke">  <![CDATA[.]]></template>
-  <template key="refer.copy">    <![CDATA[(#name) = (#arg) ]]></template>
-  <template key="refer.const">   <![CDATA[const]]></template>
+  <template key="refer.spec">    <![CDATA[ & ]]></template>
+  <template key="refer.invoke">  <![CDATA[ . ]]></template>
+  <template key="refer.copy">    <![CDATA[ (#name) = (#arg) ]]></template>
+  <template key="refer.const">   <![CDATA[ const ]]></template>
 
   <template key="byte.yes">      <![CDATA[ 0x01 ]]></template>
   <template key="byte.non">      <![CDATA[ 0x00 ]]></template>
+
+  <template key="doc">     <![CDATA[ /* (#doc) */ ]]></template>
+  <template key="doc.line"><![CDATA[ // (#doc). ]]></template>
 
   <template key="file.head"><![CDATA[
 	/*===--------------------------*  TypeScript  *----------------------------===//
@@ -78,16 +92,14 @@
   ]]></template>
   <template key="file"><![CDATA[
     (#head)
-    import { Invar } from "./invar.codec"
     (#pack) ]]></template>
   <template key="file.pack"><![CDATA[
     (#includes)
     export module (#name) {
+    (#import)
     (#body)} ]]></template>
   <template key="file.body"><![CDATA[
     (#enums)(#structs)]]></template>
-  <template key="doc"><![CDATA[ /* (#doc) */ ]]></template>
-  <template key="doc.line"><![CDATA[ // (#doc). ]]></template>
 
   <template key="enum"><![CDATA[
     #from enum import Enum, unique
@@ -107,6 +119,8 @@
   <template key="struct.protoc.resp"><![CDATA[ (#brk), Invar.ProtocResponse ]]></template>
   <template key="struct.const.name.crc"><![CDATA[ (#type).CRC32 ]]></template>
   <template key="struct"><![CDATA[
+    [#addImport(struct; imports; Invar.Codec::BinaryReader)]
+    [#addImport(struct; imports; Invar.Codec::BinaryWriter)]
     (#doc)
     export class (#name) {
     (#blank)
@@ -162,16 +176,16 @@
     <![CDATA[ System.IO::BinaryReader,System.Text::Encoding,System::Enum ]]></template>
   <template key="read.method.arg"><![CDATA[ r ]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public read(r :Invar.BinaryReader): void {(#body)
+    (#tab)public read(r :InvarCodec.BinaryReader): void {(#body)
     (#tab)} /* (#type)::read(...) */ ]]></template>
   <template key="read.int8">  <![CDATA[ (#arg).readInt08()   ]]></template>
   <template key="read.int16"> <![CDATA[ (#arg).readInt16()   ]]></template>
   <template key="read.int32"> <![CDATA[ (#arg).readInt32()   ]]></template>
-  <template key="read.int64"> <![CDATA[ new Invar.Int64((#arg).readInt64()) ]]></template>
+  <template key="read.int64"> <![CDATA[ new InvarTypes.Int64((#arg).readInt64()) ]]></template>
   <template key="read.uint8"> <![CDATA[ (#arg).readUint08()  ]]></template>
   <template key="read.uint16"><![CDATA[ (#arg).readUint16()  ]]></template>
   <template key="read.uint32"><![CDATA[ (#arg).readUint32()  ]]></template>
-  <template key="read.uint64"><![CDATA[ new Invar.Uint64((#arg).readUint64()) ]]></template>
+  <template key="read.uint64"><![CDATA[ new InvarTypes.Uint64((#arg).readUint64()) ]]></template>
   <template key="read.float"> <![CDATA[ (#arg).readFloat32() ]]></template>
   <template key="read.double"><![CDATA[ (#arg).readFloat64() ]]></template>
   <template key="read.bool">  <![CDATA[ (#arg).readBoolean() ]]></template>

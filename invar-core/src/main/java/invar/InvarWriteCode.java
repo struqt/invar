@@ -318,15 +318,24 @@ public final class InvarWriteCode extends InvarWrite {
             ++i;
         }
         StringBuilder includes = new StringBuilder();
-        Iterator<String> iter = fileIncludes.descendingIterator();
-        while (iter.hasNext()) {
-            String inc = iter.next();
+        for (String inc : fileIncludes) {
             String s = snippetTryGet(Key.FILE_INCLUDE);
             if (s.equals(empty))
                 continue;
             if (inc.equals(empty))
                 continue;
+            String m = packNameToModuleName(inc);
+            if (lowerFileName) {
+                inc = inc.toLowerCase();
+            }
+            if (!inc.startsWith("<")) {
+                String wrap = snippetTryGet(Key.FILE_INCLUDE_WRAP, empty);
+                if (!empty.equals(wrap)) {
+                    inc = replace(wrap, Token.Value, inc);
+                }
+            }
             s = replace(s, Token.Name, inc);
+            s = replace(s, Token.Module, m);
             s = replace(s, Token.NameUpper, relatives);
             includes.append(s);
         }
@@ -506,7 +515,7 @@ public final class InvarWriteCode extends InvarWrite {
                     f.setDefault(deft);
                 }
             }
-            makeTypeFormatted(getContext(), f, snippetGet(Key.IMPORT_SPLIT), useFullName, packHeadPrefix);
+            makeTypeFormatted(getContext(), f, useFullName, packHeadPrefix);
             f.setDeftFormatted(makeStructFieldInit(f, false));
 
             if (f.getDeftFormatted().length() > widthDeft)
@@ -865,6 +874,7 @@ public final class InvarWriteCode extends InvarWrite {
                     if (pName.equals(empty))
                         split = empty;
                     body = replace(body, Token.Name, split + names[1]);
+                    body = replace(body, Token.Module, pName);
                 }
                 if (body.equals(empty))
                     continue;
@@ -880,7 +890,16 @@ public final class InvarWriteCode extends InvarWrite {
         }
     }
 
-    private String makeTypeFormatted(InvarContext ctx, InvarField f, String split, Boolean fullName, Boolean head) {
+    private String packNameToModuleName(String pack) {
+        if (pack == null || pack.length() <= 0) {
+            return empty;
+        }
+        return pack.replace(".", empty);
+    }
+
+    private String makeTypeFormatted(InvarContext ctx, InvarField f, Boolean fullName, Boolean head) {
+        String split = snippetTryGet(Key.IMPORT_SPLIT, null);
+        String splitType = snippetTryGet(Key.FILE_TYPE_SPLIT, null);
         InvarType t = f.getType().getRedirect();
         String tName = t.getName();
         boolean conflict = t.getConflict(ctx);
@@ -888,17 +907,17 @@ public final class InvarWriteCode extends InvarWrite {
             if (uniqueTypeName && t.getConflict(ctx)) {
                 tName = getUniqueTypeName(t);
             } else {
-                tName = t.fullName(split);
+                tName = t.fullName(split, splitType);
             }
         } else {
             if (fullName) {
-                tName = t.fullName(split);
+                tName = t.fullName(split, splitType);
                 if (head) {
                     tName = split + tName;
                 }
             }
         }
-        return f.makeTypeFormatted(ctx, split, fullName, tName, noGenericType);
+        return f.makeTypeFormatted(ctx, split, splitType, fullName, tName, noGenericType);
     }
 
     private String getUniqueTypeName(InvarType t) {
@@ -915,15 +934,13 @@ public final class InvarWriteCode extends InvarWrite {
     void impsCheckAdd(TreeSet<String> imps, InvarType t, TypeStruct struct, boolean forcedInclude) {
         String include = t.getCodePath();
         if (include != null && !include.equals(empty)) {
-            if (lowerFileName)
-                include = include.toLowerCase();
-
             String s = include;
+            /*
             if (!s.startsWith("<")) {
                 //if (t.getRealId() == TypeID.STRUCT || t.getRealId() == TypeID.DIALECT || t.getRealId() == TypeID.ENUM) {
-                s = snippetTryGet(Key.FILE_INCLUDE + ".wrap", include);
+                s = snippetTryGet(Key.FILE_INCLUDE_WRAP, include);
                 s = replace(s, Token.Value, include);
-            }
+            }//*/
             if (includeSelf) {
                 if (t == struct)
                     fileIncludes.add(s);
@@ -950,7 +967,8 @@ public final class InvarWriteCode extends InvarWrite {
         }
         //String packName = t.getPack().getName();
         //String typeName = t.getName();
-        String packName = uniqueTypeName ? t.getCodeName() : t.getPack().getName(); //FIXME uniqueTypeName is not a good condition
+        //FIXME uniqueTypeName is not a good condition
+        String packName = uniqueTypeName ? t.getCodeName() : t.getPack().getName();
         String typeName = uniqueTypeName && t.getConflict(context) ? t.getUniqueName() : t.getName();
         String rule = packName + ruleTypeSplit + typeName;
         imps.add(rule);
@@ -993,11 +1011,10 @@ public final class InvarWriteCode extends InvarWrite {
     static private Boolean genericOverride = false; //For C++ template ">>" issue in GCC
 
     static private String createRule(InvarField f, InvarContext ctx, Boolean useFullName) {
-        String split = ruleTypeSplit;
         InvarType typeBasic = f.getType().getRedirect();
         if (f.getGenerics().size() == 0) {
             if (ctx.findTypes(typeBasic.getName()).size() > 1 || useFullName)
-                return typeBasic.fullName(split);
+                return typeBasic.fullName(rulePackSplit, ruleTypeSplit);
             else
                 return typeBasic.getName();
         }
@@ -1009,13 +1026,13 @@ public final class InvarWriteCode extends InvarWrite {
                 forShort = t.getName();
             else {
                 if (t.getConflict(ctx) || useFullName)
-                    forShort = t.fullName(split);
+                    forShort = t.fullName(rulePackSplit, ruleTypeSplit);
                 else
                     forShort = t.getName();
             }
             s = s.replaceFirst("\\?", forShort + getGenericOverride(t));
         }
-        String rule = useFullName ? typeBasic.fullName(split) : typeBasic.getName();
+        String rule = useFullName ? typeBasic.fullName(rulePackSplit, ruleTypeSplit) : typeBasic.getName();
         rule = rule + s;
         return rule;
     }
@@ -1473,7 +1490,10 @@ public final class InvarWriteCode extends InvarWrite {
         }
 
         private NestedParam makeParams(NestedParam parent, String rule, String name, String nameReal, String tag) {
-            String split = snippetGet(Key.IMPORT_SPLIT);
+            String splitType = snippetTryGet(Key.FILE_TYPE_SPLIT, null);
+            String splitPack = snippetTryGet(Key.IMPORT_SPLIT, empty);
+            String split = splitType == null ? splitPack : splitType;
+            rule = rule.replace(".", splitPack);
             NestedParam p = new NestedParam();
             p.name = name;
             p.nameReal = nameReal;

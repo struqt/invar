@@ -32,7 +32,7 @@ abstract public class InvarWrite {
     final static String indent = whiteSpace + whiteSpace + whiteSpace + whiteSpace;
     final static String dotToken = "\\.";
     final static String ruleTypeSplit = "::";
-    //final static String rulePackSplit = ".";
+    final static String rulePackSplit = ".";
     final static private String GENERIC_LEFT = "<";
     final static private String GENERIC_RIGHT = ">";
 
@@ -464,7 +464,7 @@ abstract public class InvarWrite {
                 String typeName = iTypeName.next();
                 InvarType type = pack.getType(typeName);
                 typeForShort.put(type.getName(), type);
-                typeForShort.put(type.fullName(ruleTypeSplit), type);
+                typeForShort.put(type.fullName(rulePackSplit, ruleTypeSplit), type);
             }
         }
     }

@@ -109,9 +109,19 @@ public class InvarType {
     }
 
     final public String fullName(String splitter) {
+        return this.fullName(splitter, splitter);
+    }
+
+    final public String fullName(String splitPack, String splitType) {
+        if (splitPack == null) {
+            splitPack = "";
+        }
+        if (splitType == null || splitType.length() <= 0) {
+            splitType = splitPack;
+        }
         String packName = pack.getName();
-        packName = packName.replaceAll("\\.", Matcher.quoteReplacement(splitter));
-        return !isBuildin() && !packName.equals("") ? packName + splitter + name : name;
+        packName = packName.replaceAll("\\.", Matcher.quoteReplacement(splitPack));
+        return !isBuildin() && !packName.equals("") ? packName + splitType + name : name;
     }
 
     final public String codecRuleName() {

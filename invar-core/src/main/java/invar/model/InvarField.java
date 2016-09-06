@@ -81,10 +81,11 @@ public class InvarField {
         return deftFormatted;
     }
 
-    public String makeTypeFormatted(InvarContext ctx, String split, Boolean fullName, String tName, Boolean noGenerics) {
+    public String makeTypeFormatted(InvarContext ctx, String split, String splitType, Boolean fullName, String tName, Boolean noGenerics) {
         typeFormatted = tName;
         if (!noGenerics) {
-            typeFormatted += evalGenerics(ctx, type.getRedirect(), split, fullName);
+            typeFormatted += evalGenerics(ctx, type.getRedirect(),
+                split, splitType, fullName);
         }
         typeFormatted = typeFormatted.trim();
         ///* FIXME a trick for java
@@ -94,7 +95,8 @@ public class InvarField {
         return typeFormatted;
     }
 
-    String evalGenerics(InvarContext ctx, InvarType typeBasic, String split, Boolean fullName) {
+    String evalGenerics(InvarContext ctx, InvarType typeBasic,
+                        String split, String splitType, Boolean fullName) {
         if (getGenerics().size() == 0)
             return "";
         String s = typeBasic.getGeneric();
@@ -102,7 +104,7 @@ public class InvarField {
             t = t.getRedirect();
             String tName = t.getName();
             if (fullName || ctx.findTypes(t.getName(), true).size() > 1)
-                tName = t.fullName(split);
+                tName = t.fullName(split, splitType);
             s = s.replaceFirst("\\?", tName + t.getGeneric());
         }
         return s;
@@ -118,7 +120,7 @@ public class InvarField {
         s = typeBasic.fullName(split) + s;
         return s;
     }
-
+    /*
     public String createFullNameRule(InvarContext ctx, String split) {
         InvarType typeBasic = type.getRedirect();
         if (getGenerics().size() == 0)
@@ -129,7 +131,7 @@ public class InvarField {
             s = s.replaceFirst("\\?", t.fullName(split) + t.getGeneric());
         }
         return typeBasic.fullName(split) + s;
-    }
+    } //*/
 
     public void setDefault(String defaultValue) {
         this.defaultVal = defaultValue;
