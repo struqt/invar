@@ -50,13 +50,11 @@
   <template key="file.include.wrap"><![CDATA[ "./(#value)" ]]></template>
   <template key="file.pack.split">  <![CDATA[   ]]></template>
   <template key="file.type.split">  <![CDATA[ . ]]></template>
-
   <!--
   <template key="import">      <![CDATA[ (#body)(#brk) ]]></template>
   <template key="import.body"> <![CDATA[ let (#name) = (#module).(#name) ]]></template>
   <template key="import.split"><![CDATA[ ]]></template>
   -->
-
   <template key="init.any">    <![CDATA[ (#deft)         ]]></template>
   <template key="init.string"> <![CDATA[ '(#deft)'       ]]></template>
   <template key="init.int64">  <![CDATA[ new InvarTypes.Int64('(#deft)')  ]]></template>
@@ -247,11 +245,76 @@
     (#brk)if (CRC32 != (#name)) { return InvarCodec.ERR_PROTOC_CRC_MISMATCH }
   ]]></template>
   <template key="read.special.protocError"><![CDATA[
-    (#brk)if ((#name) != 0) {
+    (#brk)if ((#name) !== 0) {
     (#tab)return (#name)
     }
   ]]></template>
 
+  <!-- Write bytes to a Stream -->
+  <template key="write.import"><![CDATA[ ]]></template>
+  <template key="write.method.arg"><![CDATA[ w ]]></template>
+  <template key="write.method"><![CDATA[
+    (#tab)public write(w: InvarCodec.BinaryWriter): void {(#body)
+    (#tab)} /* (#type)::Write(...) */ ]]></template>
+  <template key="write.any">   <![CDATA[ /* !!!!! */ ]]></template>
+  <template key="write.int8">  <![CDATA[ (#arg).writeInt08((#name).valueOf())   ]]></template>
+  <template key="write.int16"> <![CDATA[ (#arg).writeInt16((#name).valueOf())   ]]></template>
+  <template key="write.int32"> <![CDATA[ (#arg).writeInt32((#name).valueOf())   ]]></template>
+  <template key="write.int64"> <![CDATA[ (#arg).writeInt64((#name).data)        ]]></template>
+  <template key="write.uint8"> <![CDATA[ (#arg).writeUint08((#name).valueOf())  ]]></template>
+  <template key="write.uint16"><![CDATA[ (#arg).writeUint16((#name).valueOf())  ]]></template>
+  <template key="write.uint32"><![CDATA[ (#arg).writeUint32((#name).valueOf())  ]]></template>
+  <template key="write.uint64"><![CDATA[ (#arg).writeUint64((#name).data)       ]]></template>
+  <template key="write.float"> <![CDATA[ (#arg).writeFloat32((#name).valueOf()) ]]></template>
+  <template key="write.double"><![CDATA[ (#arg).writeFloat64((#name).valueOf()) ]]></template>
+  <template key="write.bool">  <![CDATA[ (#arg).writeBoolean((#name)) ]]></template>
+  <template key="write.string"><![CDATA[ (#arg).writeUTF8((#name))    ]]></template>
+  <template key="write.enum">  <![CDATA[ (#arg).writeInt32((#name))   ]]></template>
+  <template key="write.struct"><![CDATA[ (#name).write((#arg))        ]]></template>
+  <template key="write.vec.for"><![CDATA[
+    let (#namer)Size: number = (#name).length
+    (#arg).writeInt32((#namer)Size) /* vec.for: (#name) */
+    for (let (#namer)Idx: number = 0; (#namer)Idx < (#namer)Size; (#namer)Idx++) {
+    (#tab)let (#value): (#typer) = (#name)[(#namer)Idx](#body)
+    }
+  ]]></template>
+  <template key="write.map.for"><![CDATA[
+    let (#namer)Size: number = (#name).length
+    (#arg).writeInt32((#namer)Size) /* map.for: (#name) */
+    for (let (#namer)Idx: number = 0; (#namer)Idx < (#namer)Size; (#namer)Idx++) {
+    (#tab)let (#namer)Iter: [(#typer)] = (#name).getPair((#namer)Idx)(#body)
+    }
+  ]]></template>
+  <template key="write.nest.n"><![CDATA[ (#body);]]></template>
+  <template key="write.nest.k"><![CDATA[
+    let (#name): (#type) = (#nameupper)Iter[0](#brk)(#body) ]]></template>
+  <template key="write.nest.v"><![CDATA[
+    let (#name): (#type) = (#nameupper)Iter[1](#brk)(#body) ]]></template>
+  <template key="write.vec.head"><![CDATA[ ]]></template>
+  <template key="write.map.head.k"><![CDATA[
+    let (#name): (#type) = (#nameupper)Iter[0](#brk) ]]></template>
+  <template key="write.map.head.v"><![CDATA[
+    let (#name): (#type) = (#nameupper)Iter[1](#brk) ]]></template>
+  <template key="write.ref.any"><![CDATA[(#body);]]></template>
+  <template key="write.ref.vec | write.ref.map"><![CDATA[ (#body) ]]></template>
+  <template key="write.ptr.string | write.ptr.struct"><![CDATA[
+    if ((#name) !== (#null)) {
+    (#tab)(#arg).writeInt08((#byteyes));
+    (#tab)(#body);
+    } else {
+    (#tab)(#arg).writeInt08((#bytenon));
+    }
+  ]]></template>
+  <template key="write.ptr.vec | write.ptr.map"><![CDATA[
+    if ((#name) !== (#null)) {
+    (#tab)(#arg).writeInt08((#byteyes));(#bodyindent)
+    } else {
+    (#tab)(#arg).writeInt08((#bytenon));
+    }
+  ]]></template>
+  <template key="write.special.protocError"><![CDATA[
+    (#brk)if ((#name) !== 0) { return; }
+  ]]></template>
 
   <!-- Write data to JSON data format -->
   <template key="tojson.import">    <![CDATA[ ]]></template>
@@ -290,7 +353,7 @@
     (#tab)
     (#tab)for (let (#namer)Idx: number = 0; (#namer)Idx < (#namer)Size; (#namer)Idx++) { /* map.for: (#name) */
     (#tab)(#tab)let (#namer)Iter: [(#typer)] = (#name).getPair((#namer)Idx)(#concat)(#bodyindent)
-    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { (#arg).push(',') }
+    (#tab)(#tab)if ((#namer)Idx !== (#namer)Size) { (#arg).push(',') }
     (#tab)}
     (#tab)(#arg).push('}')
     }
