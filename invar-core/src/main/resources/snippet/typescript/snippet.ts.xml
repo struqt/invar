@@ -63,12 +63,12 @@
   <template key="init.string"> <![CDATA[ '(#deft)'       ]]></template>
   <template key="init.int64">  <![CDATA[ new InvarTypes.Int64('(#deft)')  ]]></template>
   <template key="init.uint64"> <![CDATA[ new InvarTypes.Uint64('(#deft)') ]]></template>
-  <template key="init.enum">   <![CDATA[ (#type).(#name) ]]></template>
-  <template key="init.struct"> <![CDATA[ (#type)()       ]]></template>
+  <template key="init.enum">   <![CDATA[ (#module).(#type).(#name) ]]></template>
+  <template key="init.struct"> <![CDATA[ new (#type)()   ]]></template>
   <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
   <template key="init.map">    <![CDATA[ {}    ]]></template>
 
-  <template key="pointer.null">  <![CDATA[ None ]]></template>
+  <template key="pointer.null">  <![CDATA[ null ]]></template>
   <template key="pointer.spec">  <![CDATA[ ?*  ]]></template>
   <template key="pointer.invoke"><![CDATA[ ?-> ]]></template>
   <template key="pointer.copy">  <![CDATA[ (#name) = (#arg) ]]></template>
@@ -93,27 +93,27 @@
   ]]></template>
   <template key="file"><![CDATA[
     (#head)
-    (#pack) ]]></template>
+    (#pack)
+  ]]></template>
   <template key="file.pack"><![CDATA[
     (#includes)
     export module (#name) {
     (#import)
-    (#body)} ]]></template>
+    (#body)}
+  ]]></template>
   <template key="file.body"><![CDATA[
-    (#enums)(#structs)]]></template>
-
+    (#enums)(#structs)
+  ]]></template>
   <template key="enum"><![CDATA[
-    #from enum import Enum, unique
-    #@unique
-    #class (#name)(Enum):
-    class (#name)(object):
+    (#doc)
+    export enum (#name) {
     (#blank)
-    (#tab)(#doc)
     (#body)
-    # end enum (#name)
-	]]></template>
+    } /* end enum (#name) */
+  ]]></template>
   <template key="enum.field"><![CDATA[
-    (#tab)(#name) = (#value)(#doc)
+    (#tab)(#block-doc)
+    (#tab)(#name) = (#value),
   ]]></template>
   <template key="struct.protoc.ntf"> <![CDATA[ (#brk), Invar.ProtocNotify   ]]></template>
   <template key="struct.protoc.req"> <![CDATA[ (#brk), Invar.ProtocRequest  ]]></template>
@@ -137,6 +137,8 @@
     [#codeNested (read.;  useFullName; struct; fields; imports)]
     (#blank)
     [#codeNested (write.; useFullName; struct; fields; imports)]
+    (#blank)
+    [#codeNested (tojson.; useFullName; struct; fields; imports)]
     (#blank)
     } /* class (#name) */
     (#blank)
@@ -173,11 +175,11 @@
 
 
   <!-- Read bytes from a Stream -->
-  <template key="read.import">
-    <![CDATA[ System.IO::BinaryReader,System.Text::Encoding,System::Enum ]]></template>
+  <template key="read.import"><![CDATA[ ]]></template>
   <template key="read.method.arg"><![CDATA[ r ]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public read(r :InvarCodec.BinaryReader): void {(#body)
+    (#tab)public read(r :InvarCodec.BinaryReader): number {(#body)
+    (#tab)(#tab)return InvarCodec.ERR_NONE
     (#tab)} /* (#type)::read(...) */ ]]></template>
   <template key="read.int8">  <![CDATA[ (#arg).readInt08()   ]]></template>
   <template key="read.int16"> <![CDATA[ (#arg).readInt16()   ]]></template>
@@ -190,27 +192,25 @@
   <template key="read.float"> <![CDATA[ (#arg).readFloat32() ]]></template>
   <template key="read.double"><![CDATA[ (#arg).readFloat64() ]]></template>
   <template key="read.bool">  <![CDATA[ (#arg).readBoolean() ]]></template>
-  <template key="read.string">
-    <![CDATA[ Encoding.UTF8.GetString((#arg).ReadBytes((#arg).ReadInt32())) ]]></template>
-  <template key="read.enum">
-    <![CDATA[ ((#type))Enum.ToObject(typeof((#type)), (#arg).ReadInt32()) ]]></template>
+  <template key="read.string"><![CDATA[ (#arg).readUTF8()    ]]></template>
+  <template key="read.enum">  <![CDATA[ (#arg).readInt32()   ]]></template>
   <template key="read.struct"><![CDATA[ (#name).read((#arg)) ]]></template>
-  <template key="read.nest.n|read.nest.k|read.nest.v">
-    <![CDATA[ let (#name): (#type) = (#body) ]]></template>
+  <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[
+    let (#name): (#type) = (#body) ]]></template>
   <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
-    let (#name): (#type) = new (#type)();
-    (#body);
+    let (#name): (#type) = new (#type)()
+    (#body)
   ]]></template>
-  <template key="read.vec.head">
-    <![CDATA[ let (#name): (#type) = new (#type)()(#brk)]]></template>
+  <template key="read.vec.head"><![CDATA[
+    let (#name): (#type) = new (#type)()(#brk)]]></template>
   <template key="read.vec.for"><![CDATA[
     let (#len): number = (#arg).readInt32()
     for (let (#index): number = 0; (#index) < (#len); (#index)++) {(#body)
     (#tab)(#name).push((#value))
     }
   ]]></template>
-  <template key="read.map.head">
-    <![CDATA[(#type) (#name) = new (#type)(); //read.map.head(#brk)]]></template>
+  <template key="read.map.head"><![CDATA[
+    let (#name): (#type) = new (#type)() /*read.map.head*/(#brk)]]></template>
   <template key="read.map.for"><![CDATA[
     let (#len): number = (#arg).ReadUInt32();
     for (let (#index): number = 0; (#index) < (#len); (#index)++) {(#body)
@@ -221,42 +221,129 @@
     (#tab)}
     }
   ]]></template>
-  <template key="read.ref.any">   <![CDATA[ (#name) = (#body); ]]></template>
-  <template key="read.ref.struct"><![CDATA[ (#body); ]]></template>
+  <template key="read.ref.any">   <![CDATA[ (#name) = (#body) ]]></template>
+  <template key="read.ref.struct"><![CDATA[ (#body) ]]></template>
   <template key="read.ref.vec | read.ref.map"><![CDATA[ (#body) ]]></template>
   <template key="read.ptr.string"><![CDATA[
-    sbyte (#namer)Exists = (#arg).ReadSByte();
+    let (#namer)Exists: number = (#arg).readInt08()
     if ((#byteyes) == (#namer)Exists) {
-    (#tab)(#name) = (#body);
+    (#tab)(#name) = (#body)
     }
-    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
-    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid.", 496); }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null) }
+    else { return InvarCodec.ERR_DECODE_STRING_P }
   ]]></template>
   <template key="read.ptr.struct"><![CDATA[
-    sbyte (#namer)Exists = (#arg).ReadSByte();
+    let (#namer)Exists: number = (#arg).readInt08()
     if ((#byteyes) == (#namer)Exists) {
-    (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }
-    (#tab)(#body);
+    (#tab)if ((#name) == (#null)) { (#name) = new (#type)() }
+    (#tab)(#body)
     }
-    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
-    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid.", 497); }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null) }
+    else { return InvarCodec.ERR_DECODE_STRUCT_P }
   ]]></template>
   <template key="read.ptr.vec | read.ptr.map"><![CDATA[
-    sbyte (#namer)Exists = (#arg).ReadSByte();
+    let (#namer)Exists: number = (#arg).readInt08()
     if ((#byteyes) == (#namer)Exists) {
-    (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }(#bodyindent)
+    (#tab)if ((#name) == (#null)) { (#name) = new (#type)() }(#bodyindent)
     }
-    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
-    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid.", 498); }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null) }
+    else { return InvarCodec.ERR_DECODE_VEC_MAP_P }
   ]]></template>
   <template key="read.special.protocCRC"><![CDATA[
-    (#brk)if (CRC32 != (#name)) { throw new IOException("Protoc read error: CRC32 is mismatched.", 499); }
+    (#brk)if (CRC32 != (#name)) { return InvarCodec.ERR_PROTOC_CRC_MISMATCH }
   ]]></template>
   <template key="read.special.protocError"><![CDATA[
     (#brk)if ((#name) != 0) {
-    (#tab)throw new IOException("Protoc read error: The code is " + (#name), (#name));
+    (#tab)return (#name)
     }
   ]]></template>
 
+
+  <!-- Write data to JSON data format -->
+  <template key="tojson.import">    <![CDATA[ ]]></template>
+  <template key="tojson.method.arg"><![CDATA[ s ]]></template>
+  <template key="tojson.method"><![CDATA[
+    (#tab)public toStringJSON(): string {
+    (#tab)(#tab)let code: Array<string> = new Array<string>()
+    (#tab)(#tab)this.writeJSON(code)
+    (#tab)(#tab)return code.join('')
+    (#tab)}(#brk)
+    (#tab)public writeJSON(s: Array<string>): void {
+    (#tab)(#tab)(#arg).push('\\n'), (#arg).push('{')
+    (#tab)(#tab)let comma: string = null(#body)
+    (#tab)(#tab)(#arg).push('}'), (#arg).push('\\n')
+    (#tab)} /* (#type)::writeJSON(...) */ ]]></template>
+  <template key="tojson.any"> <![CDATA[ (#arg).push((#name).toString()) ]]></template>
+  <template key="tojson.enum"><![CDATA[ (#arg).push((#name).toString()) ]]></template>
+  <template key="tojson.bool"><![CDATA[ (#arg).push((#name).toString()) ]]></template>
+  <template key="tojson.string"><![CDATA[ (#arg).push('"'), (#arg).push((#name)), s.push('"') ]]></template>
+  <template key="tojson.struct"><![CDATA[ (#name).writeJSON((#arg)) ]]></template>
+  <template key="tojson.vec.for"><![CDATA[
+    let (#namer)Size: number = (null == (#name) ? 0 : (#name).length)
+    if ((#namer)Size > 0) {
+    (#tab)(#arg).push('\\n'), (#arg).push('[')
+    (#tab)let (#namer)Idx: number = 0
+    (#tab)while ((#namer)Idx < (#namer)Size) { /* vec.for: (#name) */
+    (#tab)(#tab)let (#value): (#typer) = (#name)[(#namer)Idx]
+    (#tab)(#tab)++(#namer)Idx(#concat)(#bodyindent)
+    (#tab)(#tab)if ((#namer)Idx < (#namer)Size) { (#arg).push(',') }
+    (#tab)} (#arg).push(']')
+    }
+  ]]></template>
+  <template key="tojson.map.for"><![CDATA[
+    let (#namer)Size: number = (null == (#name) ? 0 : (#name).length)
+    if ((#namer)Size > 0) {
+    (#tab)(#arg).push('\\n').push('{')
+    (#tab)let (#namer)Idx: number = 0
+    (#tab)foreach (KeyValuePair<(#typer)> (#namer)Iter in (#name)) { /* map.for: (#name) */
+    (#tab)(#tab)++(#namer)Idx, (#concat)(#bodyindent)
+    (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { (#arg).push(',') }
+    (#tab)}
+    (#tab)(#arg).push('}')
+    }
+  ]]></template>
+  <template key="tojson.map.head.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Key(#brk) ]]></template>
+  <template key="tojson.map.head.v"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Value(#brk) ]]></template>
+  <template key="tojson.nest.n"><![CDATA[ (#body) ]]></template>
+  <template key="tojson.nest.k"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Key /* nest.k */
+    (#arg).push('"'), (#body), (#arg).push('"'), (#arg).push(':') ]]></template>
+  <template key="tojson.nest.v"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.Value /* nest.v */(#brk)(#body) ]]></template>
+  <template key="tojson.ref.any"><![CDATA[
+    (#arg).push('"'), (#arg).push('(#namer)'), (#arg).push('"'), (#arg).push(':'), comma = ','
+    (#body) ]]></template>
+  <template key="tojson.ref.vec | tojson.ref.map"><![CDATA[
+    if ((#namer)Exists) { (#arg).push('"'), (#arg).push('(#namer)'), (#arg).push('"'), (#arg).push(':'), comma = ',' }
+    (#body) ]]></template>
+  <template key="tojson.ref.string | tojson.ref.struct |
+                 tojson.ptr.string | tojson.ptr.struct"><![CDATA[
+    if ((#namer)Exists) {
+    (#tab)(#arg).push('"'), (#arg).push('(#namer)'), (#arg).push('"'), (#arg).push(':'), comma = ','
+    (#tab)(#body)
+    }
+  ]]></template>
+  <template key="tojson.ptr.vec | tojson.ptr.map"><![CDATA[
+    if ((#namer)Exists) {(#bodyindent) comma = ','
+    }
+  ]]></template>
+  <template key="tojson.field.head.string"><![CDATA[
+    let (#namer)Exists: boolean = (!(#name) || 0 === (#name).length)
+  ]]></template>
+  <template key="tojson.field.head.struct"><![CDATA[
+    let (#namer)Exists: boolean = (!(#name) || false)
+  ]]></template>
+  <template key="tojson.field.head.vec | tojson.field.head.map"><![CDATA[
+    let (#namer)Exists: boolean = ((#name) && (#name).length > 0)
+  ]]></template>
+  <template key="tojson.field.space.any"><![CDATA[
+    if (comma && comma.length > 0) { (#arg).push(comma), comma = null }
+  ]]></template>
+  <template key="tojson.field.space.string | tojson.field.space.vec |
+                 tojson.field.space.struct | tojson.field.space.map"><![CDATA[
+    if (comma && comma.length > 0 && (#namer)Exists) { (#arg).push(comma), comma = null }
+  ]]></template>
 
 </tns:root>

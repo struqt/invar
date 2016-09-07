@@ -49,7 +49,7 @@ public class InvarField {
         this.index = index;
         this.type = type;
         this.generics = new LinkedList<InvarType>();
-        this.key = key;
+        this.key = key.trim();
         this.comment = comment;
 
         this.isSpecial = special;

@@ -48,6 +48,9 @@ function hello() {
     console.log('| ' + r.readUint64())
     console.log('+-------------------------')
     console.log(r.available())
+
+    console.log(JSON.stringify(r))
+
 }
 
 hello();

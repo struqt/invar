@@ -1,5 +1,17 @@
 export module InvarCodec {
 
+    export const ERR_NONE                 =   0
+    export const ERR_SIZE_TOO_LONG        = 493
+    export const ERR_INVALID_REQ          = 494
+    export const ERR_DECODE_EOF           = 495
+    export const ERR_DECODE_STRING_P      = 496
+    export const ERR_DECODE_STRUCT_P      = 497
+    export const ERR_DECODE_VEC_MAP_P     = 498
+    export const ERR_PROTOC_CRC_MISMATCH  = 499
+    export const ERR_PROTOC_UNHANDLED     = 500
+    export const ERR_PROTOC_INVALID_ID    = 501
+    export const ERR_PROTOC_NO_HANDLER    = 503
+
     declare function unescape(s: string): string;
     declare function escape(s: string): string;
 

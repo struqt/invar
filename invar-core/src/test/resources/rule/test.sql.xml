@@ -18,7 +18,10 @@
     <field name="number7" type="Uint64" doc="Field with uint64 type"/>
     <field name="number8" type="Float" doc="Field with Float type"/>
     <field name="number9" type="Double" doc="Field with Double type"/>
-    <field name="boolValue" type="Bool" doc="Field with Boolean type"/>
+    <field name="bool10" type="Bool" doc="Field with Boolean type"/>
+    <field name="string11" type="String" doc="Field with String type"/>
+    <field name="enum12" type="Color" doc="Field with enum type"/>
+    <field name="struct13" type="Numbers" doc="Field with a struct type"/>
   </struct>
 
 

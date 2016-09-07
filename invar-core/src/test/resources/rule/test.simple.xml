@@ -45,6 +45,14 @@
     <field name="number" type="Double" doc="Field with Double type"/>
   </struct>
 
+  <struct name="SingleString" nohotfix="true" doc="Struct with single field">
+    <field name="word" type="String" doc="Field with String type"/>
+  </struct>
+
+  <struct name="SingleEnum" nohotfix="true" doc="Struct with single field">
+    <field name="color" type="Color" doc="Field with enum type"/>
+  </struct>
+
   <struct name="Numbers" nohotfix="true" doc="Struct with numbers">
     <field name="number0" type="Int8" doc="Field with int8 type"/>
     <field name="number1" type="Int16" doc="Field with int16 type"/>

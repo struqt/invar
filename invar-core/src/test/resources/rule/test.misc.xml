@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:package
+  name="test.misc"
+  xmlns:tns="http://struqt.com/invar/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://struqt.com/invar/1.0 http://struqt.com/xsd/invar-rule-1.0.xsd">
+
+  <struct name="TestPointer" nohotfix="true" doc="Struct with numbers" table="t_numbers">
+    <field name="number0 " useptr="true" type="Int8" doc="Field with int8 type"/>
+    <field name="number1 " useptr="true" type="Int16" doc="Field with int16 type"/>
+    <field name="number2 " useptr="true" type="Int32" doc="Field with int32 type"/>
+    <field name="number3 " useptr="true" type="Int64" doc="Field with int64 type"/>
+    <field name="number4 " useptr="true" type="Uint8" doc="Field with uint8 type"/>
+    <field name="number5 " useptr="true" type="Uint16" doc="Field with uint16 type"/>
+    <field name="number6 " useptr="true" type="Uint32" doc="Field with uint32 type"/>
+    <field name="number7 " useptr="true" type="Uint64" doc="Field with uint64 type"/>
+    <field name="number8 " useptr="true" type="Float" doc="Field with Float type"/>
+    <field name="number9 " useptr="true" type="Double" doc="Field with Double type"/>
+    <field name="bool10  " useptr="true" type="Bool" doc="Field with Boolean type"/>
+    <field name="enum11  " useptr="true" type="Color" doc="Field with enum type"/>
+    <field name="string12" useptr="true" type="String" doc="Field with String type"/>
+    <field name="struct13" useptr="true" type="Numbers" doc="Field with a struct type"/>
+  </struct>
+
+</tns:package>

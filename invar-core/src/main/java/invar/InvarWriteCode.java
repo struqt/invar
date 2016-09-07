@@ -494,6 +494,7 @@ public final class InvarWriteCode extends InvarWrite {
             s = replace(s, Token.Name, key);
             s = replace(s, Token.Type, type.getName());
             s = replace(s, Token.Value, fixedLenBackward(whiteSpace, lenVal, type.getValue(key).toString()));
+            s = replace(s, Token.DocBlock, makeDoc(type.getComment(key)));
             s = replace(s, Token.Doc, makeDocLine(type.getComment(key)));
             code.append(s);
         }
@@ -690,6 +691,7 @@ public final class InvarWriteCode extends InvarWrite {
                 s = replace(s, Token.Type, Matcher.quoteReplacement(t));
                 break;
             case ENUM:
+                String pack = empty;
                 String name;
                 String option = empty;
                 if (!deft.equals(empty)) {
@@ -699,9 +701,12 @@ public final class InvarWriteCode extends InvarWrite {
                         option = texts[1];
                 } else {
                     TypeEnum tEnum = (TypeEnum) type;
+                    pack = tEnum.getPack().getName();
                     name = tEnum.getName();
                     option = tEnum.firstOptionKey();
                 }
+                s = replace(s, Token.Module, packNameToModuleName(pack));
+                s = replace(s, Token.Pack, pack);
                 s = replace(s, Token.Type, name);
                 s = replace(s, Token.Name, option);
                 break;

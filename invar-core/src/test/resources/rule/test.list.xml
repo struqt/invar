@@ -19,6 +19,8 @@
     <field name="number8"   type="Vec-Float" doc="Field with Float type"/>
     <field name="number9"   type="Vec-Double" doc="Field with Double type"/>
     <field name="boolValue" type="Vec-Bool" doc="Field with Boolean type"/>
+    <field name="strings"   type="Vec-String" doc="Field with String type"/>
+    <field name="enums"     type="Vec-Color" doc="Field with Enumeration type"/>
     <field name="records"   type="Vec-SimpleRecord" doc="Field with struct test.sql::SimpleRecord"/>
   </struct>
 

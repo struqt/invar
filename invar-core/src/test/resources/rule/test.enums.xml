@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:package
+  name="test.enums"
+  xmlns:tns="http://struqt.com/invar/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://struqt.com/invar/1.0 http://struqt.com/xsd/invar-rule-1.0.xsd">
+
+  <enum name="Color" doc="Colors enumeration">
+    <option name="Red" value="100" doc="Red color"/>
+    <option name="Green" value="101" doc="Green color"/>
+    <option name="Blue" value="102" doc="Blue color"/>
+  </enum>
+
+</tns:package>
