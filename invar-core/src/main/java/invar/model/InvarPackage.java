@@ -10,6 +10,7 @@ import invar.model.InvarType.TypeID;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 public class InvarPackage {
     private final Boolean needWrite;
@@ -22,7 +23,7 @@ public class InvarPackage {
         this.name = needWrite ? name.toLowerCase() : name;
         this.nameReal = this.name;
         this.needWrite = needWrite;
-        this.typeMap = new HashMap<String, InvarType>();
+        this.typeMap = new LinkedHashMap<String, InvarType>();
     }
 
     public void capitalizeNameHead(Boolean bool) {
