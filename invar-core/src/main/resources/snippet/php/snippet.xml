@@ -17,7 +17,7 @@
     <uint8 pack="php" type="uint08" initValue="0"/>
     <uint16 pack="php" type="uint16" initValue="0"/>
     <uint32 pack="php" type="uint32" initValue="0"/>
-    <uint64 pack="php" type="uint32" initValue="0"/>
+    <uint64 pack="php" type="uint64" initValue="0"/>
     <float pack="php" type="float32" initValue="0.0"/>
     <double pack="php" type="float64" initValue="0.00"/>
     <string pack="php" type="string" initValue=""/>
