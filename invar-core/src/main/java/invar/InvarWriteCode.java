@@ -1028,14 +1028,21 @@ public final class InvarWriteCode extends InvarWrite {
         for (InvarType t : f.getGenerics()) {
             t = t.getRedirect();
             String forShort;
-            if (t.getRealId() == TypeID.VEC || t.getRealId() == TypeID.MAP)
+            if (t.getConflict(ctx) || useFullName) {
+                forShort = t.fullName(rulePackSplit, ruleTypeSplit);
+            } else {
                 forShort = t.getName();
-            else {
-                if (t.getConflict(ctx) || useFullName)
-                    forShort = t.fullName(rulePackSplit, ruleTypeSplit);
-                else
-                    forShort = t.getName();
             }
+            /*
+            if (t.getRealId() == TypeID.VEC || t.getRealId() == TypeID.MAP) {
+                forShort = t.getName();
+            } else {
+                if (t.getConflict(ctx) || useFullName) {
+                    forShort = t.fullName(rulePackSplit, ruleTypeSplit);
+                } else {
+                    forShort = t.getName();
+                }
+            } //*/
             s = s.replaceFirst("\\?", forShort + getGenericOverride(t));
         }
         String rule = useFullName ? typeBasic.fullName(rulePackSplit, ruleTypeSplit) : typeBasic.getName();

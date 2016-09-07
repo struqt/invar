@@ -20,6 +20,7 @@
     <field name="enum11  " useptr="true" type="Color" doc="Field with enum type"/>
     <field name="string12" useptr="true" type="String" doc="Field with String type"/>
     <field name="struct13" useptr="true" type="Numbers" doc="Field with a struct type"/>
+    <field name="dict14  " useptr="true" type="Map-String-String" doc="Field with a dictionary type"/>
   </struct>
 
 </tns:package>

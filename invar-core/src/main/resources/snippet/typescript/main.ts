@@ -1,7 +1,7 @@
 
 import { InvarCodec } from "./invar.codec"
 import { InvarTypes } from "./invar.types"
-import { InvarDict } from "./invar.dict"
+import { InvarUtils } from "./invar.utils"
 
 function hello() {
     var data: DataView = new DataView(new ArrayBuffer(90))
@@ -49,6 +49,7 @@ function hello() {
     console.log('+-------------------------')
     console.log(r.available())
 
+    console.log(JSON.stringify(w))
     console.log(JSON.stringify(r))
 
 }

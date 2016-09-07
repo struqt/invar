@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:package
+  name="test.dict"
+  xmlns:tns="http://struqt.com/invar/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://struqt.com/invar/1.0 http://struqt.com/xsd/invar-rule-1.0.xsd">
+
+  <struct name="SimpleDict" nohotfix="true" doc="Struct with dictionary fields">
+    <field name="number0   " type="Map-Int8-Int8" doc="Field with int8 type"/>
+    <field name="number1   " type="Map-Int16-Int16" doc="Field with int16 type"/>
+    <field name="number2   " type="Map-Int32-Int32" doc="Field with int32 type"/>
+    <field name="number3   " type="Map-Int64-Int64" doc="Field with int64 type"/>
+    <field name="number4   " type="Map-Uint8-Uint8" doc="Field with uint8 type"/>
+    <field name="number5   " type="Map-Uint16-Uint16" doc="Field with uint16 type"/>
+    <field name="number6   " type="Map-Uint32-Uint32" doc="Field with uint32 type"/>
+    <field name="number7   " type="Map-Uint64-Uint64" doc="Field with uint64 type"/>
+    <field name="number8   " type="Map-Float-Float" doc="Field with Float type"/>
+    <field name="number9   " type="Map-Double-Double" doc="Field with Double type"/>
+    <field name="boolValue " type="Map-Bool-Bool" doc="Field with Boolean type"/>
+    <field name="enums     " type="Map-Color-Color" doc="Field with Enumeration type"/>
+    <field name="string    " type="Map-String-String" doc="Field with String type"/>
+    <field name="records   " type="Map-SimpleRecord-SimpleRecord" doc="Field with struct"/>
+  </struct>
+
+  <struct name="SimpleDictList" nohotfix="true" doc="Struct with dictionary fields">
+    <field name="number0   " type="Map-Int8-Vec-Int8" doc="Field with int8 type"/>
+    <field name="number1   " type="Map-Int16-Vec-Int16" doc="Field with int16 type"/>
+    <field name="number2   " type="Map-Int32-Vec-Int32" doc="Field with int32 type"/>
+    <field name="number3   " type="Map-Int64-Vec-Int64" doc="Field with int64 type"/>
+    <field name="number4   " type="Map-Uint8-Vec-Uint8" doc="Field with uint8 type"/>
+    <field name="number5   " type="Map-Uint16-Vec-Uint16" doc="Field with uint16 type"/>
+    <field name="number6   " type="Map-Uint32-Vec-Uint32" doc="Field with uint32 type"/>
+    <field name="number7   " type="Map-Uint64-Vec-Uint64" doc="Field with uint64 type"/>
+    <field name="number8   " type="Map-Float-Vec-Float" doc="Field with Float type"/>
+    <field name="number9   " type="Map-Double-Vec-Double" doc="Field with Double type"/>
+    <field name="boolValue " type="Map-Bool-Vec-Bool" doc="Field with Boolean type"/>
+    <field name="enums     " type="Map-Color-Vec-Color" doc="Field with Enumeration type"/>
+    <field name="string    " type="Map-String-Vec-String" doc="Field with String type"/>
+    <field name="records   " type="Map-SimpleRecord-Vec-SimpleRecord" doc="Field with struct"/>
+  </struct>
+
+</tns:package>

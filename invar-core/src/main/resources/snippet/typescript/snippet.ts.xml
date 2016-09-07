@@ -7,7 +7,7 @@
 
   <export resPath="typescript/invar.codec.ts" destDir="." destName="invar.codec.ts"/>
   <export resPath="typescript/invar.types.ts" destDir="." destName="invar.types.ts"/>
-  <export resPath="typescript/invar.dict.ts" destDir="." destName="invar.dict.ts"/>
+  <export resPath="typescript/invar.utils.ts" destDir="." destName="invar.utils.ts"/>
 
   <!-- Redefine 14 Invar buildin types to adapt TypeScript language -->
   <redefine>
@@ -21,14 +21,12 @@
     <uint64 pack="Invar.Types" type="Uint64  " include="Invar.Types" initValue="00"/>
     <float pack=" Invar.Types" type="Float32 " include="Invar.Types" initValue="0.0"/>
     <double pack="Invar.Types" type="Float64 " include="Invar.Types" initValue="0.00"/>
-    <string pack="" type="string " initValue=""/>
-    <bool pack="  " type="boolean" initValue="false"/>
-    <vec pack="   " type="Array  " initValue="" generic="&lt;?&gt;"/>
-    <map pack="   " type="Object " initValue="" generic="&lt;?,?&gt;"/>
-
+    <string pack="           " type="string  " initValue=""/>
+    <bool pack="             " type="boolean " initValue="false"/>
+    <vec pack="              " type="Array   " initValue="" generic="&lt;?&gt;"/>
+    <map pack="   Invar.Utils" type="Dict    " include="Invar.Utils" initValue="" generic="&lt;?,?&gt;"/>
     <dialect pack="Invar.Codec" type="BinaryWriter" include="Invar.Codec" />
     <dialect pack="Invar.Codec" type="BinaryReader" include="Invar.Codec" />
-
   </redefine>
 
   <!-- Settings -->
@@ -44,7 +42,7 @@
   <template key="use.full.type.name">  <![CDATA[ true  ]]></template>
   <template key="method.indent.num">   <![CDATA[ 1     ]]></template>
   <template key="code.dir.prefix">     <![CDATA[  ]]></template>
-  <template key="import.exclude.same.pack"><![CDATA[ false ]]></template>
+  <template key="import.exclude.same.pack"><![CDATA[ true   ]]></template>
   <template key="import.exclude.conflict"> <![CDATA[ false  ]]></template>
 
   <!-- Common snippet -->
@@ -66,7 +64,7 @@
   <template key="init.enum">   <![CDATA[ (#module).(#type).(#name) ]]></template>
   <template key="init.struct"> <![CDATA[ new (#type)()   ]]></template>
   <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
-  <template key="init.map">    <![CDATA[ {}    ]]></template>
+  <template key="init.map">    <![CDATA[ new (#type)()   ]]></template>
 
   <template key="pointer.null">  <![CDATA[ null ]]></template>
   <template key="pointer.spec">  <![CDATA[ ?*  ]]></template>
@@ -212,13 +210,9 @@
   <template key="read.map.head"><![CDATA[
     let (#name): (#type) = new (#type)() /*read.map.head*/(#brk)]]></template>
   <template key="read.map.for"><![CDATA[
-    let (#len): number = (#arg).ReadUInt32();
+    let (#len): number = (#arg).readUint32();
     for (let (#index): number = 0; (#index) < (#len); (#index)++) {(#body)
-    (#tab)if (!(#name).ContainsKey((#key))) {
-    (#tab)(#tab)(#name).Add((#key), (#value));
-    (#tab)} else {
-    (#tab)(#tab)(#name)[(#key)] = (#value);
-    (#tab)}
+    (#tab)(#name).put((#key), (#value))
     }
   ]]></template>
   <template key="read.ref.any">   <![CDATA[ (#name) = (#body) ]]></template>
@@ -283,9 +277,8 @@
     if ((#namer)Size > 0) {
     (#tab)(#arg).push('\\n'), (#arg).push('[')
     (#tab)let (#namer)Idx: number = 0
-    (#tab)while ((#namer)Idx < (#namer)Size) { /* vec.for: (#name) */
-    (#tab)(#tab)let (#value): (#typer) = (#name)[(#namer)Idx]
-    (#tab)(#tab)++(#namer)Idx(#concat)(#bodyindent)
+    (#tab)for (let (#namer)Idx: number = 0; (#namer)Idx < (#namer)Size; (#namer)Idx++) { /* vec.for: (#name) */
+    (#tab)(#tab)let (#value): (#typer) = (#name)[(#namer)Idx](#concat)(#bodyindent)
     (#tab)(#tab)if ((#namer)Idx < (#namer)Size) { (#arg).push(',') }
     (#tab)} (#arg).push(']')
     }
@@ -293,25 +286,25 @@
   <template key="tojson.map.for"><![CDATA[
     let (#namer)Size: number = (null == (#name) ? 0 : (#name).length)
     if ((#namer)Size > 0) {
-    (#tab)(#arg).push('\\n').push('{')
-    (#tab)let (#namer)Idx: number = 0
-    (#tab)foreach (KeyValuePair<(#typer)> (#namer)Iter in (#name)) { /* map.for: (#name) */
-    (#tab)(#tab)++(#namer)Idx, (#concat)(#bodyindent)
+    (#tab)(#arg).push('\\n'), (#arg).push('{')
+    (#tab)
+    (#tab)for (let (#namer)Idx: number = 0; (#namer)Idx < (#namer)Size; (#namer)Idx++) { /* map.for: (#name) */
+    (#tab)(#tab)let (#namer)Iter: [(#typer)] = (#name).getPair((#namer)Idx)(#concat)(#bodyindent)
     (#tab)(#tab)if ((#namer)Idx != (#namer)Size) { (#arg).push(',') }
     (#tab)}
     (#tab)(#arg).push('}')
     }
   ]]></template>
   <template key="tojson.map.head.k"><![CDATA[
-    (#type) (#name) = (#nameupper)Iter.Key(#brk) ]]></template>
+    let (#name): (#type) = (#nameupper)Iter[0](#brk) ]]></template>
   <template key="tojson.map.head.v"><![CDATA[
-    (#type) (#name) = (#nameupper)Iter.Value(#brk) ]]></template>
+    let (#name): (#type) = (#nameupper)Iter[1](#brk) ]]></template>
   <template key="tojson.nest.n"><![CDATA[ (#body) ]]></template>
   <template key="tojson.nest.k"><![CDATA[
-    (#type) (#name) = (#nameupper)Iter.Key /* nest.k */
+    let (#name): (#type) = (#nameupper)Iter[0] /* nest.k */
     (#arg).push('"'), (#body), (#arg).push('"'), (#arg).push(':') ]]></template>
   <template key="tojson.nest.v"><![CDATA[
-    (#type) (#name) = (#nameupper)Iter.Value /* nest.v */(#brk)(#body) ]]></template>
+    let (#name): (#type) = (#nameupper)Iter[1] /* nest.v */(#brk)(#body) ]]></template>
   <template key="tojson.ref.any"><![CDATA[
     (#arg).push('"'), (#arg).push('(#namer)'), (#arg).push('"'), (#arg).push(':'), comma = ','
     (#body) ]]></template>
