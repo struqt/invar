@@ -65,11 +65,11 @@ final public class Invar {
             }
             if (a.has(ARG_CSHARP_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_CSHARP_PATH), "csharp/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".cs");
+                new InvarWriteCode(ctx, a.get(ARG_CSHARP_PATH), "csharp/snippet.cs.xml", a.get(ARG_SNIPPET_PATH)).write(".cs");
             }
             if (a.has(ARG_JAVA_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_JAVA_PATH), "java/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".java");
+                new InvarWriteCode(ctx, a.get(ARG_JAVA_PATH), "java/snippet.j.xml", a.get(ARG_SNIPPET_PATH)).write(".java");
             }
             if (a.has(ARG_TS_PATH)) {
                 log("");
@@ -82,7 +82,7 @@ final public class Invar {
             }
             if (a.has(ARG_PYTHON_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_PYTHON_PATH), "python/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".py", true);
+                new InvarWriteCode(ctx, a.get(ARG_PYTHON_PATH), "python/snippet.py.xml", a.get(ARG_SNIPPET_PATH)).write(".py", true);
             }
             if (a.has(ARG_CPP_PATH)) {
                 log("");
@@ -91,7 +91,7 @@ final public class Invar {
             }
             if (a.has(ARG_PHP_PATH)) {
                 log("");
-                new InvarWriteCode(ctx, a.get(ARG_PHP_PATH), "php/snippet.xml", a.get(ARG_SNIPPET_PATH)).write(".php");
+                new InvarWriteCode(ctx, a.get(ARG_PHP_PATH), "php/snippet.php.xml", a.get(ARG_SNIPPET_PATH)).write(".php");
             }
             if (a.has(ARG_FLASH_PATH)) {
                 log("");
