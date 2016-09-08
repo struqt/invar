@@ -39,7 +39,7 @@
   <template key="include.self">        <![CDATA[ false ]]></template>
   <template key="code.dir.flatten">    <![CDATA[ true  ]]></template>
   <template key="no.generic.type">     <![CDATA[ false ]]></template>
-  <template key="use.full.type.name">  <![CDATA[ true  ]]></template>
+  <template key="use.full.type.name">  <![CDATA[ false ]]></template>
   <template key="method.indent.num">   <![CDATA[ 1     ]]></template>
   <template key="code.dir.prefix">     <![CDATA[  ]]></template>
   <template key="import.exclude.same.pack"><![CDATA[ true   ]]></template>
@@ -50,19 +50,27 @@
   <template key="file.include.wrap"><![CDATA[ "./(#value)" ]]></template>
   <template key="file.pack.split">  <![CDATA[   ]]></template>
   <template key="file.type.split">  <![CDATA[ . ]]></template>
-  <!--
-  <template key="import">      <![CDATA[ (#body)(#brk) ]]></template>
-  <template key="import.body"> <![CDATA[ let (#name) = (#module).(#name) ]]></template>
-  <template key="import.split"><![CDATA[ ]]></template>
-  -->
-  <template key="init.any">    <![CDATA[ (#deft)         ]]></template>
-  <template key="init.string"> <![CDATA[ '(#deft)'       ]]></template>
-  <template key="init.int64">  <![CDATA[ new InvarTypes.Int64('(#deft)')  ]]></template>
-  <template key="init.uint64"> <![CDATA[ new InvarTypes.Uint64('(#deft)') ]]></template>
-  <template key="init.enum">   <![CDATA[ (#module).(#type).(#name) ]]></template>
-  <template key="init.struct"> <![CDATA[ new (#type)()   ]]></template>
-  <template key="init.vec">    <![CDATA[ new (#type)()   ]]></template>
-  <template key="init.map">    <![CDATA[ new (#type)()   ]]></template>
+
+  <template key="import">          <![CDATA[ (#body)(#brk) ]]></template>
+  <template key="import.body">     <![CDATA[ type (#name) = (#module).(#name) ]]></template>
+  <template key="import.body.dict"><![CDATA[ type (#name)<K,V> = (#module).(#name)<K,V> ]]></template>
+  <template key="import.body.dict2"><![CDATA[
+  interface Dict<K, V> { }
+  interface DictConstructor {
+      new <K,V>(): Dict<K,V>;
+  }
+  declare var Dict: DictConstructor;
+  ]]></template>
+  <template key="import.split">    <![CDATA[ ]]></template>
+
+  <template key="init.any">   <![CDATA[ (#deft)         ]]></template>
+  <template key="init.string"><![CDATA[ '(#deft)'       ]]></template>
+  <template key="init.enum">  <![CDATA[ (#typefull).(#name)  ]]></template>
+  <template key="init.int64"> <![CDATA[ new (#typefull)('(#deft)') ]]></template>
+  <template key="init.uint64"><![CDATA[ new (#typefull)('(#deft)') ]]></template>
+  <template key="init.struct"><![CDATA[ new (#typefull)()   ]]></template>
+  <template key="init.vec">   <![CDATA[ new (#typefull)()   ]]></template>
+  <template key="init.map">   <![CDATA[ new (#typefull)()   ]]></template>
 
   <template key="pointer.null">  <![CDATA[ null ]]></template>
   <template key="pointer.spec">  <![CDATA[ ?*  ]]></template>
@@ -94,6 +102,7 @@
   <template key="file.pack"><![CDATA[
     (#includes)
     export module (#name) {
+    (#blank)
     (#import)
     (#body)}
   ]]></template>
@@ -130,7 +139,7 @@
     (#blank)
     [#codeNested (size.;  useFullName; struct; fields; imports)]
     (#blank)
-    [#codeNested (read.;  useFullName; struct; fields; imports)]
+    [#codeNested (read.; true; struct; fields; imports)]
     (#blank)
     [#codeNested (write.; useFullName; struct; fields; imports)]
     (#blank)
@@ -285,7 +294,7 @@
     (#tab)let (#namer)Iter: [(#typer)] = (#name).getPair((#namer)Idx)(#body)
     }
   ]]></template>
-  <template key="write.nest.n"><![CDATA[ (#body);]]></template>
+  <template key="write.nest.n"><![CDATA[ (#body) ]]></template>
   <template key="write.nest.k"><![CDATA[
     let (#name): (#type) = (#nameupper)Iter[0](#brk)(#body) ]]></template>
   <template key="write.nest.v"><![CDATA[
@@ -295,25 +304,25 @@
     let (#name): (#type) = (#nameupper)Iter[0](#brk) ]]></template>
   <template key="write.map.head.v"><![CDATA[
     let (#name): (#type) = (#nameupper)Iter[1](#brk) ]]></template>
-  <template key="write.ref.any"><![CDATA[(#body);]]></template>
+  <template key="write.ref.any"><![CDATA[ (#body) ]]></template>
   <template key="write.ref.vec | write.ref.map"><![CDATA[ (#body) ]]></template>
   <template key="write.ptr.string | write.ptr.struct"><![CDATA[
     if ((#name) !== (#null)) {
-    (#tab)(#arg).writeInt08((#byteyes));
-    (#tab)(#body);
+    (#tab)(#arg).writeInt08((#byteyes))
+    (#tab)(#body)
     } else {
-    (#tab)(#arg).writeInt08((#bytenon));
+    (#tab)(#arg).writeInt08((#bytenon))
     }
   ]]></template>
   <template key="write.ptr.vec | write.ptr.map"><![CDATA[
     if ((#name) !== (#null)) {
-    (#tab)(#arg).writeInt08((#byteyes));(#bodyindent)
+    (#tab)(#arg).writeInt08((#byteyes))(#bodyindent)
     } else {
-    (#tab)(#arg).writeInt08((#bytenon));
+    (#tab)(#arg).writeInt08((#bytenon))
     }
   ]]></template>
   <template key="write.special.protocError"><![CDATA[
-    (#brk)if ((#name) !== 0) { return; }
+    (#brk)if ((#name) !== 0) { return }
   ]]></template>
 
   <!-- Write data to JSON data format -->

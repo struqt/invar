@@ -359,7 +359,7 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Define, ifndef);
         s = replace(s, Token.Pack, codeOneFilePack(packNames, body));
         s = replace(s, Token.Includes, includes.toString());
-        s = replace(s, Token.Import, makeImorts(imps));
+        s = replace(s, Token.Import, makeImports(imps));
         s = replace(s, "[\r|\n]*" + Token.Concat, empty);
         s = replace(s, "[\\s]*" + Token.ConcatAll, empty);
         s = replace(s, Token.Head, snippetTryGet(Key.FILE_HEAD, empty));
@@ -394,7 +394,7 @@ public final class InvarWriteCode extends InvarWrite {
         }
         String s = snippet.tryGet(Key.FILE_BODY,
             "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
-        s = replace(s, Token.Import, makeImorts(imps));
+        s = replace(s, Token.Import, makeImports(imps));
         s = replace(s, Token.Enums, blockEnums);
         s = replace(s, Token.Structs, blockStructs);
         return s;
@@ -438,7 +438,7 @@ public final class InvarWriteCode extends InvarWrite {
         String body = makeRuntimeBlock(imps);
         String s = snippet.tryGet(Key.FILE_BODY,
             "//Error: No template named '" + Key.FILE_BODY + "' in " + snippet.getSnippetPath());
-        s = replace(s, Token.Import, makeImorts(imps));
+        s = replace(s, Token.Import, makeImports(imps));
         s = replace(s, Token.Enums, empty);
         s = replace(s, Token.Structs, body);
         s = codeOneFileWrap(fileDir, fileDir + fileName, s, imps);
@@ -713,6 +713,10 @@ public final class InvarWriteCode extends InvarWrite {
             default:
                 break;
         }
+        String splitPack = snippetTryGet(Key.IMPORT_SPLIT, empty);
+        String splitType = snippetTryGet(Key.FILE_TYPE_SPLIT, null);
+        String fullName = f.getType().getRedirect().fullName(splitPack, splitType);
+        s = replace(s, Token.TypeFull, fullName + f.getGenericFormatted());
         s = replace(s, Token.Default, deft);
         return s;
     }
@@ -852,7 +856,7 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
 
-    protected String makeImorts(TreeSet<String> imps) {
+    protected String makeImports(TreeSet<String> imps) {
         if (imps == null || imps.size() == 0) {
             return empty;
         } else {
@@ -867,6 +871,13 @@ public final class InvarWriteCode extends InvarWrite {
                 if (names.length <= 0)
                     continue;
                 String body = snippetGet(Key.IMPORT_BODY);
+                if (names.length >= 1) {
+                    String body2 = snippetTryGet(Key.IMPORT_BODY
+                        + "." + names[names.length - 1].toLowerCase(), null);
+                    if (null != body2) {
+                        body = body2;
+                    }
+                }
                 if (names.length < 1) {
                     continue;
                 } else if (names.length == 1) {

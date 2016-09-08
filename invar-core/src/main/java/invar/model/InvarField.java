@@ -40,6 +40,7 @@ public class InvarField {
     private String defaultVal = "";
     private String typeFormatted = "";
     private String deftFormatted = "";
+    private String genericFormatted = "";
     private int widthType = 1;
     private int widthKey = 1;
     private int widthDefault = 1;
@@ -81,11 +82,17 @@ public class InvarField {
         return deftFormatted;
     }
 
-    public String makeTypeFormatted(InvarContext ctx, String split, String splitType, Boolean fullName, String tName, Boolean noGenerics) {
+    public String getGenericFormatted() {
+        return genericFormatted;
+    }
+
+    public String makeTypeFormatted(
+        InvarContext ctx, String split, String splitType, Boolean fullName, String tName, Boolean noGenerics) {
+
         typeFormatted = tName;
         if (!noGenerics) {
-            typeFormatted += evalGenerics(ctx, type.getRedirect(),
-                split, splitType, fullName);
+            genericFormatted = evalGenerics(ctx, type.getRedirect(), split, splitType, fullName);
+            typeFormatted += genericFormatted;
         }
         typeFormatted = typeFormatted.trim();
         ///* FIXME a trick for java
@@ -95,8 +102,9 @@ public class InvarField {
         return typeFormatted;
     }
 
-    String evalGenerics(InvarContext ctx, InvarType typeBasic,
-                        String split, String splitType, Boolean fullName) {
+    String evalGenerics(
+        InvarContext ctx, InvarType typeBasic, String split, String splitType, Boolean fullName) {
+
         if (getGenerics().size() == 0)
             return "";
         String s = typeBasic.getGeneric();
