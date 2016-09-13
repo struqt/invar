@@ -9,8 +9,10 @@
   <export resPath="java/invar/InvarCodec.java" destDir="invar" destName="InvarCodec.java"/>
   <export resPath="java/invar/InvarSQL.java" destDir="invar" destName="InvarSQL.java"/>
   <export resPath="java/invar/InvarMySQL.java" destDir="invar" destName="InvarMySQL.java"/>
-  <export resPath="java/invar/InvarReadData.java" destDir="invar"
-          destName="InvarReadData.java"/>
+  <export resPath="java/invar/InvarReadData.java" destDir="invar" destName="InvarReadData.java"/>
+  <export resPath="java/invar/RecvRequest.java" destDir="invar" destName="RecvRequest.java"/>
+  <export resPath="java/invar/RecvResponse.java" destDir="invar" destName="RecvResponse.java"/>
+  <export resPath="java/invar/RecvNotify.java" destDir="invar" destName="RecvNotify.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -430,9 +432,20 @@
     (#tab)(#body);
     }
   ]]></template>
-  <template key="read.ptr.vec|read.ptr.map"><![CDATA[
-    (#name).clear();
-    if ((#arg).readByte() == (#byteyes)) {(#bodyindent)
+  <template key="read.ptr.vec | read.ptr.map"><![CDATA[
+    byte (#namer)Exists = (#arg).readByte();
+    if ((#byteyes) == (#namer)Exists) {
+    (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }(#bodyindent)
+    }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
+    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid. 498"); }
+  ]]></template>
+  <template key="read.special.protocCRC"><![CDATA[
+    (#brk)if (CRC32 != (#name)) { throw new IOException("Protoc read error: CRC32 is mismatched. 499"); }
+  ]]></template>
+  <template key="read.special.protocError"><![CDATA[
+    (#brk)if ((#name) != 0) {
+    (#tab)throw new IOException("Protoc read error: The code is " + (#name));
     }
   ]]></template>
 
@@ -718,6 +731,7 @@
   <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
   <template key="runtime.type.split"><![CDATA[ . ]]></template>
   <template key="runtime.alias"><![CDATA[
+    (#blank)
     (#tab)static private LinkedHashMap<String,Class<?>> (#name) ()
     (#tab){
     (#tab)(#tab)LinkedHashMap<String,Class<?>> map = new LinkedHashMap<String,Class<?>>();(#body)
@@ -745,6 +759,28 @@
     (#tab)}
     (#body)
     } ]]></template>
+  <template key="runtime.protoc.handle.client"><![CDATA[ handleProtocAsServer ]]></template>
+  <template key="runtime.protoc.handle.server"><![CDATA[ handleProtocAsClient ]]></template>
+  <template key="runtime.protoc.handle.notify"><![CDATA[ (#blank)
+    (#tab)(#tab)case (#key): /* (#doc) */
+    (#tab)(#tab){ (#type) (#name) = new (#type)(); (#name).read(r); return RecvNotify.recv(ctx, (#name)); } ]]></template>
+  <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
+    (#tab)(#tab)case (#key): /* (#doc) */
+    (#tab)(#tab){ (#type) (#name) = new (#type)(); (#name).read(r); return RecvResponse.recv(ctx, (#name)); } ]]></template>
+  <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
+    (#tab)(#tab)case (#key): /* (#doc) */ {
+    (#tab)(#tab)(#type) (#name) = new (#req)(); (#resp) resp = new (#resp)();
+    (#tab)(#tab)(#name).read(r); RecvRequest.recv(ctx, (#name), resp); ctx.sendResponse(resp); return 0; } ]]></template>
+  <template key="runtime.protoc.handle.method"><![CDATA[
+    (#blank)
+    (#tab)static public  <T extends InvarCodec.ResponseSender>
+    (#tab)int (#name)(int id, java.io.DataInput r, T ctx) throws Exception
+    (#tab){
+    (#tab)(#tab)switch (id) {(#body)
+    (#tab)(#tab)default: throw new RuntimeException("Unsupported protocol id: " + id);
+    (#tab)(#tab)}
+    (#tab)} /* (#name)(...) */
+  ]]></template>
 
   <!-- SQL Params -->
   <template key="sql.params.method"><![CDATA[

@@ -153,11 +153,11 @@ public class TokenParser {
     private void parseStruct(TokenNode node, TypeStruct tStruct, InvarContext ctx) throws Exception {
         if (tStruct.getProtoc() != null) {
             TypeProtocol tProtoc = tStruct.getProtoc();
-            AddProtocIdField(tStruct, ctx);
-            AddProtocCRC32Field(tStruct, ctx);
             if (tStruct == tProtoc.getResponse()) {
                 AddProtocErrField(tStruct, ctx);
             }
+            AddProtocIdField(tStruct, ctx);
+            AddProtocCRC32Field(tStruct, ctx);
             TypeStruct t2s = ctx.getStructProtoc2S();
             if (t2s != null && t2s.getPack() == tStruct.getPack() && tStruct == tStruct.getProtoc().getClient()) {
                 InvarField field = makeAutoAddField(tStruct, t2s, t2s.getAlias(), t2s.getComment(), false);
