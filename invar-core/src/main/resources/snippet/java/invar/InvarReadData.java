@@ -131,7 +131,7 @@ final public class InvarReadData {
         Class<?> ClsO = loadGenericClass(rule);
         if (LinkedList.class == ClsO)
             parseVec((LinkedList<Object>) o, n, rule, debug);
-        else if (HashMap.class == ClsO)
+        else if (LinkedHashMap.class == ClsO)
             parseMap((HashMap<Object, Object>) o, n, rule, debug);
         else
             parseStruct(o, n, rule, debug);
