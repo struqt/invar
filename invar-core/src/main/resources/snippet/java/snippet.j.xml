@@ -6,6 +6,7 @@
   xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
   <export resPath="java/invar/InvarRule.java" destDir="invar" destName="InvarRule.java"/>
+  <export resPath="java/invar/InvarEnum.java" destDir="invar" destName="InvarEnum.java"/>
   <export resPath="java/invar/InvarCodec.java" destDir="invar" destName="InvarCodec.java"/>
   <export resPath="java/invar/InvarSQL.java" destDir="invar" destName="InvarSQL.java"/>
   <export resPath="java/invar/InvarMySQL.java" destDir="invar" destName="InvarMySQL.java"/>
@@ -119,22 +120,21 @@
     (#enums)(#structs)]]></template>
   <template key="enum.field"><![CDATA[
     (#brk)(#tab)(#doc)
-    (#tab)(#name) ((#value), "(#name)"), ]]></template>
+    (#tab)(#name) ((#value)), ]]></template>
   <template key="enum"><![CDATA[
+    import invar.InvarEnum;
+    (#blank)
     (#doc)
-    public enum (#name)
+    public enum (#name) implements InvarEnum
     {(#body);
     (#blank)
-    (#tab)public String  getName  () { return name; }
-    (#tab)public Integer getValue () { return value; }
-    (#tab)public String  toString () { return name + "(" + value + ")"; }
+    (#tab)public Integer value() { return value; }
+    (#tab)public String  toString() { return name() + "(" + value + ")"; }
     (#blank)
-    (#tab)private String  name;
     (#tab)private Integer value;
     (#blank)
-    (#tab)(#name)(Integer v, String n)
+    (#tab)(#name)(Integer v)
     (#tab){
-    (#tab)(#tab)this.name = n;
     (#tab)(#tab)this.value = v;
     (#tab)}
     (#blank)
@@ -142,7 +142,7 @@
     (#tab){
     (#tab)(#tab)(#name)[] es = (#name).values();
     (#tab)(#tab)for ((#name) e : es) {
-    (#tab)(#tab)(#tab)if(e.getValue().equals(v)) {
+    (#tab)(#tab)(#tab)if(e.value().equals(v)) {
     (#tab)(#tab)(#tab)(#tab)return e;
     (#tab)(#tab)(#tab)}
     (#tab)(#tab)}
@@ -463,30 +463,19 @@
     (#tab)public void write(DataOutput dest) throws IOException
     (#tab){(#body)
     (#tab)}]]></template>
-  <template key="write.int8"><![CDATA[ (#arg).writeByte((#name))  ]]></template>
+  <template key="write.int8"><![CDATA[  (#arg).writeByte((#name))  ]]></template>
   <template key="write.int16"><![CDATA[ (#arg).writeShort((#name)) ]]></template>
-  <template key="write.int32">
-    <![CDATA[ (#arg).writeInt((#name))   ]]></template>
-  <template key="write.int64">
-    <![CDATA[ (#arg).writeLong((#name))  ]]></template>
-  <template key="write.uint8">
-    <![CDATA[ (#arg).writeByte((#name))  ]]></template>
-  <template key="write.uint16">
-    <![CDATA[ (#arg).writeShort((#name)) ]]></template>
-  <template key="write.uint32">
-    <![CDATA[ (#arg).writeInt((#name).intValue()) ]]></template>
-  <template key="write.uint64">
-    <![CDATA[ (#arg).writeLong((#name).longValue())  ]]></template>
-  <template key="write.float">
-    <![CDATA[ (#arg).writeFloat((#name)) ]]></template>
-  <template key="write.double">
-    <![CDATA[ (#arg).writeDouble((#name))]]></template>
-  <template key="write.string">
-    <![CDATA[ (#arg).writeUTF((#name))   ]]></template>
-  <template key="write.bool">
-    <![CDATA[ (#arg).writeBoolean((#name)) ]]></template>
-  <template key="write.enum">
-    <![CDATA[ (#arg).writeInt((#name).getValue()) ]]></template>
+  <template key="write.int32"><![CDATA[ (#arg).writeInt((#name))   ]]></template>
+  <template key="write.int64"><![CDATA[ (#arg).writeLong((#name))  ]]></template>
+  <template key="write.uint8"><![CDATA[ (#arg).writeByte((#name))  ]]></template>
+  <template key="write.uint16"><![CDATA[ (#arg).writeShort((#name)) ]]></template>
+  <template key="write.uint32"><![CDATA[ (#arg).writeInt((#name).intValue()) ]]></template>
+  <template key="write.uint64"><![CDATA[ (#arg).writeLong((#name).longValue())  ]]></template>
+  <template key="write.float"><![CDATA[  (#arg).writeFloat((#name)) ]]></template>
+  <template key="write.double"><![CDATA[ (#arg).writeDouble((#name))]]></template>
+  <template key="write.string"><![CDATA[ (#arg).writeUTF((#name))   ]]></template>
+  <template key="write.bool"><![CDATA[   (#arg).writeBoolean((#name)) ]]></template>
+  <template key="write.enum"><![CDATA[   (#arg).writeInt((#name).value()) ]]></template>
   <template key="write.struct"><![CDATA[ (#name).write((#arg)) ]]></template>
   <template key="write.nest.n"><![CDATA[ (#body);]]></template>
   <template key="write.nest.k">

@@ -305,8 +305,12 @@ final public class InvarReadData {
     }
 
     private static Object parseEnumObject(Class<?> type, String s) throws Exception {
-        Integer v = Integer.parseInt(s);
         Object o = null;
+        o = EnumFromString(s, (Class<? extends InvarEnum>) type);
+        if (o != null) {
+            return o;
+        }
+        Integer v = Integer.parseInt(s);
         Method[] mets = type.getMethods();
         for (Method m : mets) {
             if (!m.getName().equals("parse"))
@@ -546,6 +550,24 @@ final public class InvarReadData {
                 recursiveReadFile(all, files[i], filter);
         } else {
         }
+    }
+
+    public static <T extends InvarEnum> T EnumFromInt(Integer v, Class<T> clazz) {
+        for (T t : clazz.getEnumConstants()) {
+            if (t.value().equals(v)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public static <T extends InvarEnum> T EnumFromString(String v, Class<T> clazz) {
+        for (T t : clazz.getEnumConstants()) {
+            if (t.name().equals(v)) {
+                return t;
+            }
+        }
+        return null;
     }
 
     static private final
