@@ -3,7 +3,7 @@ package invar;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class RecvNotify<C, N extends invar.InvarCodec.ProtocNotify> {
+public abstract class RecvNotify<N extends InvarCodec.ProtocNotify> {
 
     static Map<Integer, RecvNotify> map = new HashMap<Integer, RecvNotify>(256);
 
@@ -11,17 +11,18 @@ public abstract class RecvNotify<C, N extends invar.InvarCodec.ProtocNotify> {
         map.put(protoc, this);
     }
 
-    static public <C, N extends invar.InvarCodec.ProtocNotify>
-    int recv(C ctx, N ntf) {
+    static public <
+        N extends InvarCodec.ProtocNotify,
+        C extends RecvContext> int recv(C ctx, N ntf) {
 
         if (map.containsKey(ntf.getProtocId())) {
-            map.get(ntf.getProtocId()).handle(ctx, ntf);
+            map.get(ntf.getProtocId()).handle(ntf, ctx);
             return 0;
         } else {
             return 503;
         }
     }
 
-    public abstract void handle(C context, N notify);
+    public abstract void handle(N notify, RecvContext context);
 
 }

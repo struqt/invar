@@ -14,6 +14,7 @@
   <export resPath="java/invar/RecvRequest.java" destDir="invar" destName="RecvRequest.java"/>
   <export resPath="java/invar/RecvResponse.java" destDir="invar" destName="RecvResponse.java"/>
   <export resPath="java/invar/RecvNotify.java" destDir="invar" destName="RecvNotify.java"/>
+  <export resPath="java/invar/RecvContext.java" destDir="invar" destName="RecvContext.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -636,9 +637,9 @@
     (#tab)}(#brk)
     (#tab)public void writeJSON(StringBuilder s)
     (#tab){
-    (#tab)(#tab)s.append('\\n').append('{');
+    (#tab)(#tab)s.append('{');
     (#tab)(#tab)char comma = '\\0';(#body)
-    (#tab)(#tab)s.append('}').append('\\n');
+    (#tab)(#tab)s.append('}');
     (#tab)} /* (#type)::writeJSON(...) */ ]]></template>
   <template key="tojson.any"><![CDATA[ (#arg).append((#name).toString()) ]]></template>
   <template key="tojson.enum"><![CDATA[ (#arg).append((#name).ordinal()) ]]></template>
@@ -650,7 +651,7 @@
   <template key="tojson.vec.for"><![CDATA[
     int (#namer)Size = (null == (#name) ? 0 : (#name).size());
     if ((#namer)Size > 0) {
-    (#tab)(#arg).append('\\n').append('[');
+    (#tab)(#arg).append('[');
     (#tab)int (#namer)Idx = 0;
     (#tab)for ((#typer) (#value) : (#name)) { /* vec.for: (#name) */
     (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
@@ -662,7 +663,7 @@
   <template key="tojson.map.for"><![CDATA[
     int (#namer)Size = (null == (#name) ? 0 : (#name).size());
     if ((#namer)Size > 0) {
-    (#tab)(#arg).append('\\n').append('{');
+    (#tab)(#arg).append('{');
     (#tab)int (#namer)Idx = 0;
     (#tab)for (Map.Entry<(#typer)> (#namer)Iter : (#name).entrySet()) { /* map.for: (#name) */
     (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
@@ -759,11 +760,13 @@
   <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
     (#tab)(#tab)case (#key): /* (#doc) */ {
     (#tab)(#tab)(#type) (#name) = new (#req)(); (#resp) resp = new (#resp)();
-    (#tab)(#tab)(#name).read(r); RecvRequest.recv(ctx, (#name), resp); ctx.sendResponse(resp); return 0; } ]]></template>
+    (#tab)(#tab)(#name).read(r); RecvRequest.recv(ctx, (#name), resp); sender.sendResponse(resp); return 0; } ]]></template>
   <template key="runtime.protoc.handle.method"><![CDATA[
     (#blank)
-    (#tab)static public  <T extends InvarCodec.ResponseSender>
-    (#tab)int (#name)(int id, java.io.DataInput r, T ctx) throws Exception
+    (#tab)static public <
+    (#tab)(#tab)C extends RecvContext,
+    (#tab)(#tab)S extends InvarCodec.ResponseSender>
+    (#tab)int (#name)(int id, java.io.DataInput r, C ctx, S sender) throws Exception
     (#tab){
     (#tab)(#tab)switch (id) {(#body)
     (#tab)(#tab)default: throw new RuntimeException("Unsupported protocol id: " + id);

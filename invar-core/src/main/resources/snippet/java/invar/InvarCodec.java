@@ -33,7 +33,7 @@ public abstract class InvarCodec {
         void writeXML(StringBuilder s, String name);
     }
 
-    public interface InvarProtoc {
+    public interface InvarProtoc extends JSONEncode {
 
         Integer getProtocId();
 
