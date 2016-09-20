@@ -958,11 +958,12 @@ public final class InvarWriteCode extends InvarWrite {
                 s = snippetTryGet(Key.FILE_INCLUDE_WRAP, include);
                 s = replace(s, Token.Value, include);
             }//*/
+            boolean isSelf = onePackOneFile ? (t.getPack() == struct.getPack()) : (t == struct);
             if (includeSelf) {
-                if (t == struct)
+                if (isSelf)
                     fileIncludes.add(s);
             } else {
-                if (t != struct)
+                if (!isSelf)
                     fileIncludes.add(s);
             }
             if (forcedInclude) {
