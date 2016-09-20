@@ -130,7 +130,7 @@
     (#doc)
     export class (#name) {
     (#blank)
-    (#tab)static get CRC32(): string { return '[#codeCRC32(struct)]' }
+    (#tab)static get CRC32(): number { return 0x[#codeCRC32(struct)] }
     (#tab)static get SIZE() : number { return [#codeBasicSize(struct)] }
     (#blank)
     [#codeFields (struct; fields)]
@@ -251,11 +251,11 @@
     else { return InvarCodec.ERR_DECODE_VEC_MAP_P }
   ]]></template>
   <template key="read.special.protocCRC"><![CDATA[
-    (#brk)if (CRC32 != (#name)) { return InvarCodec.ERR_PROTOC_CRC_MISMATCH }
+    (#brk)if ((#struct).CRC32 != (#name)) { return InvarCodec.ERR_PROTOC_CRC_MISMATCH }
   ]]></template>
   <template key="read.special.protocError"><![CDATA[
     (#brk)if ((#name) !== 0) {
-    (#tab)return (#name)
+    (#tab)return (#name).valueOf()
     }
   ]]></template>
 
