@@ -282,8 +282,8 @@ invar.InvarCodec.XMLEncode
         dest.writeDouble(numberDouble);
         dest.writeBoolean(boolValue);
         dest.writeUTF(stringValue);
-        dest.writeInt(enumValue.getValue());
-        dest.writeInt(enumDeft.getValue());
+        dest.writeInt(enumValue.value());
+        dest.writeInt(enumDeft.value());
     }
 
     public String toString()
@@ -332,7 +332,7 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         s.append('"').append("numberI08").append('"').append(':');
         s.append(numberI08.toString()); comma = ',';
@@ -377,7 +377,7 @@ invar.InvarCodec.XMLEncode
         if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("enumDeft").append('"').append(':');
         s.append(enumDeft.ordinal()); comma = ',';
-        s.append('}').append('\n');
+        s.append('}');
     } /* TestBasic::writeJSON(...) */
 
     public String toStringXML()

@@ -118,8 +118,9 @@ invar.InvarCodec.XMLEncode
             java.lang.Byte n1 = from.readByte();
             bytes.add(n1);
         }
-        hotfix.clear();
-        if (from.readByte() == (byte)0x01) {
+        byte hotfixExists = from.readByte();
+        if ((byte)0x01 == hotfixExists) {
+            if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from.readUTF();
@@ -127,6 +128,8 @@ invar.InvarCodec.XMLEncode
                 hotfix.put(k1,v1);
             }
         }
+        else if ((byte)0x00 == hotfixExists) { hotfix = null; }
+        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
     }
 
     public void write(OutputStream from) throws IOException
@@ -136,7 +139,7 @@ invar.InvarCodec.XMLEncode
 
     public void write(DataOutput dest) throws IOException
     {
-        dest.writeInt(key.getValue());
+        dest.writeInt(key.value());
         dest.writeUTF(text);
         dest.writeInt(bytes.size());
         for (java.lang.Byte n1 : bytes) {
@@ -186,7 +189,7 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         s.append('"').append("key").append('"').append(':');
         s.append(key.ordinal()); comma = ',';
@@ -200,7 +203,7 @@ invar.InvarCodec.XMLEncode
         if (bytesExists) { s.append('"').append("bytes").append('"').append(':'); comma = ','; }
         int bytesSize = (null == bytes ? 0 : bytes.size());
         if (bytesSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int bytesIdx = 0;
             for (java.lang.Byte n1 : bytes) { /* vec.for: bytes */
                 ++bytesIdx;
@@ -214,7 +217,7 @@ invar.InvarCodec.XMLEncode
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('\n').append('{');
+                s.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
@@ -227,7 +230,7 @@ invar.InvarCodec.XMLEncode
                 s.append('}');
             } comma = ',';
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* Conflict::writeJSON(...) */
 
     public String toStringXML()

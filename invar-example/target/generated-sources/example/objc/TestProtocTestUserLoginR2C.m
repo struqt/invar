@@ -10,14 +10,14 @@
 
 #import "TestProtocTestUserLoginR2C.h"
 
-#define CRC32__ 0x38180462
+#define CRC32__ 0xAE3BF274
 #define SIZE__  22L
 
 @interface TestUserLoginR2C ()
 {
+    uint16_t              _protocError; /*  &-uint16 */
     uint16_t              _protocId   ; /*  &-uint16 */
     uint32_t              _protocCRC  ; /*  &-uint32 */
-    uint16_t              _protocError; /*  &-uint16 */
     Protoc2C            * _protoc2C   ; /*  *-Test.Protoc.Protoc2C */
     NSString            * _userId     ; /*  &-string */
     NSString            * _userName   ; /*  &-string */
@@ -32,9 +32,9 @@
 {
     self = [super init];
     if (!self) { return self; }
+    _protocError = 0;
     _protocId    = 65528;
     _protocCRC   = CRC32__;
-    _protocError = 0;
     _protoc2C    = nil;
     _userId      = @"";
     _userName    = @"";
@@ -64,9 +64,9 @@
 }
 /* TestUserLoginR2C::copyWithZone */
 
+- (uint16_t             ) protocError { return _protocError; }
 - (uint16_t             ) protocId    { return _protocId   ; }
 - (uint32_t             ) protocCRC   { return _protocCRC  ; }
-- (uint16_t             ) protocError { return _protocError; }
 - (Protoc2C            *) protoc2C    { return _protoc2C   ; }
 - (NSString            *) userId      { return _userId     ; }
 - (NSString            *) userName    { return _userName   ; }
@@ -82,10 +82,10 @@
 - (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
+    _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocId = [r readUInt16:&eof];
     if (65528 != _protocId) { _protocId = 65528; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2CExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2CExists) {
         if (_protoc2C == nil) { _protoc2C = [[Protoc2C alloc] init]; }
@@ -118,10 +118,10 @@
 
 - (NSInteger)write:(DataWriter *)w
 {
-    [w writeUInt16:_protocId];
-    [w writeUInt32:_protocCRC];
     [w writeUInt16:_protocError];
     if (_protocError != 0) { return _protocError; }
+    [w writeUInt16:_protocId];
+    [w writeUInt32:_protocCRC];
     if (_protoc2C != nil) { [w writeInt8:0x01]; [_protoc2C write:w]; }
     else { [w writeInt8:0x00]; }
     [w writeString:_userId];
@@ -175,14 +175,14 @@
 {
     [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
+    [s appendString:QUOTATION_S]; [s appendString:@"protocError"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocError)];
+    if (comma) { [s appendString:comma]; comma = nil; }
     [s appendString:QUOTATION_S]; [s appendString:@"protocId"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
     comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocId)];
     if (comma) { [s appendString:comma]; comma = nil; }
     [s appendString:QUOTATION_S]; [s appendString:@"protocCRC"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
     comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocCRC)];
-    if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:QUOTATION_S]; [s appendString:@"protocError"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
-    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocError)];
     BOOL protoc2CExists = (nil != _protoc2C);
     if (comma && protoc2CExists) { [s appendString:comma]; comma = nil; }
     if (protoc2CExists) {
@@ -241,7 +241,7 @@
 
 @end /* @implementation TestUserLoginR2C */
 /*
-1@test.protoc.TestUserLoginR2C/uint16/uint32/uint16/test.protoc.Protoc2C/string/string/vec-int32/map
+1@test.protoc.TestUserLoginR2C/uint16/uint16/uint32/test.protoc.Protoc2C/string/string/vec-int32/map
   -string-string
 +@test.protoc.Protoc2C/map-string-string
 */

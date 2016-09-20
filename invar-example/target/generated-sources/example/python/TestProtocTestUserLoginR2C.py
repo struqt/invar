@@ -15,13 +15,13 @@ from InvarCodec import DataReader
 class TestUserLoginR2C(object):
 
     """客户端请求,服务端响应"""
-    CRC32_ = 0x38180462
+    CRC32_ = 0xAE3BF274
     SIZE_  = 22
 
     __slots__ = (
+        '_protocError',
         '_protocId',
         '_protocCRC',
-        '_protocError',
         '_protoc2C',
         '_userId',
         '_userName',
@@ -30,9 +30,9 @@ class TestUserLoginR2C(object):
    #__slots__
 
     def __init__(self):
+        self._protocError = 0
         self._protocId    = 65528
         self._protocCRC   = TestUserLoginR2C.CRC32_
-        self._protocError = 0
         self._protoc2C    = None
         self._userId      = ''
         self._userName    = ''
@@ -47,6 +47,11 @@ class TestUserLoginR2C(object):
         s.write(u'TestUserLoginR2C')
         s.write(u',')
         s.write(u' ')
+        s.write(u'protocError')
+        s.write(u':')
+        s.write(unicode(self._protocError))
+        s.write(u',')
+        s.write(u' ')
         s.write(u'protocId')
         s.write(u':')
         s.write(unicode(self._protocId))
@@ -55,11 +60,6 @@ class TestUserLoginR2C(object):
         s.write(u'protocCRC')
         s.write(u':')
         s.write(unicode(self._protocCRC))
-        s.write(u',')
-        s.write(u' ')
-        s.write(u'protocError')
-        s.write(u':')
-        s.write(unicode(self._protocError))
         s.write(u',')
         s.write(u' ')
         s.write(u'protoc2C')
@@ -125,13 +125,13 @@ class TestUserLoginR2C(object):
    #def __len__
 
     def read(r):
+        self._protocError = r.readUInt16()
+        if self._protocError != 0:
+            raise InvarError(self._protocError, "Protoc read error: The code is " + self._protocError)
         self._protocId = r.readUInt16()
         self._protocCRC = r.readUInt32()
         if CRC32 != self._protocCRC:
             raise InvarError(499, "Protoc read error: CRC32 is mismatched.", 499)
-        self._protocError = r.readUInt16()
-        if self._protocError != 0:
-            raise InvarError(self._protocError, "Protoc read error: The code is " + self._protocError)
         protoc2CExists = r.readInt8()
         if 0x01 == protoc2CExists:
             if self._protoc2C == None:
@@ -167,11 +167,11 @@ class TestUserLoginR2C(object):
    #def read
 
     def write(w):
-        w.writeUInt16(self._protocId)
-        w.writeUInt32(self._protocCRC)
         w.writeUInt16(self._protocError)
         if self._protocError != 0:
             return
+        w.writeUInt16(self._protocId)
+        w.writeUInt32(self._protocCRC)
         if self._protoc2C != None:
             w.writeUInt8(0x01)
             self._protoc2C.write(w)

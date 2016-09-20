@@ -19,13 +19,17 @@ public sealed class TestHeartBeatR2S
 , Invar.XMLEncode
 , Invar.ProtocResponse
 {
-    public const uint CRC32 = 0xD651F662;
+    public const uint CRC32 = 0xA13D5F14;
 
+    private UInt16                    protocError = 0; // [AutoAdd] Protocol error code.
     private UInt16                    protocId    = 65533; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC   = CRC32; // [AutoAdd] Protocol CRC32.
-    private UInt16                    protocError = 0; // [AutoAdd] Protocol error code.
     private Protoc2S                  protoc2S    = null; // [AutoAdd] 客户端请求的公共数据.
     private Dictionary<String,String> hotfix      = null; // [AutoAdd] Hotfix.
+
+    /// [AutoAdd] Protocol error code.
+    [Invar.InvarRule("uint16", "")]
+    public UInt16 GetProtocError() { return this.protocError; }
 
     /// [AutoAdd] ProtocolID.
     [Invar.InvarRule("uint16", "")]
@@ -34,10 +38,6 @@ public sealed class TestHeartBeatR2S
     /// [AutoAdd] Protocol CRC32.
     [Invar.InvarRule("uint32", "")]
     public UInt32 GetProtocCRC() { return this.protocCRC; }
-
-    /// [AutoAdd] Protocol error code.
-    [Invar.InvarRule("uint16", "")]
-    public UInt16 GetProtocError() { return this.protocError; }
 
     /// [AutoAdd] 客户端请求的公共数据.
     [Invar.InvarRule("Test.Protoc.Protoc2S", "")]
@@ -61,9 +61,9 @@ public sealed class TestHeartBeatR2S
 
     public TestHeartBeatR2S Reuse()
     {
+        this.protocError = 0;
         this.protocId    = 65533;
         this.protocCRC   = CRC32;
-        this.protocError = 0;
         if (this.protoc2S != null) { this.protoc2S.Reuse(); }
         if (this.hotfix != null) { this.hotfix.Clear(); }
         return this;
@@ -74,9 +74,9 @@ public sealed class TestHeartBeatR2S
         if (null == from_ || this == from_) {
             return this;
         }
+        this.protocError = from_.protocError;
         this.protocId = from_.protocId;
         this.protocCRC = from_.protocCRC;
-        this.protocError = from_.protocError;
         if (null == from_.protoc2S) {
             this.protoc2S = null;
         } else {
@@ -97,13 +97,13 @@ public sealed class TestHeartBeatR2S
 
     public void Read(BinaryReader r)
     {
-        this.protocId = r.ReadUInt16();
-        this.protocCRC = r.ReadUInt32();
-        if (CRC32 != this.protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched.", 499); }
         this.protocError = r.ReadUInt16();
         if (this.protocError != 0) {
             throw new IOException("Protoc read error: The code is " + this.protocError, this.protocError);
         }
+        this.protocId = r.ReadUInt16();
+        this.protocCRC = r.ReadUInt32();
+        if (CRC32 != this.protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched.", 499); }
         sbyte protoc2SExists = r.ReadSByte();
         if ((sbyte)0x01 == protoc2SExists) {
             if (this.protoc2S == null) { this.protoc2S = new Protoc2S(); }
@@ -131,10 +131,10 @@ public sealed class TestHeartBeatR2S
 
     public void Write(BinaryWriter w)
     {
-        w.Write(this.protocId);
-        w.Write(this.protocCRC);
         w.Write(this.protocError);
         if (this.protocError != 0) { return; }
+        w.Write(this.protocId);
+        w.Write(this.protocCRC);
         if (this.protoc2S != null) {
             w.Write((sbyte)0x01);
             this.protoc2S.Write(w);
@@ -164,12 +164,12 @@ public sealed class TestHeartBeatR2S
         StringBuilder result = new StringBuilder();
         result.Append('{').Append(' ');
         result.Append(GetType().ToString());
+        result.Append(',').Append(' ').Append("protocError").Append(':');
+        result.Append(this.protocError.ToString());
         result.Append(',').Append(' ').Append("protocId").Append(':');
         result.Append(this.protocId.ToString());
         result.Append(',').Append(' ').Append("protocCRC").Append(':');
         result.Append(this.protocCRC.ToString());
-        result.Append(',').Append(' ').Append("protocError").Append(':');
-        result.Append(this.protocError.ToString());
         result.Append(',').Append(' ').Append("protoc2S").Append(':');
         if (this.protoc2S != null) { result.Append("<Protoc2S>"); }
         else { result.Append("null"); }
@@ -191,11 +191,11 @@ public sealed class TestHeartBeatR2S
     {
         s.Append('\n').Append('{');
         string comma = null;
+        s.Append('"').Append("protocError").Append('"').Append(':'); comma = ","; s.Append(this.protocError.ToString());
+        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append('"').Append("protocId").Append('"').Append(':'); comma = ","; s.Append(this.protocId.ToString());
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append('"').Append("protocCRC").Append('"').Append(':'); comma = ","; s.Append(this.protocCRC.ToString());
-        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
-        s.Append('"').Append("protocError").Append('"').Append(':'); comma = ","; s.Append(this.protocError.ToString());
         bool protoc2SExists = (null != this.protoc2S);
         if (!String.IsNullOrEmpty(comma) && protoc2SExists) { s.Append(comma); comma = null; }
         if (protoc2SExists) {
@@ -236,11 +236,11 @@ public sealed class TestHeartBeatR2S
     {
         s.Append('\n').Append('{');
         string comma = null;
+        s.Append("protocError").Append('='); comma = ","; s.Append(this.protocError.ToString());
+        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append("protocId").Append('='); comma = ","; s.Append(this.protocId.ToString());
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append("protocCRC").Append('='); comma = ","; s.Append(this.protocCRC.ToString());
-        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
-        s.Append("protocError").Append('='); comma = ","; s.Append(this.protocError.ToString());
         bool protoc2SExists = (null != this.protoc2S);
         if (!String.IsNullOrEmpty(comma) && protoc2SExists) { s.Append(comma); comma = null; }
         if (protoc2SExists) {
@@ -281,11 +281,11 @@ public sealed class TestHeartBeatR2S
     {
         s.Append("array").Append('(').Append('\n');
         string comma = null;
+        s.Append('\'').Append("protocError").Append('\'').Append("=>"); comma = ","; s.Append(this.protocError.ToString());
+        if (!String.IsNullOrEmpty(comma)) { s.Append(comma).Append('\n'); comma = null; }
         s.Append('\'').Append("protocId").Append('\'').Append("=>"); comma = ","; s.Append(this.protocId.ToString());
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma).Append('\n'); comma = null; }
         s.Append('\'').Append("protocCRC").Append('\'').Append("=>"); comma = ","; s.Append(this.protocCRC.ToString());
-        if (!String.IsNullOrEmpty(comma)) { s.Append(comma).Append('\n'); comma = null; }
-        s.Append('\'').Append("protocError").Append('\'').Append("=>"); comma = ","; s.Append(this.protocError.ToString());
         bool protoc2SExists = (null != this.protoc2S);
         if (!String.IsNullOrEmpty(comma) && protoc2SExists) { s.Append(comma).Append('\n'); comma = null; }
         if (protoc2SExists) {
@@ -327,9 +327,9 @@ public sealed class TestHeartBeatR2S
     {
         StringBuilder attrs = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
+        attrs.Append(' ').Append("protocError").Append('=').Append('"').Append(this.protocError.ToString()).Append('"');
         attrs.Append(' ').Append("protocId").Append('=').Append('"').Append(this.protocId.ToString()).Append('"');
         attrs.Append(' ').Append("protocCRC").Append('=').Append('"').Append(this.protocCRC.ToString()).Append('"');
-        attrs.Append(' ').Append("protocError").Append('=').Append('"').Append(this.protocError.ToString()).Append('"');
         if (this.protoc2S != null) {
             this.protoc2S.WriteXML(nodes, "protoc2S");
         }
@@ -359,7 +359,7 @@ public sealed class TestHeartBeatR2S
 
 } /* class: TestHeartBeatR2S */
 /*
-1@test.protoc.TestHeartBeatR2S/uint16/uint32/uint16/test.protoc.Protoc2S/map-string-string
+1@test.protoc.TestHeartBeatR2S/uint16/uint16/uint32/test.protoc.Protoc2S/map-string-string
 +@test.protoc.Protoc2S/string/map-string-string
 */
 } //namespace: Test.Protoc

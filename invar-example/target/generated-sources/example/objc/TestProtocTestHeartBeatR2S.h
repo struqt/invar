@@ -16,9 +16,9 @@
 /* 服务端请求,客户端响应 */
 @interface TestHeartBeatR2S : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocResponse>
 
+- (uint16_t             ) protocError; /* [AutoAdd] Protocol error code */
 - (uint16_t             ) protocId   ; /* [AutoAdd] ProtocolID */
 - (uint32_t             ) protocCRC  ; /* [AutoAdd] Protocol CRC32 */
-- (uint16_t             ) protocError; /* [AutoAdd] Protocol error code */
 - (Protoc2S            *) protoc2S   ; /* [AutoAdd] 客户端请求的公共数据 */
 - (NSMutableDictionary *) hotfix     ; /* [AutoAdd] Hotfix */
 

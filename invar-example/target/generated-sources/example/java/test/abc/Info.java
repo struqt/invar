@@ -429,8 +429,9 @@ invar.InvarCodec.XMLEncode
             java.lang.Double v1 = from.readDouble();
             mapDouble.put(k1,v1);
         }
-        hotfix.clear();
-        if (from.readByte() == (byte)0x01) {
+        byte hotfixExists = from.readByte();
+        if ((byte)0x01 == hotfixExists) {
+            if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from.readUTF();
@@ -438,6 +439,8 @@ invar.InvarCodec.XMLEncode
                 hotfix.put(k1,v1);
             }
         }
+        else if ((byte)0x00 == hotfixExists) { hotfix = null; }
+        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
     }
 
     public void write(OutputStream from) throws IOException
@@ -464,7 +467,7 @@ invar.InvarCodec.XMLEncode
         for (java.lang.String n1 : world) {
             dest.writeUTF(n1);
         }
-        dest.writeInt(gender.getValue());
+        dest.writeInt(gender.value());
         if (next != null) {
             dest.writeByte((byte)0x01);
             next.write(dest);
@@ -485,12 +488,12 @@ invar.InvarCodec.XMLEncode
             Info k1 = mapInfoGIter.getKey();
             k1.write(dest);
             Gender v1 = mapInfoGIter.getValue();
-            dest.writeInt(v1.getValue());
+            dest.writeInt(v1.value());
         }
         dest.writeInt(mapGenderInfo.size());
         for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) {
             Gender k1 = mapGenderInfoIter.getKey();
-            dest.writeInt(k1.getValue());
+            dest.writeInt(k1.value());
             Info v1 = mapGenderInfoIter.getValue();
             v1.write(dest);
         }
@@ -587,7 +590,7 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         s.append('"').append("key").append('"').append(':');
         s.append(key.toString()); comma = ',';
@@ -634,7 +637,7 @@ invar.InvarCodec.XMLEncode
         if (worldExists) { s.append('"').append("world").append('"').append(':'); comma = ','; }
         int worldSize = (null == world ? 0 : world.size());
         if (worldSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int worldIdx = 0;
             for (java.lang.String n1 : world) { /* vec.for: world */
                 ++worldIdx;
@@ -661,7 +664,7 @@ invar.InvarCodec.XMLEncode
         if (conflictsExists) { s.append('"').append("conflicts").append('"').append(':'); comma = ','; }
         int conflictsSize = (null == conflicts ? 0 : conflicts.size());
         if (conflictsSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int conflictsIdx = 0;
             for (test.xyz.Conflict n1 : conflicts) { /* vec.for: conflicts */
                 ++conflictsIdx;
@@ -675,7 +678,7 @@ invar.InvarCodec.XMLEncode
         if (numbersExists) { s.append('"').append("numbers").append('"').append(':'); comma = ','; }
         int numbersSize = (null == numbers ? 0 : numbers.size());
         if (numbersSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int numbersIdx = 0;
             for (java.lang.Double n1 : numbers) { /* vec.for: numbers */
                 ++numbersIdx;
@@ -689,7 +692,7 @@ invar.InvarCodec.XMLEncode
         if (mapInfoGExists) { s.append('"').append("mapInfoG").append('"').append(':'); comma = ','; }
         int mapInfoGSize = (null == mapInfoG ? 0 : mapInfoG.size());
         if (mapInfoGSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int mapInfoGIdx = 0;
             for (Map.Entry<Info,Gender> mapInfoGIter : mapInfoG.entrySet()) { /* map.for: mapInfoG */
                 ++mapInfoGIdx;
@@ -706,7 +709,7 @@ invar.InvarCodec.XMLEncode
         if (mapGenderInfoExists) { s.append('"').append("mapGenderInfo").append('"').append(':'); comma = ','; }
         int mapGenderInfoSize = (null == mapGenderInfo ? 0 : mapGenderInfo.size());
         if (mapGenderInfoSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int mapGenderInfoIdx = 0;
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) { /* map.for: mapGenderInfo */
                 ++mapGenderInfoIdx;
@@ -723,7 +726,7 @@ invar.InvarCodec.XMLEncode
         if (mapDoubleExists) { s.append('"').append("mapDouble").append('"').append(':'); comma = ','; }
         int mapDoubleSize = (null == mapDouble ? 0 : mapDouble.size());
         if (mapDoubleSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int mapDoubleIdx = 0;
             for (Map.Entry<Integer,java.lang.Double> mapDoubleIter : mapDouble.entrySet()) { /* map.for: mapDouble */
                 ++mapDoubleIdx;
@@ -740,7 +743,7 @@ invar.InvarCodec.XMLEncode
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('\n').append('{');
+                s.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
@@ -753,7 +756,7 @@ invar.InvarCodec.XMLEncode
                 s.append('}');
             } comma = ',';
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* Info::writeJSON(...) */
 
     public String toStringXML()

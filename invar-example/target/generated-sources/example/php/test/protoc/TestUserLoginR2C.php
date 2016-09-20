@@ -15,7 +15,7 @@ use \invar\BinaryWriter;
 
 final class TestUserLoginR2C
 {
-    const CRC32 = 0x38180462;
+    const CRC32 = 0xAE3BF274;
 
     static public function &CreateFromBytes (& $str)
     {
@@ -24,9 +24,9 @@ final class TestUserLoginR2C
         return $o;
     }
 
+    private $protocError ;/*  uint16 // [AutoAdd] Protocol error code */
     private $protocId    ;/*  uint16 // [AutoAdd] ProtocolID */
     private $protocCRC   ;/*  uint32 // [AutoAdd] Protocol CRC32 */
-    private $protocError ;/*  uint16 // [AutoAdd] Protocol error code */
     private $protoc2C    ;/*  test.protoc.Protoc2C // [AutoAdd] 服务端响应的公共数据 */
     private $userId      ;/*  string */
     private $userName    ;/*  string */
@@ -35,9 +35,9 @@ final class TestUserLoginR2C
 
     function __construct()
     {
+        $this->protocError = 0;
         $this->protocId    = 65528;
         $this->protocCRC   = self::CRC32;
-        $this->protocError = 0;
         $this->protoc2C    = NULL;
         $this->userId      = '';
         $this->userName    = '';
@@ -51,9 +51,9 @@ final class TestUserLoginR2C
         if ($this == $from || $from == NULL) {
             return this;
         }
+        $this->protocError = $from->protocError;
         $this->protocId = $from->protocId;
         $this->protocCRC = $from->protocCRC;
-        $this->protocError = $from->protocError;
         if ($from->protoc2C != NULL) {
             $this->protoc2C.copy($from->protoc2C);
         } else {
@@ -78,13 +78,13 @@ final class TestUserLoginR2C
 
     public function &read (& $r)
     {
-        $this->protocId = $r->readUInt16();
-        $this->protocCRC = $r->readUInt32();
-        if (self::CRC32 != $this->protocCRC) { throw new \Exception('Protoc read error: CRC32 is mismatched', 499); }
         $this->protocError = $r->readUInt16();
         if ($this->protocError != 0) {
             throw new \Exception('Protoc read error: The code is ' . $this->protocError, $this->protocError);
         }
+        $this->protocId = $r->readUInt16();
+        $this->protocCRC = $r->readUInt32();
+        if (self::CRC32 != $this->protocCRC) { throw new \Exception('Protoc read error: CRC32 is mismatched', 499); }
         $protoc2CExists = $r->readInt08();
         if (0x01 == $protoc2CExists) {
             if ($this->protoc2C == NULL) { $this->protoc2C = new Protoc2C; }
@@ -118,10 +118,10 @@ final class TestUserLoginR2C
 
     public function write (& $str)
     {
-        BinaryWriter::writeUInt16($this->protocId, $str);
-        BinaryWriter::writeUInt32($this->protocCRC, $str);
         BinaryWriter::writeUInt16($this->protocError, $str);
         if ($this->protocError != 0) { return; }
+        BinaryWriter::writeUInt16($this->protocId, $str);
+        BinaryWriter::writeUInt32($this->protocCRC, $str);
         if ($this->protoc2C != NULL) {
             BinaryWriter::writeInt08(0x01, $str);
             $this->protoc2C->write($str);
@@ -147,14 +147,14 @@ final class TestUserLoginR2C
     }
     /* End of write(...) */
 
+    /** [AutoAdd] Protocol error code */
+    public function  getProtocError() { return $this->protocError; }
+
     /** [AutoAdd] ProtocolID */
     public function  getProtocId() { return $this->protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
     public function  getProtocCRC() { return $this->protocCRC; }
-
-    /** [AutoAdd] Protocol error code */
-    public function  getProtocError() { return $this->protocError; }
 
     /** [AutoAdd] 服务端响应的公共数据 */
     public function getProtoc2C() { return $this->protoc2C; }
@@ -189,12 +189,12 @@ final class TestUserLoginR2C
     public function &toString()
     {
         $s  = '{'; $s .= get_class($this);
+        $s .= ','; $s .= 'protocError'; $s .= ':';
+        $s .= $this->protocError;
         $s .= ','; $s .= 'protocId'; $s .= ':';
         $s .= $this->protocId;
         $s .= ','; $s .= 'protocCRC'; $s .= ':';
         $s .= $this->protocCRC;
-        $s .= ','; $s .= 'protocError'; $s .= ':';
-        $s .= $this->protocError;
         $s .= ','; $s .= 'protoc2C'; $s .= ':';
         if (isset($this->protoc2C)) { $s .= '<'; $s .= 'Protoc2C'; $s .= '>'; }
         else { $s .= 'null'; }
@@ -222,14 +222,14 @@ final class TestUserLoginR2C
     public function writeJSON(& $s)
     {
         $s .= "\n"; $s .= '{';
+        $s .= '"'; $s .= 'protocError'; $s .= '"'; $s .= ':'; $comma = ',';
+        $s .= $this->protocError;
+        if (!empty($comma)) { $s .= $comma; $comma = ''; }
         $s .= '"'; $s .= 'protocId'; $s .= '"'; $s .= ':'; $comma = ',';
         $s .= $this->protocId;
         if (!empty($comma)) { $s .= $comma; $comma = ''; }
         $s .= '"'; $s .= 'protocCRC'; $s .= '"'; $s .= ':'; $comma = ',';
         $s .= $this->protocCRC;
-        if (!empty($comma)) { $s .= $comma; $comma = ''; }
-        $s .= '"'; $s .= 'protocError'; $s .= '"'; $s .= ':'; $comma = ',';
-        $s .= $this->protocError;
         $protoc2CExists = isset($this->protoc2C);
         if (!empty($comma) && $protoc2CExists) { $s .= $comma; $comma = ''; }
         if ($protoc2CExists) {
@@ -293,12 +293,12 @@ final class TestUserLoginR2C
     public function writeXML (& $s, $name)
     {
         $attrs = ''; $nodes = '';
+        $attrs .= ' '; $attrs .= 'protocError'; $attrs .= '=';
+        $attrs .= '"'; $attrs .= $this->protocError; $attrs .= '"';
         $attrs .= ' '; $attrs .= 'protocId'; $attrs .= '=';
         $attrs .= '"'; $attrs .= $this->protocId; $attrs .= '"';
         $attrs .= ' '; $attrs .= 'protocCRC'; $attrs .= '=';
         $attrs .= '"'; $attrs .= $this->protocCRC; $attrs .= '"';
-        $attrs .= ' '; $attrs .= 'protocError'; $attrs .= '=';
-        $attrs .= '"'; $attrs .= $this->protocError; $attrs .= '"';
         if (isset($this->protoc2C)) {
             $this->protoc2C->writeXML($nodes, 'protoc2C');
         }

@@ -213,16 +213,20 @@ invar.InvarCodec.XMLEncode
         if (from.readByte() == (byte)0x01) {
             other.read(from);
         }
-        listI08.clear();
-        if (from.readByte() == (byte)0x01) {
+        byte listI08Exists = from.readByte();
+        if ((byte)0x01 == listI08Exists) {
+            if (listI08 == null) { listI08 = new LinkedList<java.lang.Byte>(); }
             Long lenListI08 = from.readInt() & 0xFFFFFFFFL;
             for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
                 java.lang.Byte n1 = from.readByte();
                 listI08.add(n1);
             }
         }
-        dictI08.clear();
-        if (from.readByte() == (byte)0x01) {
+        else if ((byte)0x00 == listI08Exists) { listI08 = null; }
+        else { throw new IOException("Protoc read error: The value of 'listI08Exists' is invalid. 498"); }
+        byte dictI08Exists = from.readByte();
+        if ((byte)0x01 == dictI08Exists) {
+            if (dictI08 == null) { dictI08 = new LinkedHashMap<java.lang.Byte,java.lang.Byte>(); }
             Long lenDictI08 = from.readInt() & 0xFFFFFFFFL;
             for (Long iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
                 java.lang.Byte k1 = from.readByte();
@@ -230,8 +234,11 @@ invar.InvarCodec.XMLEncode
                 dictI08.put(k1,v1);
             }
         }
-        listNested.clear();
-        if (from.readByte() == (byte)0x01) {
+        else if ((byte)0x00 == dictI08Exists) { dictI08 = null; }
+        else { throw new IOException("Protoc read error: The value of 'dictI08Exists' is invalid. 498"); }
+        byte listNestedExists = from.readByte();
+        if ((byte)0x01 == listNestedExists) {
+            if (listNested == null) { listNested = new LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>>(); }
             Long lenListNested = from.readInt() & 0xFFFFFFFFL;
             for (Long iListNested = 0L; iListNested < lenListNested; ++iListNested) {
                 LinkedList<LinkedList<LinkedList<TestPointer>>> n1 = new LinkedList<LinkedList<LinkedList<TestPointer>>>(); //read.vec.head
@@ -254,10 +261,13 @@ invar.InvarCodec.XMLEncode
                 listNested.add(n1);
             }
         }
+        else if ((byte)0x00 == listNestedExists) { listNested = null; }
+        else { throw new IOException("Protoc read error: The value of 'listNestedExists' is invalid. 498"); }
         numberSingle = from.readFloat();
         enumValue = Gender.valueOf(from.readInt());
-        hotfix.clear();
-        if (from.readByte() == (byte)0x01) {
+        byte hotfixExists = from.readByte();
+        if ((byte)0x01 == hotfixExists) {
+            if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from.readUTF();
@@ -265,6 +275,8 @@ invar.InvarCodec.XMLEncode
                 hotfix.put(k1,v1);
             }
         }
+        else if ((byte)0x00 == hotfixExists) { hotfix = null; }
+        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
     }
 
     public void write(OutputStream from) throws IOException
@@ -332,7 +344,7 @@ invar.InvarCodec.XMLEncode
             dest.writeByte((byte)0x00);
         }
         dest.writeFloat(numberSingle);
-        dest.writeInt(enumValue.getValue());
+        dest.writeInt(enumValue.value());
         if (hotfix != null) {
             dest.writeByte((byte)0x01);
             dest.writeInt(hotfix.size());
@@ -411,7 +423,7 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         boolean selfExists = (null != self);
         if (selfExists) {
@@ -432,7 +444,7 @@ invar.InvarCodec.XMLEncode
         if (listI08Exists) {
             int listI08Size = (null == listI08 ? 0 : listI08.size());
             if (listI08Size > 0) {
-                s.append('\n').append('[');
+                s.append('[');
                 int listI08Idx = 0;
                 for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                     ++listI08Idx;
@@ -447,7 +459,7 @@ invar.InvarCodec.XMLEncode
         if (dictI08Exists) {
             int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
             if (dictI08Size > 0) {
-                s.append('\n').append('{');
+                s.append('{');
                 int dictI08Idx = 0;
                 for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                     ++dictI08Idx;
@@ -465,25 +477,25 @@ invar.InvarCodec.XMLEncode
         if (listNestedExists) {
             int listNestedSize = (null == listNested ? 0 : listNested.size());
             if (listNestedSize > 0) {
-                s.append('\n').append('[');
+                s.append('[');
                 int listNestedIdx = 0;
                 for (LinkedList<LinkedList<LinkedList<TestPointer>>> n1 : listNested) { /* vec.for: listNested */
                     ++listNestedIdx;
                     int n1Size = (null == n1 ? 0 : n1.size());
                     if (n1Size > 0) {
-                        s.append('\n').append('[');
+                        s.append('[');
                         int n1Idx = 0;
                         for (LinkedList<LinkedList<TestPointer>> n2 : n1) { /* vec.for: n1 */
                             ++n1Idx;
                             int n2Size = (null == n2 ? 0 : n2.size());
                             if (n2Size > 0) {
-                                s.append('\n').append('[');
+                                s.append('[');
                                 int n2Idx = 0;
                                 for (LinkedList<TestPointer> n3 : n2) { /* vec.for: n2 */
                                     ++n2Idx;
                                     int n3Size = (null == n3 ? 0 : n3.size());
                                     if (n3Size > 0) {
-                                        s.append('\n').append('[');
+                                        s.append('[');
                                         int n3Idx = 0;
                                         for (TestPointer n4 : n3) { /* vec.for: n3 */
                                             ++n3Idx;
@@ -516,7 +528,7 @@ invar.InvarCodec.XMLEncode
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('\n').append('{');
+                s.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
@@ -529,7 +541,7 @@ invar.InvarCodec.XMLEncode
                 s.append('}');
             } comma = ',';
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* TestPointer::writeJSON(...) */
 
     public String toStringXML()

@@ -87,8 +87,9 @@ invar.InvarCodec.XMLEncode
     public void read(DataInput from) throws IOException
     {
         pi = from.readDouble();
-        hotfix.clear();
-        if (from.readByte() == (byte)0x01) {
+        byte hotfixExists = from.readByte();
+        if ((byte)0x01 == hotfixExists) {
+            if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from.readUTF();
@@ -96,6 +97,8 @@ invar.InvarCodec.XMLEncode
                 hotfix.put(k1,v1);
             }
         }
+        else if ((byte)0x00 == hotfixExists) { hotfix = null; }
+        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
     }
 
     public void write(OutputStream from) throws IOException
@@ -146,7 +149,7 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         s.append('"').append("pi").append('"').append(':');
         s.append(pi.toString()); comma = ',';
@@ -155,7 +158,7 @@ invar.InvarCodec.XMLEncode
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('\n').append('{');
+                s.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
@@ -168,7 +171,7 @@ invar.InvarCodec.XMLEncode
                 s.append('}');
             } comma = ',';
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* Conflict::writeJSON(...) */
 
     public String toStringXML()

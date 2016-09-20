@@ -226,19 +226,19 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         boolean listDictExists = (null != listDict && listDict.size() > 0);
         if (listDictExists) { s.append('"').append("listDict").append('"').append(':'); comma = ','; }
         int listDictSize = (null == listDict ? 0 : listDict.size());
         if (listDictSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listDictIdx = 0;
             for (LinkedHashMap<java.lang.String,Custom> n1 : listDict) { /* vec.for: listDict */
                 ++listDictIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('\n').append('{');
+                    s.append('{');
                     int n1Idx = 0;
                     for (Map.Entry<java.lang.String,Custom> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
@@ -259,14 +259,14 @@ invar.InvarCodec.XMLEncode
         if (dictListExists) { s.append('"').append("dictList").append('"').append(':'); comma = ','; }
         int dictListSize = (null == dictList ? 0 : dictList.size());
         if (dictListSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictListIdx = 0;
             for (Map.Entry<LinkedList<java.lang.String>,LinkedList<Custom>> dictListIter : dictList.entrySet()) { /* map.for: dictList */
                 ++dictListIdx;
                 LinkedList<java.lang.String> k1 = dictListIter.getKey();
                 int k1Size = (null == k1 ? 0 : k1.size());
                 if (k1Size > 0) {
-                    s.append('\n').append('[');
+                    s.append('[');
                     int k1Idx = 0;
                     for (java.lang.String n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
@@ -278,7 +278,7 @@ invar.InvarCodec.XMLEncode
                 LinkedList<Custom> v1 = dictListIter.getValue();
                 int v1Size = (null == v1 ? 0 : v1.size());
                 if (v1Size > 0) {
-                    s.append('\n').append('[');
+                    s.append('[');
                     int v1Idx = 0;
                     for (Custom n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
@@ -296,31 +296,31 @@ invar.InvarCodec.XMLEncode
         if (list5dExists) { s.append('"').append("list5d").append('"').append(':'); comma = ','; }
         int list5dSize = (null == list5d ? 0 : list5d.size());
         if (list5dSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int list5dIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>> n1 : list5d) { /* vec.for: list5d */
                 ++list5dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('\n').append('[');
+                    s.append('[');
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Custom>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            s.append('\n').append('[');
+                            s.append('[');
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Custom>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
                                 int n3Size = (null == n3 ? 0 : n3.size());
                                 if (n3Size > 0) {
-                                    s.append('\n').append('[');
+                                    s.append('[');
                                     int n3Idx = 0;
                                     for (LinkedList<Custom> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
                                         int n4Size = (null == n4 ? 0 : n4.size());
                                         if (n4Size > 0) {
-                                            s.append('\n').append('[');
+                                            s.append('[');
                                             int n4Idx = 0;
                                             for (Custom n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
@@ -345,7 +345,7 @@ invar.InvarCodec.XMLEncode
             }
             s.append(']');
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* TestNest::writeJSON(...) */
 
     public String toStringXML()

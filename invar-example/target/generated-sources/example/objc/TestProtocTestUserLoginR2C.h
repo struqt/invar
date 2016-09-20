@@ -17,9 +17,9 @@
 /* 客户端请求,服务端响应 */
 @interface TestUserLoginR2C : NSObject <NSCopying, InvarEncode, InvarDecode, InvarEncodeJSON, ProtocResponse>
 
+- (uint16_t             ) protocError; /* [AutoAdd] Protocol error code */
 - (uint16_t             ) protocId   ; /* [AutoAdd] ProtocolID */
 - (uint32_t             ) protocCRC  ; /* [AutoAdd] Protocol CRC32 */
-- (uint16_t             ) protocError; /* [AutoAdd] Protocol error code */
 - (Protoc2C            *) protoc2C   ; /* [AutoAdd] 服务端响应的公共数据 */
 - (NSString            *) userId     ; /*  */
 - (NSString            *) userName   ; /*  */

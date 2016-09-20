@@ -371,7 +371,7 @@ invar.InvarCodec.XMLEncode
         }
         dest.writeInt(listEnum.size());
         for (Gender n1 : listEnum) {
-            dest.writeInt(n1.getValue());
+            dest.writeInt(n1.value());
         }
         dest.writeInt(listStruct.size());
         for (Custom n1 : listStruct) {
@@ -425,13 +425,13 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         boolean listI08Exists = (null != listI08 && listI08.size() > 0);
         if (listI08Exists) { s.append('"').append("listI08").append('"').append(':'); comma = ','; }
         int listI08Size = (null == listI08 ? 0 : listI08.size());
         if (listI08Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listI08Idx = 0;
             for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                 ++listI08Idx;
@@ -445,7 +445,7 @@ invar.InvarCodec.XMLEncode
         if (listI16Exists) { s.append('"').append("listI16").append('"').append(':'); comma = ','; }
         int listI16Size = (null == listI16 ? 0 : listI16.size());
         if (listI16Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listI16Idx = 0;
             for (Short n1 : listI16) { /* vec.for: listI16 */
                 ++listI16Idx;
@@ -459,7 +459,7 @@ invar.InvarCodec.XMLEncode
         if (listI32Exists) { s.append('"').append("listI32").append('"').append(':'); comma = ','; }
         int listI32Size = (null == listI32 ? 0 : listI32.size());
         if (listI32Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listI32Idx = 0;
             for (Integer n1 : listI32) { /* vec.for: listI32 */
                 ++listI32Idx;
@@ -473,7 +473,7 @@ invar.InvarCodec.XMLEncode
         if (listI64Exists) { s.append('"').append("listI64").append('"').append(':'); comma = ','; }
         int listI64Size = (null == listI64 ? 0 : listI64.size());
         if (listI64Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listI64Idx = 0;
             for (Long n1 : listI64) { /* vec.for: listI64 */
                 ++listI64Idx;
@@ -487,7 +487,7 @@ invar.InvarCodec.XMLEncode
         if (listU08Exists) { s.append('"').append("listU08").append('"').append(':'); comma = ','; }
         int listU08Size = (null == listU08 ? 0 : listU08.size());
         if (listU08Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listU08Idx = 0;
             for (java.lang.Integer n1 : listU08) { /* vec.for: listU08 */
                 ++listU08Idx;
@@ -501,7 +501,7 @@ invar.InvarCodec.XMLEncode
         if (listU16Exists) { s.append('"').append("listU16").append('"').append(':'); comma = ','; }
         int listU16Size = (null == listU16 ? 0 : listU16.size());
         if (listU16Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listU16Idx = 0;
             for (java.lang.Integer n1 : listU16) { /* vec.for: listU16 */
                 ++listU16Idx;
@@ -515,7 +515,7 @@ invar.InvarCodec.XMLEncode
         if (listU32Exists) { s.append('"').append("listU32").append('"').append(':'); comma = ','; }
         int listU32Size = (null == listU32 ? 0 : listU32.size());
         if (listU32Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listU32Idx = 0;
             for (java.lang.Long n1 : listU32) { /* vec.for: listU32 */
                 ++listU32Idx;
@@ -529,7 +529,7 @@ invar.InvarCodec.XMLEncode
         if (listU64Exists) { s.append('"').append("listU64").append('"').append(':'); comma = ','; }
         int listU64Size = (null == listU64 ? 0 : listU64.size());
         if (listU64Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listU64Idx = 0;
             for (BigInteger n1 : listU64) { /* vec.for: listU64 */
                 ++listU64Idx;
@@ -543,7 +543,7 @@ invar.InvarCodec.XMLEncode
         if (listSingleExists) { s.append('"').append("listSingle").append('"').append(':'); comma = ','; }
         int listSingleSize = (null == listSingle ? 0 : listSingle.size());
         if (listSingleSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listSingleIdx = 0;
             for (Float n1 : listSingle) { /* vec.for: listSingle */
                 ++listSingleIdx;
@@ -557,7 +557,7 @@ invar.InvarCodec.XMLEncode
         if (listDoubleExists) { s.append('"').append("listDouble").append('"').append(':'); comma = ','; }
         int listDoubleSize = (null == listDouble ? 0 : listDouble.size());
         if (listDoubleSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listDoubleIdx = 0;
             for (java.lang.Double n1 : listDouble) { /* vec.for: listDouble */
                 ++listDoubleIdx;
@@ -571,7 +571,7 @@ invar.InvarCodec.XMLEncode
         if (listBooleanExists) { s.append('"').append("listBoolean").append('"').append(':'); comma = ','; }
         int listBooleanSize = (null == listBoolean ? 0 : listBoolean.size());
         if (listBooleanSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listBooleanIdx = 0;
             for (java.lang.Boolean n1 : listBoolean) { /* vec.for: listBoolean */
                 ++listBooleanIdx;
@@ -585,7 +585,7 @@ invar.InvarCodec.XMLEncode
         if (listStringExists) { s.append('"').append("listString").append('"').append(':'); comma = ','; }
         int listStringSize = (null == listString ? 0 : listString.size());
         if (listStringSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listStringIdx = 0;
             for (java.lang.String n1 : listString) { /* vec.for: listString */
                 ++listStringIdx;
@@ -599,7 +599,7 @@ invar.InvarCodec.XMLEncode
         if (listEnumExists) { s.append('"').append("listEnum").append('"').append(':'); comma = ','; }
         int listEnumSize = (null == listEnum ? 0 : listEnum.size());
         if (listEnumSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listEnumIdx = 0;
             for (Gender n1 : listEnum) { /* vec.for: listEnum */
                 ++listEnumIdx;
@@ -613,7 +613,7 @@ invar.InvarCodec.XMLEncode
         if (listStructExists) { s.append('"').append("listStruct").append('"').append(':'); comma = ','; }
         int listStructSize = (null == listStruct ? 0 : listStruct.size());
         if (listStructSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listStructIdx = 0;
             for (Custom n1 : listStruct) { /* vec.for: listStruct */
                 ++listStructIdx;
@@ -622,7 +622,7 @@ invar.InvarCodec.XMLEncode
             }
             s.append(']');
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* TestList::writeJSON(...) */
 
     public String toStringXML()

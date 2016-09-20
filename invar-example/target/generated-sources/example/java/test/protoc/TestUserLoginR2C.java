@@ -24,16 +24,16 @@ invar.InvarCodec.BinaryDecode,
 invar.InvarCodec.BinaryEncode,
 invar.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x38180462L;
+    static public final long CRC32 = 0xAE3BF274L;
 
     static public TestUserLoginR2C Create()
     {
         return new TestUserLoginR2C();
     }
 
+    private Integer                      protocError;/* [AutoAdd] Protocol error code */
     private Integer                      protocId   ;/* [AutoAdd] ProtocolID */
     private Long                         protocCRC  ;/* [AutoAdd] Protocol CRC32 */
-    private Integer                      protocError;/* [AutoAdd] Protocol error code */
     private Protoc2C                     protoc2C   ;/* [AutoAdd] 服务端响应的公共数据 */
     private String                       userId     ;
     private String                       userName   ;
@@ -42,9 +42,9 @@ invar.InvarCodec.XMLEncode
 
     public TestUserLoginR2C()
     {
+        protocError = 0;
         protocId    = 65528;
         protocCRC   = CRC32;
-        protocError = 0;
         protoc2C    = null;
         userId      = "";
         userName    = "";
@@ -54,9 +54,9 @@ invar.InvarCodec.XMLEncode
 
     public TestUserLoginR2C reuse()
     {
+        protocError = 0;
         protocId = 65528;
         protocCRC = CRC32;
-        protocError = 0;
         if (protoc2C != null) {
             protoc2C.reuse();
         }
@@ -69,17 +69,17 @@ invar.InvarCodec.XMLEncode
         return this;
     }
 
-    /** [AutoAdd] ProtocolID */
+    /** [AutoAdd] Protocol error code */
     @invar.InvarRule(T="uint16", S="f0")
+    public Integer getProtocError() { return protocError; }
+
+    /** [AutoAdd] ProtocolID */
+    @invar.InvarRule(T="uint16", S="f1")
     public Integer getProtocId() { return protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f1")
+    @invar.InvarRule(T="uint32", S="f2")
     public Long getProtocCRC() { return protocCRC; }
-
-    /** [AutoAdd] Protocol error code */
-    @invar.InvarRule(T="uint16", S="f2")
-    public Integer getProtocError() { return protocError; }
 
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2C", S="f3")
@@ -101,8 +101,18 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="map<string,string>", S="f7")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
-    /** [AutoAdd] ProtocolID */
+    /** [AutoAdd] Protocol error code */
     @invar.InvarRule(T="uint16", S="f0")
+    public TestUserLoginR2C setProtocError(int value) throws NumberFormatException
+    {
+        if (value < 0 || value > 0xFFFF) {
+            throw new NumberFormatException("uint16 value out of range: " + value);
+        }
+        this.protocError = value;
+        return this;
+    }
+    /** [AutoAdd] ProtocolID */
+    @invar.InvarRule(T="uint16", S="f1")
     public TestUserLoginR2C setProtocId(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
@@ -112,23 +122,13 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f1")
+    @invar.InvarRule(T="uint32", S="f2")
     public TestUserLoginR2C setProtocCRC(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
             throw new NumberFormatException("uint32 value out of range: " + value);
         }
         this.protocCRC = value;
-        return this;
-    }
-    /** [AutoAdd] Protocol error code */
-    @invar.InvarRule(T="uint16", S="f2")
-    public TestUserLoginR2C setProtocError(int value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFF) {
-            throw new NumberFormatException("uint16 value out of range: " + value);
-        }
-        this.protocError = value;
         return this;
     }
     /** [AutoAdd] 服务端响应的公共数据 */
@@ -153,9 +153,9 @@ invar.InvarCodec.XMLEncode
         if (this == from || from == null) {
             return this;
         }
+        protocError = from.protocError;
         protocId = from.protocId;
         protocCRC = from.protocCRC;
-        protocError = from.protocError;
         if (from.protoc2C != null) {
             protoc2C.copy(from.protoc2C);
         } else {
@@ -182,9 +182,13 @@ invar.InvarCodec.XMLEncode
 
     public void read(DataInput from) throws IOException
     {
+        protocError = from.readUnsignedShort();
+        if (protocError != 0) {
+            throw new IOException("Protoc read error: The code is " + protocError);
+        }
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
-        protocError = from.readUnsignedShort();
+        if (CRC32 != protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched. 499"); }
         if (from.readByte() == (byte)0x01) {
             protoc2C.read(from);
         }
@@ -196,8 +200,9 @@ invar.InvarCodec.XMLEncode
             Integer n1 = from.readUnsignedShort();
             roles.add(n1);
         }
-        hotfix.clear();
-        if (from.readByte() == (byte)0x01) {
+        byte hotfixExists = from.readByte();
+        if ((byte)0x01 == hotfixExists) {
+            if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from.readUTF();
@@ -205,6 +210,8 @@ invar.InvarCodec.XMLEncode
                 hotfix.put(k1,v1);
             }
         }
+        else if ((byte)0x00 == hotfixExists) { hotfix = null; }
+        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
     }
 
     public void write(OutputStream from) throws IOException
@@ -214,9 +221,9 @@ invar.InvarCodec.XMLEncode
 
     public void write(DataOutput dest) throws IOException
     {
+        dest.writeShort(protocError);
         dest.writeShort(protocId);
         dest.writeInt(protocCRC.intValue());
-        dest.writeShort(protocError);
         if (protoc2C != null) {
             dest.writeByte((byte)0x01);
             protoc2C.write(dest);
@@ -248,12 +255,12 @@ invar.InvarCodec.XMLEncode
         StringBuilder s = new StringBuilder();
         s.append('{');
         s.append(getClass().getName());
+        s.append(',').append("protocError").append(':');
+        s.append(protocError.toString());
         s.append(',').append("protocId").append(':');
         s.append(protocId.toString());
         s.append(',').append("protocCRC").append(':');
         s.append(protocCRC.toString());
-        s.append(',').append("protocError").append(':');
-        s.append(protocError.toString());
         s.append(", protoc2C:");
         if (protoc2C != null) {
             s.append('<').append("Protoc2C").append('>');
@@ -285,16 +292,16 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
+        s.append('"').append("protocError").append('"').append(':');
+        s.append(protocError.toString()); comma = ',';
+        if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("protocId").append('"').append(':');
         s.append(protocId.toString()); comma = ',';
         if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("protocCRC").append('"').append(':');
         s.append(protocCRC.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("protocError").append('"').append(':');
-        s.append(protocError.toString()); comma = ',';
         boolean protoc2CExists = (null != protoc2C);
         if ('\0' != comma && protoc2CExists) { s.append(comma); comma = '\0'; }
         if (protoc2CExists) {
@@ -315,7 +322,7 @@ invar.InvarCodec.XMLEncode
         if (rolesExists) { s.append('"').append("roles").append('"').append(':'); comma = ','; }
         int rolesSize = (null == roles ? 0 : roles.size());
         if (rolesSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int rolesIdx = 0;
             for (Integer n1 : roles) { /* vec.for: roles */
                 ++rolesIdx;
@@ -329,7 +336,7 @@ invar.InvarCodec.XMLEncode
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('\n').append('{');
+                s.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
@@ -342,7 +349,7 @@ invar.InvarCodec.XMLEncode
                 s.append('}');
             } comma = ',';
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* TestUserLoginR2C::writeJSON(...) */
 
     public String toStringXML()
@@ -356,12 +363,12 @@ invar.InvarCodec.XMLEncode
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
+        attrs.append(' ').append("protocError").append('=').append('"');
+        attrs.append(protocError.toString()).append('"');
         attrs.append(' ').append("protocId").append('=').append('"');
         attrs.append(protocId.toString()).append('"');
         attrs.append(' ').append("protocCRC").append('=').append('"');
         attrs.append(protocCRC.toString()).append('"');
-        attrs.append(' ').append("protocError").append('=').append('"');
-        attrs.append(protocError.toString()).append('"');
         if (protoc2C != null) {
             protoc2C.writeXML(nodes, "protoc2C");
         }

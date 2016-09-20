@@ -19,16 +19,20 @@ public sealed class TestUserLoginR2C
 , Invar.XMLEncode
 , Invar.ProtocResponse
 {
-    public const uint CRC32 = 0x38180462;
+    public const uint CRC32 = 0xAE3BF274;
 
+    private UInt16                    protocError = 0; // [AutoAdd] Protocol error code.
     private UInt16                    protocId    = 65528; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC   = CRC32; // [AutoAdd] Protocol CRC32.
-    private UInt16                    protocError = 0; // [AutoAdd] Protocol error code.
     private Protoc2C                  protoc2C    = null; // [AutoAdd] 服务端响应的公共数据.
     private String                    userId      = "";
     private String                    userName    = "";
     private List<Int32>               roles       = new List<Int32>();
     private Dictionary<String,String> hotfix      = null; // [AutoAdd] Hotfix.
+
+    /// [AutoAdd] Protocol error code.
+    [Invar.InvarRule("uint16", "")]
+    public UInt16 GetProtocError() { return this.protocError; }
 
     /// [AutoAdd] ProtocolID.
     [Invar.InvarRule("uint16", "")]
@@ -37,10 +41,6 @@ public sealed class TestUserLoginR2C
     /// [AutoAdd] Protocol CRC32.
     [Invar.InvarRule("uint32", "")]
     public UInt32 GetProtocCRC() { return this.protocCRC; }
-
-    /// [AutoAdd] Protocol error code.
-    [Invar.InvarRule("uint16", "")]
-    public UInt16 GetProtocError() { return this.protocError; }
 
     /// [AutoAdd] 服务端响应的公共数据.
     [Invar.InvarRule("Test.Protoc.Protoc2C", "")]
@@ -84,9 +84,9 @@ public sealed class TestUserLoginR2C
 
     public TestUserLoginR2C Reuse()
     {
+        this.protocError = 0;
         this.protocId    = 65528;
         this.protocCRC   = CRC32;
-        this.protocError = 0;
         if (this.protoc2C != null) { this.protoc2C.Reuse(); }
         this.userId      = "";
         this.userName    = "";
@@ -100,9 +100,9 @@ public sealed class TestUserLoginR2C
         if (null == from_ || this == from_) {
             return this;
         }
+        this.protocError = from_.protocError;
         this.protocId = from_.protocId;
         this.protocCRC = from_.protocCRC;
-        this.protocError = from_.protocError;
         if (null == from_.protoc2C) {
             this.protoc2C = null;
         } else {
@@ -127,13 +127,13 @@ public sealed class TestUserLoginR2C
 
     public void Read(BinaryReader r)
     {
-        this.protocId = r.ReadUInt16();
-        this.protocCRC = r.ReadUInt32();
-        if (CRC32 != this.protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched.", 499); }
         this.protocError = r.ReadUInt16();
         if (this.protocError != 0) {
             throw new IOException("Protoc read error: The code is " + this.protocError, this.protocError);
         }
+        this.protocId = r.ReadUInt16();
+        this.protocCRC = r.ReadUInt32();
+        if (CRC32 != this.protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched.", 499); }
         sbyte protoc2CExists = r.ReadSByte();
         if ((sbyte)0x01 == protoc2CExists) {
             if (this.protoc2C == null) { this.protoc2C = new Protoc2C(); }
@@ -168,10 +168,10 @@ public sealed class TestUserLoginR2C
 
     public void Write(BinaryWriter w)
     {
-        w.Write(this.protocId);
-        w.Write(this.protocCRC);
         w.Write(this.protocError);
         if (this.protocError != 0) { return; }
+        w.Write(this.protocId);
+        w.Write(this.protocCRC);
         if (this.protoc2C != null) {
             w.Write((sbyte)0x01);
             this.protoc2C.Write(w);
@@ -211,12 +211,12 @@ public sealed class TestUserLoginR2C
         StringBuilder result = new StringBuilder();
         result.Append('{').Append(' ');
         result.Append(GetType().ToString());
+        result.Append(',').Append(' ').Append("protocError").Append(':');
+        result.Append(this.protocError.ToString());
         result.Append(',').Append(' ').Append("protocId").Append(':');
         result.Append(this.protocId.ToString());
         result.Append(',').Append(' ').Append("protocCRC").Append(':');
         result.Append(this.protocCRC.ToString());
-        result.Append(',').Append(' ').Append("protocError").Append(':');
-        result.Append(this.protocError.ToString());
         result.Append(',').Append(' ').Append("protoc2C").Append(':');
         if (this.protoc2C != null) { result.Append("<Protoc2C>"); }
         else { result.Append("null"); }
@@ -244,11 +244,11 @@ public sealed class TestUserLoginR2C
     {
         s.Append('\n').Append('{');
         string comma = null;
+        s.Append('"').Append("protocError").Append('"').Append(':'); comma = ","; s.Append(this.protocError.ToString());
+        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append('"').Append("protocId").Append('"').Append(':'); comma = ","; s.Append(this.protocId.ToString());
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append('"').Append("protocCRC").Append('"').Append(':'); comma = ","; s.Append(this.protocCRC.ToString());
-        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
-        s.Append('"').Append("protocError").Append('"').Append(':'); comma = ","; s.Append(this.protocError.ToString());
         bool protoc2CExists = (null != this.protoc2C);
         if (!String.IsNullOrEmpty(comma) && protoc2CExists) { s.Append(comma); comma = null; }
         if (protoc2CExists) {
@@ -313,11 +313,11 @@ public sealed class TestUserLoginR2C
     {
         s.Append('\n').Append('{');
         string comma = null;
+        s.Append("protocError").Append('='); comma = ","; s.Append(this.protocError.ToString());
+        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append("protocId").Append('='); comma = ","; s.Append(this.protocId.ToString());
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
         s.Append("protocCRC").Append('='); comma = ","; s.Append(this.protocCRC.ToString());
-        if (!String.IsNullOrEmpty(comma)) { s.Append(comma); comma = null; }
-        s.Append("protocError").Append('='); comma = ","; s.Append(this.protocError.ToString());
         bool protoc2CExists = (null != this.protoc2C);
         if (!String.IsNullOrEmpty(comma) && protoc2CExists) { s.Append(comma); comma = null; }
         if (protoc2CExists) {
@@ -382,11 +382,11 @@ public sealed class TestUserLoginR2C
     {
         s.Append("array").Append('(').Append('\n');
         string comma = null;
+        s.Append('\'').Append("protocError").Append('\'').Append("=>"); comma = ","; s.Append(this.protocError.ToString());
+        if (!String.IsNullOrEmpty(comma)) { s.Append(comma).Append('\n'); comma = null; }
         s.Append('\'').Append("protocId").Append('\'').Append("=>"); comma = ","; s.Append(this.protocId.ToString());
         if (!String.IsNullOrEmpty(comma)) { s.Append(comma).Append('\n'); comma = null; }
         s.Append('\'').Append("protocCRC").Append('\'').Append("=>"); comma = ","; s.Append(this.protocCRC.ToString());
-        if (!String.IsNullOrEmpty(comma)) { s.Append(comma).Append('\n'); comma = null; }
-        s.Append('\'').Append("protocError").Append('\'').Append("=>"); comma = ","; s.Append(this.protocError.ToString());
         bool protoc2CExists = (null != this.protoc2C);
         if (!String.IsNullOrEmpty(comma) && protoc2CExists) { s.Append(comma).Append('\n'); comma = null; }
         if (protoc2CExists) {
@@ -452,9 +452,9 @@ public sealed class TestUserLoginR2C
     {
         StringBuilder attrs = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
+        attrs.Append(' ').Append("protocError").Append('=').Append('"').Append(this.protocError.ToString()).Append('"');
         attrs.Append(' ').Append("protocId").Append('=').Append('"').Append(this.protocId.ToString()).Append('"');
         attrs.Append(' ').Append("protocCRC").Append('=').Append('"').Append(this.protocCRC.ToString()).Append('"');
-        attrs.Append(' ').Append("protocError").Append('=').Append('"').Append(this.protocError.ToString()).Append('"');
         if (this.protoc2C != null) {
             this.protoc2C.WriteXML(nodes, "protoc2C");
         }
@@ -495,7 +495,7 @@ public sealed class TestUserLoginR2C
 
 } /* class: TestUserLoginR2C */
 /*
-1@test.protoc.TestUserLoginR2C/uint16/uint32/uint16/test.protoc.Protoc2C/string/string/vec-int32/map
+1@test.protoc.TestUserLoginR2C/uint16/uint16/uint32/test.protoc.Protoc2C/string/string/vec-int32/map
   -string-string
 +@test.protoc.Protoc2C/map-string-string
 */

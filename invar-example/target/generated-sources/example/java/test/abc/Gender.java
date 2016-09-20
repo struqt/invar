@@ -5,26 +5,25 @@
 //===----------------------------------------------------------------------===*/
 package test.abc;
 
+import invar.InvarEnum;
+
 /** 性别的枚举类型 */
-public enum Gender
+public enum Gender implements InvarEnum
 {
     
-    NONE   (-1, "NONE"),
+    NONE   (-1),
     /* Enum male */
-    MALE   (10, "MALE"),
+    MALE   (10),
     /* Enum female */
-    FEMALE (20, "FEMALE"),;
+    FEMALE (20),;
 
-    public String  getName  () { return name; }
-    public Integer getValue () { return value; }
-    public String  toString () { return name + "(" + value + ")"; }
+    public Integer value() { return value; }
+    public String  toString() { return name() + "(" + value + ")"; }
 
-    private String  name;
     private Integer value;
 
-    Gender(Integer v, String n)
+    Gender(Integer v)
     {
-        this.name = n;
         this.value = v;
     }
 
@@ -32,7 +31,7 @@ public enum Gender
     {
         Gender[] es = Gender.values();
         for (Gender e : es) {
-            if(e.getValue().equals(v)) {
+            if(e.value().equals(v)) {
                 return e;
             }
         }

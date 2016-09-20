@@ -38,22 +38,29 @@ public abstract class InvarCodec {
         void writeXML(StringBuilder s, String name);
     }
 
-    public interface InvarProtoc {
+    public interface InvarProtoc extends JSONEncode {
 
         Integer getProtocId();
 
         Long getProtocCRC();
     }
 
-    public interface ProtocNotify extends InvarProtoc {
+    public interface ProtocNotify extends InvarProtoc, BinaryDecode, BinaryEncode {
     }
 
-    public interface ProtocRequest extends InvarProtoc {
+    public interface ProtocRequest extends InvarProtoc, BinaryDecode {
     }
 
-    public interface ProtocResponse extends InvarProtoc {
+    public interface ProtocResponse<T> extends InvarProtoc, BinaryEncode {
 
         Integer getProtocError();
+
+        T setProtocError(int value);
+    }
+
+    public interface ResponseSender {
+
+        <T> void sendResponse(ProtocResponse<T> resp) throws IOException;
     }
 
 }

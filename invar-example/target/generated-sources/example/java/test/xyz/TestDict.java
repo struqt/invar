@@ -348,8 +348,9 @@ invar.InvarCodec.XMLEncode
             v1.read(from);
             dictStruct.put(k1,v1);
         }
-        hotfix.clear();
-        if (from.readByte() == (byte)0x01) {
+        byte hotfixExists = from.readByte();
+        if ((byte)0x01 == hotfixExists) {
+            if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from.readUTF();
@@ -357,6 +358,8 @@ invar.InvarCodec.XMLEncode
                 hotfix.put(k1,v1);
             }
         }
+        else if ((byte)0x00 == hotfixExists) { hotfix = null; }
+        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
     }
 
     public void write(OutputStream from) throws IOException
@@ -453,9 +456,9 @@ invar.InvarCodec.XMLEncode
         dest.writeInt(dictEnum.size());
         for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) {
             Gender k1 = dictEnumIter.getKey();
-            dest.writeInt(k1.getValue());
+            dest.writeInt(k1.value());
             Gender v1 = dictEnumIter.getValue();
-            dest.writeInt(v1.getValue());
+            dest.writeInt(v1.value());
         }
         dest.writeInt(dictStruct.size());
         for (Map.Entry<Custom,Custom> dictStructIter : dictStruct.entrySet()) {
@@ -530,13 +533,13 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
         if (dictI08Exists) { s.append('"').append("dictI08").append('"').append(':'); comma = ','; }
         int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
         if (dictI08Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictI08Idx = 0;
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                 ++dictI08Idx;
@@ -553,7 +556,7 @@ invar.InvarCodec.XMLEncode
         if (dictI16Exists) { s.append('"').append("dictI16").append('"').append(':'); comma = ','; }
         int dictI16Size = (null == dictI16 ? 0 : dictI16.size());
         if (dictI16Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictI16Idx = 0;
             for (Map.Entry<Short,Short> dictI16Iter : dictI16.entrySet()) { /* map.for: dictI16 */
                 ++dictI16Idx;
@@ -570,7 +573,7 @@ invar.InvarCodec.XMLEncode
         if (dictI32Exists) { s.append('"').append("dictI32").append('"').append(':'); comma = ','; }
         int dictI32Size = (null == dictI32 ? 0 : dictI32.size());
         if (dictI32Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictI32Idx = 0;
             for (Map.Entry<Integer,Integer> dictI32Iter : dictI32.entrySet()) { /* map.for: dictI32 */
                 ++dictI32Idx;
@@ -587,7 +590,7 @@ invar.InvarCodec.XMLEncode
         if (dictI64Exists) { s.append('"').append("dictI64").append('"').append(':'); comma = ','; }
         int dictI64Size = (null == dictI64 ? 0 : dictI64.size());
         if (dictI64Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictI64Idx = 0;
             for (Map.Entry<Long,Long> dictI64Iter : dictI64.entrySet()) { /* map.for: dictI64 */
                 ++dictI64Idx;
@@ -604,7 +607,7 @@ invar.InvarCodec.XMLEncode
         if (dictU08Exists) { s.append('"').append("dictU08").append('"').append(':'); comma = ','; }
         int dictU08Size = (null == dictU08 ? 0 : dictU08.size());
         if (dictU08Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictU08Idx = 0;
             for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU08Iter : dictU08.entrySet()) { /* map.for: dictU08 */
                 ++dictU08Idx;
@@ -621,7 +624,7 @@ invar.InvarCodec.XMLEncode
         if (dictU16Exists) { s.append('"').append("dictU16").append('"').append(':'); comma = ','; }
         int dictU16Size = (null == dictU16 ? 0 : dictU16.size());
         if (dictU16Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictU16Idx = 0;
             for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU16Iter : dictU16.entrySet()) { /* map.for: dictU16 */
                 ++dictU16Idx;
@@ -638,7 +641,7 @@ invar.InvarCodec.XMLEncode
         if (dictU32Exists) { s.append('"').append("dictU32").append('"').append(':'); comma = ','; }
         int dictU32Size = (null == dictU32 ? 0 : dictU32.size());
         if (dictU32Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictU32Idx = 0;
             for (Map.Entry<java.lang.Long,java.lang.Long> dictU32Iter : dictU32.entrySet()) { /* map.for: dictU32 */
                 ++dictU32Idx;
@@ -655,7 +658,7 @@ invar.InvarCodec.XMLEncode
         if (dictU64Exists) { s.append('"').append("dictU64").append('"').append(':'); comma = ','; }
         int dictU64Size = (null == dictU64 ? 0 : dictU64.size());
         if (dictU64Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictU64Idx = 0;
             for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) { /* map.for: dictU64 */
                 ++dictU64Idx;
@@ -672,7 +675,7 @@ invar.InvarCodec.XMLEncode
         if (dictSingleExists) { s.append('"').append("dictSingle").append('"').append(':'); comma = ','; }
         int dictSingleSize = (null == dictSingle ? 0 : dictSingle.size());
         if (dictSingleSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictSingleIdx = 0;
             for (Map.Entry<Float,Float> dictSingleIter : dictSingle.entrySet()) { /* map.for: dictSingle */
                 ++dictSingleIdx;
@@ -689,7 +692,7 @@ invar.InvarCodec.XMLEncode
         if (dictDoubleExists) { s.append('"').append("dictDouble").append('"').append(':'); comma = ','; }
         int dictDoubleSize = (null == dictDouble ? 0 : dictDouble.size());
         if (dictDoubleSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictDoubleIdx = 0;
             for (Map.Entry<java.lang.Double,java.lang.Double> dictDoubleIter : dictDouble.entrySet()) { /* map.for: dictDouble */
                 ++dictDoubleIdx;
@@ -706,7 +709,7 @@ invar.InvarCodec.XMLEncode
         if (dictBooleanExists) { s.append('"').append("dictBoolean").append('"').append(':'); comma = ','; }
         int dictBooleanSize = (null == dictBoolean ? 0 : dictBoolean.size());
         if (dictBooleanSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictBooleanIdx = 0;
             for (Map.Entry<java.lang.Boolean,java.lang.Boolean> dictBooleanIter : dictBoolean.entrySet()) { /* map.for: dictBoolean */
                 ++dictBooleanIdx;
@@ -723,7 +726,7 @@ invar.InvarCodec.XMLEncode
         if (dictStringExists) { s.append('"').append("dictString").append('"').append(':'); comma = ','; }
         int dictStringSize = (null == dictString ? 0 : dictString.size());
         if (dictStringSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictStringIdx = 0;
             for (Map.Entry<java.lang.String,java.lang.String> dictStringIter : dictString.entrySet()) { /* map.for: dictString */
                 ++dictStringIdx;
@@ -740,7 +743,7 @@ invar.InvarCodec.XMLEncode
         if (dictEnumExists) { s.append('"').append("dictEnum").append('"').append(':'); comma = ','; }
         int dictEnumSize = (null == dictEnum ? 0 : dictEnum.size());
         if (dictEnumSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictEnumIdx = 0;
             for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) { /* map.for: dictEnum */
                 ++dictEnumIdx;
@@ -757,7 +760,7 @@ invar.InvarCodec.XMLEncode
         if (dictStructExists) { s.append('"').append("dictStruct").append('"').append(':'); comma = ','; }
         int dictStructSize = (null == dictStruct ? 0 : dictStruct.size());
         if (dictStructSize > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictStructIdx = 0;
             for (Map.Entry<Custom,Custom> dictStructIter : dictStruct.entrySet()) { /* map.for: dictStruct */
                 ++dictStructIdx;
@@ -774,7 +777,7 @@ invar.InvarCodec.XMLEncode
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('\n').append('{');
+                s.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
@@ -787,7 +790,7 @@ invar.InvarCodec.XMLEncode
                 s.append('}');
             } comma = ',';
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* TestDict::writeJSON(...) */
 
     public String toStringXML()

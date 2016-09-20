@@ -15,7 +15,7 @@ use \invar\BinaryWriter;
 
 final class TestHeartBeatR2S
 {
-    const CRC32 = 0xD651F662;
+    const CRC32 = 0xA13D5F14;
 
     static public function &CreateFromBytes (& $str)
     {
@@ -24,17 +24,17 @@ final class TestHeartBeatR2S
         return $o;
     }
 
+    private $protocError ;/*  uint16 // [AutoAdd] Protocol error code */
     private $protocId    ;/*  uint16 // [AutoAdd] ProtocolID */
     private $protocCRC   ;/*  uint32 // [AutoAdd] Protocol CRC32 */
-    private $protocError ;/*  uint16 // [AutoAdd] Protocol error code */
     private $protoc2S    ;/*  test.protoc.Protoc2S // [AutoAdd] 客户端请求的公共数据 */
     private $hotfix      ;/*  map<string,string> // [AutoAdd] Hotfix */
 
     function __construct()
     {
+        $this->protocError = 0;
         $this->protocId    = 65533;
         $this->protocCRC   = self::CRC32;
-        $this->protocError = 0;
         $this->protoc2S    = NULL;
         $this->hotfix      = NULL;
     }
@@ -45,9 +45,9 @@ final class TestHeartBeatR2S
         if ($this == $from || $from == NULL) {
             return this;
         }
+        $this->protocError = $from->protocError;
         $this->protocId = $from->protocId;
         $this->protocCRC = $from->protocCRC;
-        $this->protocError = $from->protocError;
         if ($from->protoc2S != NULL) {
             $this->protoc2S.copy($from->protoc2S);
         } else {
@@ -65,13 +65,13 @@ final class TestHeartBeatR2S
 
     public function &read (& $r)
     {
-        $this->protocId = $r->readUInt16();
-        $this->protocCRC = $r->readUInt32();
-        if (self::CRC32 != $this->protocCRC) { throw new \Exception('Protoc read error: CRC32 is mismatched', 499); }
         $this->protocError = $r->readUInt16();
         if ($this->protocError != 0) {
             throw new \Exception('Protoc read error: The code is ' . $this->protocError, $this->protocError);
         }
+        $this->protocId = $r->readUInt16();
+        $this->protocCRC = $r->readUInt32();
+        if (self::CRC32 != $this->protocCRC) { throw new \Exception('Protoc read error: CRC32 is mismatched', 499); }
         $protoc2SExists = $r->readInt08();
         if (0x01 == $protoc2SExists) {
             if ($this->protoc2S == NULL) { $this->protoc2S = new Protoc2S; }
@@ -97,10 +97,10 @@ final class TestHeartBeatR2S
 
     public function write (& $str)
     {
-        BinaryWriter::writeUInt16($this->protocId, $str);
-        BinaryWriter::writeUInt32($this->protocCRC, $str);
         BinaryWriter::writeUInt16($this->protocError, $str);
         if ($this->protocError != 0) { return; }
+        BinaryWriter::writeUInt16($this->protocId, $str);
+        BinaryWriter::writeUInt32($this->protocCRC, $str);
         if ($this->protoc2S != NULL) {
             BinaryWriter::writeInt08(0x01, $str);
             $this->protoc2S->write($str);
@@ -120,14 +120,14 @@ final class TestHeartBeatR2S
     }
     /* End of write(...) */
 
+    /** [AutoAdd] Protocol error code */
+    public function  getProtocError() { return $this->protocError; }
+
     /** [AutoAdd] ProtocolID */
     public function  getProtocId() { return $this->protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
     public function  getProtocCRC() { return $this->protocCRC; }
-
-    /** [AutoAdd] Protocol error code */
-    public function  getProtocError() { return $this->protocError; }
 
     /** [AutoAdd] 客户端请求的公共数据 */
     public function getProtoc2S() { return $this->protoc2S; }
@@ -147,12 +147,12 @@ final class TestHeartBeatR2S
     public function &toString()
     {
         $s  = '{'; $s .= get_class($this);
+        $s .= ','; $s .= 'protocError'; $s .= ':';
+        $s .= $this->protocError;
         $s .= ','; $s .= 'protocId'; $s .= ':';
         $s .= $this->protocId;
         $s .= ','; $s .= 'protocCRC'; $s .= ':';
         $s .= $this->protocCRC;
-        $s .= ','; $s .= 'protocError'; $s .= ':';
-        $s .= $this->protocError;
         $s .= ','; $s .= 'protoc2S'; $s .= ':';
         if (isset($this->protoc2S)) { $s .= '<'; $s .= 'Protoc2S'; $s .= '>'; }
         else { $s .= 'null'; }
@@ -174,14 +174,14 @@ final class TestHeartBeatR2S
     public function writeJSON(& $s)
     {
         $s .= "\n"; $s .= '{';
+        $s .= '"'; $s .= 'protocError'; $s .= '"'; $s .= ':'; $comma = ',';
+        $s .= $this->protocError;
+        if (!empty($comma)) { $s .= $comma; $comma = ''; }
         $s .= '"'; $s .= 'protocId'; $s .= '"'; $s .= ':'; $comma = ',';
         $s .= $this->protocId;
         if (!empty($comma)) { $s .= $comma; $comma = ''; }
         $s .= '"'; $s .= 'protocCRC'; $s .= '"'; $s .= ':'; $comma = ',';
         $s .= $this->protocCRC;
-        if (!empty($comma)) { $s .= $comma; $comma = ''; }
-        $s .= '"'; $s .= 'protocError'; $s .= '"'; $s .= ':'; $comma = ',';
-        $s .= $this->protocError;
         $protoc2SExists = isset($this->protoc2S);
         if (!empty($comma) && $protoc2SExists) { $s .= $comma; $comma = ''; }
         if ($protoc2SExists) {
@@ -219,12 +219,12 @@ final class TestHeartBeatR2S
     public function writeXML (& $s, $name)
     {
         $attrs = ''; $nodes = '';
+        $attrs .= ' '; $attrs .= 'protocError'; $attrs .= '=';
+        $attrs .= '"'; $attrs .= $this->protocError; $attrs .= '"';
         $attrs .= ' '; $attrs .= 'protocId'; $attrs .= '=';
         $attrs .= '"'; $attrs .= $this->protocId; $attrs .= '"';
         $attrs .= ' '; $attrs .= 'protocCRC'; $attrs .= '=';
         $attrs .= '"'; $attrs .= $this->protocCRC; $attrs .= '"';
-        $attrs .= ' '; $attrs .= 'protocError'; $attrs .= '=';
-        $attrs .= '"'; $attrs .= $this->protocError; $attrs .= '"';
         if (isset($this->protoc2S)) {
             $this->protoc2S->writeXML($nodes, 'protoc2S');
         }

@@ -15,21 +15,21 @@ from InvarCodec import DataReader
 class TestHeartBeatR2S(object):
 
     """服务端请求,客户端响应"""
-    CRC32_ = 0xD651F662
+    CRC32_ = 0xA13D5F14
     SIZE_  = 10
 
     __slots__ = (
+        '_protocError',
         '_protocId',
         '_protocCRC',
-        '_protocError',
         '_protoc2S',
         '_hotfix')
    #__slots__
 
     def __init__(self):
+        self._protocError = 0
         self._protocId    = 65533
         self._protocCRC   = TestHeartBeatR2S.CRC32_
-        self._protocError = 0
         self._protoc2S    = None
         self._hotfix      = None
    #def __init__
@@ -41,6 +41,11 @@ class TestHeartBeatR2S(object):
         s.write(u'TestHeartBeatR2S')
         s.write(u',')
         s.write(u' ')
+        s.write(u'protocError')
+        s.write(u':')
+        s.write(unicode(self._protocError))
+        s.write(u',')
+        s.write(u' ')
         s.write(u'protocId')
         s.write(u':')
         s.write(unicode(self._protocId))
@@ -49,11 +54,6 @@ class TestHeartBeatR2S(object):
         s.write(u'protocCRC')
         s.write(u':')
         s.write(unicode(self._protocCRC))
-        s.write(u',')
-        s.write(u' ')
-        s.write(u'protocError')
-        s.write(u':')
-        s.write(unicode(self._protocError))
         s.write(u',')
         s.write(u' ')
         s.write(u'protoc2S')
@@ -94,13 +94,13 @@ class TestHeartBeatR2S(object):
    #def __len__
 
     def read(r):
+        self._protocError = r.readUInt16()
+        if self._protocError != 0:
+            raise InvarError(self._protocError, "Protoc read error: The code is " + self._protocError)
         self._protocId = r.readUInt16()
         self._protocCRC = r.readUInt32()
         if CRC32 != self._protocCRC:
             raise InvarError(499, "Protoc read error: CRC32 is mismatched.", 499)
-        self._protocError = r.readUInt16()
-        if self._protocError != 0:
-            raise InvarError(self._protocError, "Protoc read error: The code is " + self._protocError)
         protoc2SExists = r.readInt8()
         if 0x01 == protoc2SExists:
             if self._protoc2S == None:
@@ -128,11 +128,11 @@ class TestHeartBeatR2S(object):
    #def read
 
     def write(w):
-        w.writeUInt16(self._protocId)
-        w.writeUInt32(self._protocCRC)
         w.writeUInt16(self._protocError)
         if self._protocError != 0:
             return
+        w.writeUInt16(self._protocId)
+        w.writeUInt32(self._protocCRC)
         if self._protoc2S != None:
             w.writeUInt8(0x01)
             self._protoc2S.write(w)

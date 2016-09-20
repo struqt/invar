@@ -10,14 +10,14 @@
 
 #import "TestProtocTestHeartBeatR2S.h"
 
-#define CRC32__ 0xD651F662
+#define CRC32__ 0xA13D5F14
 #define SIZE__  10L
 
 @interface TestHeartBeatR2S ()
 {
+    uint16_t              _protocError; /*  &-uint16 */
     uint16_t              _protocId   ; /*  &-uint16 */
     uint32_t              _protocCRC  ; /*  &-uint32 */
-    uint16_t              _protocError; /*  &-uint16 */
     Protoc2S            * _protoc2S   ; /*  *-Test.Protoc.Protoc2S */
     NSMutableDictionary * _hotfix     ; /*  *-map<string,string> */
 }
@@ -29,9 +29,9 @@
 {
     self = [super init];
     if (!self) { return self; }
+    _protocError = 0;
     _protocId    = 65533;
     _protocCRC   = CRC32__;
-    _protocError = 0;
     _protoc2S    = nil;
     _hotfix      = nil;
     return self;
@@ -55,9 +55,9 @@
 }
 /* TestHeartBeatR2S::copyWithZone */
 
+- (uint16_t             ) protocError { return _protocError; }
 - (uint16_t             ) protocId    { return _protocId   ; }
 - (uint32_t             ) protocCRC   { return _protocCRC  ; }
-- (uint16_t             ) protocError { return _protocError; }
 - (Protoc2S            *) protoc2S    { return _protoc2S   ; }
 - (NSMutableDictionary *) hotfix      { return _hotfix     ; }
 
@@ -68,10 +68,10 @@
 - (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
+    _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocId = [r readUInt16:&eof];
     if (65533 != _protocId) { _protocId = 65533; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
-    _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     int8_t protoc2SExists = [r readInt8:&eof]; if (eof) { return INVAR_ERR_DECODE_EOF; }
     if (0x01 == protoc2SExists) {
         if (_protoc2S == nil) { _protoc2S = [[Protoc2S alloc] init]; }
@@ -97,10 +97,10 @@
 
 - (NSInteger)write:(DataWriter *)w
 {
-    [w writeUInt16:_protocId];
-    [w writeUInt32:_protocCRC];
     [w writeUInt16:_protocError];
     if (_protocError != 0) { return _protocError; }
+    [w writeUInt16:_protocId];
+    [w writeUInt32:_protocCRC];
     if (_protoc2S != nil) { [w writeInt8:0x01]; [_protoc2S write:w]; }
     else { [w writeInt8:0x00]; }
     if (_hotfix != nil) {
@@ -145,14 +145,14 @@
 {
     [s appendString:LINE_FEED_S]; [s appendString:LEFT_CURLY_S];
     NSString *comma = nil;
+    [s appendString:QUOTATION_S]; [s appendString:@"protocError"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
+    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocError)];
+    if (comma) { [s appendString:comma]; comma = nil; }
     [s appendString:QUOTATION_S]; [s appendString:@"protocId"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
     comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocId)];
     if (comma) { [s appendString:comma]; comma = nil; }
     [s appendString:QUOTATION_S]; [s appendString:@"protocCRC"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
     comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocCRC)];
-    if (comma) { [s appendString:comma]; comma = nil; }
-    [s appendString:QUOTATION_S]; [s appendString:@"protocError"]; [s appendString:QUOTATION_S]; [s appendString:COLON_S];
-    comma = COMMA_S; [s appendFormat:FORMAT_S, @(_protocError)];
     BOOL protoc2SExists = (nil != _protoc2S);
     if (comma && protoc2SExists) { [s appendString:comma]; comma = nil; }
     if (protoc2SExists) {
@@ -183,7 +183,7 @@
 
 @end /* @implementation TestHeartBeatR2S */
 /*
-1@test.protoc.TestHeartBeatR2S/uint16/uint32/uint16/test.protoc.Protoc2S/map-string-string
+1@test.protoc.TestHeartBeatR2S/uint16/uint16/uint32/test.protoc.Protoc2S/map-string-string
 +@test.protoc.Protoc2S/string/map-string-string
 */
 

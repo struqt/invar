@@ -223,7 +223,7 @@ invar.InvarCodec.XMLEncode
 
     public void write(DataOutput dest) throws IOException
     {
-        dest.writeInt(x.getValue());
+        dest.writeInt(x.value());
         test_.write(dest);
         xyz.write(dest);
         abc.write(dest);
@@ -306,7 +306,7 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         s.append('"').append("x").append('"').append(':');
         s.append(x.ordinal()); comma = ',';
@@ -330,7 +330,7 @@ invar.InvarCodec.XMLEncode
         if (childrenExists) { s.append('"').append("children").append('"').append(':'); comma = ','; }
         int childrenSize = (null == children ? 0 : children.size());
         if (childrenSize > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int childrenIdx = 0;
             for (Custom n1 : children) { /* vec.for: children */
                 ++childrenIdx;
@@ -367,7 +367,7 @@ invar.InvarCodec.XMLEncode
         if (emptyDocExists) {
             s.append('"').append("emptyDoc").append('"').append(':'); comma = ','; s.append('"').append(emptyDoc.toString()).append('"');
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* Custom::writeJSON(...) */
 
     public String toStringXML()

@@ -42,6 +42,41 @@ public final class InvarRuntime
         }
         return new InvarReadData();
     }
+
+    static public <
+        C extends RecvContext,
+        S extends InvarCodec.ResponseSender>
+    int handleProtocAsServer(int id, java.io.DataInput r, C ctx, S sender) throws Exception
+    {
+        switch (id) {
+        case 65533: /* 服务端请求,客户端响应 */
+        { TestHeartBeatR2S rep = new TestHeartBeatR2S(); rep.read(r); return RecvResponse.recv(ctx, rep); }
+        case 65531: /* 客户端通知服务端 */
+        { TestUserLocationN2S ntf = new TestUserLocationN2S(); ntf.read(r); return RecvNotify.recv(ctx, ntf); }
+        case 65527: /* 客户端请求,服务端响应 */ {
+        TestUserLogin2S req = new TestUserLogin2S(); TestUserLoginR2C resp = new TestUserLoginR2C();
+        req.read(r); RecvRequest.recv(ctx, req, resp); sender.sendResponse(resp); return 0; }
+        default: throw new RuntimeException("Unsupported protocol id: " + id);
+        }
+    } /* handleProtocAsServer(...) */
+
+    static public <
+        C extends RecvContext,
+        S extends InvarCodec.ResponseSender>
+    int handleProtocAsClient(int id, java.io.DataInput r, C ctx, S sender) throws Exception
+    {
+        switch (id) {
+        case 65534: /* 服务端请求,客户端响应 */ {
+        TestHeartBeat2C req = new TestHeartBeat2C(); TestHeartBeatR2S resp = new TestHeartBeatR2S();
+        req.read(r); RecvRequest.recv(ctx, req, resp); sender.sendResponse(resp); return 0; }
+        case 65530: /* 服务器通知客户端 */
+        { TestServerTimeN2C ntf = new TestServerTimeN2C(); ntf.read(r); return RecvNotify.recv(ctx, ntf); }
+        case 65528: /* 客户端请求,服务端响应 */
+        { TestUserLoginR2C rep = new TestUserLoginR2C(); rep.read(r); return RecvResponse.recv(ctx, rep); }
+        default: throw new RuntimeException("Unsupported protocol id: " + id);
+        }
+    } /* handleProtocAsClient(...) */
+
     static private LinkedHashMap<String,Class<?>> aliasBasic ()
     {
         LinkedHashMap<String,Class<?>> map = new LinkedHashMap<String,Class<?>>();
@@ -61,12 +96,14 @@ public final class InvarRuntime
         map.put("vec", LinkedList.class);
         return map;
     }
+
     static private LinkedHashMap<String,Class<?>> aliasEnum ()
     {
         LinkedHashMap<String,Class<?>> map = new LinkedHashMap<String,Class<?>>();
         map.put("Gender", Gender.class);
         return map;
     }
+
     static private LinkedHashMap<String,Class<?>> aliasStruct ()
     {
         LinkedHashMap<String,Class<?>> map = new LinkedHashMap<String,Class<?>>();

@@ -344,7 +344,7 @@ invar.InvarCodec.XMLEncode
         dest.writeDouble(numberDouble);
         dest.writeBoolean(boolValue);
         dest.writeUTF(stringValue);
-        dest.writeInt(enumValue.getValue());
+        dest.writeInt(enumValue.value());
         other.write(dest);
         if (self != null) {
             dest.writeByte((byte)0x01);
@@ -421,7 +421,7 @@ invar.InvarCodec.XMLEncode
 
     public void writeJSON(StringBuilder s)
     {
-        s.append('\n').append('{');
+        s.append('{');
         char comma = '\0';
         s.append('"').append("numberi08").append('"').append(':');
         s.append(numberi08.toString()); comma = ',';
@@ -478,7 +478,7 @@ invar.InvarCodec.XMLEncode
         if (listI08Exists) { s.append('"').append("listI08").append('"').append(':'); comma = ','; }
         int listI08Size = (null == listI08 ? 0 : listI08.size());
         if (listI08Size > 0) {
-            s.append('\n').append('[');
+            s.append('[');
             int listI08Idx = 0;
             for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                 ++listI08Idx;
@@ -492,7 +492,7 @@ invar.InvarCodec.XMLEncode
         if (dictI08Exists) { s.append('"').append("dictI08").append('"').append(':'); comma = ','; }
         int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
         if (dictI08Size > 0) {
-            s.append('\n').append('{');
+            s.append('{');
             int dictI08Idx = 0;
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                 ++dictI08Idx;
@@ -504,7 +504,7 @@ invar.InvarCodec.XMLEncode
             }
             s.append('}');
         }
-        s.append('}').append('\n');
+        s.append('}');
     } /* TestRefer::writeJSON(...) */
 
     public String toStringXML()
