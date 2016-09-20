@@ -26,6 +26,17 @@ export module InvarCodec {
             this.binary = data;
             this.offset = 0;
         }
+        public toByteString(): string {
+            let s: string = '';
+            let len = this.byteLength();
+            for (let i = 0; i < len; i++) {
+                s += String.fromCharCode(this.binary.getUint8(i));
+            }
+            return s;
+        }
+        public byteLength(): number {
+            return this.offset;
+        }
         public available(): number {
             return this.binary.byteLength - this.offset;
         }
@@ -162,7 +173,7 @@ export module InvarCodec {
         public writeUTF8(v: string): number {
             let bytes: string = encodeUTF8(v);
             let len: number = bytes.length;
-            let result = this.writeInt32(len);
+            let result = this.writeUint16(len);
             if (result != 0) {
                 return result;
             }
@@ -309,7 +320,7 @@ export module InvarCodec {
         }
         public readUTF8(): string {
             let str: string = '';
-            let len: number = Math.max(0, this.readInt32());
+            let len: number = Math.max(0, this.readUint16());
             if (!this.canRead(len)) {
                 this.offset += len;
                 return str;
