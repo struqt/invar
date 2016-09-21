@@ -286,12 +286,14 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     private String codeName(TypeStruct t) {
-        String name = null;
+        String name;
         if (!onePackOneFile) {
             name = t.getName();
             if (flattenCodeDir) {
                 name = t.fullName(flattenCodeSplit);
             }
+        } else {
+            name = t.getPack().getName();
         }
         t.setCodeName(name);
         return name;
@@ -358,11 +360,16 @@ public final class InvarWriteCode extends InvarWrite {
             "//Error: No template named '" + Key.FILE + "' in " + snippet.getSnippetPath());
         s = replace(s, Token.Define, ifndef);
         s = replace(s, Token.Pack, codeOneFilePack(packNames, body));
-        s = replace(s, Token.Includes, includes.toString());
         s = replace(s, Token.Import, makeImports(imps));
         s = replace(s, "[\r|\n]*" + Token.Concat, empty);
         s = replace(s, "[\\s]*" + Token.ConcatAll, empty);
-        s = replace(s, Token.Head, snippetTryGet(Key.FILE_HEAD, empty));
+
+        String head = snippetTryGet(Key.FILE_HEAD, empty);
+        if (!s.contains("(#includes)")) {
+            head += includes.toString();
+        } /** for empty pack name */
+        s = replace(s, Token.Head, head);
+        s = replace(s, Token.Includes, includes.toString());
         return s;
     }
 
@@ -729,6 +736,7 @@ public final class InvarWriteCode extends InvarWrite {
             block += makeRuntimeAliasBlock(imps);
         }
         s = replace(s, Token.Body, block);
+        s = replace(s, Token.Type, snippetTryGet(Key.RUNTIME_NAME));
         return s;
     }
 
@@ -799,6 +807,10 @@ public final class InvarWriteCode extends InvarWrite {
         if (empty.equals(snippetGet(Key.RUNTIME_PROTOC_HANDLE_M))) {
             return empty;
         }
+        String[] impArr = snippetTryGet(Key.RUNTIME_IMPORT, "").split(",");
+        for (String s : impArr) {
+            addImport(null, imps, s);
+        }
         String name = snippetGet(key);
         String invoke = snippetTryGet(key + ".read");
         StringBuilder block = new StringBuilder();
@@ -832,18 +844,21 @@ public final class InvarWriteCode extends InvarWrite {
             if (empty.equals(s)) {
                 continue;
             }
+            boolean useFullType = Boolean.parseBoolean(snippetTryGet(Key.RUNTIME_TYPE_FULL));
             s = replace(s, Token.Name, temp);
             if (tStruct.getProtoc().getRequest() != null) {
-                s = replace(s, Token.Request, tStruct.getProtoc().getRequest().getName());
+                TypeStruct t = tStruct.getProtoc().getRequest();
+                s = replace(s, Token.Request, useFullType ? typeFullName(t) : t.getName());
             }
             if (tStruct.getProtoc().getResponse() != null) {
-                s = replace(s, Token.Response, tStruct.getProtoc().getResponse().getName());
+                TypeStruct t = tStruct.getProtoc().getResponse();
+                s = replace(s, Token.Response, useFullType ? typeFullName(t) : t.getName());
             }
-            String split = snippetTryGet(Key.RUNTIME_TYPE_SPLIT);
+            String full = typeFullName(tStruct);
             s = replace(s, Token.Doc, tStruct.getProtoc().getComment());
             s = replace(s, Token.Key, id.toString());
-            s = replace(s, Token.Type, tStruct.getName());
-            s = replace(s, Token.TypeFull, tStruct.fullName(split));
+            s = replace(s, Token.Type, useFullType ? full : tStruct.getName());
+            s = replace(s, Token.TypeFull, full);
             block.append(s);
         }
 
@@ -851,8 +866,13 @@ public final class InvarWriteCode extends InvarWrite {
         s = replace(s, Token.Name, name);
         s = replace(s, Token.Body, block.toString());
         s = replace(s, Token.Invoke, invoke);
-
         return s;
+    }
+
+    private String typeFullName(TypeStruct tStruct) {
+        String splitPack = snippetTryGet(Key.IMPORT_SPLIT, empty);
+        String splitType = snippetTryGet(Key.FILE_TYPE_SPLIT, null);
+        return tStruct.fullName(splitPack, splitType);
     }
 
 
@@ -958,7 +978,10 @@ public final class InvarWriteCode extends InvarWrite {
                 s = snippetTryGet(Key.FILE_INCLUDE_WRAP, include);
                 s = replace(s, Token.Value, include);
             }//*/
-            boolean isSelf = onePackOneFile ? (t.getPack() == struct.getPack()) : (t == struct);
+            boolean isSelf = false;
+            if (struct != null) {
+                isSelf = onePackOneFile ? (t.getPack() == struct.getPack()) : (t == struct);
+            }
             if (includeSelf) {
                 if (isSelf)
                     fileIncludes.add(s);

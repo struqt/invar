@@ -250,6 +250,7 @@ final public class InvarSnippet {
         final static public String CODE_ASSIGNMENT = "code.assignment";
         final static public String CODE_DEFINITION = "code.definition";
 
+        final static public String RUNTIME_IMPORT = "runtime.import";
         final static public String RUNTIME_FILE = "runtime.file";
         final static public String RUNTIME_PACK = "runtime.pack";
         final static public String RUNTIME_NAME = "runtime.name";
@@ -259,6 +260,7 @@ final public class InvarSnippet {
         final static public String RUNTIME_ALIAS_VEC = "runtime.alias.list";
         final static public String RUNTIME_ALIAS_MAP = "runtime.alias.map";
         final static public String RUNTIME_TYPE_SPLIT = "runtime.type.split";
+        final static public String RUNTIME_TYPE_FULL = "runtime.type.full";
         final static public String RUNTIME_PROTOC_HANDLE_2S = "runtime.protoc.handle.client";
         final static public String RUNTIME_PROTOC_HANDLE_2C = "runtime.protoc.handle.server";
         final static public String RUNTIME_PROTOC_HANDLE_M = "runtime.protoc.handle.method";

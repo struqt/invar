@@ -48,7 +48,7 @@
   <!-- Common snippet -->
   <template key="file.include">     <![CDATA[ import { (#module) } from (#name)(#brk) ]]></template>
   <template key="file.include.wrap"><![CDATA[ "./(#value)" ]]></template>
-  <template key="file.pack.split">  <![CDATA[   ]]></template>
+  <template key="file.pack.split">  <![CDATA[ (#blank) ]]></template>
   <template key="file.type.split">  <![CDATA[ . ]]></template>
 
   <template key="import">          <![CDATA[ (#body)(#brk) ]]></template>
@@ -120,15 +120,20 @@
     (#tab)(#block-doc)
     (#tab)(#name) = (#value),
   ]]></template>
-  <template key="struct.protoc.ntf"> <![CDATA[ (#brk), Invar.ProtocNotify   ]]></template>
-  <template key="struct.protoc.req"> <![CDATA[ (#brk), Invar.ProtocRequest  ]]></template>
-  <template key="struct.protoc.resp"><![CDATA[ (#brk), Invar.ProtocResponse ]]></template>
+  <template key="struct.protoc.ntf"> <![CDATA[ (#brk)InvarCodec.ProtocNotify,   ]]></template>
+  <template key="struct.protoc.req"> <![CDATA[ (#brk)InvarCodec.ProtocRequest,  ]]></template>
+  <template key="struct.protoc.resp"><![CDATA[ (#brk)InvarCodec.ProtocResponse, ]]></template>
   <template key="struct.const.name.crc"><![CDATA[ (#type).CRC32 ]]></template>
   <template key="struct"><![CDATA[
     [#addImport(struct; imports; Invar.Codec::BinaryReader)]
     [#addImport(struct; imports; Invar.Codec::BinaryWriter)]
     (#doc)
-    export class (#name) {
+    export class (#name)
+    implements(#protoc-type)
+    InvarCodec.BinaryDecode,
+    InvarCodec.BinaryEncode,
+    InvarCodec.JSONEncode
+    {
     (#blank)
     (#tab)static get CRC32(): number { return 0x[#codeCRC32(struct)] }
     (#tab)static get SIZE() : number { return [#codeBasicSize(struct)] }
@@ -430,6 +435,43 @@
   <template key="tojson.field.space.string | tojson.field.space.vec |
                  tojson.field.space.struct | tojson.field.space.map"><![CDATA[
     if (comma && comma.length > 0 && (#namer)Exists) { (#arg).push(comma), comma = null }
+  ]]></template>
+
+
+  <!-- InvarRuntime Class -->
+  <template key="runtime.import"><![CDATA[ Invar.Codec::BinaryReader ]]></template>
+  <template key="runtime.file"><![CDATA[ invar.runtime ]]></template>
+  <template key="runtime.pack"><![CDATA[  ]]></template>
+  <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
+  <template key="runtime.type.full"> <![CDATA[ true ]]></template>
+  <template key="runtime.type.split"><![CDATA[ ??? ]]></template>
+  <template key="runtime.body"><![CDATA[
+    export class (#type) {
+    (#body)
+    } ]]></template>
+  <template key="runtime.protoc.handle.client"><![CDATA[ HandleProtocAsServer ]]></template>
+  <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtocAsClient ]]></template>
+  <template key="runtime.protoc.handle.notify"><![CDATA[ (#blank)
+    (#tab)(#tab)case (#key): /* (#doc) */
+    (#tab)(#tab){ let (#name) = new (#typefull); (#name).read(r); return recv.ntf((#name), ctx) } ]]></template>
+  <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
+    (#tab)(#tab)case (#key): /* (#doc) */
+    (#tab)(#tab){ let (#name) = new (#typefull); (#name).read(r); return recv.resp((#name), ctx) } ]]></template>
+  <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
+    (#tab)(#tab)case (#key): /* (#doc) */ {
+    (#tab)(#tab)let (#name) = new (#req); let resp = new (#resp);
+    (#tab)(#tab)(#name).read(r); recv.req((#name), resp, ctx); send.resp(resp); return 0; } ]]></template>
+  <template key="runtime.protoc.handle.method"><![CDATA[
+    (#blank)
+    (#tab)public static (#name)<
+    (#tab)(#tab)C extends InvarCodec.RecvContext,
+    (#tab)(#tab)R extends InvarCodec.Receiver<C>,
+    (#tab)(#tab)S extends InvarCodec.Sender>
+    (#tab)(id: number, r: InvarCodec.BinaryReader, send: S, recv:R, ctx: C): number {
+    (#tab)(#tab)switch (id) {(#body)
+    (#tab)(#tab)default: throw new Error("Unsupported protocol id: " + id);
+    (#tab)(#tab)}
+    (#tab)} /* (#name)(...) */
   ]]></template>
 
 </tns:root>

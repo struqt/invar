@@ -1,3 +1,5 @@
+import { InvarTypes } from "./invar.types"
+
 export module InvarCodec {
 
     export const ERR_NONE                 =   0
@@ -14,6 +16,53 @@ export module InvarCodec {
 
     declare function unescape(s: string): string;
     declare function escape(s: string): string;
+
+    export interface BinaryEncode {
+        write(dest: InvarCodec.BinaryWriter): void
+    }
+    export interface BinaryDecode {
+        read(from: InvarCodec.BinaryReader): void
+    }
+    export interface JSONEncode {
+        toStringJSON(): string
+        writeJSON(s: Array<string>): void
+    }
+
+    interface XMLEncode {
+        toStringXML(): string
+        writeXML(s: Array<string>, name: string): void
+    }
+
+    export interface InvarProtoc extends JSONEncode {
+        protocId: InvarTypes.Uint16
+        protocCRC: InvarTypes.Uint16
+    }
+
+    export interface ProtocNotify extends InvarProtoc, BinaryDecode, BinaryEncode {
+    }
+
+    export interface ProtocRequest extends InvarProtoc, BinaryDecode {
+    }
+
+    export interface ProtocResponse extends InvarProtoc, BinaryEncode {
+        protocError: InvarTypes.Uint16
+        setProtocError<T>(value: number): T
+    }
+
+    export interface Sender {
+        resp(resp: ProtocResponse): void
+    }
+    export interface RecvContext {
+    }
+    export interface Receiver<C extends RecvContext> {
+        req<T extends ProtocRequest, R extends ProtocResponse>
+            (req: T, resp: R, ctx: C): number
+        ntf<N extends ProtocNotify>
+            (ntf: N, ctx: C): number
+        resp<R extends ProtocResponse>
+            (resp: R, ctx: C): number
+    }
+
 
     let LittleEndian: boolean = false;
 
