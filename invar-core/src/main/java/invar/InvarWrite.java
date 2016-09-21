@@ -199,6 +199,9 @@ abstract public class InvarWrite {
     }
 
     final public void addExportFile(String packName, String fileName, String content) {
+        if (this.context.checkPackFilter("invar")) {
+            return;
+        }
         exports.put(packName + ruleTypeSplit + fileName, content);
     }
 

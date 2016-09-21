@@ -14,8 +14,10 @@ import invar.model.TypeStruct;
 import java.util.*;
 
 final public class InvarContext {
+
     public static final String encoding = "UTF-8";
 
+    private final Set<String> packOutFilter;
     private final InvarPackage packBuildIn;
     private final HashMap<String, InvarPackage> packAll;
     private final HashMap<String, InvarType> typeWithAlias;
@@ -25,6 +27,7 @@ final public class InvarContext {
     private TypeStruct structProtoc2C;
 
     public InvarContext() throws Exception {
+        packOutFilter = new HashSet<String>();
         typeWithAlias = new LinkedHashMap<String, InvarType>();
         packBuildIn = new InvarPackage("___", false);
         packAll = new HashMap<String, InvarPackage>();
@@ -103,7 +106,7 @@ final public class InvarContext {
     public InvarPackage findOrCreatePack(String name) {
         InvarPackage info = packAll.get(name);
         if (info == null) {
-            info = new InvarPackage(name, true);
+            info = new InvarPackage(name, !packOutFilter.contains(name));
             packAll.put(name, info);
         }
         return info;
@@ -205,4 +208,14 @@ final public class InvarContext {
         return ruleDir;
     }
 
+    public void initPackFilter(String s) {
+        if (s == null || s.length() <= 0) {
+            return;
+        }
+        Collections.addAll(packOutFilter, s.split(","));
+    }
+
+    public boolean checkPackFilter(String s) {
+        return packOutFilter.contains(s);
+    }
 }

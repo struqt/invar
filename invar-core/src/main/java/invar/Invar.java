@@ -14,6 +14,7 @@ import java.util.TreeMap;
 final public class Invar {
 
     static final String ARG_HELP = "help";
+    static final String ARG_FILTER_PATH = "filter";
     static final String ARG_SNIPPET_PATH = "snippet";
     static final String ARG_RULE_PATH = "rule";
     static final String ARG_XSD_PATH = "xsd";
@@ -29,9 +30,11 @@ final public class Invar {
     static public void main(String[] args) {
 
         long startMS = System.currentTimeMillis();
-        log("Invar start: " + new Date().toString() + " " + (Runtime.getRuntime().freeMemory() >> 20) + "MB");
+        log("Invar start: " + new Date().toString() + " "
+            + (Runtime.getRuntime().freeMemory() >> 20) + "MB");
 
         InvarMainArgs a = new InvarMainArgs();
+        a.addDefault(ARG_FILTER_PATH, "");
         a.addDefault(ARG_RULE_PATH, "rule/");
         a.addDefault(ARG_SNIPPET_PATH, "");
         a.addDefault(ARG_XSD_PATH, "code/xsd/");
@@ -55,6 +58,7 @@ final public class Invar {
             InvarContext ctx = new InvarContext();
             ctx.addBuildInTypes(basics);
             ctx.setRuleDir(a.get(ARG_RULE_PATH));
+            ctx.initPackFilter(a.get(ARG_FILTER_PATH));
             log("");
             if (a.has(ARG_RULE_PATH)) {
                 TokensFromXml.start(ctx);
