@@ -105,7 +105,7 @@
   <template key="struct.protoc.req"> <![CDATA[ (#brk), Invar.ProtocRequest  ]]></template>
   <template key="struct.protoc.resp"><![CDATA[ (#brk), Invar.ProtocResponse ]]></template>
   <template key="struct"><![CDATA[
-	  [#addImport(struct; imports; System.IO::BinaryReader)]
+	[#addImport(struct; imports; System.IO::BinaryReader)]
     [#addImport(struct; imports; System.IO::BinaryWriter)]
     [#addImport(struct; imports; System.Text::StringBuilder)]
     [#addImport(struct; imports; System::String)]
