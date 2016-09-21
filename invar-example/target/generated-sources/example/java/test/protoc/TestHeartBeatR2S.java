@@ -89,26 +89,6 @@ invar.InvarCodec.XMLEncode
         this.protocError = value;
         return this;
     }
-    /** [AutoAdd] ProtocolID */
-    @invar.InvarRule(T="uint16", S="f1")
-    public TestHeartBeatR2S setProtocId(int value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFF) {
-            throw new NumberFormatException("uint16 value out of range: " + value);
-        }
-        this.protocId = value;
-        return this;
-    }
-    /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f2")
-    public TestHeartBeatR2S setProtocCRC(long value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFFFFFFL) {
-            throw new NumberFormatException("uint32 value out of range: " + value);
-        }
-        this.protocCRC = value;
-        return this;
-    }
     /** [AutoAdd] 客户端请求的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2S", S="f3")
     public TestHeartBeatR2S setProtoc2S(Protoc2S value) { this.protoc2S = value; return this; }

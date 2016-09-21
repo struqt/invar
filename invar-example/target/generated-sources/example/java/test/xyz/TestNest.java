@@ -62,16 +62,6 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Custom>>>>>", S="f2")
     public LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>>> getList5d() { return list5d; }
 
-    /**  */
-    @invar.InvarRule(T="vec<map<string,test.abc.Custom>>", S="f0")
-    public TestNest setListDict(LinkedList<LinkedHashMap<java.lang.String,Custom>> value) { this.listDict = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<vec<string>,vec<test.abc.Custom>>", S="f1")
-    public TestNest setDictList(LinkedHashMap<LinkedList<java.lang.String>,LinkedList<Custom>> value) { this.dictList = value; return this; }
-    /** 五维列表 */
-    @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Custom>>>>>", S="f2")
-    public TestNest setList5d(LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>>> value) { this.list5d = value; return this; }
-
     /** Shallow copy */
     public TestNest copy(TestNest from)
     {

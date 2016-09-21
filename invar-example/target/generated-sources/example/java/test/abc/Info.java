@@ -283,9 +283,6 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="string", S="f12")
     public Info setS(String value) { this.s = value; return this; }
     /**  */
-    @invar.InvarRule(T="vec<string>", S="f13")
-    public Info setWorld(LinkedList<java.lang.String> value) { this.world = value; return this; }
-    /**  */
     @invar.InvarRule(T="test.abc.Gender", S="f14")
     public Info setGender(Gender value) { this.gender = value; return this; }
     /**  */
@@ -294,21 +291,6 @@ invar.InvarCodec.XMLEncode
     /**  */
     @invar.InvarRule(T="test.abc.Conflict", S="f16")
     public Info setConflict(test.abc.Conflict value) { this.conflict = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<test.xyz.Conflict>", S="f17")
-    public Info setConflicts(LinkedList<test.xyz.Conflict> value) { this.conflicts = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<double>", S="f18")
-    public Info setNumbers(LinkedList<java.lang.Double> value) { this.numbers = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<test.abc.Info,test.abc.Gender>", S="f19")
-    public Info setMapInfoG(LinkedHashMap<Info,Gender> value) { this.mapInfoG = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<test.abc.Gender,test.abc.Info>", S="f20")
-    public Info setMapGenderInfo(LinkedHashMap<Gender,Info> value) { this.mapGenderInfo = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<int32,double>", S="f21")
-    public Info setMapDouble(LinkedHashMap<Integer,java.lang.Double> value) { this.mapDouble = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f22")
     public Info setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }

@@ -1200,11 +1200,15 @@ public final class InvarWriteCode extends InvarWrite {
             }
             List<String> lines = new ArrayList<String>();
             int len = snippetMet.contains("(#body)") ? fs.size() : 0;
+            boolean isSetter = prefix.startsWith("setter");
             for (int i = 0; i < len; i++) {
                 InvarField f = fs.get(i);
                 if (isSql && type.isTable() &&
                     (f.isMap() || f.isVec() ||
                         (exceptAuto && f.getAuto()))) {
+                    continue;
+                }
+                if (isSetter && f.getDisableSetter()) {
                     continue;
                 }
                 lines.addAll(makeField(f, i == 0, i == len - 1));

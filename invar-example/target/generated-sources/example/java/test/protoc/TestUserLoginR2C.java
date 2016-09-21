@@ -111,26 +111,6 @@ invar.InvarCodec.XMLEncode
         this.protocError = value;
         return this;
     }
-    /** [AutoAdd] ProtocolID */
-    @invar.InvarRule(T="uint16", S="f1")
-    public TestUserLoginR2C setProtocId(int value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFF) {
-            throw new NumberFormatException("uint16 value out of range: " + value);
-        }
-        this.protocId = value;
-        return this;
-    }
-    /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f2")
-    public TestUserLoginR2C setProtocCRC(long value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFFFFFFL) {
-            throw new NumberFormatException("uint32 value out of range: " + value);
-        }
-        this.protocCRC = value;
-        return this;
-    }
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2C", S="f3")
     public TestUserLoginR2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }
@@ -140,9 +120,6 @@ invar.InvarCodec.XMLEncode
     /**  */
     @invar.InvarRule(T="string", S="f5")
     public TestUserLoginR2C setUserName(String value) { this.userName = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<int32>", S="f6")
-    public TestUserLoginR2C setRoles(LinkedList<Integer> value) { this.roles = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f7")
     public TestUserLoginR2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }

@@ -76,9 +76,6 @@ invar.InvarCodec.XMLEncode
     /**  */
     @invar.InvarRule(T="string", S="f1")
     public Conflict setText(String value) { this.text = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<int8>", S="f2")
-    public Conflict setBytes(LinkedList<java.lang.Byte> value) { this.bytes = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f3")
     public Conflict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }

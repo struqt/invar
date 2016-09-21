@@ -133,12 +133,6 @@ invar.InvarCodec.XMLEncode
     /** 同名的类型 */
     @invar.InvarRule(T="test.abc.Conflict", S="f3")
     public Custom setAbc(test.abc.Conflict value) { this.abc = value; return this; }
-    /** 自身类型容器 */
-    @invar.InvarRule(T="vec<test.abc.Custom>", S="f4")
-    public Custom setChildren(LinkedList<Custom> value) { this.children = value; return this; }
-    /** 屏蔽Setter */
-    @invar.InvarRule(T="int32", S="f5")
-    public Custom setNoSetter(Integer value) { this.noSetter = value; return this; }
     /** 使用引用 */
     @invar.InvarRule(T="string", S="f6")
     public Custom setUseRef(String value) { this.useRef = value; return this; }

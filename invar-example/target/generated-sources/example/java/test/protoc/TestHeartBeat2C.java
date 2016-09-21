@@ -72,26 +72,6 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="map<string,string>", S="f3")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
-    /** [AutoAdd] ProtocolID */
-    @invar.InvarRule(T="uint16", S="f0")
-    public TestHeartBeat2C setProtocId(int value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFF) {
-            throw new NumberFormatException("uint16 value out of range: " + value);
-        }
-        this.protocId = value;
-        return this;
-    }
-    /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f1")
-    public TestHeartBeat2C setProtocCRC(long value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFFFFFFL) {
-            throw new NumberFormatException("uint32 value out of range: " + value);
-        }
-        this.protocCRC = value;
-        return this;
-    }
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.InvarRule(T="test.protoc.Protoc2C", S="f2")
     public TestHeartBeat2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }

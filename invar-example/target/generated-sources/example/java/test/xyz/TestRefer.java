@@ -246,12 +246,6 @@ invar.InvarCodec.XMLEncode
     /**  */
     @invar.InvarRule(T="test.xyz.TestRefer", S="f14")
     public TestRefer setSelf(TestRefer value) { this.self = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<int8>", S="f15")
-    public TestRefer setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<int8,int8>", S="f16")
-    public TestRefer setDictI08(LinkedHashMap<java.lang.Byte,java.lang.Byte> value) { this.dictI08 = value; return this; }
 
     /** Shallow copy */
     public TestRefer copy(TestRefer from)

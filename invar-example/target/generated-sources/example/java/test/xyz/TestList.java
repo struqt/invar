@@ -139,49 +139,6 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="vec<test.abc.Custom>", S="f13")
     public LinkedList<Custom> getListStruct() { return listStruct; }
 
-    /** 有符号的8位整数 */
-    @invar.InvarRule(T="vec<int8>", S="f0")
-    public TestList setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; return this; }
-    /** 有符号的16位整数 */
-    @invar.InvarRule(T="vec<int16>", S="f1")
-    public TestList setListI16(LinkedList<Short> value) { this.listI16 = value; return this; }
-    /** 有符号的32位整数 */
-    @invar.InvarRule(T="vec<int32>", S="f2")
-    public TestList setListI32(LinkedList<Integer> value) { this.listI32 = value; return this; }
-    /** 有符号的64位整数 */
-    @invar.InvarRule(T="vec<int64>", S="f3")
-    public TestList setListI64(LinkedList<Long> value) { this.listI64 = value; return this; }
-    /** 无符号的8位整数 */
-    @invar.InvarRule(T="vec<uint8>", S="f4")
-    public TestList setListU08(LinkedList<java.lang.Integer> value) { this.listU08 = value; return this; }
-    /** 无符号的16位整数 */
-    @invar.InvarRule(T="vec<uint16>", S="f5")
-    public TestList setListU16(LinkedList<java.lang.Integer> value) { this.listU16 = value; return this; }
-    /** 无符号的32位整数 */
-    @invar.InvarRule(T="vec<uint32>", S="f6")
-    public TestList setListU32(LinkedList<java.lang.Long> value) { this.listU32 = value; return this; }
-    /** 无符号的64位整数 */
-    @invar.InvarRule(T="vec<uint64>", S="f7")
-    public TestList setListU64(LinkedList<BigInteger> value) { this.listU64 = value; return this; }
-    /** 单精度浮点小数 */
-    @invar.InvarRule(T="vec<float>", S="f8")
-    public TestList setListSingle(LinkedList<Float> value) { this.listSingle = value; return this; }
-    /** 双精度浮点小数 */
-    @invar.InvarRule(T="vec<double>", S="f9")
-    public TestList setListDouble(LinkedList<java.lang.Double> value) { this.listDouble = value; return this; }
-    /** 布尔值 */
-    @invar.InvarRule(T="vec<bool>", S="f10")
-    public TestList setListBoolean(LinkedList<java.lang.Boolean> value) { this.listBoolean = value; return this; }
-    /** 字符串 */
-    @invar.InvarRule(T="vec<string>", S="f11")
-    public TestList setListString(LinkedList<java.lang.String> value) { this.listString = value; return this; }
-    /** 枚举值 */
-    @invar.InvarRule(T="vec<test.abc.Gender>", S="f12")
-    public TestList setListEnum(LinkedList<Gender> value) { this.listEnum = value; return this; }
-    /** 自定义结构 */
-    @invar.InvarRule(T="vec<test.abc.Custom>", S="f13")
-    public TestList setListStruct(LinkedList<Custom> value) { this.listStruct = value; return this; }
-
     /** Shallow copy */
     public TestList copy(TestList from)
     {

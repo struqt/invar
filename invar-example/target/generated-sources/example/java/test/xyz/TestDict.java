@@ -149,48 +149,6 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="map<string,string>", S="f14")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
-    /** 有符号的8位整数 */
-    @invar.InvarRule(T="map<int8,int8>", S="f0")
-    public TestDict setDictI08(LinkedHashMap<java.lang.Byte,java.lang.Byte> value) { this.dictI08 = value; return this; }
-    /** 有符号的16位整数 */
-    @invar.InvarRule(T="map<int16,int16>", S="f1")
-    public TestDict setDictI16(LinkedHashMap<Short,Short> value) { this.dictI16 = value; return this; }
-    /** 有符号的32位整数 */
-    @invar.InvarRule(T="map<int32,int32>", S="f2")
-    public TestDict setDictI32(LinkedHashMap<Integer,Integer> value) { this.dictI32 = value; return this; }
-    /** 有符号的64位整数 */
-    @invar.InvarRule(T="map<int64,int64>", S="f3")
-    public TestDict setDictI64(LinkedHashMap<Long,Long> value) { this.dictI64 = value; return this; }
-    /** 无符号的8位整数 */
-    @invar.InvarRule(T="map<uint8,uint8>", S="f4")
-    public TestDict setDictU08(LinkedHashMap<java.lang.Integer,java.lang.Integer> value) { this.dictU08 = value; return this; }
-    /** 无符号的16位整数 */
-    @invar.InvarRule(T="map<uint16,uint16>", S="f5")
-    public TestDict setDictU16(LinkedHashMap<java.lang.Integer,java.lang.Integer> value) { this.dictU16 = value; return this; }
-    /** 无符号的32位整数 */
-    @invar.InvarRule(T="map<uint32,uint32>", S="f6")
-    public TestDict setDictU32(LinkedHashMap<java.lang.Long,java.lang.Long> value) { this.dictU32 = value; return this; }
-    /** 无符号的64位整数 */
-    @invar.InvarRule(T="map<uint64,uint64>", S="f7")
-    public TestDict setDictU64(LinkedHashMap<BigInteger,BigInteger> value) { this.dictU64 = value; return this; }
-    /** 单精度浮点小数 */
-    @invar.InvarRule(T="map<float,float>", S="f8")
-    public TestDict setDictSingle(LinkedHashMap<Float,Float> value) { this.dictSingle = value; return this; }
-    /** 双精度浮点小数 */
-    @invar.InvarRule(T="map<double,double>", S="f9")
-    public TestDict setDictDouble(LinkedHashMap<java.lang.Double,java.lang.Double> value) { this.dictDouble = value; return this; }
-    /** 布尔值 */
-    @invar.InvarRule(T="map<bool,bool>", S="f10")
-    public TestDict setDictBoolean(LinkedHashMap<java.lang.Boolean,java.lang.Boolean> value) { this.dictBoolean = value; return this; }
-    /** 字符串 */
-    @invar.InvarRule(T="map<string,string>", S="f11")
-    public TestDict setDictString(LinkedHashMap<java.lang.String,java.lang.String> value) { this.dictString = value; return this; }
-    /** 枚举值 */
-    @invar.InvarRule(T="map<test.abc.Gender,test.abc.Gender>", S="f12")
-    public TestDict setDictEnum(LinkedHashMap<Gender,Gender> value) { this.dictEnum = value; return this; }
-    /** 自定义结构 */
-    @invar.InvarRule(T="map<test.abc.Custom,test.abc.Custom>", S="f13")
-    public TestDict setDictStruct(LinkedHashMap<Custom,Custom> value) { this.dictStruct = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f14")
     public TestDict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }

@@ -135,42 +135,12 @@ invar.InvarCodec.XMLEncode
     @invar.InvarRule(T="map<string,string>", S="f12")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
-    /**  */
-    @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f0")
-    public InfoX setInfos(LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> value) { this.infos = value; return this; }
     /** Two types with the same name. */
     @invar.InvarRule(T="test.xyz.Conflict", S="f1")
     public InfoX setConflict_x(test.xyz.Conflict value) { this.conflict_x = value; return this; }
     /** Two types with the same name. */
     @invar.InvarRule(T="test.abc.Conflict", S="f2")
     public InfoX setConflict_a(test.abc.Conflict value) { this.conflict_a = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<int32,test.abc.Conflict>", S="f3")
-    public InfoX setMConflict(LinkedHashMap<Integer,test.abc.Conflict> value) { this.mConflict = value; return this; }
-    /** 2 dimension list */
-    @invar.InvarRule(T="vec<vec<test.abc.Info>>", S="f4")
-    public InfoX setInfo2d(LinkedList<LinkedList<Info>> value) { this.info2d = value; return this; }
-    /** 3 dimension list */
-    @invar.InvarRule(T="vec<vec<vec<test.abc.Info>>>", S="f5")
-    public InfoX setInfo3d(LinkedList<LinkedList<LinkedList<Info>>> value) { this.info3d = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f6")
-    public InfoX setInfo5d(LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> value) { this.info5d = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<map<int16,test.abc.Info>>", S="f7")
-    public InfoX setInfovm(LinkedList<LinkedHashMap<Short,Info>> value) { this.infovm = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<vec<test.abc.Gender>,test.abc.Info>", S="f8")
-    public InfoX setMvei(LinkedHashMap<LinkedList<Gender>,Info> value) { this.mvei = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<test.abc.Info,vec<test.abc.Gender>>", S="f9")
-    public InfoX setMive(LinkedHashMap<Info,LinkedList<Gender>> value) { this.mive = value; return this; }
-    /**  */
-    @invar.InvarRule(T="map<vec<test.abc.Info>,vec<test.abc.Gender>>", S="f10")
-    public InfoX setMvive(LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> value) { this.mvive = value; return this; }
-    /**  */
-    @invar.InvarRule(T="vec<map<vec<test.abc.Info>,vec<test.abc.Gender>>>", S="f11")
-    public InfoX setVmvive(LinkedList<LinkedHashMap<LinkedList<Info>,LinkedList<Gender>>> value) { this.vmvive = value; return this; }
     /** [AutoAdd] Hotfix */
     @invar.InvarRule(T="map<string,string>", S="f12")
     public InfoX setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
