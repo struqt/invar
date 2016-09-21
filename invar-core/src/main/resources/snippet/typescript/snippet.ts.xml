@@ -25,8 +25,8 @@
     <bool pack="             " type="boolean " initValue="false"/>
     <vec pack="              " type="Array   " initValue="" generic="&lt;?&gt;"/>
     <map pack="   Invar.Utils" type="Dict    " include="Invar.Utils" initValue="" generic="&lt;?,?&gt;"/>
-    <dialect pack="Invar.Codec" type="BinaryWriter" include="Invar.Codec" />
-    <dialect pack="Invar.Codec" type="BinaryReader" include="Invar.Codec" />
+    <dialect pack="Invar.Codec" type="BinaryWriter" include="Invar.Codec"/>
+    <dialect pack="Invar.Codec" type="BinaryReader" include="Invar.Codec"/>
   </redefine>
 
   <!-- Settings -->
@@ -137,6 +137,10 @@
     (#blank)
     [#codeNested (ctor.;  useFullName; struct; fields; imports)]
     (#blank)
+    [#codeNested (getter.; useFullName; struct; fields; imports)]
+    (#blank)
+    [#codeNested (setter.; useFullName; struct; fields; imports)]
+    (#blank)
     [#codeNested (size.;  useFullName; struct; fields; imports)]
     (#blank)
     [#codeNested (read.; true; struct; fields; imports)]
@@ -155,17 +159,8 @@
     (#concat) [#clampLen(lenFieldType; 64; (#type))]
     (#concat) [#codeDoc(fields; (#index))]
   ]]></template>
-  <template key="struct.setter"><![CDATA[
-    (#tab)@(#namer).setter [#codeDoc(fields; (#index))]
-    (#tab)def (#namer)(self, value):
-    (#tab)(#tab)(#name) = value
-    (#tab)(#tab)return self
-  ]]></template>
-  <template key="struct.getter"><![CDATA[
-    (#tab)@property [#codeDoc(fields; (#index))]
-    (#tab)def (#namer)(self):
-    (#tab)(#tab)return (#name)
-  ]]></template>
+  <template key="struct.setter"><![CDATA[ xxx ]]></template>
+  <template key="struct.getter"><![CDATA[ xxx ]]></template>
 
   <!-- Method Construct -->
   <template key="ctor.method"><![CDATA[
@@ -177,6 +172,32 @@
   <template key="ctor.ptr.any"><![CDATA[
     [#clampLen(lenFieldName; 32; (#name))] = (#null) ]]></template>
   <template key="ctor.ref.any"><![CDATA[ (#body) ]]></template>
+
+  <!-- Setters -->
+  <template key="setter.indent.num"><![CDATA[ 0 ]]></template>
+  <template key="setter.import">    <![CDATA[ ]]></template>
+  <template key="setter.method.arg"><![CDATA[ ]]></template>
+  <template key="setter.method">    <![CDATA[ (#body) ]]></template>
+  <template key="setter.ptr.any | setter.ref.any"><![CDATA[
+    (#blank)
+    [#codeDoc(fields; (#index))]
+    (#body)
+  ]]></template>
+  <template key="setter.any | setter.vec | setter.map"><![CDATA[
+    public set[#upperHeadChar( (#namer) )](value: (#type)): (#struct) { (#name) = value; return this } ]]></template>
+
+  <!-- Getters -->
+  <template key="getter.indent.num"><![CDATA[ 0 ]]></template>
+  <template key="getter.import">    <![CDATA[ ]]></template>
+  <template key="getter.method.arg"><![CDATA[ ]]></template>
+  <template key="getter.method">    <![CDATA[ (#body) ]]></template>
+  <template key="getter.ptr.any | getter.ref.any"><![CDATA[
+    (#blank)
+    [#codeDoc(fields; (#index))]
+    (#body)
+  ]]></template>
+  <template key="getter.any | getter.vec | getter.map"><![CDATA[
+    public get (#namer)(): (#type) { return (#name) } ]]></template>
 
 
   <!-- Read bytes from a Stream -->
