@@ -20,9 +20,9 @@ import java.util.Map;
 /** 名字冲突的类型 */
 public final class MemberEntry
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x240151L;
 
@@ -62,31 +62,31 @@ invar.InvarCodec.XMLEncode
     }
 
     /** 主键，自增长 */
-    @invar.InvarRule(T="uint32", S="f0")
+    @invar.lib.InvarRule(T="uint32", S="f0")
     public Long getId() { return id; }
 
     /** 手机号码 */
-    @invar.InvarRule(T="string", S="f1")
+    @invar.lib.InvarRule(T="string", S="f1")
     public String getPhone() { return phone; }
 
     /** 会员昵称 */
-    @invar.InvarRule(T="string", S="f2")
+    @invar.lib.InvarRule(T="string", S="f2")
     public String getNickName() { return nickName; }
 
     /** 创建时间 */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public Long getCreateTime() { return createTime; }
 
     /** 创建时间 */
-    @invar.InvarRule(T="int64", S="f4")
+    @invar.lib.InvarRule(T="int64", S="f4")
     public Long getUpdateTime() { return updateTime; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f5")
+    @invar.lib.InvarRule(T="map<string,string>", S="f5")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** 主键，自增长 */
-    @invar.InvarRule(T="uint32", S="f0")
+    @invar.lib.InvarRule(T="uint32", S="f0")
     public MemberEntry setId(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
@@ -96,19 +96,19 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** 手机号码 */
-    @invar.InvarRule(T="string", S="f1")
+    @invar.lib.InvarRule(T="string", S="f1")
     public MemberEntry setPhone(String value) { this.phone = value; return this; }
     /** 会员昵称 */
-    @invar.InvarRule(T="string", S="f2")
+    @invar.lib.InvarRule(T="string", S="f2")
     public MemberEntry setNickName(String value) { this.nickName = value; return this; }
     /** 创建时间 */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public MemberEntry setCreateTime(Long value) { this.createTime = value; return this; }
     /** 创建时间 */
-    @invar.InvarRule(T="int64", S="f4")
+    @invar.lib.InvarRule(T="int64", S="f4")
     public MemberEntry setUpdateTime(Long value) { this.updateTime = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f5")
+    @invar.lib.InvarRule(T="map<string,string>", S="f5")
     public MemberEntry setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */
@@ -313,15 +313,15 @@ invar.InvarCodec.XMLEncode
 
         static public final String TABLE = "tbl_member";
 
-        static public invar.InvarSQL getBuilder() {
+        static public invar.lib.InvarSQL getBuilder() {
             if (builder == null) {
-                builder = invar.InvarSQL.Create(
+                builder = invar.lib.InvarSQL.Create(
                     TABLE, getWritableFields(), getAliasMap());
             }
             return builder;
         }
 
-        static private invar.InvarSQL builder = null;
+        static private invar.lib.InvarSQL builder = null;
 
         static private List<String> writableFields = null;
 

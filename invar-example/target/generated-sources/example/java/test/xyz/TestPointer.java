@@ -21,9 +21,9 @@ import test.abc.Gender;
 /** 指针类型测试 */
 public final class TestPointer
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x6348C9B7L;
 
@@ -84,67 +84,67 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="test.xyz.TestPointer", S="f0")
+    @invar.lib.InvarRule(T="test.xyz.TestPointer", S="f0")
     public TestPointer getSelf() { return self; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f1")
+    @invar.lib.InvarRule(T="string", S="f1")
     public String getStringValue() { return stringValue; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Custom", S="f2")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f2")
     public Custom getOther() { return other; }
 
     /**  */
-    @invar.InvarRule(T="vec<int8>", S="f3")
+    @invar.lib.InvarRule(T="vec<int8>", S="f3")
     public LinkedList<Byte> getListI08() { return listI08; }
 
     /**  */
-    @invar.InvarRule(T="map<int8,int8>", S="f4")
+    @invar.lib.InvarRule(T="map<int8,int8>", S="f4")
     public LinkedHashMap<Byte,Byte> getDictI08() { return dictI08; }
 
     /**  */
-    @invar.InvarRule(T="vec<vec<vec<vec<test.xyz.TestPointer>>>>", S="f5")
+    @invar.lib.InvarRule(T="vec<vec<vec<vec<test.xyz.TestPointer>>>>", S="f5")
     public LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>> getListNested() { return listNested; }
 
     /**  */
-    @invar.InvarRule(T="float", S="f6")
+    @invar.lib.InvarRule(T="float", S="f6")
     public Float getNumberSingle() { return numberSingle; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f7")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f7")
     public Gender getEnumValue() { return enumValue; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f8")
+    @invar.lib.InvarRule(T="map<string,string>", S="f8")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /**  */
-    @invar.InvarRule(T="test.xyz.TestPointer", S="f0")
+    @invar.lib.InvarRule(T="test.xyz.TestPointer", S="f0")
     public TestPointer setSelf(TestPointer value) { this.self = value; return this; }
     /**  */
-    @invar.InvarRule(T="string", S="f1")
+    @invar.lib.InvarRule(T="string", S="f1")
     public TestPointer setStringValue(String value) { this.stringValue = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Custom", S="f2")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f2")
     public TestPointer setOther(Custom value) { this.other = value; return this; }
     /**  */
-    @invar.InvarRule(T="vec<int8>", S="f3")
+    @invar.lib.InvarRule(T="vec<int8>", S="f3")
     public TestPointer setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; return this; }
     /**  */
-    @invar.InvarRule(T="map<int8,int8>", S="f4")
+    @invar.lib.InvarRule(T="map<int8,int8>", S="f4")
     public TestPointer setDictI08(LinkedHashMap<java.lang.Byte,java.lang.Byte> value) { this.dictI08 = value; return this; }
     /**  */
-    @invar.InvarRule(T="vec<vec<vec<vec<test.xyz.TestPointer>>>>", S="f5")
+    @invar.lib.InvarRule(T="vec<vec<vec<vec<test.xyz.TestPointer>>>>", S="f5")
     public TestPointer setListNested(LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>> value) { this.listNested = value; return this; }
     /**  */
-    @invar.InvarRule(T="float", S="f6")
+    @invar.lib.InvarRule(T="float", S="f6")
     public TestPointer setNumberSingle(Float value) { this.numberSingle = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f7")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f7")
     public TestPointer setEnumValue(Gender value) { this.enumValue = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f8")
+    @invar.lib.InvarRule(T="map<string,string>", S="f8")
     public TestPointer setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

@@ -18,10 +18,10 @@ import java.util.Map;
 /** 客户端请求,服务端响应 */
 public final class TestUserLogin2S
 implements
-invar.InvarCodec.ProtocRequest,
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.ProtocRequest,
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xB29912EFL;
 
@@ -63,40 +63,40 @@ invar.InvarCodec.XMLEncode
     }
 
     /** [AutoAdd] ProtocolID */
-    @invar.InvarRule(T="uint16", S="f0")
+    @invar.lib.InvarRule(T="uint16", S="f0")
     public Integer getProtocId() { return protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f1")
+    @invar.lib.InvarRule(T="uint32", S="f1")
     public Long getProtocCRC() { return protocCRC; }
 
     /** [AutoAdd] 客户端请求的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2S", S="f2")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2S", S="f2")
     public Protoc2S getProtoc2S() { return protoc2S; }
 
     /**  */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public Long getUserId() { return userId; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f4")
+    @invar.lib.InvarRule(T="string", S="f4")
     public String getPlatform() { return platform; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f5")
+    @invar.lib.InvarRule(T="map<string,string>", S="f5")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] 客户端请求的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2S", S="f2")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2S", S="f2")
     public TestUserLogin2S setProtoc2S(Protoc2S value) { this.protoc2S = value; return this; }
     /**  */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public TestUserLogin2S setUserId(Long value) { this.userId = value; return this; }
     /**  */
-    @invar.InvarRule(T="string", S="f4")
+    @invar.lib.InvarRule(T="string", S="f4")
     public TestUserLogin2S setPlatform(String value) { this.platform = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f5")
+    @invar.lib.InvarRule(T="map<string,string>", S="f5")
     public TestUserLogin2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

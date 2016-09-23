@@ -17,9 +17,9 @@ import java.util.LinkedList;
 /** 自定义类型 */
 public final class Custom
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x355EC042L;
 
@@ -78,75 +78,75 @@ invar.InvarCodec.XMLEncode
     }
 
     /** 枚举值 */
-    @invar.InvarRule(T="test.abc.Gender", S="f0")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
     public Gender getX() { return x; }
 
     /** 其他类型 */
-    @invar.InvarRule(T="test.abc.TestBasic", S="f1")
+    @invar.lib.InvarRule(T="test.abc.TestBasic", S="f1")
     public TestBasic getTest_() { return test_; }
 
     /** 同名的类型 */
-    @invar.InvarRule(T="test.xyz.Conflict", S="f2")
+    @invar.lib.InvarRule(T="test.xyz.Conflict", S="f2")
     public test.xyz.Conflict getXyz() { return xyz; }
 
     /** 同名的类型 */
-    @invar.InvarRule(T="test.abc.Conflict", S="f3")
+    @invar.lib.InvarRule(T="test.abc.Conflict", S="f3")
     public test.abc.Conflict getAbc() { return abc; }
 
     /** 自身类型容器 */
-    @invar.InvarRule(T="vec<test.abc.Custom>", S="f4")
+    @invar.lib.InvarRule(T="vec<test.abc.Custom>", S="f4")
     public LinkedList<Custom> getChildren() { return children; }
 
     /** 屏蔽Setter */
-    @invar.InvarRule(T="int32", S="f5")
+    @invar.lib.InvarRule(T="int32", S="f5")
     public Integer getNoSetter() { return noSetter; }
 
     /** 使用引用 */
-    @invar.InvarRule(T="string", S="f6")
+    @invar.lib.InvarRule(T="string", S="f6")
     public String getUseRef() { return useRef; }
 
     /** 使用指针 */
-    @invar.InvarRule(T="string", S="f7")
+    @invar.lib.InvarRule(T="string", S="f7")
     public String getUsePtr() { return usePtr; }
 
     /** 自身类型 */
-    @invar.InvarRule(T="test.abc.Custom", S="f8")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f8")
     public Custom getPrev() { return prev; }
 
     /** 自身类型 */
-    @invar.InvarRule(T="test.abc.Custom", S="f9")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f9")
     public Custom getNext() { return next; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f10")
+    @invar.lib.InvarRule(T="string", S="f10")
     public String getEmptyDoc() { return emptyDoc; }
 
     /** 枚举值 */
-    @invar.InvarRule(T="test.abc.Gender", S="f0")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
     public Custom setX(Gender value) { this.x = value; return this; }
     /** 其他类型 */
-    @invar.InvarRule(T="test.abc.TestBasic", S="f1")
+    @invar.lib.InvarRule(T="test.abc.TestBasic", S="f1")
     public Custom setTest_(TestBasic value) { this.test_ = value; return this; }
     /** 同名的类型 */
-    @invar.InvarRule(T="test.xyz.Conflict", S="f2")
+    @invar.lib.InvarRule(T="test.xyz.Conflict", S="f2")
     public Custom setXyz(test.xyz.Conflict value) { this.xyz = value; return this; }
     /** 同名的类型 */
-    @invar.InvarRule(T="test.abc.Conflict", S="f3")
+    @invar.lib.InvarRule(T="test.abc.Conflict", S="f3")
     public Custom setAbc(test.abc.Conflict value) { this.abc = value; return this; }
     /** 使用引用 */
-    @invar.InvarRule(T="string", S="f6")
+    @invar.lib.InvarRule(T="string", S="f6")
     public Custom setUseRef(String value) { this.useRef = value; return this; }
     /** 使用指针 */
-    @invar.InvarRule(T="string", S="f7")
+    @invar.lib.InvarRule(T="string", S="f7")
     public Custom setUsePtr(String value) { this.usePtr = value; return this; }
     /** 自身类型 */
-    @invar.InvarRule(T="test.abc.Custom", S="f8")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f8")
     public Custom setPrev(Custom value) { this.prev = value; return this; }
     /** 自身类型 */
-    @invar.InvarRule(T="test.abc.Custom", S="f9")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f9")
     public Custom setNext(Custom value) { this.next = value; return this; }
     /**  */
-    @invar.InvarRule(T="string", S="f10")
+    @invar.lib.InvarRule(T="string", S="f10")
     public Custom setEmptyDoc(String value) { this.emptyDoc = value; return this; }
 
     /** Shallow copy */

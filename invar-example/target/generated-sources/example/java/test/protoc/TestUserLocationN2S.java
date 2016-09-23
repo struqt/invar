@@ -18,10 +18,10 @@ import java.util.Map;
 /** 客户端通知服务端 */
 public final class TestUserLocationN2S
 implements
-invar.InvarCodec.ProtocNotify,
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.ProtocNotify,
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xEC953457L;
 
@@ -63,40 +63,40 @@ invar.InvarCodec.XMLEncode
     }
 
     /** [AutoAdd] ProtocolID */
-    @invar.InvarRule(T="uint16", S="f0")
+    @invar.lib.InvarRule(T="uint16", S="f0")
     public Integer getProtocId() { return protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f1")
+    @invar.lib.InvarRule(T="uint32", S="f1")
     public Long getProtocCRC() { return protocCRC; }
 
     /** [AutoAdd] 客户端请求的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2S", S="f2")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2S", S="f2")
     public Protoc2S getProtoc2S() { return protoc2S; }
 
     /** 坐标X */
-    @invar.InvarRule(T="float", S="f3")
+    @invar.lib.InvarRule(T="float", S="f3")
     public Float getX() { return x; }
 
     /** 坐标Y */
-    @invar.InvarRule(T="float", S="f4")
+    @invar.lib.InvarRule(T="float", S="f4")
     public Float getY() { return y; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f5")
+    @invar.lib.InvarRule(T="map<string,string>", S="f5")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] 客户端请求的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2S", S="f2")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2S", S="f2")
     public TestUserLocationN2S setProtoc2S(Protoc2S value) { this.protoc2S = value; return this; }
     /** 坐标X */
-    @invar.InvarRule(T="float", S="f3")
+    @invar.lib.InvarRule(T="float", S="f3")
     public TestUserLocationN2S setX(Float value) { this.x = value; return this; }
     /** 坐标Y */
-    @invar.InvarRule(T="float", S="f4")
+    @invar.lib.InvarRule(T="float", S="f4")
     public TestUserLocationN2S setY(Float value) { this.y = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f5")
+    @invar.lib.InvarRule(T="map<string,string>", S="f5")
     public TestUserLocationN2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

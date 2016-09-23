@@ -19,9 +19,9 @@ import test.abc.Info;
 /**  */
 public final class ConfigRoot
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x6D03BB9BL;
 
@@ -64,53 +64,53 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="string", S="f0")
+    @invar.lib.InvarRule(T="string", S="f0")
     public String getRevision() { return revision; }
 
     /**  */
-    @invar.InvarRule(T="test.xyz.TestList", S="f1")
+    @invar.lib.InvarRule(T="test.xyz.TestList", S="f1")
     public TestList getList() { return list; }
 
     /**  */
-    @invar.InvarRule(T="test.xyz.TestDict", S="f2")
+    @invar.lib.InvarRule(T="test.xyz.TestDict", S="f2")
     public TestDict getDict() { return dict; }
 
     /**  */
-    @invar.InvarRule(T="test.xyz.TestNest", S="f3")
+    @invar.lib.InvarRule(T="test.xyz.TestNest", S="f3")
     public TestNest getNest() { return nest; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Info", S="f4")
+    @invar.lib.InvarRule(T="test.abc.Info", S="f4")
     public Info getInfo() { return info; }
 
     /**  */
-    @invar.InvarRule(T="test.xyz.InfoX", S="f5")
+    @invar.lib.InvarRule(T="test.xyz.InfoX", S="f5")
     public InfoX getInfox() { return infox; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f6")
+    @invar.lib.InvarRule(T="map<string,string>", S="f6")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f0")
+    @invar.lib.InvarRule(T="string", S="f0")
     public ConfigRoot setRevision(String value) { this.revision = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.xyz.TestList", S="f1")
+    @invar.lib.InvarRule(T="test.xyz.TestList", S="f1")
     public ConfigRoot setList(TestList value) { this.list = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.xyz.TestDict", S="f2")
+    @invar.lib.InvarRule(T="test.xyz.TestDict", S="f2")
     public ConfigRoot setDict(TestDict value) { this.dict = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.xyz.TestNest", S="f3")
+    @invar.lib.InvarRule(T="test.xyz.TestNest", S="f3")
     public ConfigRoot setNest(TestNest value) { this.nest = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Info", S="f4")
+    @invar.lib.InvarRule(T="test.abc.Info", S="f4")
     public ConfigRoot setInfo(Info value) { this.info = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.xyz.InfoX", S="f5")
+    @invar.lib.InvarRule(T="test.xyz.InfoX", S="f5")
     public ConfigRoot setInfox(InfoX value) { this.infox = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f6")
+    @invar.lib.InvarRule(T="map<string,string>", S="f6")
     public ConfigRoot setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

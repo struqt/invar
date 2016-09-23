@@ -21,9 +21,9 @@ import test.abc.Info;
 /** Complex data structure */
 public final class InfoX
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xF55867E1L;
 
@@ -84,65 +84,65 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f0")
+    @invar.lib.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f0")
     public LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> getInfos() { return infos; }
 
     /** Two types with the same name. */
-    @invar.InvarRule(T="test.xyz.Conflict", S="f1")
+    @invar.lib.InvarRule(T="test.xyz.Conflict", S="f1")
     public test.xyz.Conflict getConflict_x() { return conflict_x; }
 
     /** Two types with the same name. */
-    @invar.InvarRule(T="test.abc.Conflict", S="f2")
+    @invar.lib.InvarRule(T="test.abc.Conflict", S="f2")
     public test.abc.Conflict getConflict_a() { return conflict_a; }
 
     /**  */
-    @invar.InvarRule(T="map<int32,test.abc.Conflict>", S="f3")
+    @invar.lib.InvarRule(T="map<int32,test.abc.Conflict>", S="f3")
     public LinkedHashMap<Integer,test.abc.Conflict> getMConflict() { return mConflict; }
 
     /** 2 dimension list */
-    @invar.InvarRule(T="vec<vec<test.abc.Info>>", S="f4")
+    @invar.lib.InvarRule(T="vec<vec<test.abc.Info>>", S="f4")
     public LinkedList<LinkedList<Info>> getInfo2d() { return info2d; }
 
     /** 3 dimension list */
-    @invar.InvarRule(T="vec<vec<vec<test.abc.Info>>>", S="f5")
+    @invar.lib.InvarRule(T="vec<vec<vec<test.abc.Info>>>", S="f5")
     public LinkedList<LinkedList<LinkedList<Info>>> getInfo3d() { return info3d; }
 
     /**  */
-    @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f6")
+    @invar.lib.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f6")
     public LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> getInfo5d() { return info5d; }
 
     /**  */
-    @invar.InvarRule(T="vec<map<int16,test.abc.Info>>", S="f7")
+    @invar.lib.InvarRule(T="vec<map<int16,test.abc.Info>>", S="f7")
     public LinkedList<LinkedHashMap<Short,Info>> getInfovm() { return infovm; }
 
     /**  */
-    @invar.InvarRule(T="map<vec<test.abc.Gender>,test.abc.Info>", S="f8")
+    @invar.lib.InvarRule(T="map<vec<test.abc.Gender>,test.abc.Info>", S="f8")
     public LinkedHashMap<LinkedList<Gender>,Info> getMvei() { return mvei; }
 
     /**  */
-    @invar.InvarRule(T="map<test.abc.Info,vec<test.abc.Gender>>", S="f9")
+    @invar.lib.InvarRule(T="map<test.abc.Info,vec<test.abc.Gender>>", S="f9")
     public LinkedHashMap<Info,LinkedList<Gender>> getMive() { return mive; }
 
     /**  */
-    @invar.InvarRule(T="map<vec<test.abc.Info>,vec<test.abc.Gender>>", S="f10")
+    @invar.lib.InvarRule(T="map<vec<test.abc.Info>,vec<test.abc.Gender>>", S="f10")
     public LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> getMvive() { return mvive; }
 
     /**  */
-    @invar.InvarRule(T="vec<map<vec<test.abc.Info>,vec<test.abc.Gender>>>", S="f11")
+    @invar.lib.InvarRule(T="vec<map<vec<test.abc.Info>,vec<test.abc.Gender>>>", S="f11")
     public LinkedList<LinkedHashMap<LinkedList<Info>,LinkedList<Gender>>> getVmvive() { return vmvive; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f12")
+    @invar.lib.InvarRule(T="map<string,string>", S="f12")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** Two types with the same name. */
-    @invar.InvarRule(T="test.xyz.Conflict", S="f1")
+    @invar.lib.InvarRule(T="test.xyz.Conflict", S="f1")
     public InfoX setConflict_x(test.xyz.Conflict value) { this.conflict_x = value; return this; }
     /** Two types with the same name. */
-    @invar.InvarRule(T="test.abc.Conflict", S="f2")
+    @invar.lib.InvarRule(T="test.abc.Conflict", S="f2")
     public InfoX setConflict_a(test.abc.Conflict value) { this.conflict_a = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f12")
+    @invar.lib.InvarRule(T="map<string,string>", S="f12")
     public InfoX setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

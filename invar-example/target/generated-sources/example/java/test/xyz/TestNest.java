@@ -20,9 +20,9 @@ import test.abc.Custom;
 /** 测试泛型相互嵌套 */
 public final class TestNest
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x6F0C2598L;
 
@@ -51,15 +51,15 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="vec<map<string,test.abc.Custom>>", S="f0")
+    @invar.lib.InvarRule(T="vec<map<string,test.abc.Custom>>", S="f0")
     public LinkedList<LinkedHashMap<String,Custom>> getListDict() { return listDict; }
 
     /**  */
-    @invar.InvarRule(T="map<vec<string>,vec<test.abc.Custom>>", S="f1")
+    @invar.lib.InvarRule(T="map<vec<string>,vec<test.abc.Custom>>", S="f1")
     public LinkedHashMap<LinkedList<String>,LinkedList<Custom>> getDictList() { return dictList; }
 
     /** 五维列表 */
-    @invar.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Custom>>>>>", S="f2")
+    @invar.lib.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Custom>>>>>", S="f2")
     public LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>>> getList5d() { return list5d; }
 
     /** Shallow copy */

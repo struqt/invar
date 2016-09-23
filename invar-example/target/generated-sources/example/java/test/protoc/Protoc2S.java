@@ -18,9 +18,9 @@ import java.util.Map;
 /** 客户端请求的公共数据 */
 public final class Protoc2S
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xC0869FC2L;
 
@@ -48,18 +48,18 @@ invar.InvarCodec.XMLEncode
     }
 
     /** 会话Id */
-    @invar.InvarRule(T="string", S="f0")
+    @invar.lib.InvarRule(T="string", S="f0")
     public String getSessionId() { return sessionId; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f1")
+    @invar.lib.InvarRule(T="map<string,string>", S="f1")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** 会话Id */
-    @invar.InvarRule(T="string", S="f0")
+    @invar.lib.InvarRule(T="string", S="f0")
     public Protoc2S setSessionId(String value) { this.sessionId = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f1")
+    @invar.lib.InvarRule(T="map<string,string>", S="f1")
     public Protoc2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

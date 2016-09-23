@@ -20,9 +20,9 @@ import test.abc.Gender;
 /** 测试基本的列表类型 */
 public final class TestList
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x5FD1194AL;
 
@@ -84,59 +84,59 @@ invar.InvarCodec.XMLEncode
     }
 
     /** 有符号的8位整数 */
-    @invar.InvarRule(T="vec<int8>", S="f0")
+    @invar.lib.InvarRule(T="vec<int8>", S="f0")
     public LinkedList<Byte> getListI08() { return listI08; }
 
     /** 有符号的16位整数 */
-    @invar.InvarRule(T="vec<int16>", S="f1")
+    @invar.lib.InvarRule(T="vec<int16>", S="f1")
     public LinkedList<Short> getListI16() { return listI16; }
 
     /** 有符号的32位整数 */
-    @invar.InvarRule(T="vec<int32>", S="f2")
+    @invar.lib.InvarRule(T="vec<int32>", S="f2")
     public LinkedList<Integer> getListI32() { return listI32; }
 
     /** 有符号的64位整数 */
-    @invar.InvarRule(T="vec<int64>", S="f3")
+    @invar.lib.InvarRule(T="vec<int64>", S="f3")
     public LinkedList<Long> getListI64() { return listI64; }
 
     /** 无符号的8位整数 */
-    @invar.InvarRule(T="vec<uint8>", S="f4")
+    @invar.lib.InvarRule(T="vec<uint8>", S="f4")
     public LinkedList<Integer> getListU08() { return listU08; }
 
     /** 无符号的16位整数 */
-    @invar.InvarRule(T="vec<uint16>", S="f5")
+    @invar.lib.InvarRule(T="vec<uint16>", S="f5")
     public LinkedList<Integer> getListU16() { return listU16; }
 
     /** 无符号的32位整数 */
-    @invar.InvarRule(T="vec<uint32>", S="f6")
+    @invar.lib.InvarRule(T="vec<uint32>", S="f6")
     public LinkedList<Long> getListU32() { return listU32; }
 
     /** 无符号的64位整数 */
-    @invar.InvarRule(T="vec<uint64>", S="f7")
+    @invar.lib.InvarRule(T="vec<uint64>", S="f7")
     public LinkedList<BigInteger> getListU64() { return listU64; }
 
     /** 单精度浮点小数 */
-    @invar.InvarRule(T="vec<float>", S="f8")
+    @invar.lib.InvarRule(T="vec<float>", S="f8")
     public LinkedList<Float> getListSingle() { return listSingle; }
 
     /** 双精度浮点小数 */
-    @invar.InvarRule(T="vec<double>", S="f9")
+    @invar.lib.InvarRule(T="vec<double>", S="f9")
     public LinkedList<Double> getListDouble() { return listDouble; }
 
     /** 布尔值 */
-    @invar.InvarRule(T="vec<bool>", S="f10")
+    @invar.lib.InvarRule(T="vec<bool>", S="f10")
     public LinkedList<Boolean> getListBoolean() { return listBoolean; }
 
     /** 字符串 */
-    @invar.InvarRule(T="vec<string>", S="f11")
+    @invar.lib.InvarRule(T="vec<string>", S="f11")
     public LinkedList<String> getListString() { return listString; }
 
     /** 枚举值 */
-    @invar.InvarRule(T="vec<test.abc.Gender>", S="f12")
+    @invar.lib.InvarRule(T="vec<test.abc.Gender>", S="f12")
     public LinkedList<Gender> getListEnum() { return listEnum; }
 
     /** 自定义结构 */
-    @invar.InvarRule(T="vec<test.abc.Custom>", S="f13")
+    @invar.lib.InvarRule(T="vec<test.abc.Custom>", S="f13")
     public LinkedList<Custom> getListStruct() { return listStruct; }
 
     /** Shallow copy */

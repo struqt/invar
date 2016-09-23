@@ -22,9 +22,9 @@ import test.abc.Gender;
 /** 引用类型测试 */
 public final class TestRefer
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xBBD63AFDL;
 
@@ -97,75 +97,75 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="int8", S="f0")
+    @invar.lib.InvarRule(T="int8", S="f0")
     public Byte getNumberi08() { return numberi08; }
 
     /**  */
-    @invar.InvarRule(T="int16", S="f1")
+    @invar.lib.InvarRule(T="int16", S="f1")
     public Short getNumberi16() { return numberi16; }
 
     /**  */
-    @invar.InvarRule(T="int32", S="f2")
+    @invar.lib.InvarRule(T="int32", S="f2")
     public Integer getNumberi32() { return numberi32; }
 
     /**  */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public Long getNumberi64() { return numberi64; }
 
     /**  */
-    @invar.InvarRule(T="uint8", S="f4")
+    @invar.lib.InvarRule(T="uint8", S="f4")
     public Integer getNumberu08() { return numberu08; }
 
     /**  */
-    @invar.InvarRule(T="uint16", S="f5")
+    @invar.lib.InvarRule(T="uint16", S="f5")
     public Integer getNumberu16() { return numberu16; }
 
     /**  */
-    @invar.InvarRule(T="uint32", S="f6")
+    @invar.lib.InvarRule(T="uint32", S="f6")
     public Long getNumberu32() { return numberu32; }
 
     /**  */
-    @invar.InvarRule(T="uint64", S="f7")
+    @invar.lib.InvarRule(T="uint64", S="f7")
     public BigInteger getNumberu64() { return numberu64; }
 
     /**  */
-    @invar.InvarRule(T="float", S="f8")
+    @invar.lib.InvarRule(T="float", S="f8")
     public Float getNumberSingle() { return numberSingle; }
 
     /**  */
-    @invar.InvarRule(T="double", S="f9")
+    @invar.lib.InvarRule(T="double", S="f9")
     public Double getNumberDouble() { return numberDouble; }
 
     /**  */
-    @invar.InvarRule(T="bool", S="f10")
+    @invar.lib.InvarRule(T="bool", S="f10")
     public Boolean getBoolValue() { return boolValue; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f11")
+    @invar.lib.InvarRule(T="string", S="f11")
     public String getStringValue() { return stringValue; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f12")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public Gender getEnumValue() { return enumValue; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Custom", S="f13")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f13")
     public Custom getOther() { return other; }
 
     /**  */
-    @invar.InvarRule(T="test.xyz.TestRefer", S="f14")
+    @invar.lib.InvarRule(T="test.xyz.TestRefer", S="f14")
     public TestRefer getSelf() { return self; }
 
     /**  */
-    @invar.InvarRule(T="vec<int8>", S="f15")
+    @invar.lib.InvarRule(T="vec<int8>", S="f15")
     public LinkedList<Byte> getListI08() { return listI08; }
 
     /**  */
-    @invar.InvarRule(T="map<int8,int8>", S="f16")
+    @invar.lib.InvarRule(T="map<int8,int8>", S="f16")
     public LinkedHashMap<Byte,Byte> getDictI08() { return dictI08; }
 
     /**  */
-    @invar.InvarRule(T="int8", S="f0")
+    @invar.lib.InvarRule(T="int8", S="f0")
     public TestRefer setNumberi08(Byte value) { this.numberi08 = value; return this; }
     public TestRefer setNumberi08(int value) throws NumberFormatException
     {
@@ -176,7 +176,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="int16", S="f1")
+    @invar.lib.InvarRule(T="int16", S="f1")
     public TestRefer setNumberi16(Short value) { this.numberi16 = value; return this; }
     public TestRefer setNumberi16(int value) throws NumberFormatException
     {
@@ -187,13 +187,13 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="int32", S="f2")
+    @invar.lib.InvarRule(T="int32", S="f2")
     public TestRefer setNumberi32(Integer value) { this.numberi32 = value; return this; }
     /**  */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public TestRefer setNumberi64(Long value) { this.numberi64 = value; return this; }
     /**  */
-    @invar.InvarRule(T="uint8", S="f4")
+    @invar.lib.InvarRule(T="uint8", S="f4")
     public TestRefer setNumberu08(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
@@ -203,7 +203,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="uint16", S="f5")
+    @invar.lib.InvarRule(T="uint16", S="f5")
     public TestRefer setNumberu16(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
@@ -213,7 +213,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="uint32", S="f6")
+    @invar.lib.InvarRule(T="uint32", S="f6")
     public TestRefer setNumberu32(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
@@ -223,28 +223,28 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="uint64", S="f7")
+    @invar.lib.InvarRule(T="uint64", S="f7")
     public TestRefer setNumberu64(BigInteger value) { this.numberu64 = value; return this; }
     /**  */
-    @invar.InvarRule(T="float", S="f8")
+    @invar.lib.InvarRule(T="float", S="f8")
     public TestRefer setNumberSingle(Float value) { this.numberSingle = value; return this; }
     /**  */
-    @invar.InvarRule(T="double", S="f9")
+    @invar.lib.InvarRule(T="double", S="f9")
     public TestRefer setNumberDouble(Double value) { this.numberDouble = value; return this; }
     /**  */
-    @invar.InvarRule(T="bool", S="f10")
+    @invar.lib.InvarRule(T="bool", S="f10")
     public TestRefer setBoolValue(Boolean value) { this.boolValue = value; return this; }
     /**  */
-    @invar.InvarRule(T="string", S="f11")
+    @invar.lib.InvarRule(T="string", S="f11")
     public TestRefer setStringValue(String value) { this.stringValue = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f12")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public TestRefer setEnumValue(Gender value) { this.enumValue = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Custom", S="f13")
+    @invar.lib.InvarRule(T="test.abc.Custom", S="f13")
     public TestRefer setOther(Custom value) { this.other = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.xyz.TestRefer", S="f14")
+    @invar.lib.InvarRule(T="test.xyz.TestRefer", S="f14")
     public TestRefer setSelf(TestRefer value) { this.self = value; return this; }
 
     /** Shallow copy */

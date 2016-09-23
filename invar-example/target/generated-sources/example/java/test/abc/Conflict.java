@@ -19,9 +19,9 @@ import java.util.Map;
 /** 名字冲突的类型 */
 public final class Conflict
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xCC7A29B9L;
 
@@ -55,29 +55,29 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f0")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
     public Gender getKey() { return key; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f1")
+    @invar.lib.InvarRule(T="string", S="f1")
     public String getText() { return text; }
 
     /**  */
-    @invar.InvarRule(T="vec<int8>", S="f2")
+    @invar.lib.InvarRule(T="vec<int8>", S="f2")
     public LinkedList<Byte> getBytes() { return bytes; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f3")
+    @invar.lib.InvarRule(T="map<string,string>", S="f3")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f0")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
     public Conflict setKey(Gender value) { this.key = value; return this; }
     /**  */
-    @invar.InvarRule(T="string", S="f1")
+    @invar.lib.InvarRule(T="string", S="f1")
     public Conflict setText(String value) { this.text = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f3")
+    @invar.lib.InvarRule(T="map<string,string>", S="f3")
     public Conflict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

@@ -18,10 +18,10 @@ import java.util.Map;
 /** 服务器通知客户端 */
 public final class TestServerTimeN2C
 implements
-invar.InvarCodec.ProtocNotify,
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.ProtocNotify,
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x85E08773L;
 
@@ -60,33 +60,33 @@ invar.InvarCodec.XMLEncode
     }
 
     /** [AutoAdd] ProtocolID */
-    @invar.InvarRule(T="uint16", S="f0")
+    @invar.lib.InvarRule(T="uint16", S="f0")
     public Integer getProtocId() { return protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f1")
+    @invar.lib.InvarRule(T="uint32", S="f1")
     public Long getProtocCRC() { return protocCRC; }
 
     /** [AutoAdd] 服务端响应的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2C", S="f2")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f2")
     public Protoc2C getProtoc2C() { return protoc2C; }
 
     /** 现在时间 */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public Long getTime() { return time; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f4")
+    @invar.lib.InvarRule(T="map<string,string>", S="f4")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] 服务端响应的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2C", S="f2")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f2")
     public TestServerTimeN2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }
     /** 现在时间 */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public TestServerTimeN2C setTime(Long value) { this.time = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f4")
+    @invar.lib.InvarRule(T="map<string,string>", S="f4")
     public TestServerTimeN2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

@@ -38,33 +38,33 @@ extern "C" {
 
 /****************************************************************************** HandleProtocAsServer */
 
-/* 服务端请求,客户端响应 */
-extern void HandleTestHeartBeatR2S(TestHeartBeatR2S *resp);
-#define HandleTestHeartBeatR2S [[self shared] blockRecvResponse]
+/* 客户端请求,服务端响应 */
+extern void HandleTestUserLogin2S(TestUserLogin2S *req, TestUserLoginR2C *resp);
+#define HandleTestUserLogin2S [[self shared] blockRecvRequest]
 
 /* 客户端通知服务端 */
 extern void HandleTestUserLocationN2S(TestUserLocationN2S *ntf);
 #define HandleTestUserLocationN2S [[self shared] blockRecvNotify]
 
-/* 客户端请求,服务端响应 */
-extern void HandleTestUserLogin2S(TestUserLogin2S *req, TestUserLoginR2C *resp);
-#define HandleTestUserLogin2S [[self shared] blockRecvRequest]
+/* 服务端请求,客户端响应 */
+extern void HandleTestHeartBeatR2S(TestHeartBeatR2S *resp);
+#define HandleTestHeartBeatR2S [[self shared] blockRecvResponse]
 
 /******************************************************************************/
 
 /****************************************************************************** HandleProtocAsClient */
 
-/* 服务端请求,客户端响应 */
-extern void HandleTestHeartBeat2C(TestHeartBeat2C *req, TestHeartBeatR2S *resp);
-#define HandleTestHeartBeat2C [[self shared] blockRecvRequest]
+/* 客户端请求,服务端响应 */
+extern void HandleTestUserLoginR2C(TestUserLoginR2C *resp);
+#define HandleTestUserLoginR2C [[self shared] blockRecvResponse]
 
 /* 服务器通知客户端 */
 extern void HandleTestServerTimeN2C(TestServerTimeN2C *ntf);
 #define HandleTestServerTimeN2C [[self shared] blockRecvNotify]
 
-/* 客户端请求,服务端响应 */
-extern void HandleTestUserLoginR2C(TestUserLoginR2C *resp);
-#define HandleTestUserLoginR2C [[self shared] blockRecvResponse]
+/* 服务端请求,客户端响应 */
+extern void HandleTestHeartBeat2C(TestHeartBeat2C *req, TestHeartBeatR2S *resp);
+#define HandleTestHeartBeat2C [[self shared] blockRecvRequest]
 
 /******************************************************************************/
 

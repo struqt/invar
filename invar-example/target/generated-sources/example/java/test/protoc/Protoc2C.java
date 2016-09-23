@@ -18,9 +18,9 @@ import java.util.Map;
 /** 服务端响应的公共数据 */
 public final class Protoc2C
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xC716EAFCL;
 
@@ -45,11 +45,11 @@ invar.InvarCodec.XMLEncode
     }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f0")
+    @invar.lib.InvarRule(T="map<string,string>", S="f0")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f0")
+    @invar.lib.InvarRule(T="map<string,string>", S="f0")
     public Protoc2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

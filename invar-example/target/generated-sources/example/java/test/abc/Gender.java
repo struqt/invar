@@ -5,7 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.abc;
 
-import invar.InvarEnum;
+import invar.lib.InvarEnum;
 
 /** 性别的枚举类型 */
 public enum Gender implements InvarEnum

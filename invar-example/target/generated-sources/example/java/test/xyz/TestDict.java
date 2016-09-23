@@ -21,9 +21,9 @@ import test.abc.Gender;
 /** 测试基本的映射类型 */
 public final class TestDict
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x969046DEL;
 
@@ -90,67 +90,67 @@ invar.InvarCodec.XMLEncode
     }
 
     /** 有符号的8位整数 */
-    @invar.InvarRule(T="map<int8,int8>", S="f0")
+    @invar.lib.InvarRule(T="map<int8,int8>", S="f0")
     public LinkedHashMap<Byte,Byte> getDictI08() { return dictI08; }
 
     /** 有符号的16位整数 */
-    @invar.InvarRule(T="map<int16,int16>", S="f1")
+    @invar.lib.InvarRule(T="map<int16,int16>", S="f1")
     public LinkedHashMap<Short,Short> getDictI16() { return dictI16; }
 
     /** 有符号的32位整数 */
-    @invar.InvarRule(T="map<int32,int32>", S="f2")
+    @invar.lib.InvarRule(T="map<int32,int32>", S="f2")
     public LinkedHashMap<Integer,Integer> getDictI32() { return dictI32; }
 
     /** 有符号的64位整数 */
-    @invar.InvarRule(T="map<int64,int64>", S="f3")
+    @invar.lib.InvarRule(T="map<int64,int64>", S="f3")
     public LinkedHashMap<Long,Long> getDictI64() { return dictI64; }
 
     /** 无符号的8位整数 */
-    @invar.InvarRule(T="map<uint8,uint8>", S="f4")
+    @invar.lib.InvarRule(T="map<uint8,uint8>", S="f4")
     public LinkedHashMap<Integer,Integer> getDictU08() { return dictU08; }
 
     /** 无符号的16位整数 */
-    @invar.InvarRule(T="map<uint16,uint16>", S="f5")
+    @invar.lib.InvarRule(T="map<uint16,uint16>", S="f5")
     public LinkedHashMap<Integer,Integer> getDictU16() { return dictU16; }
 
     /** 无符号的32位整数 */
-    @invar.InvarRule(T="map<uint32,uint32>", S="f6")
+    @invar.lib.InvarRule(T="map<uint32,uint32>", S="f6")
     public LinkedHashMap<Long,Long> getDictU32() { return dictU32; }
 
     /** 无符号的64位整数 */
-    @invar.InvarRule(T="map<uint64,uint64>", S="f7")
+    @invar.lib.InvarRule(T="map<uint64,uint64>", S="f7")
     public LinkedHashMap<BigInteger,BigInteger> getDictU64() { return dictU64; }
 
     /** 单精度浮点小数 */
-    @invar.InvarRule(T="map<float,float>", S="f8")
+    @invar.lib.InvarRule(T="map<float,float>", S="f8")
     public LinkedHashMap<Float,Float> getDictSingle() { return dictSingle; }
 
     /** 双精度浮点小数 */
-    @invar.InvarRule(T="map<double,double>", S="f9")
+    @invar.lib.InvarRule(T="map<double,double>", S="f9")
     public LinkedHashMap<Double,Double> getDictDouble() { return dictDouble; }
 
     /** 布尔值 */
-    @invar.InvarRule(T="map<bool,bool>", S="f10")
+    @invar.lib.InvarRule(T="map<bool,bool>", S="f10")
     public LinkedHashMap<Boolean,Boolean> getDictBoolean() { return dictBoolean; }
 
     /** 字符串 */
-    @invar.InvarRule(T="map<string,string>", S="f11")
+    @invar.lib.InvarRule(T="map<string,string>", S="f11")
     public LinkedHashMap<String,String> getDictString() { return dictString; }
 
     /** 枚举值 */
-    @invar.InvarRule(T="map<test.abc.Gender,test.abc.Gender>", S="f12")
+    @invar.lib.InvarRule(T="map<test.abc.Gender,test.abc.Gender>", S="f12")
     public LinkedHashMap<Gender,Gender> getDictEnum() { return dictEnum; }
 
     /** 自定义结构 */
-    @invar.InvarRule(T="map<test.abc.Custom,test.abc.Custom>", S="f13")
+    @invar.lib.InvarRule(T="map<test.abc.Custom,test.abc.Custom>", S="f13")
     public LinkedHashMap<Custom,Custom> getDictStruct() { return dictStruct; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f14")
+    @invar.lib.InvarRule(T="map<string,string>", S="f14")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f14")
+    @invar.lib.InvarRule(T="map<string,string>", S="f14")
     public TestDict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

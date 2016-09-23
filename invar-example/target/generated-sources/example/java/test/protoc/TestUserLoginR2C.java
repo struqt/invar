@@ -19,10 +19,10 @@ import java.util.Map;
 /** 客户端请求,服务端响应 */
 public final class TestUserLoginR2C
 implements
-invar.InvarCodec.ProtocResponse,
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.ProtocResponse,
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xAE3BF274L;
 
@@ -70,39 +70,39 @@ invar.InvarCodec.XMLEncode
     }
 
     /** [AutoAdd] Protocol error code */
-    @invar.InvarRule(T="uint16", S="f0")
+    @invar.lib.InvarRule(T="uint16", S="f0")
     public Integer getProtocError() { return protocError; }
 
     /** [AutoAdd] ProtocolID */
-    @invar.InvarRule(T="uint16", S="f1")
+    @invar.lib.InvarRule(T="uint16", S="f1")
     public Integer getProtocId() { return protocId; }
 
     /** [AutoAdd] Protocol CRC32 */
-    @invar.InvarRule(T="uint32", S="f2")
+    @invar.lib.InvarRule(T="uint32", S="f2")
     public Long getProtocCRC() { return protocCRC; }
 
     /** [AutoAdd] 服务端响应的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2C", S="f3")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f3")
     public Protoc2C getProtoc2C() { return protoc2C; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f4")
+    @invar.lib.InvarRule(T="string", S="f4")
     public String getUserId() { return userId; }
 
     /**  */
-    @invar.InvarRule(T="string", S="f5")
+    @invar.lib.InvarRule(T="string", S="f5")
     public String getUserName() { return userName; }
 
     /**  */
-    @invar.InvarRule(T="vec<int32>", S="f6")
+    @invar.lib.InvarRule(T="vec<int32>", S="f6")
     public LinkedList<Integer> getRoles() { return roles; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f7")
+    @invar.lib.InvarRule(T="map<string,string>", S="f7")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] Protocol error code */
-    @invar.InvarRule(T="uint16", S="f0")
+    @invar.lib.InvarRule(T="uint16", S="f0")
     public TestUserLoginR2C setProtocError(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
@@ -112,16 +112,16 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** [AutoAdd] 服务端响应的公共数据 */
-    @invar.InvarRule(T="test.protoc.Protoc2C", S="f3")
+    @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f3")
     public TestUserLoginR2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }
     /**  */
-    @invar.InvarRule(T="string", S="f4")
+    @invar.lib.InvarRule(T="string", S="f4")
     public TestUserLoginR2C setUserId(String value) { this.userId = value; return this; }
     /**  */
-    @invar.InvarRule(T="string", S="f5")
+    @invar.lib.InvarRule(T="string", S="f5")
     public TestUserLoginR2C setUserName(String value) { this.userName = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f7")
+    @invar.lib.InvarRule(T="map<string,string>", S="f7")
     public TestUserLoginR2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

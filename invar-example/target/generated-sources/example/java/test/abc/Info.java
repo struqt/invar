@@ -20,9 +20,9 @@ import java.util.Map;
 /** Test comments */
 public final class Info
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x120FDCDBL;
 
@@ -115,102 +115,102 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="int32", S="f0")
+    @invar.lib.InvarRule(T="int32", S="f0")
     public Integer getKey() { return key; }
 
     /**  */
-    @invar.InvarRule(T="int8", S="f1")
+    @invar.lib.InvarRule(T="int8", S="f1")
     public Byte getNumber01() { return number01; }
 
     /**  */
-    @invar.InvarRule(T="int16", S="f2")
+    @invar.lib.InvarRule(T="int16", S="f2")
     public Short getNumber02() { return number02; }
 
     /**  */
-    @invar.InvarRule(T="int32", S="f3")
+    @invar.lib.InvarRule(T="int32", S="f3")
     public Integer getNumber03() { return number03; }
 
     /** Test field comments */
-    @invar.InvarRule(T="int64", S="f4")
+    @invar.lib.InvarRule(T="int64", S="f4")
     public Long getNumber04() { return number04; }
 
     /**  */
-    @invar.InvarRule(T="uint8", S="f5")
+    @invar.lib.InvarRule(T="uint8", S="f5")
     public Integer getNumber05() { return number05; }
 
     /**  */
-    @invar.InvarRule(T="uint16", S="f6")
+    @invar.lib.InvarRule(T="uint16", S="f6")
     public Integer getNumber06() { return number06; }
 
     /**  */
-    @invar.InvarRule(T="uint32", S="f7")
+    @invar.lib.InvarRule(T="uint32", S="f7")
     public Long getNumber07() { return number07; }
 
     /**  */
-    @invar.InvarRule(T="uint64", S="f8")
+    @invar.lib.InvarRule(T="uint64", S="f8")
     public BigInteger getNumber08() { return number08; }
 
     /**  */
-    @invar.InvarRule(T="float", S="f9")
+    @invar.lib.InvarRule(T="float", S="f9")
     public Float getNumber09() { return number09; }
 
     /**  */
-    @invar.InvarRule(T="double", S="f10")
+    @invar.lib.InvarRule(T="double", S="f10")
     public Double getNumber10() { return number10; }
 
     /**  */
-    @invar.InvarRule(T="bool", S="f11")
+    @invar.lib.InvarRule(T="bool", S="f11")
     public Boolean getIsReal() { return isReal; }
 
     /** a string */
-    @invar.InvarRule(T="string", S="f12")
+    @invar.lib.InvarRule(T="string", S="f12")
     public String getS() { return s; }
 
     /**  */
-    @invar.InvarRule(T="vec<string>", S="f13")
+    @invar.lib.InvarRule(T="vec<string>", S="f13")
     public LinkedList<String> getWorld() { return world; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f14")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f14")
     public Gender getGender() { return gender; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Info", S="f15")
+    @invar.lib.InvarRule(T="test.abc.Info", S="f15")
     public Info getNext() { return next; }
 
     /**  */
-    @invar.InvarRule(T="test.abc.Conflict", S="f16")
+    @invar.lib.InvarRule(T="test.abc.Conflict", S="f16")
     public test.abc.Conflict getConflict() { return conflict; }
 
     /**  */
-    @invar.InvarRule(T="vec<test.xyz.Conflict>", S="f17")
+    @invar.lib.InvarRule(T="vec<test.xyz.Conflict>", S="f17")
     public LinkedList<test.xyz.Conflict> getConflicts() { return conflicts; }
 
     /**  */
-    @invar.InvarRule(T="vec<double>", S="f18")
+    @invar.lib.InvarRule(T="vec<double>", S="f18")
     public LinkedList<Double> getNumbers() { return numbers; }
 
     /**  */
-    @invar.InvarRule(T="map<test.abc.Info,test.abc.Gender>", S="f19")
+    @invar.lib.InvarRule(T="map<test.abc.Info,test.abc.Gender>", S="f19")
     public LinkedHashMap<Info,Gender> getMapInfoG() { return mapInfoG; }
 
     /**  */
-    @invar.InvarRule(T="map<test.abc.Gender,test.abc.Info>", S="f20")
+    @invar.lib.InvarRule(T="map<test.abc.Gender,test.abc.Info>", S="f20")
     public LinkedHashMap<Gender,Info> getMapGenderInfo() { return mapGenderInfo; }
 
     /**  */
-    @invar.InvarRule(T="map<int32,double>", S="f21")
+    @invar.lib.InvarRule(T="map<int32,double>", S="f21")
     public LinkedHashMap<Integer,Double> getMapDouble() { return mapDouble; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f22")
+    @invar.lib.InvarRule(T="map<string,string>", S="f22")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /**  */
-    @invar.InvarRule(T="int32", S="f0")
+    @invar.lib.InvarRule(T="int32", S="f0")
     public Info setKey(Integer value) { this.key = value; return this; }
     /**  */
-    @invar.InvarRule(T="int8", S="f1")
+    @invar.lib.InvarRule(T="int8", S="f1")
     public Info setNumber01(Byte value) { this.number01 = value; return this; }
     public Info setNumber01(int value) throws NumberFormatException
     {
@@ -221,7 +221,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="int16", S="f2")
+    @invar.lib.InvarRule(T="int16", S="f2")
     public Info setNumber02(Short value) { this.number02 = value; return this; }
     public Info setNumber02(int value) throws NumberFormatException
     {
@@ -232,13 +232,13 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="int32", S="f3")
+    @invar.lib.InvarRule(T="int32", S="f3")
     public Info setNumber03(Integer value) { this.number03 = value; return this; }
     /** Test field comments */
-    @invar.InvarRule(T="int64", S="f4")
+    @invar.lib.InvarRule(T="int64", S="f4")
     public Info setNumber04(Long value) { this.number04 = value; return this; }
     /**  */
-    @invar.InvarRule(T="uint8", S="f5")
+    @invar.lib.InvarRule(T="uint8", S="f5")
     public Info setNumber05(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
@@ -248,7 +248,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="uint16", S="f6")
+    @invar.lib.InvarRule(T="uint16", S="f6")
     public Info setNumber06(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
@@ -258,7 +258,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="uint32", S="f7")
+    @invar.lib.InvarRule(T="uint32", S="f7")
     public Info setNumber07(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
@@ -268,31 +268,31 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /**  */
-    @invar.InvarRule(T="uint64", S="f8")
+    @invar.lib.InvarRule(T="uint64", S="f8")
     public Info setNumber08(BigInteger value) { this.number08 = value; return this; }
     /**  */
-    @invar.InvarRule(T="float", S="f9")
+    @invar.lib.InvarRule(T="float", S="f9")
     public Info setNumber09(Float value) { this.number09 = value; return this; }
     /**  */
-    @invar.InvarRule(T="double", S="f10")
+    @invar.lib.InvarRule(T="double", S="f10")
     public Info setNumber10(Double value) { this.number10 = value; return this; }
     /**  */
-    @invar.InvarRule(T="bool", S="f11")
+    @invar.lib.InvarRule(T="bool", S="f11")
     public Info setIsReal(Boolean value) { this.isReal = value; return this; }
     /** a string */
-    @invar.InvarRule(T="string", S="f12")
+    @invar.lib.InvarRule(T="string", S="f12")
     public Info setS(String value) { this.s = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Gender", S="f14")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f14")
     public Info setGender(Gender value) { this.gender = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Info", S="f15")
+    @invar.lib.InvarRule(T="test.abc.Info", S="f15")
     public Info setNext(Info value) { this.next = value; return this; }
     /**  */
-    @invar.InvarRule(T="test.abc.Conflict", S="f16")
+    @invar.lib.InvarRule(T="test.abc.Conflict", S="f16")
     public Info setConflict(test.abc.Conflict value) { this.conflict = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f22")
+    @invar.lib.InvarRule(T="map<string,string>", S="f22")
     public Info setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */

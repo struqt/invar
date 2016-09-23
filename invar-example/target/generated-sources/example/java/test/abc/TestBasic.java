@@ -17,9 +17,9 @@ import java.math.BigInteger;
 /** 基础类型 */
 public final class TestBasic
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0xF60C9915L;
 
@@ -81,63 +81,63 @@ invar.InvarCodec.XMLEncode
     }
 
     /** 有符号的8位整数 */
-    @invar.InvarRule(T="int8", S="f0")
+    @invar.lib.InvarRule(T="int8", S="f0")
     public Byte getNumberI08() { return numberI08; }
 
     /** 有符号的16位整数 */
-    @invar.InvarRule(T="int16", S="f1")
+    @invar.lib.InvarRule(T="int16", S="f1")
     public Short getNumberI16() { return numberI16; }
 
     /** 有符号的32位整数 */
-    @invar.InvarRule(T="int32", S="f2")
+    @invar.lib.InvarRule(T="int32", S="f2")
     public Integer getNumberI32() { return numberI32; }
 
     /** 有符号的64位整数 */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public Long getNumberI64() { return numberI64; }
 
     /** 无符号的8位整数 */
-    @invar.InvarRule(T="uint8", S="f4")
+    @invar.lib.InvarRule(T="uint8", S="f4")
     public Integer getNumberU08() { return numberU08; }
 
     /** 无符号的16位整数 */
-    @invar.InvarRule(T="uint16", S="f5")
+    @invar.lib.InvarRule(T="uint16", S="f5")
     public Integer getNumberU16() { return numberU16; }
 
     /** 无符号的32位整数 */
-    @invar.InvarRule(T="uint32", S="f6")
+    @invar.lib.InvarRule(T="uint32", S="f6")
     public Long getNumberU32() { return numberU32; }
 
     /** 无符号的64位整数 */
-    @invar.InvarRule(T="uint64", S="f7")
+    @invar.lib.InvarRule(T="uint64", S="f7")
     public BigInteger getNumberU64() { return numberU64; }
 
     /** 单精度浮点小数 */
-    @invar.InvarRule(T="float", S="f8")
+    @invar.lib.InvarRule(T="float", S="f8")
     public Float getNumberSingle() { return numberSingle; }
 
     /** 双精度浮点小数 */
-    @invar.InvarRule(T="double", S="f9")
+    @invar.lib.InvarRule(T="double", S="f9")
     public Double getNumberDouble() { return numberDouble; }
 
     /** 布尔值 */
-    @invar.InvarRule(T="bool", S="f10")
+    @invar.lib.InvarRule(T="bool", S="f10")
     public Boolean getBoolValue() { return boolValue; }
 
     /** 字符串 */
-    @invar.InvarRule(T="string", S="f11")
+    @invar.lib.InvarRule(T="string", S="f11")
     public String getStringValue() { return stringValue; }
 
     /** 枚举值 */
-    @invar.InvarRule(T="test.abc.Gender", S="f12")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public Gender getEnumValue() { return enumValue; }
 
     /** 枚举值制定默认值 */
-    @invar.InvarRule(T="test.abc.Gender", S="f13")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f13")
     public Gender getEnumDeft() { return enumDeft; }
 
     /** 有符号的8位整数 */
-    @invar.InvarRule(T="int8", S="f0")
+    @invar.lib.InvarRule(T="int8", S="f0")
     public TestBasic setNumberI08(Byte value) { this.numberI08 = value; return this; }
     public TestBasic setNumberI08(int value) throws NumberFormatException
     {
@@ -148,7 +148,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** 有符号的16位整数 */
-    @invar.InvarRule(T="int16", S="f1")
+    @invar.lib.InvarRule(T="int16", S="f1")
     public TestBasic setNumberI16(Short value) { this.numberI16 = value; return this; }
     public TestBasic setNumberI16(int value) throws NumberFormatException
     {
@@ -159,13 +159,13 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** 有符号的32位整数 */
-    @invar.InvarRule(T="int32", S="f2")
+    @invar.lib.InvarRule(T="int32", S="f2")
     public TestBasic setNumberI32(Integer value) { this.numberI32 = value; return this; }
     /** 有符号的64位整数 */
-    @invar.InvarRule(T="int64", S="f3")
+    @invar.lib.InvarRule(T="int64", S="f3")
     public TestBasic setNumberI64(Long value) { this.numberI64 = value; return this; }
     /** 无符号的8位整数 */
-    @invar.InvarRule(T="uint8", S="f4")
+    @invar.lib.InvarRule(T="uint8", S="f4")
     public TestBasic setNumberU08(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
@@ -175,7 +175,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** 无符号的16位整数 */
-    @invar.InvarRule(T="uint16", S="f5")
+    @invar.lib.InvarRule(T="uint16", S="f5")
     public TestBasic setNumberU16(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
@@ -185,7 +185,7 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** 无符号的32位整数 */
-    @invar.InvarRule(T="uint32", S="f6")
+    @invar.lib.InvarRule(T="uint32", S="f6")
     public TestBasic setNumberU32(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
@@ -195,25 +195,25 @@ invar.InvarCodec.XMLEncode
         return this;
     }
     /** 无符号的64位整数 */
-    @invar.InvarRule(T="uint64", S="f7")
+    @invar.lib.InvarRule(T="uint64", S="f7")
     public TestBasic setNumberU64(BigInteger value) { this.numberU64 = value; return this; }
     /** 单精度浮点小数 */
-    @invar.InvarRule(T="float", S="f8")
+    @invar.lib.InvarRule(T="float", S="f8")
     public TestBasic setNumberSingle(Float value) { this.numberSingle = value; return this; }
     /** 双精度浮点小数 */
-    @invar.InvarRule(T="double", S="f9")
+    @invar.lib.InvarRule(T="double", S="f9")
     public TestBasic setNumberDouble(Double value) { this.numberDouble = value; return this; }
     /** 布尔值 */
-    @invar.InvarRule(T="bool", S="f10")
+    @invar.lib.InvarRule(T="bool", S="f10")
     public TestBasic setBoolValue(Boolean value) { this.boolValue = value; return this; }
     /** 字符串 */
-    @invar.InvarRule(T="string", S="f11")
+    @invar.lib.InvarRule(T="string", S="f11")
     public TestBasic setStringValue(String value) { this.stringValue = value; return this; }
     /** 枚举值 */
-    @invar.InvarRule(T="test.abc.Gender", S="f12")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public TestBasic setEnumValue(Gender value) { this.enumValue = value; return this; }
     /** 枚举值制定默认值 */
-    @invar.InvarRule(T="test.abc.Gender", S="f13")
+    @invar.lib.InvarRule(T="test.abc.Gender", S="f13")
     public TestBasic setEnumDeft(Gender value) { this.enumDeft = value; return this; }
 
     /** Shallow copy */

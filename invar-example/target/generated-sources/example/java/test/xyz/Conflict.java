@@ -18,9 +18,9 @@ import java.util.Map;
 /**  */
 public final class Conflict
 implements
-invar.InvarCodec.BinaryDecode,
-invar.InvarCodec.BinaryEncode,
-invar.InvarCodec.XMLEncode
+invar.lib.InvarCodec.BinaryDecode,
+invar.lib.InvarCodec.BinaryEncode,
+invar.lib.InvarCodec.XMLEncode
 {
     static public final long CRC32 = 0x2126E985L;
 
@@ -48,18 +48,18 @@ invar.InvarCodec.XMLEncode
     }
 
     /**  */
-    @invar.InvarRule(T="double", S="f0")
+    @invar.lib.InvarRule(T="double", S="f0")
     public Double getPi() { return pi; }
 
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f1")
+    @invar.lib.InvarRule(T="map<string,string>", S="f1")
     public LinkedHashMap<String,String> getHotfix() { return hotfix; }
 
     /**  */
-    @invar.InvarRule(T="double", S="f0")
+    @invar.lib.InvarRule(T="double", S="f0")
     public Conflict setPi(Double value) { this.pi = value; return this; }
     /** [AutoAdd] Hotfix */
-    @invar.InvarRule(T="map<string,string>", S="f1")
+    @invar.lib.InvarRule(T="map<string,string>", S="f1")
     public Conflict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
 
     /** Shallow copy */
