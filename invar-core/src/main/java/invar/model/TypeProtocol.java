@@ -5,10 +5,7 @@
 
 package invar.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class TypeProtocol extends InvarType {
 
@@ -17,11 +14,11 @@ public class TypeProtocol extends InvarType {
     static private HashMap<Integer, TypeStruct> mapServers = new HashMap<Integer, TypeStruct>(512);
 
     static public Iterator<Integer> clientIds() {
-        return mapClients.keySet().iterator();
+        return new TreeSet<Integer>(mapClients.keySet()).iterator();
     }
 
     static public Iterator<Integer> serverIds() {
-        return mapServers.keySet().iterator();
+        return new TreeSet<Integer>(mapServers.keySet()).iterator();
     }
 
     static public TypeStruct findClient(Integer key) {
