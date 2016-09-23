@@ -1,4 +1,4 @@
-package invar;
+package invar.lib;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;

@@ -5,16 +5,16 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
-  <export resPath="java/invar/InvarRule.java" destDir="invar" destName="InvarRule.java"/>
-  <export resPath="java/invar/InvarEnum.java" destDir="invar" destName="InvarEnum.java"/>
-  <export resPath="java/invar/InvarCodec.java" destDir="invar" destName="InvarCodec.java"/>
-  <export resPath="java/invar/InvarSQL.java" destDir="invar" destName="InvarSQL.java"/>
-  <export resPath="java/invar/InvarMySQL.java" destDir="invar" destName="InvarMySQL.java"/>
-  <export resPath="java/invar/InvarReadData.java" destDir="invar" destName="InvarReadData.java"/>
-  <export resPath="java/invar/RecvRequest.java" destDir="invar" destName="RecvRequest.java"/>
-  <export resPath="java/invar/RecvResponse.java" destDir="invar" destName="RecvResponse.java"/>
-  <export resPath="java/invar/RecvNotify.java" destDir="invar" destName="RecvNotify.java"/>
-  <export resPath="java/invar/RecvContext.java" destDir="invar" destName="RecvContext.java"/>
+  <export resPath="java/lib/InvarRule.java" destDir="invar/lib" destName="InvarRule.java"/>
+  <export resPath="java/lib/InvarEnum.java" destDir="invar/lib" destName="InvarEnum.java"/>
+  <export resPath="java/lib/InvarCodec.java" destDir="invar/lib" destName="InvarCodec.java"/>
+  <export resPath="java/lib/InvarSQL.java" destDir="invar/lib" destName="InvarSQL.java"/>
+  <export resPath="java/lib/InvarMySQL.java" destDir="invar/lib" destName="InvarMySQL.java"/>
+  <export resPath="java/lib/InvarReadData.java" destDir="invar/lib" destName="InvarReadData.java"/>
+  <export resPath="java/lib/RecvRequest.java" destDir="invar/lib" destName="RecvRequest.java"/>
+  <export resPath="java/lib/RecvResponse.java" destDir="invar/lib" destName="RecvResponse.java"/>
+  <export resPath="java/lib/RecvNotify.java" destDir="invar/lib" destName="RecvNotify.java"/>
+  <export resPath="java/lib/RecvContext.java" destDir="invar/lib" destName="RecvContext.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -123,7 +123,7 @@
     (#brk)(#tab)(#doc)
     (#tab)(#name) ((#value)), ]]></template>
   <template key="enum"><![CDATA[
-    import invar.InvarEnum;
+    import invar.lib.InvarEnum;
     (#blank)
     (#doc)
     public enum (#name) implements InvarEnum
@@ -152,11 +152,11 @@
     }
   ]]></template>
   <template key="struct.protoc.ntf"><![CDATA[
-    (#brk)invar.InvarCodec.ProtocNotify, ]]></template>
+    (#brk)invar.lib.InvarCodec.ProtocNotify, ]]></template>
   <template key="struct.protoc.req"><![CDATA[
-    (#brk)invar.InvarCodec.ProtocRequest, ]]></template>
+    (#brk)invar.lib.InvarCodec.ProtocRequest, ]]></template>
   <template key="struct.protoc.resp"><![CDATA[
-    (#brk)invar.InvarCodec.ProtocResponse, ]]></template>
+    (#brk)invar.lib.InvarCodec.ProtocResponse, ]]></template>
   <template key="struct"><![CDATA[
     [#addImport(struct; imports; java.io::IOException)]
     [#addImport(struct; imports; java.io::InputStream)]
@@ -168,9 +168,9 @@
     (#doc)
     public final class (#name)
     implements(#protoc-type)
-    invar.InvarCodec.BinaryDecode,
-    invar.InvarCodec.BinaryEncode,
-    invar.InvarCodec.XMLEncode
+    invar.lib.InvarCodec.BinaryDecode,
+    invar.lib.InvarCodec.BinaryEncode,
+    invar.lib.InvarCodec.XMLEncode
     {
     (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)]L;
     (#blank)
@@ -201,7 +201,7 @@
     }
 	]]></template>
   <template key="struct.meta">
-    <![CDATA[@invar.InvarRule(T="(#type)", S="f(#index)")]]></template>
+    <![CDATA[@invar.lib.InvarRule(T="(#type)", S="f(#index)")]]></template>
   <template key="struct.field"><![CDATA[
     (#tab)private [#clampLen(lenFieldType; 64; (#type))]
     (#concat) [#clampLen(lenFieldName; 16; (#namer) )];
@@ -717,7 +717,7 @@
   ]]></template>
 
   <!-- InvarRuntime Class -->
-  <template key="runtime.pack"><![CDATA[ invar ]]></template>
+  <template key="runtime.pack"><![CDATA[ invar.lib ]]></template>
   <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
   <template key="runtime.type.split"><![CDATA[ . ]]></template>
   <template key="runtime.alias"><![CDATA[
@@ -793,15 +793,15 @@
     (#blank)
     (#tab)(#tab)static public final String TABLE = "(#table)";
     (#blank)
-    (#tab)(#tab)static public invar.InvarSQL getBuilder() {
+    (#tab)(#tab)static public invar.lib.InvarSQL getBuilder() {
     (#tab)(#tab)(#tab)if (builder == null) {
-    (#tab)(#tab)(#tab)(#tab)builder = invar.InvarSQL.Create(
+    (#tab)(#tab)(#tab)(#tab)builder = invar.lib.InvarSQL.Create(
     (#tab)(#tab)(#tab)(#tab)(#tab)TABLE, getWritableFields(), getAliasMap());
     (#tab)(#tab)(#tab)}
     (#tab)(#tab)(#tab)return builder;
     (#tab)(#tab)}
     (#blank)
-    (#tab)(#tab)static private invar.InvarSQL builder = null;
+    (#tab)(#tab)static private invar.lib.InvarSQL builder = null;
   ]]></template>
   <template key="sql.end.method"><![CDATA[ (#tab)} ]]></template>
 

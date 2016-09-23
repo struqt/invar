@@ -1,4 +1,4 @@
-package invar;
+package invar.lib;
 
 import java.util.List;
 import java.util.Map;

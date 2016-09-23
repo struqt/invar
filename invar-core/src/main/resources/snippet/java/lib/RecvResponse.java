@@ -1,9 +1,9 @@
-package invar;
+package invar.lib;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class RecvResponse<R extends invar.InvarCodec.ProtocResponse> {
+public abstract class RecvResponse<R extends InvarCodec.ProtocResponse> {
 
     static Map<Integer, RecvResponse> map = new HashMap<Integer, RecvResponse>(256);
 
@@ -12,7 +12,7 @@ public abstract class RecvResponse<R extends invar.InvarCodec.ProtocResponse> {
     }
 
     static public <
-        T extends invar.InvarCodec.ProtocResponse,
+        T extends InvarCodec.ProtocResponse,
         C extends RecvContext> int recv(C ctx, T resp) {
 
         if (map.containsKey(resp.getProtocId())) {
