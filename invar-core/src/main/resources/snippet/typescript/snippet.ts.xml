@@ -202,7 +202,7 @@
     (#body)
   ]]></template>
   <template key="getter.any | getter.vec | getter.map"><![CDATA[
-    public get (#namer)(): (#type) { return (#name) } ]]></template>
+    public get[#upperHeadChar( (#namer) )](): (#type) { return (#name) } ]]></template>
 
 
   <!-- Read bytes from a Stream -->
