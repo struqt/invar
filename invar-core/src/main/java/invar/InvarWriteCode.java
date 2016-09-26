@@ -87,6 +87,9 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     public void addImport(TypeStruct struct, TreeSet<String> imps, String s) {
+        if (s == null || s.isEmpty()) {
+            return;
+        }
         InvarType t = super.findType(getContext(), s);
         if (t == null) {
             logErr("addImport() --- Can't find type named " + s);

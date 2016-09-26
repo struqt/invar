@@ -642,7 +642,7 @@
     (#tab)(#tab)s.append('}');
     (#tab)} /* (#type)::writeJSON(...) */ ]]></template>
   <template key="tojson.any"><![CDATA[ (#arg).append((#name).toString()) ]]></template>
-  <template key="tojson.enum"><![CDATA[ (#arg).append((#name).ordinal()) ]]></template>
+  <template key="tojson.enum"><![CDATA[ (#arg).append((#name).value()) ]]></template>
   <template key="tojson.bool"><![CDATA[
     (#arg).append((#name).toString().toLowerCase()) ]]></template>
   <template key="tojson.string"><![CDATA[
