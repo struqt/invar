@@ -300,59 +300,54 @@
     (#body)
   ]]></template>
   <template key="setter.any | setter.vec | setter.map"><![CDATA[
-    public (#struct) set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; return this; } ]]></template>
+    public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; } ]]></template>
   <template key="setter.int8"><![CDATA[
-    public (#struct) set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; return this; }
+    public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; }
     (#blank)
-    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
     (#tab)if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
     (#tab)(#tab)throw new NumberFormatException("int8 value out of range: " + value);
     (#tab)}
     (#tab)this.(#name) = Integer.valueOf(value).byteValue();
-    (#tab)return this;
     }
   ]]></template>
   <template key="setter.int16"><![CDATA[
-    public (#struct) set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; return this; }
+    public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; }
     (#blank)
-    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
     (#tab)if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
     (#tab)(#tab)throw new NumberFormatException("int16 value out of range: " + value);
     (#tab)}
     (#tab)this.(#name) = Integer.valueOf(value).shortValue();
-    (#tab)return this;
     }
   ]]></template>
   <template key="setter.uint8"><![CDATA[
-    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
     (#tab)if (value < 0 || value > 0xFF) {
     (#tab)(#tab)throw new NumberFormatException("uint8 value out of range: " + value);
     (#tab)}
     (#tab)this.(#name) = value;
-    (#tab)return this;
     }
   ]]></template>
   <template key="setter.uint16"><![CDATA[
-    public (#struct) set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
+    public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
     (#tab)if (value < 0 || value > 0xFFFF) {
     (#tab)(#tab)throw new NumberFormatException("uint16 value out of range: " + value);
     (#tab)}
     (#tab)this.(#name) = value;
-    (#tab)return this;
     }
   ]]></template>
   <template key="setter.uint32"><![CDATA[
-    public (#struct) set[#upperHeadChar( (#name) )](long value) throws NumberFormatException
+    public void set[#upperHeadChar( (#name) )](long value) throws NumberFormatException
     {
     (#tab)if (value < 0 || value > 0xFFFFFFFFL) {
     (#tab)(#tab)throw new NumberFormatException("uint32 value out of range: " + value);
     (#tab)}
     (#tab)this.(#name) = value;
-    (#tab)return this;
     }
   ]]></template>
 
@@ -776,7 +771,7 @@
 
   <!-- SQL Params -->
   <template key="sql.params.method"><![CDATA[
-    (#tab)public Object[] SqlParamsAll()
+    (#tab)public Object[] sqlParamsAll()
     (#tab){
     (#tab)(#tab)return new Object[] {(#body)
     (#tab)(#tab)};
