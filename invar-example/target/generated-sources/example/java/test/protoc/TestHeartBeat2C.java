@@ -74,10 +74,10 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f2")
-    public TestHeartBeat2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }
+    public void setProtoc2C(Protoc2C value) { this.protoc2C = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f3")
-    public TestHeartBeat2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public TestHeartBeat2C copy(TestHeartBeat2C from)

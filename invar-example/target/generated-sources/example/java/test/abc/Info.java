@@ -208,92 +208,87 @@ invar.lib.InvarCodec.XMLEncode
 
     /**  */
     @invar.lib.InvarRule(T="int32", S="f0")
-    public Info setKey(Integer value) { this.key = value; return this; }
+    public void setKey(Integer value) { this.key = value; }
     /**  */
     @invar.lib.InvarRule(T="int8", S="f1")
-    public Info setNumber01(Byte value) { this.number01 = value; return this; }
-    public Info setNumber01(int value) throws NumberFormatException
+    public void setNumber01(Byte value) { this.number01 = value; }
+    public void setNumber01(int value) throws NumberFormatException
     {
         if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
             throw new NumberFormatException("int8 value out of range: " + value);
         }
         this.number01 = Integer.valueOf(value).byteValue();
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="int16", S="f2")
-    public Info setNumber02(Short value) { this.number02 = value; return this; }
-    public Info setNumber02(int value) throws NumberFormatException
+    public void setNumber02(Short value) { this.number02 = value; }
+    public void setNumber02(int value) throws NumberFormatException
     {
         if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
             throw new NumberFormatException("int16 value out of range: " + value);
         }
         this.number02 = Integer.valueOf(value).shortValue();
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="int32", S="f3")
-    public Info setNumber03(Integer value) { this.number03 = value; return this; }
+    public void setNumber03(Integer value) { this.number03 = value; }
     /** Test field comments */
     @invar.lib.InvarRule(T="int64", S="f4")
-    public Info setNumber04(Long value) { this.number04 = value; return this; }
+    public void setNumber04(Long value) { this.number04 = value; }
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f5")
-    public Info setNumber05(int value) throws NumberFormatException
+    public void setNumber05(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
             throw new NumberFormatException("uint8 value out of range: " + value);
         }
         this.number05 = value;
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f6")
-    public Info setNumber06(int value) throws NumberFormatException
+    public void setNumber06(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
             throw new NumberFormatException("uint16 value out of range: " + value);
         }
         this.number06 = value;
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="uint32", S="f7")
-    public Info setNumber07(long value) throws NumberFormatException
+    public void setNumber07(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
             throw new NumberFormatException("uint32 value out of range: " + value);
         }
         this.number07 = value;
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f8")
-    public Info setNumber08(BigInteger value) { this.number08 = value; return this; }
+    public void setNumber08(BigInteger value) { this.number08 = value; }
     /**  */
     @invar.lib.InvarRule(T="float", S="f9")
-    public Info setNumber09(Float value) { this.number09 = value; return this; }
+    public void setNumber09(Float value) { this.number09 = value; }
     /**  */
     @invar.lib.InvarRule(T="double", S="f10")
-    public Info setNumber10(Double value) { this.number10 = value; return this; }
+    public void setNumber10(Double value) { this.number10 = value; }
     /**  */
     @invar.lib.InvarRule(T="bool", S="f11")
-    public Info setIsReal(Boolean value) { this.isReal = value; return this; }
+    public void setIsReal(Boolean value) { this.isReal = value; }
     /** a string */
     @invar.lib.InvarRule(T="string", S="f12")
-    public Info setS(String value) { this.s = value; return this; }
+    public void setS(String value) { this.s = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f14")
-    public Info setGender(Gender value) { this.gender = value; return this; }
+    public void setGender(Gender value) { this.gender = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Info", S="f15")
-    public Info setNext(Info value) { this.next = value; return this; }
+    public void setNext(Info value) { this.next = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Conflict", S="f16")
-    public Info setConflict(test.abc.Conflict value) { this.conflict = value; return this; }
+    public void setConflict(test.abc.Conflict value) { this.conflict = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f22")
-    public Info setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public Info copy(Info from)
@@ -630,7 +625,7 @@ invar.lib.InvarCodec.XMLEncode
         }
         if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("gender").append('"').append(':');
-        s.append(gender.ordinal()); comma = ',';
+        s.append(gender.value()); comma = ',';
         boolean nextExists = (null != next);
         if ('\0' != comma && nextExists) { s.append(comma); comma = '\0'; }
         if (nextExists) {
@@ -681,7 +676,7 @@ invar.lib.InvarCodec.XMLEncode
                 Info k1 = mapInfoGIter.getKey(); /* nest.k */
                 s.append('"'); k1.writeJSON(s); s.append('"').append(':');
                 Gender v1 = mapInfoGIter.getValue(); /* nest.v */
-                s.append(v1.ordinal());
+                s.append(v1.value());
                 if (mapInfoGIdx != mapInfoGSize) { s.append(','); }
             }
             s.append('}');
@@ -696,7 +691,7 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) { /* map.for: mapGenderInfo */
                 ++mapGenderInfoIdx;
                 Gender k1 = mapGenderInfoIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.ordinal()); s.append('"').append(':');
+                s.append('"'); s.append(k1.value()); s.append('"').append(':');
                 Info v1 = mapGenderInfoIter.getValue(); /* nest.v */
                 v1.writeJSON(s);
                 if (mapGenderInfoIdx != mapGenderInfoSize) { s.append(','); }

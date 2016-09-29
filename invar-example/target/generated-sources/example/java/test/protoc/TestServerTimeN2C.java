@@ -81,13 +81,13 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f2")
-    public TestServerTimeN2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }
+    public void setProtoc2C(Protoc2C value) { this.protoc2C = value; }
     /** 现在时间 */
     @invar.lib.InvarRule(T="int64", S="f3")
-    public TestServerTimeN2C setTime(Long value) { this.time = value; return this; }
+    public void setTime(Long value) { this.time = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f4")
-    public TestServerTimeN2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public TestServerTimeN2C copy(TestServerTimeN2C from)

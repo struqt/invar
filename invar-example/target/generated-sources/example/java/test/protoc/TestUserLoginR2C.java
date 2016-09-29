@@ -103,26 +103,25 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] Protocol error code */
     @invar.lib.InvarRule(T="uint16", S="f0")
-    public TestUserLoginR2C setProtocError(int value) throws NumberFormatException
+    public void setProtocError(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
             throw new NumberFormatException("uint16 value out of range: " + value);
         }
         this.protocError = value;
-        return this;
     }
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f3")
-    public TestUserLoginR2C setProtoc2C(Protoc2C value) { this.protoc2C = value; return this; }
+    public void setProtoc2C(Protoc2C value) { this.protoc2C = value; }
     /**  */
     @invar.lib.InvarRule(T="string", S="f4")
-    public TestUserLoginR2C setUserId(String value) { this.userId = value; return this; }
+    public void setUserId(String value) { this.userId = value; }
     /**  */
     @invar.lib.InvarRule(T="string", S="f5")
-    public TestUserLoginR2C setUserName(String value) { this.userName = value; return this; }
+    public void setUserName(String value) { this.userName = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f7")
-    public TestUserLoginR2C setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public TestUserLoginR2C copy(TestUserLoginR2C from)

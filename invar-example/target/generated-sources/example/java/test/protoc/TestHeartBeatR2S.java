@@ -81,20 +81,19 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] Protocol error code */
     @invar.lib.InvarRule(T="uint16", S="f0")
-    public TestHeartBeatR2S setProtocError(int value) throws NumberFormatException
+    public void setProtocError(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
             throw new NumberFormatException("uint16 value out of range: " + value);
         }
         this.protocError = value;
-        return this;
     }
     /** [AutoAdd] 客户端请求的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2S", S="f3")
-    public TestHeartBeatR2S setProtoc2S(Protoc2S value) { this.protoc2S = value; return this; }
+    public void setProtoc2S(Protoc2S value) { this.protoc2S = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f4")
-    public TestHeartBeatR2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public TestHeartBeatR2S copy(TestHeartBeatR2S from)

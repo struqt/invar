@@ -57,10 +57,10 @@ invar.lib.InvarCodec.XMLEncode
 
     /** 会话Id */
     @invar.lib.InvarRule(T="string", S="f0")
-    public Protoc2S setSessionId(String value) { this.sessionId = value; return this; }
+    public void setSessionId(String value) { this.sessionId = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f1")
-    public Protoc2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public Protoc2S copy(Protoc2S from)

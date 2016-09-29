@@ -151,7 +151,7 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f14")
-    public TestDict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public TestDict copy(TestDict from)
@@ -706,9 +706,9 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) { /* map.for: dictEnum */
                 ++dictEnumIdx;
                 Gender k1 = dictEnumIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.ordinal()); s.append('"').append(':');
+                s.append('"'); s.append(k1.value()); s.append('"').append(':');
                 Gender v1 = dictEnumIter.getValue(); /* nest.v */
-                s.append(v1.ordinal());
+                s.append(v1.value());
                 if (dictEnumIdx != dictEnumSize) { s.append(','); }
             }
             s.append('}');

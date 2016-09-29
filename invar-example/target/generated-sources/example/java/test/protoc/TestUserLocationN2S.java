@@ -88,16 +88,16 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] 客户端请求的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2S", S="f2")
-    public TestUserLocationN2S setProtoc2S(Protoc2S value) { this.protoc2S = value; return this; }
+    public void setProtoc2S(Protoc2S value) { this.protoc2S = value; }
     /** 坐标X */
     @invar.lib.InvarRule(T="float", S="f3")
-    public TestUserLocationN2S setX(Float value) { this.x = value; return this; }
+    public void setX(Float value) { this.x = value; }
     /** 坐标Y */
     @invar.lib.InvarRule(T="float", S="f4")
-    public TestUserLocationN2S setY(Float value) { this.y = value; return this; }
+    public void setY(Float value) { this.y = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f5")
-    public TestUserLocationN2S setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public TestUserLocationN2S copy(TestUserLocationN2S from)

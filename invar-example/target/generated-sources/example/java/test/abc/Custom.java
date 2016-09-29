@@ -123,31 +123,31 @@ invar.lib.InvarCodec.XMLEncode
 
     /** 枚举值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
-    public Custom setX(Gender value) { this.x = value; return this; }
+    public void setX(Gender value) { this.x = value; }
     /** 其他类型 */
     @invar.lib.InvarRule(T="test.abc.TestBasic", S="f1")
-    public Custom setTest_(TestBasic value) { this.test_ = value; return this; }
+    public void setTest_(TestBasic value) { this.test_ = value; }
     /** 同名的类型 */
     @invar.lib.InvarRule(T="test.xyz.Conflict", S="f2")
-    public Custom setXyz(test.xyz.Conflict value) { this.xyz = value; return this; }
+    public void setXyz(test.xyz.Conflict value) { this.xyz = value; }
     /** 同名的类型 */
     @invar.lib.InvarRule(T="test.abc.Conflict", S="f3")
-    public Custom setAbc(test.abc.Conflict value) { this.abc = value; return this; }
+    public void setAbc(test.abc.Conflict value) { this.abc = value; }
     /** 使用引用 */
     @invar.lib.InvarRule(T="string", S="f6")
-    public Custom setUseRef(String value) { this.useRef = value; return this; }
+    public void setUseRef(String value) { this.useRef = value; }
     /** 使用指针 */
     @invar.lib.InvarRule(T="string", S="f7")
-    public Custom setUsePtr(String value) { this.usePtr = value; return this; }
+    public void setUsePtr(String value) { this.usePtr = value; }
     /** 自身类型 */
     @invar.lib.InvarRule(T="test.abc.Custom", S="f8")
-    public Custom setPrev(Custom value) { this.prev = value; return this; }
+    public void setPrev(Custom value) { this.prev = value; }
     /** 自身类型 */
     @invar.lib.InvarRule(T="test.abc.Custom", S="f9")
-    public Custom setNext(Custom value) { this.next = value; return this; }
+    public void setNext(Custom value) { this.next = value; }
     /**  */
     @invar.lib.InvarRule(T="string", S="f10")
-    public Custom setEmptyDoc(String value) { this.emptyDoc = value; return this; }
+    public void setEmptyDoc(String value) { this.emptyDoc = value; }
 
     /** Shallow copy */
     public Custom copy(Custom from)
@@ -303,7 +303,7 @@ invar.lib.InvarCodec.XMLEncode
         s.append('{');
         char comma = '\0';
         s.append('"').append("x").append('"').append(':');
-        s.append(x.ordinal()); comma = ',';
+        s.append(x.value()); comma = ',';
         boolean test_Exists = (null != test_);
         if ('\0' != comma && test_Exists) { s.append(comma); comma = '\0'; }
         if (test_Exists) {

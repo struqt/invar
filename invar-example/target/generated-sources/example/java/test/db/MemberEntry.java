@@ -87,29 +87,28 @@ invar.lib.InvarCodec.XMLEncode
 
     /** 主键，自增长 */
     @invar.lib.InvarRule(T="uint32", S="f0")
-    public MemberEntry setId(long value) throws NumberFormatException
+    public void setId(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
             throw new NumberFormatException("uint32 value out of range: " + value);
         }
         this.id = value;
-        return this;
     }
     /** 手机号码 */
     @invar.lib.InvarRule(T="string", S="f1")
-    public MemberEntry setPhone(String value) { this.phone = value; return this; }
+    public void setPhone(String value) { this.phone = value; }
     /** 会员昵称 */
     @invar.lib.InvarRule(T="string", S="f2")
-    public MemberEntry setNickName(String value) { this.nickName = value; return this; }
+    public void setNickName(String value) { this.nickName = value; }
     /** 创建时间 */
     @invar.lib.InvarRule(T="int64", S="f3")
-    public MemberEntry setCreateTime(Long value) { this.createTime = value; return this; }
+    public void setCreateTime(Long value) { this.createTime = value; }
     /** 创建时间 */
     @invar.lib.InvarRule(T="int64", S="f4")
-    public MemberEntry setUpdateTime(Long value) { this.updateTime = value; return this; }
+    public void setUpdateTime(Long value) { this.updateTime = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f5")
-    public MemberEntry setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public MemberEntry copy(MemberEntry from)
@@ -301,7 +300,7 @@ invar.lib.InvarCodec.XMLEncode
         }
     } /* MemberEntry::writeXML(...) */
 
-    public Object[] SqlParamsAll()
+    public Object[] sqlParamsAll()
     {
         return new Object[] {
             phone,

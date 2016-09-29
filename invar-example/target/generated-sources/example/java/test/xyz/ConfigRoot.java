@@ -93,25 +93,25 @@ invar.lib.InvarCodec.XMLEncode
 
     /**  */
     @invar.lib.InvarRule(T="string", S="f0")
-    public ConfigRoot setRevision(String value) { this.revision = value; return this; }
+    public void setRevision(String value) { this.revision = value; }
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestList", S="f1")
-    public ConfigRoot setList(TestList value) { this.list = value; return this; }
+    public void setList(TestList value) { this.list = value; }
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestDict", S="f2")
-    public ConfigRoot setDict(TestDict value) { this.dict = value; return this; }
+    public void setDict(TestDict value) { this.dict = value; }
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestNest", S="f3")
-    public ConfigRoot setNest(TestNest value) { this.nest = value; return this; }
+    public void setNest(TestNest value) { this.nest = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Info", S="f4")
-    public ConfigRoot setInfo(Info value) { this.info = value; return this; }
+    public void setInfo(Info value) { this.info = value; }
     /**  */
     @invar.lib.InvarRule(T="test.xyz.InfoX", S="f5")
-    public ConfigRoot setInfox(InfoX value) { this.infox = value; return this; }
+    public void setInfox(InfoX value) { this.infox = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f6")
-    public ConfigRoot setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public ConfigRoot copy(ConfigRoot from)

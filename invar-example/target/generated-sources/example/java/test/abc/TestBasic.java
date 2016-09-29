@@ -138,83 +138,78 @@ invar.lib.InvarCodec.XMLEncode
 
     /** 有符号的8位整数 */
     @invar.lib.InvarRule(T="int8", S="f0")
-    public TestBasic setNumberI08(Byte value) { this.numberI08 = value; return this; }
-    public TestBasic setNumberI08(int value) throws NumberFormatException
+    public void setNumberI08(Byte value) { this.numberI08 = value; }
+    public void setNumberI08(int value) throws NumberFormatException
     {
         if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
             throw new NumberFormatException("int8 value out of range: " + value);
         }
         this.numberI08 = Integer.valueOf(value).byteValue();
-        return this;
     }
     /** 有符号的16位整数 */
     @invar.lib.InvarRule(T="int16", S="f1")
-    public TestBasic setNumberI16(Short value) { this.numberI16 = value; return this; }
-    public TestBasic setNumberI16(int value) throws NumberFormatException
+    public void setNumberI16(Short value) { this.numberI16 = value; }
+    public void setNumberI16(int value) throws NumberFormatException
     {
         if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
             throw new NumberFormatException("int16 value out of range: " + value);
         }
         this.numberI16 = Integer.valueOf(value).shortValue();
-        return this;
     }
     /** 有符号的32位整数 */
     @invar.lib.InvarRule(T="int32", S="f2")
-    public TestBasic setNumberI32(Integer value) { this.numberI32 = value; return this; }
+    public void setNumberI32(Integer value) { this.numberI32 = value; }
     /** 有符号的64位整数 */
     @invar.lib.InvarRule(T="int64", S="f3")
-    public TestBasic setNumberI64(Long value) { this.numberI64 = value; return this; }
+    public void setNumberI64(Long value) { this.numberI64 = value; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="uint8", S="f4")
-    public TestBasic setNumberU08(int value) throws NumberFormatException
+    public void setNumberU08(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
             throw new NumberFormatException("uint8 value out of range: " + value);
         }
         this.numberU08 = value;
-        return this;
     }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="uint16", S="f5")
-    public TestBasic setNumberU16(int value) throws NumberFormatException
+    public void setNumberU16(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
             throw new NumberFormatException("uint16 value out of range: " + value);
         }
         this.numberU16 = value;
-        return this;
     }
     /** 无符号的32位整数 */
     @invar.lib.InvarRule(T="uint32", S="f6")
-    public TestBasic setNumberU32(long value) throws NumberFormatException
+    public void setNumberU32(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
             throw new NumberFormatException("uint32 value out of range: " + value);
         }
         this.numberU32 = value;
-        return this;
     }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="uint64", S="f7")
-    public TestBasic setNumberU64(BigInteger value) { this.numberU64 = value; return this; }
+    public void setNumberU64(BigInteger value) { this.numberU64 = value; }
     /** 单精度浮点小数 */
     @invar.lib.InvarRule(T="float", S="f8")
-    public TestBasic setNumberSingle(Float value) { this.numberSingle = value; return this; }
+    public void setNumberSingle(Float value) { this.numberSingle = value; }
     /** 双精度浮点小数 */
     @invar.lib.InvarRule(T="double", S="f9")
-    public TestBasic setNumberDouble(Double value) { this.numberDouble = value; return this; }
+    public void setNumberDouble(Double value) { this.numberDouble = value; }
     /** 布尔值 */
     @invar.lib.InvarRule(T="bool", S="f10")
-    public TestBasic setBoolValue(Boolean value) { this.boolValue = value; return this; }
+    public void setBoolValue(Boolean value) { this.boolValue = value; }
     /** 字符串 */
     @invar.lib.InvarRule(T="string", S="f11")
-    public TestBasic setStringValue(String value) { this.stringValue = value; return this; }
+    public void setStringValue(String value) { this.stringValue = value; }
     /** 枚举值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
-    public TestBasic setEnumValue(Gender value) { this.enumValue = value; return this; }
+    public void setEnumValue(Gender value) { this.enumValue = value; }
     /** 枚举值制定默认值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f13")
-    public TestBasic setEnumDeft(Gender value) { this.enumDeft = value; return this; }
+    public void setEnumDeft(Gender value) { this.enumDeft = value; }
 
     /** Shallow copy */
     public TestBasic copy(TestBasic from)
@@ -373,10 +368,10 @@ invar.lib.InvarCodec.XMLEncode
         }
         if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("enumValue").append('"').append(':');
-        s.append(enumValue.ordinal()); comma = ',';
+        s.append(enumValue.value()); comma = ',';
         if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("enumDeft").append('"').append(':');
-        s.append(enumDeft.ordinal()); comma = ',';
+        s.append(enumDeft.value()); comma = ',';
         s.append('}');
     } /* TestBasic::writeJSON(...) */
 

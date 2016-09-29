@@ -137,13 +137,13 @@ invar.lib.InvarCodec.XMLEncode
 
     /** Two types with the same name. */
     @invar.lib.InvarRule(T="test.xyz.Conflict", S="f1")
-    public InfoX setConflict_x(test.xyz.Conflict value) { this.conflict_x = value; return this; }
+    public void setConflict_x(test.xyz.Conflict value) { this.conflict_x = value; }
     /** Two types with the same name. */
     @invar.lib.InvarRule(T="test.abc.Conflict", S="f2")
-    public InfoX setConflict_a(test.abc.Conflict value) { this.conflict_a = value; return this; }
+    public void setConflict_a(test.abc.Conflict value) { this.conflict_a = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f12")
-    public InfoX setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public InfoX copy(InfoX from)
@@ -800,7 +800,7 @@ invar.lib.InvarCodec.XMLEncode
                     int k1Idx = 0;
                     for (Gender n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
-                        s.append(n2.ordinal());
+                        s.append(n2.value());
                         if (k1Idx != k1Size) { s.append(','); }
                     }
                     s.append(']');
@@ -829,7 +829,7 @@ invar.lib.InvarCodec.XMLEncode
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
-                        s.append(n2.ordinal());
+                        s.append(n2.value());
                         if (v1Idx != v1Size) { s.append(','); }
                     }
                     s.append(']');
@@ -866,7 +866,7 @@ invar.lib.InvarCodec.XMLEncode
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
-                        s.append(n2.ordinal());
+                        s.append(n2.value());
                         if (v1Idx != v1Size) { s.append(','); }
                     }
                     s.append(']');
@@ -909,7 +909,7 @@ invar.lib.InvarCodec.XMLEncode
                             int v2Idx = 0;
                             for (Gender n3 : v2) { /* vec.for: v2 */
                                 ++v2Idx;
-                                s.append(n3.ordinal());
+                                s.append(n3.value());
                                 if (v2Idx != v2Size) { s.append(','); }
                             }
                             s.append(']');

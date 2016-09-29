@@ -166,86 +166,81 @@ invar.lib.InvarCodec.XMLEncode
 
     /**  */
     @invar.lib.InvarRule(T="int8", S="f0")
-    public TestRefer setNumberi08(Byte value) { this.numberi08 = value; return this; }
-    public TestRefer setNumberi08(int value) throws NumberFormatException
+    public void setNumberi08(Byte value) { this.numberi08 = value; }
+    public void setNumberi08(int value) throws NumberFormatException
     {
         if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
             throw new NumberFormatException("int8 value out of range: " + value);
         }
         this.numberi08 = Integer.valueOf(value).byteValue();
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="int16", S="f1")
-    public TestRefer setNumberi16(Short value) { this.numberi16 = value; return this; }
-    public TestRefer setNumberi16(int value) throws NumberFormatException
+    public void setNumberi16(Short value) { this.numberi16 = value; }
+    public void setNumberi16(int value) throws NumberFormatException
     {
         if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
             throw new NumberFormatException("int16 value out of range: " + value);
         }
         this.numberi16 = Integer.valueOf(value).shortValue();
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="int32", S="f2")
-    public TestRefer setNumberi32(Integer value) { this.numberi32 = value; return this; }
+    public void setNumberi32(Integer value) { this.numberi32 = value; }
     /**  */
     @invar.lib.InvarRule(T="int64", S="f3")
-    public TestRefer setNumberi64(Long value) { this.numberi64 = value; return this; }
+    public void setNumberi64(Long value) { this.numberi64 = value; }
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f4")
-    public TestRefer setNumberu08(int value) throws NumberFormatException
+    public void setNumberu08(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
             throw new NumberFormatException("uint8 value out of range: " + value);
         }
         this.numberu08 = value;
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f5")
-    public TestRefer setNumberu16(int value) throws NumberFormatException
+    public void setNumberu16(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
             throw new NumberFormatException("uint16 value out of range: " + value);
         }
         this.numberu16 = value;
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="uint32", S="f6")
-    public TestRefer setNumberu32(long value) throws NumberFormatException
+    public void setNumberu32(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
             throw new NumberFormatException("uint32 value out of range: " + value);
         }
         this.numberu32 = value;
-        return this;
     }
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f7")
-    public TestRefer setNumberu64(BigInteger value) { this.numberu64 = value; return this; }
+    public void setNumberu64(BigInteger value) { this.numberu64 = value; }
     /**  */
     @invar.lib.InvarRule(T="float", S="f8")
-    public TestRefer setNumberSingle(Float value) { this.numberSingle = value; return this; }
+    public void setNumberSingle(Float value) { this.numberSingle = value; }
     /**  */
     @invar.lib.InvarRule(T="double", S="f9")
-    public TestRefer setNumberDouble(Double value) { this.numberDouble = value; return this; }
+    public void setNumberDouble(Double value) { this.numberDouble = value; }
     /**  */
     @invar.lib.InvarRule(T="bool", S="f10")
-    public TestRefer setBoolValue(Boolean value) { this.boolValue = value; return this; }
+    public void setBoolValue(Boolean value) { this.boolValue = value; }
     /**  */
     @invar.lib.InvarRule(T="string", S="f11")
-    public TestRefer setStringValue(String value) { this.stringValue = value; return this; }
+    public void setStringValue(String value) { this.stringValue = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
-    public TestRefer setEnumValue(Gender value) { this.enumValue = value; return this; }
+    public void setEnumValue(Gender value) { this.enumValue = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Custom", S="f13")
-    public TestRefer setOther(Custom value) { this.other = value; return this; }
+    public void setOther(Custom value) { this.other = value; }
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestRefer", S="f14")
-    public TestRefer setSelf(TestRefer value) { this.self = value; return this; }
+    public void setSelf(TestRefer value) { this.self = value; }
 
     /** Shallow copy */
     public TestRefer copy(TestRefer from)
@@ -456,7 +451,7 @@ invar.lib.InvarCodec.XMLEncode
         }
         if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("enumValue").append('"').append(':');
-        s.append(enumValue.ordinal()); comma = ',';
+        s.append(enumValue.value()); comma = ',';
         boolean otherExists = (null != other);
         if ('\0' != comma && otherExists) { s.append(comma); comma = '\0'; }
         if (otherExists) {

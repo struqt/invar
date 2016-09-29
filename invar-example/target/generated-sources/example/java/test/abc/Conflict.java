@@ -72,13 +72,13 @@ invar.lib.InvarCodec.XMLEncode
 
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
-    public Conflict setKey(Gender value) { this.key = value; return this; }
+    public void setKey(Gender value) { this.key = value; }
     /**  */
     @invar.lib.InvarRule(T="string", S="f1")
-    public Conflict setText(String value) { this.text = value; return this; }
+    public void setText(String value) { this.text = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f3")
-    public Conflict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public Conflict copy(Conflict from)
@@ -189,7 +189,7 @@ invar.lib.InvarCodec.XMLEncode
         s.append('{');
         char comma = '\0';
         s.append('"').append("key").append('"').append(':');
-        s.append(key.ordinal()); comma = ',';
+        s.append(key.value()); comma = ',';
         boolean textExists = text != null && text.length() > 0;
         if ('\0' != comma && textExists) { s.append(comma); comma = '\0'; }
         if (textExists) {

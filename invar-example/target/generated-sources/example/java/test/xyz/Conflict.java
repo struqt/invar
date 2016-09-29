@@ -57,10 +57,10 @@ invar.lib.InvarCodec.XMLEncode
 
     /**  */
     @invar.lib.InvarRule(T="double", S="f0")
-    public Conflict setPi(Double value) { this.pi = value; return this; }
+    public void setPi(Double value) { this.pi = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f1")
-    public Conflict setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public Conflict copy(Conflict from)

@@ -121,31 +121,31 @@ invar.lib.InvarCodec.XMLEncode
 
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestPointer", S="f0")
-    public TestPointer setSelf(TestPointer value) { this.self = value; return this; }
+    public void setSelf(TestPointer value) { this.self = value; }
     /**  */
     @invar.lib.InvarRule(T="string", S="f1")
-    public TestPointer setStringValue(String value) { this.stringValue = value; return this; }
+    public void setStringValue(String value) { this.stringValue = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Custom", S="f2")
-    public TestPointer setOther(Custom value) { this.other = value; return this; }
+    public void setOther(Custom value) { this.other = value; }
     /**  */
     @invar.lib.InvarRule(T="vec<int8>", S="f3")
-    public TestPointer setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; return this; }
+    public void setListI08(LinkedList<java.lang.Byte> value) { this.listI08 = value; }
     /**  */
     @invar.lib.InvarRule(T="map<int8,int8>", S="f4")
-    public TestPointer setDictI08(LinkedHashMap<java.lang.Byte,java.lang.Byte> value) { this.dictI08 = value; return this; }
+    public void setDictI08(LinkedHashMap<java.lang.Byte,java.lang.Byte> value) { this.dictI08 = value; }
     /**  */
     @invar.lib.InvarRule(T="vec<vec<vec<vec<test.xyz.TestPointer>>>>", S="f5")
-    public TestPointer setListNested(LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>> value) { this.listNested = value; return this; }
+    public void setListNested(LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>> value) { this.listNested = value; }
     /**  */
     @invar.lib.InvarRule(T="float", S="f6")
-    public TestPointer setNumberSingle(Float value) { this.numberSingle = value; return this; }
+    public void setNumberSingle(Float value) { this.numberSingle = value; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f7")
-    public TestPointer setEnumValue(Gender value) { this.enumValue = value; return this; }
+    public void setEnumValue(Gender value) { this.enumValue = value; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f8")
-    public TestPointer setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; return this; }
+    public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
     public TestPointer copy(TestPointer from)
@@ -522,7 +522,7 @@ invar.lib.InvarCodec.XMLEncode
         s.append(numberSingle.toString()); comma = ',';
         if ('\0' != comma) { s.append(comma); comma = '\0'; }
         s.append('"').append("enumValue").append('"').append(':');
-        s.append(enumValue.ordinal()); comma = ',';
+        s.append(enumValue.value()); comma = ',';
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
         if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
         if (hotfixExists) {

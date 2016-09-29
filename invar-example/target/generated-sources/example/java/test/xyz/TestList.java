@@ -560,7 +560,7 @@ invar.lib.InvarCodec.XMLEncode
             int listEnumIdx = 0;
             for (Gender n1 : listEnum) { /* vec.for: listEnum */
                 ++listEnumIdx;
-                s.append(n1.ordinal());
+                s.append(n1.value());
                 if (listEnumIdx != listEnumSize) { s.append(','); }
             }
             s.append(']');
