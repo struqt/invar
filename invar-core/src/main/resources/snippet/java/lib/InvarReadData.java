@@ -6,10 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -108,6 +105,26 @@ final public class InvarReadData {
 
     public InvarReadData() {
         this.path = "";
+    }
+
+    public <T> void parse(T root, InputStream input) throws Exception {
+        if (null == input) {
+            return;
+        }
+        Document doc = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder().parse(input);
+        if (!doc.hasChildNodes()) {
+            return;
+        }
+        NodeList children = doc.getChildNodes();
+        int len = children.getLength();
+        for (int i = 0; i < len; i++) {
+            Node x = children.item(i);
+            if (Node.ELEMENT_NODE == x.getNodeType()) {
+                parse(root, x);
+                break;
+            }
+        }
     }
 
     public void parse(Object o, Node n) throws Exception {

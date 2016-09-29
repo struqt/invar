@@ -65,6 +65,7 @@ export module InvarCodec {
 
 
     let LittleEndian: boolean = false
+    let ShortenInt64: boolean = true
 
     export class BinaryWriter {
 
@@ -302,7 +303,7 @@ export module InvarCodec {
             if (LittleEndian) {
                 bytes.reverse()
             }
-            return bytes2hex(bytes, true)
+            return bytes2hex(bytes, ShortenInt64)
         }
         public readUint08(): number {
             if (!this.canRead(1)) {
@@ -346,7 +347,7 @@ export module InvarCodec {
             if (LittleEndian) {
                 bytes.reverse()
             }
-            return bytes2hex(bytes, true)
+            return bytes2hex(bytes, ShortenInt64)
         }
         public readFloat32(): number {
             if (!this.canRead(4)) {
@@ -427,10 +428,10 @@ export module InvarCodec {
             if (skip0) { continue }
             if (byte > 0 && byte <= 15) {
                 byteStr = (skip_0 && head_0) ? byte.toString(16) : '0' + byte.toString(16)
-                head_0 = false
             }
             else if (byte > 15 && byte <= 255) { byteStr = byte.toString(16) }
-            else { byteStr = '0' }
+            else { byteStr = '00' }
+            head_0 = false
             str += byteStr.toUpperCase()
         }
         if (str.length == 0) {
@@ -438,6 +439,7 @@ export module InvarCodec {
         }
         return str
     }
+
 }
 /* http://www.ecma-international.org/ecma-262/6.0/#sec-dataview-constructor */
 /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView */

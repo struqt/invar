@@ -732,6 +732,12 @@
   <template key="runtime.body"><![CDATA[
     public final class InvarRuntime
     {
+    (#blank)
+    (#tab)static public <T> void parse(T root, java.io.InputStream input) throws Exception
+    (#tab){
+    (#tab)(#tab)InvarRuntime.MakeXmlReader().parse(root, input);
+    (#tab)}
+    (#blank)
     (#tab)static public InvarReadData MakeXmlReader()
     (#tab){
     (#tab)(#tab)if (InvarReadData.aliasBasics == null)
