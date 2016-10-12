@@ -33,20 +33,20 @@ public abstract class InvarCodec {
         void writeXML(StringBuilder s, String name);
     }
 
-    public interface InvarProtoc extends JSONEncode {
+    public interface InvarProtoc extends BinaryDecode, BinaryEncode, JSONEncode {
 
         Integer getProtocId();
 
         Long getProtocCRC();
     }
 
-    public interface ProtocNotify extends InvarProtoc, BinaryDecode, BinaryEncode {
+    public interface ProtocNotify extends InvarProtoc {
     }
 
-    public interface ProtocRequest extends InvarProtoc, BinaryDecode {
+    public interface ProtocRequest extends InvarProtoc {
     }
 
-    public interface ProtocResponse<T> extends InvarProtoc, BinaryEncode {
+    public interface ProtocResponse extends InvarProtoc {
 
         Integer getProtocError();
 
@@ -54,8 +54,7 @@ public abstract class InvarCodec {
     }
 
     public interface ResponseSender {
-
-        <T> void sendResponse(ProtocResponse<T> resp) throws IOException;
+        void sendResponse(ProtocResponse resp) throws IOException;
     }
 
     static public final int ERR_NONE                 =   0;

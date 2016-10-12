@@ -5,22 +5,22 @@ import java.util.Map;
 
 public abstract class RecvNotify<N extends InvarCodec.ProtocNotify> {
 
-    static Map<Integer, RecvNotify> map = new HashMap<Integer, RecvNotify>(256);
-
-    public RecvNotify(int protoc) {
-        map.put(protoc, this);
-    }
+    static Map<Class<?>, RecvNotify> map = new HashMap<Class<?>, RecvNotify>(256);
 
     static public <
         N extends InvarCodec.ProtocNotify,
         C extends RecvContext> int recv(C ctx, N ntf) {
 
-        if (map.containsKey(ntf.getProtocId())) {
-            map.get(ntf.getProtocId()).handle(ntf, ctx);
-            return 0;
+        if (map.containsKey(ntf.getClass())) {
+            map.get(ntf.getClass()).handle(ntf, ctx);
+            return InvarCodec.ERR_NONE;
         } else {
-            return 503;
+            return InvarCodec.ERR_PROTOC_NO_HANDLER;
         }
+    }
+
+    public RecvNotify(Class<N> nClass) {
+        map.put(nClass, this);
     }
 
     public abstract void handle(N notify, RecvContext context);

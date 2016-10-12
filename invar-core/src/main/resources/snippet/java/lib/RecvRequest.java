@@ -17,12 +17,12 @@ public abstract class RecvRequest<
         if (map.containsKey(req.getClass())) {
             map.get(req.getClass()).handle(req, resp, ctx);
         } else {
-            resp.setProtocError(503);
+            resp.setProtocError(InvarCodec.ERR_PROTOC_NO_HANDLER);
         }
     }
 
-    public RecvRequest(Class<T> req) {
-        map.put(req, this);
+    public RecvRequest(Class<T> tClass) {
+        map.put(tClass, this);
     }
 
     public abstract void handle(T request, R response, RecvContext context);
