@@ -296,9 +296,13 @@ invar.lib.InvarCodec.XMLEncode
         stringValue = from.readUTF();
         enumValue = Gender.valueOf(from.readInt());
         other.read(from);
-        if (from.readByte() == (byte)0x01) {
+        byte selfExists = from.readByte();
+        if ((byte)0x01 == selfExists) {
+            if (self == null) { self = new TestRefer(); }
             self.read(from);
         }
+        else if ((byte)0x00 == selfExists) { self = null; }
+        else { throw new IOException("Protoc read error: The value of 'selfExists' is invalid. 497"); }
         listI08.clear();
         Long lenListI08 = from.readInt() & 0xFFFFFFFFL;
         for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {

@@ -204,15 +204,27 @@ invar.lib.InvarCodec.XMLEncode
 
     public void read(DataInput from) throws IOException
     {
-        if (from.readByte() == (byte)0x01) {
+        byte selfExists = from.readByte();
+        if ((byte)0x01 == selfExists) {
+            if (self == null) { self = new TestPointer(); }
             self.read(from);
         }
-        if (from.readByte() == (byte)0x01) {
+        else if ((byte)0x00 == selfExists) { self = null; }
+        else { throw new IOException("Protoc read error: The value of 'selfExists' is invalid. 497"); }
+        byte stringValueExists = from.readByte();
+        if ((byte)0x01 == stringValueExists) {
+            if (stringValue == null) { stringValue = new String(); }
             stringValue = from.readUTF();
         }
-        if (from.readByte() == (byte)0x01) {
+        else if ((byte)0x00 == stringValueExists) { stringValue = null; }
+        else { throw new IOException("Protoc read error: The value of 'stringValueExists' is invalid. 496"); }
+        byte otherExists = from.readByte();
+        if ((byte)0x01 == otherExists) {
+            if (other == null) { other = new Custom(); }
             other.read(from);
         }
+        else if ((byte)0x00 == otherExists) { other = null; }
+        else { throw new IOException("Protoc read error: The value of 'otherExists' is invalid. 497"); }
         byte listI08Exists = from.readByte();
         if ((byte)0x01 == listI08Exists) {
             if (listI08 == null) { listI08 = new LinkedList<java.lang.Byte>(); }

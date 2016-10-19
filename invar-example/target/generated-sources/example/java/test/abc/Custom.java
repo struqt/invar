@@ -198,15 +198,27 @@ invar.lib.InvarCodec.XMLEncode
         }
         noSetter = from.readInt();
         useRef = from.readUTF();
-        if (from.readByte() == (byte)0x01) {
+        byte usePtrExists = from.readByte();
+        if ((byte)0x01 == usePtrExists) {
+            if (usePtr == null) { usePtr = new String(); }
             usePtr = from.readUTF();
         }
-        if (from.readByte() == (byte)0x01) {
+        else if ((byte)0x00 == usePtrExists) { usePtr = null; }
+        else { throw new IOException("Protoc read error: The value of 'usePtrExists' is invalid. 496"); }
+        byte prevExists = from.readByte();
+        if ((byte)0x01 == prevExists) {
+            if (prev == null) { prev = new Custom(); }
             prev.read(from);
         }
-        if (from.readByte() == (byte)0x01) {
+        else if ((byte)0x00 == prevExists) { prev = null; }
+        else { throw new IOException("Protoc read error: The value of 'prevExists' is invalid. 497"); }
+        byte nextExists = from.readByte();
+        if ((byte)0x01 == nextExists) {
+            if (next == null) { next = new Custom(); }
             next.read(from);
         }
+        else if ((byte)0x00 == nextExists) { next = null; }
+        else { throw new IOException("Protoc read error: The value of 'nextExists' is invalid. 497"); }
         emptyDoc = from.readUTF();
     }
 

@@ -133,9 +133,13 @@ invar.lib.InvarCodec.XMLEncode
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
         if (CRC32 != protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched. 499"); }
-        if (from.readByte() == (byte)0x01) {
+        byte protoc2SExists = from.readByte();
+        if ((byte)0x01 == protoc2SExists) {
+            if (protoc2S == null) { protoc2S = new Protoc2S(); }
             protoc2S.read(from);
         }
+        else if ((byte)0x00 == protoc2SExists) { protoc2S = null; }
+        else { throw new IOException("Protoc read error: The value of 'protoc2SExists' is invalid. 497"); }
         byte hotfixExists = from.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }

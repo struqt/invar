@@ -366,9 +366,13 @@ invar.lib.InvarCodec.XMLEncode
             world.add(n1);
         }
         gender = Gender.valueOf(from.readInt());
-        if (from.readByte() == (byte)0x01) {
+        byte nextExists = from.readByte();
+        if ((byte)0x01 == nextExists) {
+            if (next == null) { next = new Info(); }
             next.read(from);
         }
+        else if ((byte)0x00 == nextExists) { next = null; }
+        else { throw new IOException("Protoc read error: The value of 'nextExists' is invalid. 497"); }
         conflict.read(from);
         conflicts.clear();
         Long lenConflicts = from.readInt() & 0xFFFFFFFFL;

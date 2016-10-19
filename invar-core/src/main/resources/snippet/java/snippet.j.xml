@@ -376,31 +376,25 @@
   <template key="read.uint64"><![CDATA[ (#arg).readXXX()    ]]></template>
   <template key="read.float"> <![CDATA[ (#arg).readFloat()   ]]></template>
   <template key="read.double"><![CDATA[ (#arg).readDouble()  ]]></template>
-  <template key="read.string"><![CDATA[ (#arg).readUTF()     ]]></template>
   <template key="read.bool">  <![CDATA[ (#arg).readBoolean() ]]></template>
-  <template key="read.enum">
-    <![CDATA[ (#type).valueOf((#arg).readInt()) ]]></template>
+  <template key="read.enum">  <![CDATA[ (#type).valueOf((#arg).readInt()) ]]></template>
+  <template key="read.string"><![CDATA[ (#arg).readUTF()     ]]></template>
   <template key="read.struct"><![CDATA[ (#name).read((#arg)) ]]></template>
-  <template key="read.nest.n|read.nest.k|read.nest.v">
-    <![CDATA[ (#type) (#name) = (#body); ]]></template>
-  <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct">
-    <![CDATA[
+  <template key="read.nest.n|read.nest.k|read.nest.v"><![CDATA[ (#type) (#name) = (#body); ]]></template>
+  <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
     (#type) (#name) = (#type).Create();(#brk)(#body); ]]></template>
-  <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64">
-    <![CDATA[
+  <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64"><![CDATA[
     byte[] (#name)Bytes = new byte[8]; from.readFully((#name)Bytes, 0, 8);
     (#type) (#name) = new (#type)(1, (#namer)Bytes); ]]></template>
 
-  <template key="read.vec.head">
-    <![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
+  <template key="read.vec.head"><![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
   <template key="read.vec.for"><![CDATA[
     Long (#len) = (#arg).readInt() & 0xFFFFFFFFL;
     for ((#sizetype) (#index) = 0L; (#index) < (#len); ++(#index)) {(#body)
     (#tab)(#name).add((#value));
     }
   ]]></template>
-  <template key="read.map.head">
-    <![CDATA[(#type) (#name) = new (#type)(); //read.map.head(#brk)]]></template>
+  <template key="read.map.head"><![CDATA[(#type) (#name) = new (#type)(); //read.map.head(#brk)]]></template>
   <template key="read.map.for"><![CDATA[
     Long (#len) = (#arg).readInt() & 0xFFFFFFFFL;
     for ((#sizetype) (#index) = 0L; (#index) < (#len); ++(#index)) {(#body)
@@ -409,24 +403,30 @@
   ]]></template>
   <template key="read.ref.any"><![CDATA[ (#name) = (#body); ]]></template>
   <template key="read.ref.struct"><![CDATA[ (#body); ]]></template>
-  <template key="read.ref.vec">
-    <![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
-  <template key="read.ref.map">
-    <![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
+  <template key="read.ref.vec"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
+  <template key="read.ref.map"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
   <template key="read.ref.uint64"><![CDATA[
     byte[] (#namer)Bytes = new byte[8]; from.readFully((#namer)Bytes, 0, 8);
     (#name) = new (#type)(1, (#namer)Bytes);
   ]]></template>
 
   <template key="read.ptr.string"><![CDATA[
-    if ((#arg).readByte() == (#byteyes)) {
+    byte (#namer)Exists = (#arg).readByte();
+    if ((#byteyes) == (#namer)Exists) {
+    (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }
     (#tab)(#name) = (#body);
     }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
+    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid. 496"); }
   ]]></template>
   <template key="read.ptr.struct"><![CDATA[
-    if ((#arg).readByte() == (#byteyes)) {
+    byte (#namer)Exists = (#arg).readByte();
+    if ((#byteyes) == (#namer)Exists) {
+    (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }
     (#tab)(#body);
     }
+    else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
+    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid. 497"); }
   ]]></template>
   <template key="read.ptr.vec | read.ptr.map"><![CDATA[
     byte (#namer)Exists = (#arg).readByte();
