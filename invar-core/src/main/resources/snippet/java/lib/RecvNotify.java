@@ -13,9 +13,9 @@ public abstract class RecvNotify<N extends InvarCodec.ProtocNotify> {
 
         if (map.containsKey(ntf.getClass())) {
             map.get(ntf.getClass()).handle(ntf, ctx);
-            return InvarCodec.ERR_NONE;
+            return CodecError.ERR_NONE;
         } else {
-            return InvarCodec.ERR_PROTOC_NO_HANDLER;
+            return CodecError.ERR_PROTOC_NO_HANDLER;
         }
     }
 

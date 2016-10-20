@@ -17,7 +17,7 @@ public abstract class RecvRequest<
         if (map.containsKey(req.getClass())) {
             map.get(req.getClass()).handle(req, resp, ctx);
         } else {
-            resp.setProtocError(InvarCodec.ERR_PROTOC_NO_HANDLER);
+            resp.setProtocError(CodecError.ERR_PROTOC_NO_HANDLER);
         }
     }
 

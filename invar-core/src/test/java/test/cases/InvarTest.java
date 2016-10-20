@@ -21,7 +21,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_001_SingleInt08() throws IOException {
+    public void test_001_SingleInt08() throws Exception {
         SingleInt8 o = SingleInt8.Create();
         o.setNumber(-128);
         Assert.assertEquals(o.getNumber().intValue(), -128);
@@ -44,7 +44,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_002_SingleInt16() throws IOException {
+    public void test_002_SingleInt16() throws Exception {
         SingleInt16 o = SingleInt16.Create();
         o.setNumber(-32768);
         Assert.assertEquals(o.getNumber().intValue(), -32768);
@@ -68,7 +68,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_003_SingleInt32() throws IOException {
+    public void test_003_SingleInt32() throws Exception {
         SingleInt32 o = SingleInt32.Create();
         o.setNumber(Integer.MIN_VALUE);
         Assert.assertEquals(o.getNumber().intValue(), -2147483648);
@@ -94,7 +94,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_004_SingleInt64() throws IOException {
+    public void test_004_SingleInt64() throws Exception {
         SingleInt64 o = SingleInt64.Create();
         o.setNumber(Long.MIN_VALUE);
         Assert.assertEquals(o.getNumber().longValue(), 0x8000000000000000L);
@@ -124,7 +124,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_005_SingleUInt08() throws IOException {
+    public void test_005_SingleUInt08() throws Exception {
         SingleUInt8 o = SingleUInt8.Create();
         o.setNumber(0);
         Assert.assertEquals(o.getNumber().intValue(), 0);
@@ -147,7 +147,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_006_SingleUInt16() throws IOException {
+    public void test_006_SingleUInt16() throws Exception {
         SingleUInt16 o = SingleUInt16.Create();
         o.setNumber(0);
         Assert.assertEquals(o.getNumber().intValue(), 0);
@@ -171,7 +171,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_007_SingleUInt32() throws IOException {
+    public void test_007_SingleUInt32() throws Exception {
         SingleUInt32 o = SingleUInt32.Create();
         o.setNumber(0L);
         Assert.assertEquals(o.getNumber().intValue(), 0);
@@ -196,7 +196,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_008_SingleUInt64() throws IOException {
+    public void test_008_SingleUInt64() throws Exception {
         SingleUInt64 o = SingleUInt64.Create();
         o.setNumber(BigInteger.valueOf(0L));
         Assert.assertEquals(o.getNumber().longValue(), 0);
@@ -225,7 +225,7 @@ public class InvarTest {
 
 
     @Test
-    public void test_009_SingleFloat32() throws IOException {
+    public void test_009_SingleFloat32() throws Exception {
         SingleFloat32 o = SingleFloat32.Create();
         o.setNumber(3.14f);
         Assert.assertEquals(o.getNumber().doubleValue(), 3.14, 0.0001);
@@ -249,7 +249,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_010_SingleFloat64() throws IOException {
+    public void test_010_SingleFloat64() throws Exception {
         SingleFloat64 o = SingleFloat64.Create();
         o.setNumber(3.141592654);
         Assert.assertEquals(o.getNumber(), 3.141592654, 0.0000000001);
@@ -276,7 +276,7 @@ public class InvarTest {
     }
 
     @Test
-    public void test_011_Numbers() throws IOException {
+    public void test_011_Numbers() throws Exception {
         Numbers o = Numbers.Create();
         o.setNumber0(Byte.valueOf((byte) 10));
         o.setNumber1(Short.valueOf((short) 11));

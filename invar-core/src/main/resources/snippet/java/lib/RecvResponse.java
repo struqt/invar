@@ -13,9 +13,9 @@ public abstract class RecvResponse<R extends InvarCodec.ProtocResponse> {
 
         if (map.containsKey(resp.getClass())) {
             map.get(resp.getClass()).handle(resp, ctx);
-            return InvarCodec.ERR_NONE;
+            return CodecError.ERR_NONE;
         } else {
-            return InvarCodec.ERR_PROTOC_NO_HANDLER;
+            return CodecError.ERR_PROTOC_NO_HANDLER;
         }
     }
 

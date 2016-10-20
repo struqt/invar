@@ -15,6 +15,7 @@
   <export resPath="java/lib/RecvResponse.java" destDir="invar/lib" destName="RecvResponse.java"/>
   <export resPath="java/lib/RecvNotify.java" destDir="invar/lib" destName="RecvNotify.java"/>
   <export resPath="java/lib/RecvContext.java" destDir="invar/lib" destName="RecvContext.java"/>
+  <export resPath="java/lib/CodecError.java" destDir="invar/lib" destName="CodecError.java"/>
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -34,6 +35,7 @@
     <vec pack="    java.util" type="LinkedList   " generic="&lt;?&gt;"/>
     <map pack="    java.util" type="LinkedHashMap" generic="&lt;?,?&gt;"/>
 
+    <dialect pack="invar.lib" type="CodecError"/>
     <dialect pack="java.io" type="IOException"/>
     <dialect pack="java.io" type="InputStream"/>
     <dialect pack="java.io" type="DataInput"/>
@@ -165,6 +167,7 @@
     [#addImport(struct; imports; java.io::OutputStream)]
     [#addImport(struct; imports; java.io::DataOutput)]
     [#addImport(struct; imports; java.io::DataOutputStream)]
+    [#addImport(struct; imports; invar.lib::CodecError)]
     (#doc)
     public final class (#name)
     implements(#protoc-type)
@@ -355,12 +358,12 @@
   <template key="read.import"><![CDATA[  ]]></template>
   <template key="read.method.arg"><![CDATA[from]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public void read(InputStream from) throws IOException
+    (#tab)public void read(InputStream from) throws IOException, CodecError
     (#tab){
     (#tab)(#tab)this.read((DataInput)new DataInputStream(from));
     (#tab)}
     (#blank)
-    (#tab)public void read(DataInput from) throws IOException
+    (#tab)public void read(DataInput from) throws IOException, CodecError
     (#tab){(#body)
     (#tab)}]]></template>
   <template key="read.int8">  <![CDATA[ (#arg).readByte()    ]]></template>
@@ -413,20 +416,19 @@
   <template key="read.ptr.string"><![CDATA[
     byte (#namer)Exists = (#arg).readByte();
     if ((#byteyes) == (#namer)Exists) {
-    (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }
     (#tab)(#name) = (#body);
     }
     else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
-    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid. 496"); }
+    else { throw new CodecError(CodecError.ERR_DECODE_STRING_P); }
   ]]></template>
   <template key="read.ptr.struct"><![CDATA[
     byte (#namer)Exists = (#arg).readByte();
     if ((#byteyes) == (#namer)Exists) {
-    (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }
+    (#tab)if ((#name) == (#null)) { (#name) = (#type).Create(); }
     (#tab)(#body);
     }
     else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
-    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid. 497"); }
+    else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
   ]]></template>
   <template key="read.ptr.vec | read.ptr.map"><![CDATA[
     byte (#namer)Exists = (#arg).readByte();
@@ -434,14 +436,14 @@
     (#tab)if ((#name) == (#null)) { (#name) = new (#type)(); }(#bodyindent)
     }
     else if ((#bytenon) == (#namer)Exists) { (#name) = (#null); }
-    else { throw new IOException("Protoc read error: The value of '(#namer)Exists' is invalid. 498"); }
+    else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
   ]]></template>
   <template key="read.special.protocCRC"><![CDATA[
-    (#brk)if (CRC32 != (#name)) { throw new IOException("Protoc read error: CRC32 is mismatched. 499"); }
+    (#brk)if (CRC32 != (#name)) { throw new CodecError(CodecError.ERR_PROTOC_CRC_MISMATCH); }
   ]]></template>
   <template key="read.special.protocError"><![CDATA[
     (#brk)if ((#name) != 0) {
-    (#tab)throw new IOException("Protoc read error: The code is " + (#name));
+    (#tab)throw new CodecError((#name));
     }
   ]]></template>
 
@@ -754,23 +756,35 @@
   <template key="runtime.protoc.handle.server"><![CDATA[ handleProtocAsClient ]]></template>
   <template key="runtime.protoc.handle.notify"><![CDATA[ (#blank)
     (#tab)(#tab)case (#key): /* (#doc) */
-    (#tab)(#tab){ (#type) (#name) = new (#type)(); (#name).read(r); return RecvNotify.recv(ctx, (#name)); } ]]></template>
+    (#tab)(#tab){(#type) (#name) = (#type).Create(); (#name).read(r); error = RecvNotify.recv(ctx, (#name));} break; ]]></template>
   <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
     (#tab)(#tab)case (#key): /* (#doc) */
-    (#tab)(#tab){ (#type) (#name) = new (#type)(); (#name).read(r); return RecvResponse.recv(ctx, (#name)); } ]]></template>
+    (#tab)(#tab){(#type) (#name) = (#type).Create(); (#name).read(r); error = RecvResponse.recv(ctx, (#name));} break; ]]></template>
   <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
     (#tab)(#tab)case (#key): /* (#doc) */ {
-    (#tab)(#tab)(#type) (#name) = new (#req)(); (#resp) resp = new (#resp)();
-    (#tab)(#tab)(#name).read(r); RecvRequest.recv(ctx, (#name), resp); sender.sendResponse(resp); return 0; } ]]></template>
+    (#tab)(#tab)(#type) (#name) = (#req).Create(); (#resp) resp = (#resp).Create();
+    (#tab)(#tab)(#name).read(r); RecvRequest.recv(ctx, (#name), resp); sender.sendResponse(resp); error = 0;} break; ]]></template>
   <template key="runtime.protoc.handle.method"><![CDATA[
     (#blank)
     (#tab)static public <
     (#tab)(#tab)C extends RecvContext,
     (#tab)(#tab)S extends InvarCodec.ResponseSender>
-    (#tab)int (#name)(int id, java.io.DataInput r, C ctx, S sender) throws Exception
+    (#tab)void (#name)(int id, java.io.DataInput r, C ctx, S sender) throws CodecError
     (#tab){
+    (#tab)(#tab)int error = CodecError.ERR_NONE;
+    (#tab)(#tab)try {
     (#tab)(#tab)switch (id) {(#body)
-    (#tab)(#tab)default: throw new RuntimeException("Unsupported protocol id: " + id);
+    (#tab)(#tab)default: error = CodecError.ERR_PROTOC_INVALID_ID;
+    (#tab)(#tab)}
+    (#tab)(#tab)} catch (Throwable e) {
+    (#tab)(#tab)(#tab)if (e instanceof CodecError) {
+    (#tab)(#tab)(#tab)(#tab)throw (CodecError) e;
+    (#tab)(#tab)(#tab)} else {
+    (#tab)(#tab)(#tab)(#tab)throw new CodecError(CodecError.ERR_UNKNOWN, e);
+    (#tab)(#tab)(#tab)}
+    (#tab)(#tab)}
+    (#tab)(#tab)if (error != CodecError.ERR_NONE) {
+    (#tab)(#tab)(#tab)throw new CodecError(error);
     (#tab)(#tab)}
     (#tab)} /* (#name)(...) */
   ]]></template>
