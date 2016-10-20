@@ -5,6 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.xyz;
 
+import invar.lib.CodecError;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -135,12 +136,12 @@ invar.lib.InvarCodec.XMLEncode
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException, CodecError
     {
         this.read((DataInput)new DataInputStream(from));
     }
 
-    public void read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException, CodecError
     {
         revision = from.readUTF();
         list.read(from);
@@ -159,7 +160,7 @@ invar.lib.InvarCodec.XMLEncode
             }
         }
         else if ((byte)0x00 == hotfixExists) { hotfix = null; }
-        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
     public void write(OutputStream from) throws IOException

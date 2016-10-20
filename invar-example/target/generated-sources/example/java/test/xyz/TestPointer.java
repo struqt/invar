@@ -5,6 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.xyz;
 
+import invar.lib.CodecError;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -197,34 +198,33 @@ invar.lib.InvarCodec.XMLEncode
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException, CodecError
     {
         this.read((DataInput)new DataInputStream(from));
     }
 
-    public void read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException, CodecError
     {
         byte selfExists = from.readByte();
         if ((byte)0x01 == selfExists) {
-            if (self == null) { self = new TestPointer(); }
+            if (self == null) { self = TestPointer.Create(); }
             self.read(from);
         }
         else if ((byte)0x00 == selfExists) { self = null; }
-        else { throw new IOException("Protoc read error: The value of 'selfExists' is invalid. 497"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         byte stringValueExists = from.readByte();
         if ((byte)0x01 == stringValueExists) {
-            if (stringValue == null) { stringValue = new String(); }
             stringValue = from.readUTF();
         }
         else if ((byte)0x00 == stringValueExists) { stringValue = null; }
-        else { throw new IOException("Protoc read error: The value of 'stringValueExists' is invalid. 496"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRING_P); }
         byte otherExists = from.readByte();
         if ((byte)0x01 == otherExists) {
-            if (other == null) { other = new Custom(); }
+            if (other == null) { other = Custom.Create(); }
             other.read(from);
         }
         else if ((byte)0x00 == otherExists) { other = null; }
-        else { throw new IOException("Protoc read error: The value of 'otherExists' is invalid. 497"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         byte listI08Exists = from.readByte();
         if ((byte)0x01 == listI08Exists) {
             if (listI08 == null) { listI08 = new LinkedList<java.lang.Byte>(); }
@@ -235,7 +235,7 @@ invar.lib.InvarCodec.XMLEncode
             }
         }
         else if ((byte)0x00 == listI08Exists) { listI08 = null; }
-        else { throw new IOException("Protoc read error: The value of 'listI08Exists' is invalid. 498"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
         byte dictI08Exists = from.readByte();
         if ((byte)0x01 == dictI08Exists) {
             if (dictI08 == null) { dictI08 = new LinkedHashMap<java.lang.Byte,java.lang.Byte>(); }
@@ -247,7 +247,7 @@ invar.lib.InvarCodec.XMLEncode
             }
         }
         else if ((byte)0x00 == dictI08Exists) { dictI08 = null; }
-        else { throw new IOException("Protoc read error: The value of 'dictI08Exists' is invalid. 498"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
         byte listNestedExists = from.readByte();
         if ((byte)0x01 == listNestedExists) {
             if (listNested == null) { listNested = new LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>>(); }
@@ -274,7 +274,7 @@ invar.lib.InvarCodec.XMLEncode
             }
         }
         else if ((byte)0x00 == listNestedExists) { listNested = null; }
-        else { throw new IOException("Protoc read error: The value of 'listNestedExists' is invalid. 498"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
         numberSingle = from.readFloat();
         enumValue = Gender.valueOf(from.readInt());
         byte hotfixExists = from.readByte();
@@ -288,7 +288,7 @@ invar.lib.InvarCodec.XMLEncode
             }
         }
         else if ((byte)0x00 == hotfixExists) { hotfix = null; }
-        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
     public void write(OutputStream from) throws IOException

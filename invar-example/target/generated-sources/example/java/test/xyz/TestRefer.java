@@ -5,6 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.xyz;
 
+import invar.lib.CodecError;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -274,12 +275,12 @@ invar.lib.InvarCodec.XMLEncode
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException, CodecError
     {
         this.read((DataInput)new DataInputStream(from));
     }
 
-    public void read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException, CodecError
     {
         numberi08 = from.readByte();
         numberi16 = from.readShort();
@@ -298,11 +299,11 @@ invar.lib.InvarCodec.XMLEncode
         other.read(from);
         byte selfExists = from.readByte();
         if ((byte)0x01 == selfExists) {
-            if (self == null) { self = new TestRefer(); }
+            if (self == null) { self = TestRefer.Create(); }
             self.read(from);
         }
         else if ((byte)0x00 == selfExists) { self = null; }
-        else { throw new IOException("Protoc read error: The value of 'selfExists' is invalid. 497"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         listI08.clear();
         Long lenListI08 = from.readInt() & 0xFFFFFFFFL;
         for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {

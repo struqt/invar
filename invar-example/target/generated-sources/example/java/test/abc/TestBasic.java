@@ -5,6 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.abc;
 
+import invar.lib.CodecError;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -234,12 +235,12 @@ invar.lib.InvarCodec.XMLEncode
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException, CodecError
     {
         this.read((DataInput)new DataInputStream(from));
     }
 
-    public void read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException, CodecError
     {
         numberI08 = from.readByte();
         numberI16 = from.readShort();

@@ -5,6 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.abc;
 
+import invar.lib.CodecError;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -178,12 +179,12 @@ invar.lib.InvarCodec.XMLEncode
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException, CodecError
     {
         this.read((DataInput)new DataInputStream(from));
     }
 
-    public void read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException, CodecError
     {
         x = Gender.valueOf(from.readInt());
         test_.read(from);
@@ -200,25 +201,24 @@ invar.lib.InvarCodec.XMLEncode
         useRef = from.readUTF();
         byte usePtrExists = from.readByte();
         if ((byte)0x01 == usePtrExists) {
-            if (usePtr == null) { usePtr = new String(); }
             usePtr = from.readUTF();
         }
         else if ((byte)0x00 == usePtrExists) { usePtr = null; }
-        else { throw new IOException("Protoc read error: The value of 'usePtrExists' is invalid. 496"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRING_P); }
         byte prevExists = from.readByte();
         if ((byte)0x01 == prevExists) {
-            if (prev == null) { prev = new Custom(); }
+            if (prev == null) { prev = Custom.Create(); }
             prev.read(from);
         }
         else if ((byte)0x00 == prevExists) { prev = null; }
-        else { throw new IOException("Protoc read error: The value of 'prevExists' is invalid. 497"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         byte nextExists = from.readByte();
         if ((byte)0x01 == nextExists) {
-            if (next == null) { next = new Custom(); }
+            if (next == null) { next = Custom.Create(); }
             next.read(from);
         }
         else if ((byte)0x00 == nextExists) { next = null; }
-        else { throw new IOException("Protoc read error: The value of 'nextExists' is invalid. 497"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         emptyDoc = from.readUTF();
     }
 

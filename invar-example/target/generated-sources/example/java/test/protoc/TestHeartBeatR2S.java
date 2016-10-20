@@ -5,6 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.protoc;
 
+import invar.lib.CodecError;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -119,27 +120,27 @@ invar.lib.InvarCodec.XMLEncode
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException, CodecError
     {
         this.read((DataInput)new DataInputStream(from));
     }
 
-    public void read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException, CodecError
     {
         protocError = from.readUnsignedShort();
         if (protocError != 0) {
-            throw new IOException("Protoc read error: The code is " + protocError);
+            throw new CodecError(protocError);
         }
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
-        if (CRC32 != protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched. 499"); }
+        if (CRC32 != protocCRC) { throw new CodecError(CodecError.ERR_PROTOC_CRC_MISMATCH); }
         byte protoc2SExists = from.readByte();
         if ((byte)0x01 == protoc2SExists) {
-            if (protoc2S == null) { protoc2S = new Protoc2S(); }
+            if (protoc2S == null) { protoc2S = Protoc2S.Create(); }
             protoc2S.read(from);
         }
         else if ((byte)0x00 == protoc2SExists) { protoc2S = null; }
-        else { throw new IOException("Protoc read error: The value of 'protoc2SExists' is invalid. 497"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         byte hotfixExists = from.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
@@ -151,7 +152,7 @@ invar.lib.InvarCodec.XMLEncode
             }
         }
         else if ((byte)0x00 == hotfixExists) { hotfix = null; }
-        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
     public void write(OutputStream from) throws IOException

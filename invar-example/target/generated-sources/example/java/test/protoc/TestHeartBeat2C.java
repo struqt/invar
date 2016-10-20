@@ -5,6 +5,7 @@
 //===----------------------------------------------------------------------===*/
 package test.protoc;
 
+import invar.lib.CodecError;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -102,23 +103,23 @@ invar.lib.InvarCodec.XMLEncode
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException
+    public void read(InputStream from) throws IOException, CodecError
     {
         this.read((DataInput)new DataInputStream(from));
     }
 
-    public void read(DataInput from) throws IOException
+    public void read(DataInput from) throws IOException, CodecError
     {
         protocId = from.readUnsignedShort();
         protocCRC = from.readInt() & 0xFFFFFFFFL;
-        if (CRC32 != protocCRC) { throw new IOException("Protoc read error: CRC32 is mismatched. 499"); }
+        if (CRC32 != protocCRC) { throw new CodecError(CodecError.ERR_PROTOC_CRC_MISMATCH); }
         byte protoc2CExists = from.readByte();
         if ((byte)0x01 == protoc2CExists) {
-            if (protoc2C == null) { protoc2C = new Protoc2C(); }
+            if (protoc2C == null) { protoc2C = Protoc2C.Create(); }
             protoc2C.read(from);
         }
         else if ((byte)0x00 == protoc2CExists) { protoc2C = null; }
-        else { throw new IOException("Protoc read error: The value of 'protoc2CExists' is invalid. 497"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         byte hotfixExists = from.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
@@ -130,7 +131,7 @@ invar.lib.InvarCodec.XMLEncode
             }
         }
         else if ((byte)0x00 == hotfixExists) { hotfix = null; }
-        else { throw new IOException("Protoc read error: The value of 'hotfixExists' is invalid. 498"); }
+        else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
     public void write(OutputStream from) throws IOException
