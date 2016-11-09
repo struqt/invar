@@ -208,9 +208,11 @@ invar.lib.InvarCodec.XMLEncode
     /** 枚举值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public void setEnumValue(Gender value) { this.enumValue = value; }
+    public void setEnumValueV(int value) { this.enumValue = Gender.valueOf(value); }
     /** 枚举值制定默认值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f13")
     public void setEnumDeft(Gender value) { this.enumDeft = value; }
+    public void setEnumDeftV(int value) { this.enumDeft = Gender.valueOf(value); }
 
     /** Shallow copy */
     public TestBasic copy(TestBasic from)

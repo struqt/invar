@@ -74,6 +74,7 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
     public void setKey(Gender value) { this.key = value; }
+    public void setKeyV(int value) { this.key = Gender.valueOf(value); }
     /**  */
     @invar.lib.InvarRule(T="string", S="f1")
     public void setText(String value) { this.text = value; }

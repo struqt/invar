@@ -236,6 +236,7 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public void setEnumValue(Gender value) { this.enumValue = value; }
+    public void setEnumValueV(int value) { this.enumValue = Gender.valueOf(value); }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Custom", S="f13")
     public void setOther(Custom value) { this.other = value; }

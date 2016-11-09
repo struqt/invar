@@ -353,6 +353,10 @@
     (#tab)this.(#name) = value;
     }
   ]]></template>
+  <template key="setter.enum"><![CDATA[
+    public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; }
+    public void set[#upperHeadChar( (#name) )]V(int value) { this.(#name) = (#type).valueOf(value); }
+  ]]></template>
 
   <!-- Read bytes from a Stream -->
   <template key="read.import"><![CDATA[  ]]></template>
@@ -800,6 +804,8 @@
   <template key="sql.params.any"><![CDATA[ ]]></template>
   <template key="sql.params.ref.any | sql.params.ptr.any"><![CDATA[
     (#tab)(#namer), ]]></template>
+  <template key="sql.params.ref.enum | sql.params.ptr.enum"><![CDATA[
+    (#tab)(#namer).value(), ]]></template>
 
   <template key="sql.start.method"><![CDATA[
     [#addImport(struct; imports; java.util::Map)]

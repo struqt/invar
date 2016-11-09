@@ -125,6 +125,7 @@ invar.lib.InvarCodec.XMLEncode
     /** 枚举值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
     public void setX(Gender value) { this.x = value; }
+    public void setXV(int value) { this.x = Gender.valueOf(value); }
     /** 其他类型 */
     @invar.lib.InvarRule(T="test.abc.TestBasic", S="f1")
     public void setTest_(TestBasic value) { this.test_ = value; }
