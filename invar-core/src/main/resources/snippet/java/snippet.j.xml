@@ -185,7 +185,8 @@
     [#codeFields (struct; fields)]
     [#codeNested (ctor.;  useFullName; struct; fields; imports)](#brk)
     [#codeNested (reuse.; useFullName; struct; fields; imports)](#brk)
-    [#codeGetters(struct; fields)]
+
+    [#codeNested (getter.; useFullName; struct; fields; imports)](#brk)
     [#codeNested (setter.; useFullName; struct; fields; imports)](#brk)
 
     [#codeNested (copy.;   useFullName; struct; fields; imports)](#brk)
@@ -289,6 +290,24 @@
     (#tab)if ((#null) == (#name)) { (#name) = new (#type)(); }
     (#tab)else { (#name).clear(); }(#bodyindent);
     }
+  ]]></template>
+
+  <!-- Getters -->
+  <template key="getter.indent.num"><![CDATA[ 0 ]]></template>
+  <template key="getter.import"><![CDATA[ ]]></template>
+  <template key="getter.method.arg"><![CDATA[ ]]></template>
+  <template key="getter.method"><![CDATA[ (#body) ]]></template>
+  <template key="getter.ptr.any | getter.ref.any"><![CDATA[
+    (#blank)
+    [#codeDoc(fields; (#index))]
+    [#codeMetaData(fields; (#index))]
+    (#body)
+  ]]></template>
+  <template key="getter.any | getter.vec | getter.map"><![CDATA[
+    public (#type) get[#upperHeadChar( (#name) )]() { return (#name); } ]]></template>
+  <template key="getter.enum"><![CDATA[
+    public (#type) get[#upperHeadChar( (#name) )]() { return (#name); }
+    public Integer get[#upperHeadChar( (#name) )]V() { return (#name).value(); }
   ]]></template>
 
   <!-- Setters -->
@@ -862,6 +881,8 @@
   <template key="sql.alias.any"><![CDATA[ ]]></template>
   <template key="sql.alias.ref.any | sql.alias.ptr.any"><![CDATA[
     (#tab)map.put("(#alias)", "(#namer)"); ]]></template>
+  <template key="sql.alias.ref.enum | sql.alias.ptr.enum"><![CDATA[
+    (#tab)map.put("(#alias)", "(#namer)V"); ]]></template>
 
 
 </tns:root>

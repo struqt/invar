@@ -65,26 +65,21 @@ invar.lib.InvarCodec.XMLEncode
     /** 主键，自增长 */
     @invar.lib.InvarRule(T="uint32", S="f0")
     public Long getId() { return id; }
-
     /** 手机号码 */
     @invar.lib.InvarRule(T="string", S="f1")
     public String getPhone() { return phone; }
-
     /** 会员昵称 */
     @invar.lib.InvarRule(T="string", S="f2")
     public String getNickName() { return nickName; }
-
     /** 创建时间 */
     @invar.lib.InvarRule(T="int64", S="f3")
     public Long getCreateTime() { return createTime; }
-
     /** 创建时间 */
     @invar.lib.InvarRule(T="int64", S="f4")
     public Long getUpdateTime() { return updateTime; }
-
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f5")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /** 主键，自增长 */
     @invar.lib.InvarRule(T="uint32", S="f0")

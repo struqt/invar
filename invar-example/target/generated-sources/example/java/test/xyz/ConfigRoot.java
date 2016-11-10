@@ -67,30 +67,24 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="string", S="f0")
     public String getRevision() { return revision; }
-
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestList", S="f1")
     public TestList getList() { return list; }
-
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestDict", S="f2")
     public TestDict getDict() { return dict; }
-
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestNest", S="f3")
     public TestNest getNest() { return nest; }
-
     /**  */
     @invar.lib.InvarRule(T="test.abc.Info", S="f4")
     public Info getInfo() { return info; }
-
     /**  */
     @invar.lib.InvarRule(T="test.xyz.InfoX", S="f5")
     public InfoX getInfox() { return infox; }
-
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f6")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /**  */
     @invar.lib.InvarRule(T="string", S="f0")

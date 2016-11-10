@@ -51,10 +51,9 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="double", S="f0")
     public Double getPi() { return pi; }
-
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f1")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /**  */
     @invar.lib.InvarRule(T="double", S="f0")

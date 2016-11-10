@@ -51,10 +51,9 @@ invar.lib.InvarCodec.XMLEncode
     /** 会话Id */
     @invar.lib.InvarRule(T="string", S="f0")
     public String getSessionId() { return sessionId; }
-
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f1")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /** 会话Id */
     @invar.lib.InvarRule(T="string", S="f0")

@@ -60,18 +60,15 @@ invar.lib.InvarCodec.XMLEncode
     /** [AutoAdd] ProtocolID */
     @invar.lib.InvarRule(T="uint16", S="f0")
     public Integer getProtocId() { return protocId; }
-
     /** [AutoAdd] Protocol CRC32 */
     @invar.lib.InvarRule(T="uint32", S="f1")
     public Long getProtocCRC() { return protocCRC; }
-
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f2")
     public Protoc2C getProtoc2C() { return protoc2C; }
-
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f3")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f2")

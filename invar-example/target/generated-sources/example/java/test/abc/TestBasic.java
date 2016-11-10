@@ -84,58 +84,47 @@ invar.lib.InvarCodec.XMLEncode
     /** 有符号的8位整数 */
     @invar.lib.InvarRule(T="int8", S="f0")
     public Byte getNumberI08() { return numberI08; }
-
     /** 有符号的16位整数 */
     @invar.lib.InvarRule(T="int16", S="f1")
     public Short getNumberI16() { return numberI16; }
-
     /** 有符号的32位整数 */
     @invar.lib.InvarRule(T="int32", S="f2")
     public Integer getNumberI32() { return numberI32; }
-
     /** 有符号的64位整数 */
     @invar.lib.InvarRule(T="int64", S="f3")
     public Long getNumberI64() { return numberI64; }
-
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="uint8", S="f4")
     public Integer getNumberU08() { return numberU08; }
-
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="uint16", S="f5")
     public Integer getNumberU16() { return numberU16; }
-
     /** 无符号的32位整数 */
     @invar.lib.InvarRule(T="uint32", S="f6")
     public Long getNumberU32() { return numberU32; }
-
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="uint64", S="f7")
     public BigInteger getNumberU64() { return numberU64; }
-
     /** 单精度浮点小数 */
     @invar.lib.InvarRule(T="float", S="f8")
     public Float getNumberSingle() { return numberSingle; }
-
     /** 双精度浮点小数 */
     @invar.lib.InvarRule(T="double", S="f9")
     public Double getNumberDouble() { return numberDouble; }
-
     /** 布尔值 */
     @invar.lib.InvarRule(T="bool", S="f10")
     public Boolean getBoolValue() { return boolValue; }
-
     /** 字符串 */
     @invar.lib.InvarRule(T="string", S="f11")
     public String getStringValue() { return stringValue; }
-
     /** 枚举值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public Gender getEnumValue() { return enumValue; }
-
+    public Integer getEnumValueV() { return enumValue.value(); }
     /** 枚举值制定默认值 */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f13")
     public Gender getEnumDeft() { return enumDeft; }
+    public Integer getEnumDeftV() { return enumDeft.value(); }
 
     /** 有符号的8位整数 */
     @invar.lib.InvarRule(T="int8", S="f0")

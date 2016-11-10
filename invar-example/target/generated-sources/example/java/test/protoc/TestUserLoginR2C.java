@@ -73,34 +73,27 @@ invar.lib.InvarCodec.XMLEncode
     /** [AutoAdd] Protocol error code */
     @invar.lib.InvarRule(T="uint16", S="f0")
     public Integer getProtocError() { return protocError; }
-
     /** [AutoAdd] ProtocolID */
     @invar.lib.InvarRule(T="uint16", S="f1")
     public Integer getProtocId() { return protocId; }
-
     /** [AutoAdd] Protocol CRC32 */
     @invar.lib.InvarRule(T="uint32", S="f2")
     public Long getProtocCRC() { return protocCRC; }
-
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f3")
     public Protoc2C getProtoc2C() { return protoc2C; }
-
     /**  */
     @invar.lib.InvarRule(T="string", S="f4")
     public String getUserId() { return userId; }
-
     /**  */
     @invar.lib.InvarRule(T="string", S="f5")
     public String getUserName() { return userName; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<int32>", S="f6")
     public LinkedList<Integer> getRoles() { return roles; }
-
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f7")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] Protocol error code */
     @invar.lib.InvarRule(T="uint16", S="f0")

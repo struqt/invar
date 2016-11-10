@@ -87,38 +87,31 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestPointer", S="f0")
     public TestPointer getSelf() { return self; }
-
     /**  */
     @invar.lib.InvarRule(T="string", S="f1")
     public String getStringValue() { return stringValue; }
-
     /**  */
     @invar.lib.InvarRule(T="test.abc.Custom", S="f2")
     public Custom getOther() { return other; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<int8>", S="f3")
-    public LinkedList<Byte> getListI08() { return listI08; }
-
+    public LinkedList<java.lang.Byte> getListI08() { return listI08; }
     /**  */
     @invar.lib.InvarRule(T="map<int8,int8>", S="f4")
-    public LinkedHashMap<Byte,Byte> getDictI08() { return dictI08; }
-
+    public LinkedHashMap<java.lang.Byte,java.lang.Byte> getDictI08() { return dictI08; }
     /**  */
     @invar.lib.InvarRule(T="vec<vec<vec<vec<test.xyz.TestPointer>>>>", S="f5")
     public LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>> getListNested() { return listNested; }
-
     /**  */
     @invar.lib.InvarRule(T="float", S="f6")
     public Float getNumberSingle() { return numberSingle; }
-
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f7")
     public Gender getEnumValue() { return enumValue; }
-
+    public Integer getEnumValueV() { return enumValue.value(); }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f8")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestPointer", S="f0")

@@ -118,94 +118,73 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="int32", S="f0")
     public Integer getKey() { return key; }
-
     /**  */
     @invar.lib.InvarRule(T="int8", S="f1")
     public Byte getNumber01() { return number01; }
-
     /**  */
     @invar.lib.InvarRule(T="int16", S="f2")
     public Short getNumber02() { return number02; }
-
     /**  */
     @invar.lib.InvarRule(T="int32", S="f3")
     public Integer getNumber03() { return number03; }
-
     /** Test field comments */
     @invar.lib.InvarRule(T="int64", S="f4")
     public Long getNumber04() { return number04; }
-
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f5")
     public Integer getNumber05() { return number05; }
-
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f6")
     public Integer getNumber06() { return number06; }
-
     /**  */
     @invar.lib.InvarRule(T="uint32", S="f7")
     public Long getNumber07() { return number07; }
-
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f8")
     public BigInteger getNumber08() { return number08; }
-
     /**  */
     @invar.lib.InvarRule(T="float", S="f9")
     public Float getNumber09() { return number09; }
-
     /**  */
     @invar.lib.InvarRule(T="double", S="f10")
     public Double getNumber10() { return number10; }
-
     /**  */
     @invar.lib.InvarRule(T="bool", S="f11")
     public Boolean getIsReal() { return isReal; }
-
     /** a string */
     @invar.lib.InvarRule(T="string", S="f12")
     public String getS() { return s; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<string>", S="f13")
-    public LinkedList<String> getWorld() { return world; }
-
+    public LinkedList<java.lang.String> getWorld() { return world; }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f14")
     public Gender getGender() { return gender; }
-
+    public Integer getGenderV() { return gender.value(); }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Info", S="f15")
     public Info getNext() { return next; }
-
     /**  */
     @invar.lib.InvarRule(T="test.abc.Conflict", S="f16")
     public test.abc.Conflict getConflict() { return conflict; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<test.xyz.Conflict>", S="f17")
     public LinkedList<test.xyz.Conflict> getConflicts() { return conflicts; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<double>", S="f18")
-    public LinkedList<Double> getNumbers() { return numbers; }
-
+    public LinkedList<java.lang.Double> getNumbers() { return numbers; }
     /**  */
     @invar.lib.InvarRule(T="map<test.abc.Info,test.abc.Gender>", S="f19")
     public LinkedHashMap<Info,Gender> getMapInfoG() { return mapInfoG; }
-
     /**  */
     @invar.lib.InvarRule(T="map<test.abc.Gender,test.abc.Info>", S="f20")
     public LinkedHashMap<Gender,Info> getMapGenderInfo() { return mapGenderInfo; }
-
     /**  */
     @invar.lib.InvarRule(T="map<int32,double>", S="f21")
-    public LinkedHashMap<Integer,Double> getMapDouble() { return mapDouble; }
-
+    public LinkedHashMap<Integer,java.lang.Double> getMapDouble() { return mapDouble; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f22")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /**  */
     @invar.lib.InvarRule(T="int32", S="f0")

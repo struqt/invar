@@ -86,56 +86,43 @@ invar.lib.InvarCodec.XMLEncode
 
     /** 有符号的8位整数 */
     @invar.lib.InvarRule(T="vec<int8>", S="f0")
-    public LinkedList<Byte> getListI08() { return listI08; }
-
+    public LinkedList<java.lang.Byte> getListI08() { return listI08; }
     /** 有符号的16位整数 */
     @invar.lib.InvarRule(T="vec<int16>", S="f1")
     public LinkedList<Short> getListI16() { return listI16; }
-
     /** 有符号的32位整数 */
     @invar.lib.InvarRule(T="vec<int32>", S="f2")
     public LinkedList<Integer> getListI32() { return listI32; }
-
     /** 有符号的64位整数 */
     @invar.lib.InvarRule(T="vec<int64>", S="f3")
     public LinkedList<Long> getListI64() { return listI64; }
-
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="vec<uint8>", S="f4")
-    public LinkedList<Integer> getListU08() { return listU08; }
-
+    public LinkedList<java.lang.Integer> getListU08() { return listU08; }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="vec<uint16>", S="f5")
-    public LinkedList<Integer> getListU16() { return listU16; }
-
+    public LinkedList<java.lang.Integer> getListU16() { return listU16; }
     /** 无符号的32位整数 */
     @invar.lib.InvarRule(T="vec<uint32>", S="f6")
-    public LinkedList<Long> getListU32() { return listU32; }
-
+    public LinkedList<java.lang.Long> getListU32() { return listU32; }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="vec<uint64>", S="f7")
     public LinkedList<BigInteger> getListU64() { return listU64; }
-
     /** 单精度浮点小数 */
     @invar.lib.InvarRule(T="vec<float>", S="f8")
     public LinkedList<Float> getListSingle() { return listSingle; }
-
     /** 双精度浮点小数 */
     @invar.lib.InvarRule(T="vec<double>", S="f9")
-    public LinkedList<Double> getListDouble() { return listDouble; }
-
+    public LinkedList<java.lang.Double> getListDouble() { return listDouble; }
     /** 布尔值 */
     @invar.lib.InvarRule(T="vec<bool>", S="f10")
-    public LinkedList<Boolean> getListBoolean() { return listBoolean; }
-
+    public LinkedList<java.lang.Boolean> getListBoolean() { return listBoolean; }
     /** 字符串 */
     @invar.lib.InvarRule(T="vec<string>", S="f11")
-    public LinkedList<String> getListString() { return listString; }
-
+    public LinkedList<java.lang.String> getListString() { return listString; }
     /** 枚举值 */
     @invar.lib.InvarRule(T="vec<test.abc.Gender>", S="f12")
     public LinkedList<Gender> getListEnum() { return listEnum; }
-
     /** 自定义结构 */
     @invar.lib.InvarRule(T="vec<test.abc.Custom>", S="f13")
     public LinkedList<Custom> getListStruct() { return listStruct; }

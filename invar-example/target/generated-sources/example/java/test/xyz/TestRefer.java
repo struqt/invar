@@ -100,70 +100,55 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="int8", S="f0")
     public Byte getNumberi08() { return numberi08; }
-
     /**  */
     @invar.lib.InvarRule(T="int16", S="f1")
     public Short getNumberi16() { return numberi16; }
-
     /**  */
     @invar.lib.InvarRule(T="int32", S="f2")
     public Integer getNumberi32() { return numberi32; }
-
     /**  */
     @invar.lib.InvarRule(T="int64", S="f3")
     public Long getNumberi64() { return numberi64; }
-
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f4")
     public Integer getNumberu08() { return numberu08; }
-
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f5")
     public Integer getNumberu16() { return numberu16; }
-
     /**  */
     @invar.lib.InvarRule(T="uint32", S="f6")
     public Long getNumberu32() { return numberu32; }
-
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f7")
     public BigInteger getNumberu64() { return numberu64; }
-
     /**  */
     @invar.lib.InvarRule(T="float", S="f8")
     public Float getNumberSingle() { return numberSingle; }
-
     /**  */
     @invar.lib.InvarRule(T="double", S="f9")
     public Double getNumberDouble() { return numberDouble; }
-
     /**  */
     @invar.lib.InvarRule(T="bool", S="f10")
     public Boolean getBoolValue() { return boolValue; }
-
     /**  */
     @invar.lib.InvarRule(T="string", S="f11")
     public String getStringValue() { return stringValue; }
-
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f12")
     public Gender getEnumValue() { return enumValue; }
-
+    public Integer getEnumValueV() { return enumValue.value(); }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Custom", S="f13")
     public Custom getOther() { return other; }
-
     /**  */
     @invar.lib.InvarRule(T="test.xyz.TestRefer", S="f14")
     public TestRefer getSelf() { return self; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<int8>", S="f15")
-    public LinkedList<Byte> getListI08() { return listI08; }
-
+    public LinkedList<java.lang.Byte> getListI08() { return listI08; }
     /**  */
     @invar.lib.InvarRule(T="map<int8,int8>", S="f16")
-    public LinkedHashMap<Byte,Byte> getDictI08() { return dictI08; }
+    public LinkedHashMap<java.lang.Byte,java.lang.Byte> getDictI08() { return dictI08; }
 
     /**  */
     @invar.lib.InvarRule(T="int8", S="f0")

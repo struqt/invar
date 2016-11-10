@@ -87,54 +87,42 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f0")
     public LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> getInfos() { return infos; }
-
     /** Two types with the same name. */
     @invar.lib.InvarRule(T="test.xyz.Conflict", S="f1")
     public test.xyz.Conflict getConflict_x() { return conflict_x; }
-
     /** Two types with the same name. */
     @invar.lib.InvarRule(T="test.abc.Conflict", S="f2")
     public test.abc.Conflict getConflict_a() { return conflict_a; }
-
     /**  */
     @invar.lib.InvarRule(T="map<int32,test.abc.Conflict>", S="f3")
     public LinkedHashMap<Integer,test.abc.Conflict> getMConflict() { return mConflict; }
-
     /** 2 dimension list */
     @invar.lib.InvarRule(T="vec<vec<test.abc.Info>>", S="f4")
     public LinkedList<LinkedList<Info>> getInfo2d() { return info2d; }
-
     /** 3 dimension list */
     @invar.lib.InvarRule(T="vec<vec<vec<test.abc.Info>>>", S="f5")
     public LinkedList<LinkedList<LinkedList<Info>>> getInfo3d() { return info3d; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<vec<vec<vec<vec<test.abc.Info>>>>>", S="f6")
     public LinkedList<LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>> getInfo5d() { return info5d; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<map<int16,test.abc.Info>>", S="f7")
     public LinkedList<LinkedHashMap<Short,Info>> getInfovm() { return infovm; }
-
     /**  */
     @invar.lib.InvarRule(T="map<vec<test.abc.Gender>,test.abc.Info>", S="f8")
     public LinkedHashMap<LinkedList<Gender>,Info> getMvei() { return mvei; }
-
     /**  */
     @invar.lib.InvarRule(T="map<test.abc.Info,vec<test.abc.Gender>>", S="f9")
     public LinkedHashMap<Info,LinkedList<Gender>> getMive() { return mive; }
-
     /**  */
     @invar.lib.InvarRule(T="map<vec<test.abc.Info>,vec<test.abc.Gender>>", S="f10")
     public LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> getMvive() { return mvive; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<map<vec<test.abc.Info>,vec<test.abc.Gender>>>", S="f11")
     public LinkedList<LinkedHashMap<LinkedList<Info>,LinkedList<Gender>>> getVmvive() { return vmvive; }
-
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f12")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /** Two types with the same name. */
     @invar.lib.InvarRule(T="test.xyz.Conflict", S="f1")

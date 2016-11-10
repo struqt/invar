@@ -58,18 +58,16 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
     public Gender getKey() { return key; }
-
+    public Integer getKeyV() { return key.value(); }
     /**  */
     @invar.lib.InvarRule(T="string", S="f1")
     public String getText() { return text; }
-
     /**  */
     @invar.lib.InvarRule(T="vec<int8>", S="f2")
-    public LinkedList<Byte> getBytes() { return bytes; }
-
+    public LinkedList<java.lang.Byte> getBytes() { return bytes; }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f3")
-    public LinkedHashMap<String,String> getHotfix() { return hotfix; }
+    public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f0")
