@@ -374,7 +374,7 @@
   ]]></template>
   <template key="setter.enum"><![CDATA[
     public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; }
-    public void set[#upperHeadChar( (#name) )]V(int value) { this.(#name) = (#type).valueOf(value); }
+    public void set[#upperHeadChar( (#name) )]V(Integer value) { this.(#name) = (#type).valueOf(value); }
   ]]></template>
 
   <!-- Read bytes from a Stream -->

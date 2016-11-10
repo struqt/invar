@@ -260,7 +260,7 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f14")
     public void setGender(Gender value) { this.gender = value; }
-    public void setGenderV(int value) { this.gender = Gender.valueOf(value); }
+    public void setGenderV(Integer value) { this.gender = Gender.valueOf(value); }
     /**  */
     @invar.lib.InvarRule(T="test.abc.Info", S="f15")
     public void setNext(Info value) { this.next = value; }

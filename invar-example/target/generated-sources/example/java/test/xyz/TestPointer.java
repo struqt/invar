@@ -137,7 +137,7 @@ invar.lib.InvarCodec.XMLEncode
     /**  */
     @invar.lib.InvarRule(T="test.abc.Gender", S="f7")
     public void setEnumValue(Gender value) { this.enumValue = value; }
-    public void setEnumValueV(int value) { this.enumValue = Gender.valueOf(value); }
+    public void setEnumValueV(Integer value) { this.enumValue = Gender.valueOf(value); }
     /** [AutoAdd] Hotfix */
     @invar.lib.InvarRule(T="map<string,string>", S="f8")
     public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
