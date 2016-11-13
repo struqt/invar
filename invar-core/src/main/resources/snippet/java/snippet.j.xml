@@ -700,6 +700,9 @@
   <template key="tojson.nest.k"><![CDATA[
     (#type) (#name) = (#nameupper)Iter.getKey(); /* nest.k */
     (#arg).append('"'); (#body); (#arg).append('"').append(':'); ]]></template>
+  <template key="tojson.nest.k.string"><![CDATA[
+    (#type) (#name) = (#nameupper)Iter.getKey(); /* nest.k */
+    (#body); (#arg).append(':'); ]]></template>
   <template key="tojson.nest.v">
     <![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue(); /* nest.v */(#brk)(#body); ]]></template>
 

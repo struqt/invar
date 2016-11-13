@@ -243,7 +243,7 @@ invar.lib.InvarCodec.XMLEncode
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    s.append('"'); s.append('"').append(k1.toString()).append('"'); s.append('"').append(':');
+                    s.append('"').append(k1.toString()).append('"'); s.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
                     s.append('"').append(v1.toString()).append('"');
                     if (hotfixIdx != hotfixSize) { s.append(','); }

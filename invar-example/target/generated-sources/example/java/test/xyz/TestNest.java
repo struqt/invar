@@ -232,7 +232,7 @@ invar.lib.InvarCodec.XMLEncode
                     for (Map.Entry<java.lang.String,Custom> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
                         java.lang.String k2 = n1Iter.getKey(); /* nest.k */
-                        s.append('"'); s.append('"').append(k2.toString()).append('"'); s.append('"').append(':');
+                        s.append('"').append(k2.toString()).append('"'); s.append(':');
                         Custom v2 = n1Iter.getValue(); /* nest.v */
                         v2.writeJSON(s);
                         if (n1Idx != n1Size) { s.append(','); }
