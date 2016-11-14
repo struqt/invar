@@ -17,6 +17,7 @@ final public class InvarReadData {
     static public HashMap<String, Class<?>> aliasEnums = null;
     static public HashMap<String, Class<?>> aliasStructs = null;
     static private String suffix;
+    static public boolean shortenMapEntry = true;
 
     static public void start(Object root, String path, String suffix) throws Exception {
         InvarReadData.suffix = suffix;
@@ -232,17 +233,19 @@ final public class InvarReadData {
         Class<?> ClsV = loadGenericClass(typeNames[1]);
         List<Node> children = elementNodes(n);
         int len = children.size();
-        if (isSimpleType(ClsK)) {
-            for (int i = 0; i < len; i++) {
-                Node vn = children.get(i);
-                String s = getAttr(vn, ATTR_MAP_KEY);
+        if (isSimpleType(ClsK) && shortenMapEntry) {
+            for (Node vn : children) {
+                String s = getAttrOptional(vn, ATTR_MAP_KEY);
+                if (s == null || s.length() <= 0) {
+                    continue;
+                }
                 Object k = parseSimple(ClsK, s, typeNames[0], debug + ".k", vn);
                 Object v = parseGenericChild(vn, ClsV, typeNames[1], debug + ".v");
                 map.put(k, v);
             }
         } else {
             if ((0x01 & len) != 0)
-                onError("Invaid amount of children: " + len, n);
+                onError("Invalid amount of children: " + len, n);
             for (int i = 0; i < len; i += 2) {
                 Node kn = children.get(i);
                 Node vn = children.get(i + 1);
@@ -330,7 +333,7 @@ final public class InvarReadData {
         Integer v = Integer.parseInt(s);
         Method[] mets = type.getMethods();
         for (Method m : mets) {
-            if (!m.getName().equals("parse"))
+            if (!m.getName().equals("valueOf"))
                 continue;
             o = m.invoke(type, v);
             break;
