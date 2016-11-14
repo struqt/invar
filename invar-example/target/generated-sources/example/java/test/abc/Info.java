@@ -762,7 +762,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("world").append('>');
             for (java.lang.String n1 : world) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1).append('"').append('>');
+                nodes.append(n1).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("world").append('>');
         }
@@ -783,7 +783,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("numbers").append('>');
             for (java.lang.Double n1 : numbers) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("numbers").append('>');
         }
@@ -794,7 +794,7 @@ invar.lib.InvarCodec.XMLEncode
                 k1.writeXML(nodes, "k1");
                 Gender v1 = mapInfoGIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("mapInfoG").append('>');
         }
@@ -803,7 +803,7 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) {
                 Gender k1 = mapGenderInfoIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 Info v1 = mapGenderInfoIter.getValue();
                 v1.writeXML(nodes, "v1");
             }
@@ -814,10 +814,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Integer,java.lang.Double> mapDoubleIter : mapDouble.entrySet()) {
                 Integer k1 = mapDoubleIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Double v1 = mapDoubleIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("mapDouble").append('>');
         }
@@ -826,10 +826,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1).append('"').append('>');
+                nodes.append(k1).append('"').append('/').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1).append('"').append('>');
+                nodes.append(v1).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }

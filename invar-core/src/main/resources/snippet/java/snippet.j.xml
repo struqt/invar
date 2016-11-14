@@ -570,13 +570,13 @@
     (#body); ]]></template>
   <template key="toxml.nest.n"><![CDATA[
     (#arg).append('<').append("(#name)").append(' ').append("value").append('=').append('"');
-    (#arg).append((#body)).append('"').append('>'); ]]></template>
+    (#arg).append((#body)).append('"').append('/').append('>'); ]]></template>
   <template key="toxml.nest.k"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getKey();
     (#arg).append('<').append("(#name)").append(' ').append("value").append('=').append('"');
-    (#arg).append((#body)).append('"').append('>'); ]]></template>
+    (#arg).append((#body)).append('"').append('/').append('>'); ]]></template>
   <template key="toxml.nest.v"><![CDATA[ (#type) (#name) = (#nameupper)Iter.getValue();
     (#arg).append('<').append("(#name)").append(' ').append("value").append('=').append('"');
-    (#arg).append((#body)).append('"').append('>'); ]]></template>
+    (#arg).append((#body)).append('"').append('/').append('>'); ]]></template>
   <template key="toxml.vec.head"><![CDATA[]]></template>
   <template key="toxml.vec.for"><![CDATA[
     (#arg).append('<').append("(#name)").append('>');

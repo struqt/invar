@@ -754,10 +754,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) {
                 java.lang.Byte k1 = dictI08Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Byte v1 = dictI08Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictI08").append('>');
         }
@@ -766,10 +766,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Short,Short> dictI16Iter : dictI16.entrySet()) {
                 Short k1 = dictI16Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 Short v1 = dictI16Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictI16").append('>');
         }
@@ -778,10 +778,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Integer,Integer> dictI32Iter : dictI32.entrySet()) {
                 Integer k1 = dictI32Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 Integer v1 = dictI32Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictI32").append('>');
         }
@@ -790,10 +790,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Long,Long> dictI64Iter : dictI64.entrySet()) {
                 Long k1 = dictI64Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 Long v1 = dictI64Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictI64").append('>');
         }
@@ -802,10 +802,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU08Iter : dictU08.entrySet()) {
                 java.lang.Integer k1 = dictU08Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Integer v1 = dictU08Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictU08").append('>');
         }
@@ -814,10 +814,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU16Iter : dictU16.entrySet()) {
                 java.lang.Integer k1 = dictU16Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Integer v1 = dictU16Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictU16").append('>');
         }
@@ -826,10 +826,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.Long,java.lang.Long> dictU32Iter : dictU32.entrySet()) {
                 java.lang.Long k1 = dictU32Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Long v1 = dictU32Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictU32").append('>');
         }
@@ -838,10 +838,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) {
                 BigInteger k1 = dictU64Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 BigInteger v1 = dictU64Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictU64").append('>');
         }
@@ -850,10 +850,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Float,Float> dictSingleIter : dictSingle.entrySet()) {
                 Float k1 = dictSingleIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 Float v1 = dictSingleIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictSingle").append('>');
         }
@@ -862,10 +862,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.Double,java.lang.Double> dictDoubleIter : dictDouble.entrySet()) {
                 java.lang.Double k1 = dictDoubleIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Double v1 = dictDoubleIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictDouble").append('>');
         }
@@ -874,10 +874,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.Boolean,java.lang.Boolean> dictBooleanIter : dictBoolean.entrySet()) {
                 java.lang.Boolean k1 = dictBooleanIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Boolean v1 = dictBooleanIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictBoolean").append('>');
         }
@@ -886,10 +886,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.String,java.lang.String> dictStringIter : dictString.entrySet()) {
                 java.lang.String k1 = dictStringIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1).append('"').append('>');
+                nodes.append(k1).append('"').append('/').append('>');
                 java.lang.String v1 = dictStringIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1).append('"').append('>');
+                nodes.append(v1).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictString").append('>');
         }
@@ -898,10 +898,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) {
                 Gender k1 = dictEnumIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 Gender v1 = dictEnumIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictEnum").append('>');
         }
@@ -920,10 +920,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1).append('"').append('>');
+                nodes.append(k1).append('"').append('/').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1).append('"').append('>');
+                nodes.append(v1).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }

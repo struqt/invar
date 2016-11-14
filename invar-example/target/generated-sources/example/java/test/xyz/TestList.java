@@ -585,7 +585,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listI08").append('>');
             for (java.lang.Byte n1 : listI08) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listI08").append('>');
         }
@@ -593,7 +593,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listI16").append('>');
             for (Short n1 : listI16) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listI16").append('>');
         }
@@ -601,7 +601,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listI32").append('>');
             for (Integer n1 : listI32) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listI32").append('>');
         }
@@ -609,7 +609,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listI64").append('>');
             for (Long n1 : listI64) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listI64").append('>');
         }
@@ -617,7 +617,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listU08").append('>');
             for (java.lang.Integer n1 : listU08) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listU08").append('>');
         }
@@ -625,7 +625,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listU16").append('>');
             for (java.lang.Integer n1 : listU16) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listU16").append('>');
         }
@@ -633,7 +633,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listU32").append('>');
             for (java.lang.Long n1 : listU32) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listU32").append('>');
         }
@@ -641,7 +641,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listU64").append('>');
             for (BigInteger n1 : listU64) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listU64").append('>');
         }
@@ -649,7 +649,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listSingle").append('>');
             for (Float n1 : listSingle) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listSingle").append('>');
         }
@@ -657,7 +657,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listDouble").append('>');
             for (java.lang.Double n1 : listDouble) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listDouble").append('>');
         }
@@ -665,7 +665,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listBoolean").append('>');
             for (java.lang.Boolean n1 : listBoolean) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listBoolean").append('>');
         }
@@ -673,7 +673,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listString").append('>');
             for (java.lang.String n1 : listString) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1).append('"').append('>');
+                nodes.append(n1).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listString").append('>');
         }
@@ -681,7 +681,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listEnum").append('>');
             for (Gender n1 : listEnum) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listEnum").append('>');
         }

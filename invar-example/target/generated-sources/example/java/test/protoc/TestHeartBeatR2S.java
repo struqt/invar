@@ -278,10 +278,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1).append('"').append('>');
+                nodes.append(k1).append('"').append('/').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1).append('"').append('>');
+                nodes.append(v1).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }

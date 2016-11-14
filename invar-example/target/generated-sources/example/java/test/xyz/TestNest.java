@@ -355,7 +355,7 @@ invar.lib.InvarCodec.XMLEncode
                 for (Map.Entry<java.lang.String,Custom> n1Iter : n1.entrySet()) {
                     java.lang.String k2 = n1Iter.getKey();
                     nodes.append('<').append("k2").append(' ').append("value").append('=').append('"');
-                    nodes.append(k2).append('"').append('>');
+                    nodes.append(k2).append('"').append('/').append('>');
                     Custom v2 = n1Iter.getValue();
                     v2.writeXML(nodes, "v2");
                 }
@@ -370,7 +370,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("k1").append('>');
                 for (java.lang.String n2 : k1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(n2).append('"').append('>');
+                    nodes.append(n2).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("k1").append('>');
                 LinkedList<Custom> v1 = dictListIter.getValue();

@@ -532,7 +532,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listI08").append('>');
             for (java.lang.Byte n1 : listI08) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('>');
+                nodes.append(n1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listI08").append('>');
         }
@@ -541,10 +541,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) {
                 java.lang.Byte k1 = dictI08Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 java.lang.Byte v1 = dictI08Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('>');
+                nodes.append(v1.toString()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictI08").append('>');
         }

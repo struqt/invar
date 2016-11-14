@@ -973,7 +973,7 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Integer,test.abc.Conflict> mConflictIter : mConflict.entrySet()) {
                 Integer k1 = mConflictIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('>');
+                nodes.append(k1.toString()).append('"').append('/').append('>');
                 test.abc.Conflict v1 = mConflictIter.getValue();
                 v1.writeXML(nodes, "v1");
             }
@@ -1035,7 +1035,7 @@ invar.lib.InvarCodec.XMLEncode
                 for (Map.Entry<Short,Info> n1Iter : n1.entrySet()) {
                     Short k2 = n1Iter.getKey();
                     nodes.append('<').append("k2").append(' ').append("value").append('=').append('"');
-                    nodes.append(k2.toString()).append('"').append('>');
+                    nodes.append(k2.toString()).append('"').append('/').append('>');
                     Info v2 = n1Iter.getValue();
                     v2.writeXML(nodes, "v2");
                 }
@@ -1050,7 +1050,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("k1").append('>');
                 for (Gender n2 : k1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(n2.toString()).append('"').append('>');
+                    nodes.append(n2.toString()).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("k1").append('>');
                 Info v1 = mveiIter.getValue();
@@ -1067,7 +1067,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("v1").append('>');
                 for (Gender n2 : v1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(n2.toString()).append('"').append('>');
+                    nodes.append(n2.toString()).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("v1").append('>');
             }
@@ -1086,7 +1086,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("v1").append('>');
                 for (Gender n2 : v1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(n2.toString()).append('"').append('>');
+                    nodes.append(n2.toString()).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("v1").append('>');
             }
@@ -1107,7 +1107,7 @@ invar.lib.InvarCodec.XMLEncode
                     nodes.append('<').append("v2").append('>');
                     for (Gender n3 : v2) {
                         nodes.append('<').append("n3").append(' ').append("value").append('=').append('"');
-                        nodes.append(n3.toString()).append('"').append('>');
+                        nodes.append(n3.toString()).append('"').append('/').append('>');
                     }
                     nodes.append('<').append('/').append("v2").append('>');
                 }
@@ -1120,10 +1120,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1).append('"').append('>');
+                nodes.append(k1).append('"').append('/').append('>');
                 java.lang.String v1 = hotfixIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1).append('"').append('>');
+                nodes.append(v1).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }
