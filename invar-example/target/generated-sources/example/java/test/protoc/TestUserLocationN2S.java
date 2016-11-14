@@ -96,56 +96,56 @@ invar.lib.InvarCodec.XMLEncode
     public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
-    public TestUserLocationN2S copy(TestUserLocationN2S from)
+    public TestUserLocationN2S copy(TestUserLocationN2S from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
-        protocId = from.protocId;
-        protocCRC = from.protocCRC;
-        if (from.protoc2S != null) {
-            protoc2S.copy(from.protoc2S);
+        protocId = from_.protocId;
+        protocCRC = from_.protocCRC;
+        if (from_.protoc2S != null) {
+            protoc2S.copy(from_.protoc2S);
         } else {
             protoc2S = null;
         }
-        x = from.x;
-        y = from.y;
-        if (null == from.hotfix) {
+        x = from_.x;
+        y = from_.y;
+        if (null == from_.hotfix) {
             hotfix = null;
         } else {
             if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             else { hotfix.clear(); }
-            hotfix.putAll(from.hotfix);
+            hotfix.putAll(from_.hotfix);
         }
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
-        protocId = from.readUnsignedShort();
-        protocCRC = from.readInt() & 0xFFFFFFFFL;
+        protocId = from_.readUnsignedShort();
+        protocCRC = from_.readInt() & 0xFFFFFFFFL;
         if (CRC32 != protocCRC) { throw new CodecError(CodecError.ERR_PROTOC_CRC_MISMATCH); }
-        byte protoc2SExists = from.readByte();
+        byte protoc2SExists = from_.readByte();
         if ((byte)0x01 == protoc2SExists) {
             if (protoc2S == null) { protoc2S = Protoc2S.Create(); }
-            protoc2S.read(from);
+            protoc2S.read(from_);
         }
         else if ((byte)0x00 == protoc2SExists) { protoc2S = null; }
         else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
-        x = from.readFloat();
-        y = from.readFloat();
-        byte hotfixExists = from.readByte();
+        x = from_.readFloat();
+        y = from_.readFloat();
+        byte hotfixExists = from_.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
-            Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
+            Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
-                java.lang.String k1 = from.readUTF();
-                java.lang.String v1 = from.readUTF();
+                java.lang.String k1 = from_.readUTF();
+                java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
             }
         }
@@ -153,34 +153,34 @@ invar.lib.InvarCodec.XMLEncode
         else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeShort(protocId);
-        dest.writeInt(protocCRC.intValue());
+        dest_.writeShort(protocId);
+        dest_.writeInt(protocCRC.intValue());
         if (protoc2S != null) {
-            dest.writeByte((byte)0x01);
-            protoc2S.write(dest);
+            dest_.writeByte((byte)0x01);
+            protoc2S.write(dest_);
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
-        dest.writeFloat(x);
-        dest.writeFloat(y);
+        dest_.writeFloat(x);
+        dest_.writeFloat(y);
         if (hotfix != null) {
-            dest.writeByte((byte)0x01);
-            dest.writeInt(hotfix.size());
+            dest_.writeByte((byte)0x01);
+            dest_.writeInt(hotfix.size());
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                dest.writeUTF(k1);
+                dest_.writeUTF(k1);
                 java.lang.String v1 = hotfixIter.getValue();
-                dest.writeUTF(v1);
+                dest_.writeUTF(v1);
             }
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
     }
 
@@ -220,45 +220,45 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
-        s.append('"').append("protocId").append('"').append(':');
-        s.append(protocId.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("protocCRC").append('"').append(':');
-        s.append(protocCRC.toString()); comma = ',';
+        _.append('"').append("protocId").append('"').append(':');
+        _.append(protocId.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("protocCRC").append('"').append(':');
+        _.append(protocCRC.toString()); comma = ',';
         boolean protoc2SExists = (null != protoc2S);
-        if ('\0' != comma && protoc2SExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && protoc2SExists) { _.append(comma); comma = '\0'; }
         if (protoc2SExists) {
-            s.append('"').append("protoc2S").append('"').append(':'); comma = ','; protoc2S.writeJSON(s);
+            _.append('"').append("protoc2S").append('"').append(':'); comma = ','; protoc2S.writeJSON(_);
         }
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("x").append('"').append(':');
-        s.append(x.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("y").append('"').append(':');
-        s.append(y.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("x").append('"').append(':');
+        _.append(x.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("y").append('"').append(':');
+        _.append(y.toString()); comma = ',';
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('{');
+                _.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    s.append('"').append(k1.toString()).append('"'); s.append(':');
+                    _.append('"').append(k1.toString()).append('"'); _.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    s.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                    _.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { _.append(','); }
                 }
-                s.append('}');
+                _.append('}');
             } comma = ',';
         }
-        s.append('}');
+        _.append('}');
     } /* TestUserLocationN2S::writeJSON(...) */
 
     public String toStringXML()
@@ -268,7 +268,7 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
@@ -295,12 +295,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* TestUserLocationN2S::writeXML(...) */
 

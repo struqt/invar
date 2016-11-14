@@ -109,47 +109,47 @@ invar.lib.InvarCodec.XMLEncode
     public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
-    public ConfigRoot copy(ConfigRoot from)
+    public ConfigRoot copy(ConfigRoot from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
-        revision = from.revision;
-        list = from.list;
-        dict = from.dict;
-        nest = from.nest;
-        info = from.info;
-        infox = from.infox;
-        if (null == from.hotfix) {
+        revision = from_.revision;
+        list = from_.list;
+        dict = from_.dict;
+        nest = from_.nest;
+        info = from_.info;
+        infox = from_.infox;
+        if (null == from_.hotfix) {
             hotfix = null;
         } else {
             if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             else { hotfix.clear(); }
-            hotfix.putAll(from.hotfix);
+            hotfix.putAll(from_.hotfix);
         }
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
-        revision = from.readUTF();
-        list.read(from);
-        dict.read(from);
-        nest.read(from);
-        info.read(from);
-        infox.read(from);
-        byte hotfixExists = from.readByte();
+        revision = from_.readUTF();
+        list.read(from_);
+        dict.read(from_);
+        nest.read(from_);
+        info.read(from_);
+        infox.read(from_);
+        byte hotfixExists = from_.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
-            Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
+            Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
-                java.lang.String k1 = from.readUTF();
-                java.lang.String v1 = from.readUTF();
+                java.lang.String k1 = from_.readUTF();
+                java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
             }
         }
@@ -157,30 +157,30 @@ invar.lib.InvarCodec.XMLEncode
         else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeUTF(revision);
-        list.write(dest);
-        dict.write(dest);
-        nest.write(dest);
-        info.write(dest);
-        infox.write(dest);
+        dest_.writeUTF(revision);
+        list.write(dest_);
+        dict.write(dest_);
+        nest.write(dest_);
+        info.write(dest_);
+        infox.write(dest_);
         if (hotfix != null) {
-            dest.writeByte((byte)0x01);
-            dest.writeInt(hotfix.size());
+            dest_.writeByte((byte)0x01);
+            dest_.writeInt(hotfix.size());
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                dest.writeUTF(k1);
+                dest_.writeUTF(k1);
                 java.lang.String v1 = hotfixIter.getValue();
-                dest.writeUTF(v1);
+                dest_.writeUTF(v1);
             }
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
     }
 
@@ -218,58 +218,58 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
         boolean revisionExists = revision != null && revision.length() > 0;
         if (revisionExists) {
-            s.append('"').append("revision").append('"').append(':'); comma = ','; s.append('"').append(revision.toString()).append('"');
+            _.append('"').append("revision").append('"').append(':'); comma = ','; _.append('"').append(revision.toString()).append('"');
         }
         boolean listExists = (null != list);
-        if ('\0' != comma && listExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && listExists) { _.append(comma); comma = '\0'; }
         if (listExists) {
-            s.append('"').append("list").append('"').append(':'); comma = ','; list.writeJSON(s);
+            _.append('"').append("list").append('"').append(':'); comma = ','; list.writeJSON(_);
         }
         boolean dictExists = (null != dict);
-        if ('\0' != comma && dictExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && dictExists) { _.append(comma); comma = '\0'; }
         if (dictExists) {
-            s.append('"').append("dict").append('"').append(':'); comma = ','; dict.writeJSON(s);
+            _.append('"').append("dict").append('"').append(':'); comma = ','; dict.writeJSON(_);
         }
         boolean nestExists = (null != nest);
-        if ('\0' != comma && nestExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && nestExists) { _.append(comma); comma = '\0'; }
         if (nestExists) {
-            s.append('"').append("nest").append('"').append(':'); comma = ','; nest.writeJSON(s);
+            _.append('"').append("nest").append('"').append(':'); comma = ','; nest.writeJSON(_);
         }
         boolean infoExists = (null != info);
-        if ('\0' != comma && infoExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && infoExists) { _.append(comma); comma = '\0'; }
         if (infoExists) {
-            s.append('"').append("info").append('"').append(':'); comma = ','; info.writeJSON(s);
+            _.append('"').append("info").append('"').append(':'); comma = ','; info.writeJSON(_);
         }
         boolean infoxExists = (null != infox);
-        if ('\0' != comma && infoxExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && infoxExists) { _.append(comma); comma = '\0'; }
         if (infoxExists) {
-            s.append('"').append("infox").append('"').append(':'); comma = ','; infox.writeJSON(s);
+            _.append('"').append("infox").append('"').append(':'); comma = ','; infox.writeJSON(_);
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('{');
+                _.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    s.append('"').append(k1.toString()).append('"'); s.append(':');
+                    _.append('"').append(k1.toString()).append('"'); _.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    s.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                    _.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { _.append(','); }
                 }
-                s.append('}');
+                _.append('}');
             } comma = ',';
         }
-        s.append('}');
+        _.append('}');
     } /* ConfigRoot::writeJSON(...) */
 
     public String toStringXML()
@@ -279,7 +279,7 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
@@ -302,12 +302,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* ConfigRoot::writeXML(...) */
 

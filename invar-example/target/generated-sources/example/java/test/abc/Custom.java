@@ -143,113 +143,113 @@ invar.lib.InvarCodec.XMLEncode
     public void setEmptyDoc(String value) { this.emptyDoc = value; }
 
     /** Shallow copy */
-    public Custom copy(Custom from)
+    public Custom copy(Custom from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
-        x = from.x;
-        test_ = from.test_;
-        xyz = from.xyz;
-        abc = from.abc;
+        x = from_.x;
+        test_ = from_.test_;
+        xyz = from_.xyz;
+        abc = from_.abc;
         children.clear();
-        children.addAll(from.children);
-        noSetter = from.noSetter;
-        useRef = from.useRef;
-        usePtr = from.usePtr;
-        if (from.prev != null) {
-            prev.copy(from.prev);
+        children.addAll(from_.children);
+        noSetter = from_.noSetter;
+        useRef = from_.useRef;
+        usePtr = from_.usePtr;
+        if (from_.prev != null) {
+            prev.copy(from_.prev);
         } else {
             prev = null;
         }
-        if (from.next != null) {
-            next.copy(from.next);
+        if (from_.next != null) {
+            next.copy(from_.next);
         } else {
             next = null;
         }
-        emptyDoc = from.emptyDoc;
+        emptyDoc = from_.emptyDoc;
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
-        x = Gender.valueOf(from.readInt());
-        test_.read(from);
-        xyz.read(from);
-        abc.read(from);
+        x = Gender.valueOf(from_.readInt());
+        test_.read(from_);
+        xyz.read(from_);
+        abc.read(from_);
         children.clear();
-        Long lenChildren = from.readInt() & 0xFFFFFFFFL;
+        Long lenChildren = from_.readInt() & 0xFFFFFFFFL;
         for (Long iChildren = 0L; iChildren < lenChildren; ++iChildren) {
             Custom n1 = Custom.Create();
-            n1.read(from);
+            n1.read(from_);
             children.add(n1);
         }
-        noSetter = from.readInt();
-        useRef = from.readUTF();
-        byte usePtrExists = from.readByte();
+        noSetter = from_.readInt();
+        useRef = from_.readUTF();
+        byte usePtrExists = from_.readByte();
         if ((byte)0x01 == usePtrExists) {
-            usePtr = from.readUTF();
+            usePtr = from_.readUTF();
         }
         else if ((byte)0x00 == usePtrExists) { usePtr = null; }
         else { throw new CodecError(CodecError.ERR_DECODE_STRING_P); }
-        byte prevExists = from.readByte();
+        byte prevExists = from_.readByte();
         if ((byte)0x01 == prevExists) {
             if (prev == null) { prev = Custom.Create(); }
-            prev.read(from);
+            prev.read(from_);
         }
         else if ((byte)0x00 == prevExists) { prev = null; }
         else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
-        byte nextExists = from.readByte();
+        byte nextExists = from_.readByte();
         if ((byte)0x01 == nextExists) {
             if (next == null) { next = Custom.Create(); }
-            next.read(from);
+            next.read(from_);
         }
         else if ((byte)0x00 == nextExists) { next = null; }
         else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
-        emptyDoc = from.readUTF();
+        emptyDoc = from_.readUTF();
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeInt(x.value());
-        test_.write(dest);
-        xyz.write(dest);
-        abc.write(dest);
-        dest.writeInt(children.size());
+        dest_.writeInt(x.value());
+        test_.write(dest_);
+        xyz.write(dest_);
+        abc.write(dest_);
+        dest_.writeInt(children.size());
         for (Custom n1 : children) {
-            n1.write(dest);
+            n1.write(dest_);
         }
-        dest.writeInt(noSetter);
-        dest.writeUTF(useRef);
+        dest_.writeInt(noSetter);
+        dest_.writeUTF(useRef);
         if (usePtr != null) {
-            dest.writeByte((byte)0x01);
-            dest.writeUTF(usePtr);
+            dest_.writeByte((byte)0x01);
+            dest_.writeUTF(usePtr);
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
         if (prev != null) {
-            dest.writeByte((byte)0x01);
-            prev.write(dest);
+            dest_.writeByte((byte)0x01);
+            prev.write(dest_);
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
         if (next != null) {
-            dest.writeByte((byte)0x01);
-            next.write(dest);
+            dest_.writeByte((byte)0x01);
+            next.write(dest_);
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
-        dest.writeUTF(emptyDoc);
+        dest_.writeUTF(emptyDoc);
     }
 
     public String toString()
@@ -302,70 +302,70 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
-        s.append('"').append("x").append('"').append(':');
-        s.append(x.value()); comma = ',';
+        _.append('"').append("x").append('"').append(':');
+        _.append(x.value()); comma = ',';
         boolean test_Exists = (null != test_);
-        if ('\0' != comma && test_Exists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && test_Exists) { _.append(comma); comma = '\0'; }
         if (test_Exists) {
-            s.append('"').append("test_").append('"').append(':'); comma = ','; test_.writeJSON(s);
+            _.append('"').append("test_").append('"').append(':'); comma = ','; test_.writeJSON(_);
         }
         boolean xyzExists = (null != xyz);
-        if ('\0' != comma && xyzExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && xyzExists) { _.append(comma); comma = '\0'; }
         if (xyzExists) {
-            s.append('"').append("xyz").append('"').append(':'); comma = ','; xyz.writeJSON(s);
+            _.append('"').append("xyz").append('"').append(':'); comma = ','; xyz.writeJSON(_);
         }
         boolean abcExists = (null != abc);
-        if ('\0' != comma && abcExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && abcExists) { _.append(comma); comma = '\0'; }
         if (abcExists) {
-            s.append('"').append("abc").append('"').append(':'); comma = ','; abc.writeJSON(s);
+            _.append('"').append("abc").append('"').append(':'); comma = ','; abc.writeJSON(_);
         }
         boolean childrenExists = (null != children && children.size() > 0);
-        if ('\0' != comma && childrenExists) { s.append(comma); comma = '\0'; }
-        if (childrenExists) { s.append('"').append("children").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && childrenExists) { _.append(comma); comma = '\0'; }
+        if (childrenExists) { _.append('"').append("children").append('"').append(':'); comma = ','; }
         int childrenSize = (null == children ? 0 : children.size());
         if (childrenSize > 0) {
-            s.append('[');
+            _.append('[');
             int childrenIdx = 0;
             for (Custom n1 : children) { /* vec.for: children */
                 ++childrenIdx;
-                n1.writeJSON(s);
-                if (childrenIdx != childrenSize) { s.append(','); }
+                n1.writeJSON(_);
+                if (childrenIdx != childrenSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("noSetter").append('"').append(':');
-        s.append(noSetter.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("noSetter").append('"').append(':');
+        _.append(noSetter.toString()); comma = ',';
         boolean useRefExists = useRef != null && useRef.length() > 0;
-        if ('\0' != comma && useRefExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && useRefExists) { _.append(comma); comma = '\0'; }
         if (useRefExists) {
-            s.append('"').append("useRef").append('"').append(':'); comma = ','; s.append('"').append(useRef.toString()).append('"');
+            _.append('"').append("useRef").append('"').append(':'); comma = ','; _.append('"').append(useRef.toString()).append('"');
         }
         boolean usePtrExists = usePtr != null && usePtr.length() > 0;
-        if ('\0' != comma && usePtrExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && usePtrExists) { _.append(comma); comma = '\0'; }
         if (usePtrExists) {
-            s.append('"').append("usePtr").append('"').append(':'); comma = ','; s.append('"').append(usePtr.toString()).append('"');
+            _.append('"').append("usePtr").append('"').append(':'); comma = ','; _.append('"').append(usePtr.toString()).append('"');
         }
         boolean prevExists = (null != prev);
-        if ('\0' != comma && prevExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && prevExists) { _.append(comma); comma = '\0'; }
         if (prevExists) {
-            s.append('"').append("prev").append('"').append(':'); comma = ','; prev.writeJSON(s);
+            _.append('"').append("prev").append('"').append(':'); comma = ','; prev.writeJSON(_);
         }
         boolean nextExists = (null != next);
-        if ('\0' != comma && nextExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && nextExists) { _.append(comma); comma = '\0'; }
         if (nextExists) {
-            s.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(s);
+            _.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(_);
         }
         boolean emptyDocExists = emptyDoc != null && emptyDoc.length() > 0;
-        if ('\0' != comma && emptyDocExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && emptyDocExists) { _.append(comma); comma = '\0'; }
         if (emptyDocExists) {
-            s.append('"').append("emptyDoc").append('"').append(':'); comma = ','; s.append('"').append(emptyDoc.toString()).append('"');
+            _.append('"').append("emptyDoc").append('"').append(':'); comma = ','; _.append('"').append(emptyDoc.toString()).append('"');
         }
-        s.append('}');
+        _.append('}');
     } /* Custom::writeJSON(...) */
 
     public String toStringXML()
@@ -375,12 +375,12 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
         attrs.append(' ').append("x").append('=').append('"');
-        attrs.append(x.toString()).append('"');
+        attrs.append(nodes.append(x.value())).append('"');
         test_.writeXML(nodes, "test_");
         xyz.writeXML(nodes, "xyz");
         abc.writeXML(nodes, "abc");
@@ -407,12 +407,12 @@ invar.lib.InvarCodec.XMLEncode
         }
         attrs.append(' ').append("emptyDoc").append('=').append('"');
         attrs.append(emptyDoc).append('"');
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* Custom::writeXML(...) */
 

@@ -257,12 +257,12 @@
     }]]></template>
 
   <!-- CopyFrom Method -->
-  <template key="copy.method.arg"><![CDATA[from]]></template>
+  <template key="copy.method.arg"><![CDATA[ from_ ]]></template>
   <template key="copy.method"><![CDATA[
     (#tab)/** Shallow copy */
-    (#tab)public (#type) copy((#type) from)
+    (#tab)public (#type) copy((#type) from_)
     (#tab){
-      (#tab)(#tab)if (this == from || from == (#null)) {
+      (#tab)(#tab)if (this == from_ || from_ == (#null)) {
       (#tab)(#tab)(#tab)return this;
       (#tab)(#tab)}(#body)
       (#tab)(#tab)return this;
@@ -379,14 +379,14 @@
 
   <!-- Read bytes from a Stream -->
   <template key="read.import"><![CDATA[  ]]></template>
-  <template key="read.method.arg"><![CDATA[from]]></template>
+  <template key="read.method.arg"><![CDATA[ from_ ]]></template>
   <template key="read.method"><![CDATA[
-    (#tab)public void read(InputStream from) throws IOException, CodecError
+    (#tab)public void read(InputStream from_) throws IOException, CodecError
     (#tab){
-    (#tab)(#tab)this.read((DataInput)new DataInputStream(from));
+    (#tab)(#tab)this.read((DataInput)new DataInputStream(from_));
     (#tab)}
     (#blank)
-    (#tab)public void read(DataInput from) throws IOException, CodecError
+    (#tab)public void read(DataInput from_) throws IOException, CodecError
     (#tab){(#body)
     (#tab)}]]></template>
   <template key="read.int8">  <![CDATA[ (#arg).readByte()    ]]></template>
@@ -410,7 +410,7 @@
   <template key="read.nest.n.struct|read.nest.k.struct|read.nest.v.struct"><![CDATA[
     (#type) (#name) = (#type).Create();(#brk)(#body); ]]></template>
   <template key="read.nest.n.uint64|read.nest.k.uint64|read.nest.v.uint64"><![CDATA[
-    byte[] (#name)Bytes = new byte[8]; from.readFully((#name)Bytes, 0, 8);
+    byte[] (#name)Bytes = new byte[8]; (#arg).readFully((#name)Bytes, 0, 8);
     (#type) (#name) = new (#type)(1, (#namer)Bytes); ]]></template>
 
   <template key="read.vec.head"><![CDATA[(#type) (#name) = new (#type)(); //read.vec.head(#brk)]]></template>
@@ -432,7 +432,7 @@
   <template key="read.ref.vec"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
   <template key="read.ref.map"><![CDATA[ (#name).clear();(#brk)(#body) ]]></template>
   <template key="read.ref.uint64"><![CDATA[
-    byte[] (#namer)Bytes = new byte[8]; from.readFully((#namer)Bytes, 0, 8);
+    byte[] (#namer)Bytes = new byte[8]; (#arg).readFully((#namer)Bytes, 0, 8);
     (#name) = new (#type)(1, (#namer)Bytes);
   ]]></template>
 
@@ -474,14 +474,14 @@
   <!-- Write bytes to a Stream -->
   <template key="write.import">
     <![CDATA[ java.io::DataOutputStream, java.io::DataOutput, java.io::IOException ]]></template>
-  <template key="write.method.arg"><![CDATA[ dest ]]></template>
+  <template key="write.method.arg"><![CDATA[ dest_ ]]></template>
   <template key="write.method"><![CDATA[
-    (#tab)public void write(OutputStream from) throws IOException
+    (#tab)public void write(OutputStream dest_) throws IOException
     (#tab){
-    (#tab)(#tab)this.write((DataOutput)new DataOutputStream(from));
+    (#tab)(#tab)this.write((DataOutput)new DataOutputStream(dest_));
     (#tab)}
     (#blank)
-    (#tab)public void write(DataOutput dest) throws IOException
+    (#tab)public void write(DataOutput dest_) throws IOException
     (#tab){(#body)
     (#tab)}]]></template>
   <template key="write.int8"><![CDATA[  (#arg).writeByte((#name))  ]]></template>
@@ -546,19 +546,20 @@
     (#tab)(#tab)return code.toString();
     (#tab)}
     (#blank)
-    (#tab)public void writeXML(StringBuilder result, String name)
+    (#tab)public void writeXML(StringBuilder result_, String name_)
     (#tab){
     (#tab)(#tab)StringBuilder attrs  = new StringBuilder();
     (#tab)(#tab)StringBuilder (#arg) = new StringBuilder();(#body)
-    (#tab)(#tab)result.append('<').append(name).append(attrs);
+    (#tab)(#tab)result_.append('<').append(name_).append(attrs);
     (#tab)(#tab)if ((#arg).length() == 0) {
-    (#tab)(#tab)(#tab)result.append('/').append('>');
+    (#tab)(#tab)(#tab)result_.append('/').append('>');
     (#tab)(#tab)} else {
-    (#tab)(#tab)(#tab)result.append('>').append((#arg));
-    (#tab)(#tab)(#tab)result.append('<').append('/').append(name).append('>');
+    (#tab)(#tab)(#tab)result_.append('>').append((#arg));
+    (#tab)(#tab)(#tab)result_.append('<').append('/').append(name_).append('>');
     (#tab)(#tab)}
     (#tab)} /* (#type)::writeXML(...) */ ]]></template>
   <template key="toxml.any">   <![CDATA[ (#name).toString() ]]></template>
+  <template key="toxml.enum"><![CDATA[ (#arg).append((#name).value()) ]]></template>
   <template key="toxml.string"><![CDATA[ (#name) ]]></template>
   <template key="toxml.struct"><![CDATA[
     (#name).writeXML((#arg), "(#name)")]]></template>
@@ -647,7 +648,7 @@
   <!-- Write data to JSON data format -->
   <template key="tojson.import">
     <![CDATA[ System.Text::StringBuilder ]]></template>
-  <template key="tojson.method.arg">  <![CDATA[ s ]]></template>
+  <template key="tojson.method.arg">  <![CDATA[ _ ]]></template>
   <template key="tojson.method"><![CDATA[
     (#tab)public String toStringJSON()
     (#tab){
@@ -655,11 +656,11 @@
     (#tab)(#tab)this.writeJSON(code);
     (#tab)(#tab)return code.toString();
     (#tab)}(#brk)
-    (#tab)public void writeJSON(StringBuilder s)
+    (#tab)public void writeJSON(StringBuilder _)
     (#tab){
-    (#tab)(#tab)s.append('{');
+    (#tab)(#tab)_.append('{');
     (#tab)(#tab)char comma = '\\0';(#body)
-    (#tab)(#tab)s.append('}');
+    (#tab)(#tab)_.append('}');
     (#tab)} /* (#type)::writeJSON(...) */ ]]></template>
   <template key="tojson.any"><![CDATA[ (#arg).append((#name).toString()) ]]></template>
   <template key="tojson.enum"><![CDATA[ (#arg).append((#name).value()) ]]></template>

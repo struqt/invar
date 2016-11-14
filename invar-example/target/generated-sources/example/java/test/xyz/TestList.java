@@ -128,199 +128,199 @@ invar.lib.InvarCodec.XMLEncode
     public LinkedList<Custom> getListStruct() { return listStruct; }
 
     /** Shallow copy */
-    public TestList copy(TestList from)
+    public TestList copy(TestList from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
         listI08.clear();
-        listI08.addAll(from.listI08);
+        listI08.addAll(from_.listI08);
         listI16.clear();
-        listI16.addAll(from.listI16);
+        listI16.addAll(from_.listI16);
         listI32.clear();
-        listI32.addAll(from.listI32);
+        listI32.addAll(from_.listI32);
         listI64.clear();
-        listI64.addAll(from.listI64);
+        listI64.addAll(from_.listI64);
         listU08.clear();
-        listU08.addAll(from.listU08);
+        listU08.addAll(from_.listU08);
         listU16.clear();
-        listU16.addAll(from.listU16);
+        listU16.addAll(from_.listU16);
         listU32.clear();
-        listU32.addAll(from.listU32);
+        listU32.addAll(from_.listU32);
         listU64.clear();
-        listU64.addAll(from.listU64);
+        listU64.addAll(from_.listU64);
         listSingle.clear();
-        listSingle.addAll(from.listSingle);
+        listSingle.addAll(from_.listSingle);
         listDouble.clear();
-        listDouble.addAll(from.listDouble);
+        listDouble.addAll(from_.listDouble);
         listBoolean.clear();
-        listBoolean.addAll(from.listBoolean);
+        listBoolean.addAll(from_.listBoolean);
         listString.clear();
-        listString.addAll(from.listString);
+        listString.addAll(from_.listString);
         listEnum.clear();
-        listEnum.addAll(from.listEnum);
+        listEnum.addAll(from_.listEnum);
         listStruct.clear();
-        listStruct.addAll(from.listStruct);
+        listStruct.addAll(from_.listStruct);
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
         listI08.clear();
-        Long lenListI08 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListI08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
-            java.lang.Byte n1 = from.readByte();
+            java.lang.Byte n1 = from_.readByte();
             listI08.add(n1);
         }
         listI16.clear();
-        Long lenListI16 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListI16 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListI16 = 0L; iListI16 < lenListI16; ++iListI16) {
-            Short n1 = from.readShort();
+            Short n1 = from_.readShort();
             listI16.add(n1);
         }
         listI32.clear();
-        Long lenListI32 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListI32 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListI32 = 0L; iListI32 < lenListI32; ++iListI32) {
-            Integer n1 = from.readUnsignedShort();
+            Integer n1 = from_.readUnsignedShort();
             listI32.add(n1);
         }
         listI64.clear();
-        Long lenListI64 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListI64 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListI64 = 0L; iListI64 < lenListI64; ++iListI64) {
-            Long n1 = from.readInt() & 0xFFFFFFFFL;
+            Long n1 = from_.readInt() & 0xFFFFFFFFL;
             listI64.add(n1);
         }
         listU08.clear();
-        Long lenListU08 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListU08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListU08 = 0L; iListU08 < lenListU08; ++iListU08) {
-            java.lang.Integer n1 = from.readUnsignedShort();
+            java.lang.Integer n1 = from_.readUnsignedShort();
             listU08.add(n1);
         }
         listU16.clear();
-        Long lenListU16 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListU16 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListU16 = 0L; iListU16 < lenListU16; ++iListU16) {
-            java.lang.Integer n1 = from.readUnsignedShort();
+            java.lang.Integer n1 = from_.readUnsignedShort();
             listU16.add(n1);
         }
         listU32.clear();
-        Long lenListU32 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListU32 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListU32 = 0L; iListU32 < lenListU32; ++iListU32) {
-            java.lang.Long n1 = from.readInt() & 0xFFFFFFFFL;
+            java.lang.Long n1 = from_.readInt() & 0xFFFFFFFFL;
             listU32.add(n1);
         }
         listU64.clear();
-        Long lenListU64 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListU64 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListU64 = 0L; iListU64 < lenListU64; ++iListU64) {
-            byte[] n1Bytes = new byte[8]; from.readFully(n1Bytes, 0, 8);
+            byte[] n1Bytes = new byte[8]; from_.readFully(n1Bytes, 0, 8);
             BigInteger n1 = new BigInteger(1, n1Bytes);
             listU64.add(n1);
         }
         listSingle.clear();
-        Long lenListSingle = from.readInt() & 0xFFFFFFFFL;
+        Long lenListSingle = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListSingle = 0L; iListSingle < lenListSingle; ++iListSingle) {
-            Float n1 = from.readFloat();
+            Float n1 = from_.readFloat();
             listSingle.add(n1);
         }
         listDouble.clear();
-        Long lenListDouble = from.readInt() & 0xFFFFFFFFL;
+        Long lenListDouble = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListDouble = 0L; iListDouble < lenListDouble; ++iListDouble) {
-            java.lang.Double n1 = from.readDouble();
+            java.lang.Double n1 = from_.readDouble();
             listDouble.add(n1);
         }
         listBoolean.clear();
-        Long lenListBoolean = from.readInt() & 0xFFFFFFFFL;
+        Long lenListBoolean = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListBoolean = 0L; iListBoolean < lenListBoolean; ++iListBoolean) {
-            java.lang.Boolean n1 = from.readBoolean();
+            java.lang.Boolean n1 = from_.readBoolean();
             listBoolean.add(n1);
         }
         listString.clear();
-        Long lenListString = from.readInt() & 0xFFFFFFFFL;
+        Long lenListString = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListString = 0L; iListString < lenListString; ++iListString) {
-            java.lang.String n1 = from.readUTF();
+            java.lang.String n1 = from_.readUTF();
             listString.add(n1);
         }
         listEnum.clear();
-        Long lenListEnum = from.readInt() & 0xFFFFFFFFL;
+        Long lenListEnum = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListEnum = 0L; iListEnum < lenListEnum; ++iListEnum) {
-            Gender n1 = Gender.valueOf(from.readInt());
+            Gender n1 = Gender.valueOf(from_.readInt());
             listEnum.add(n1);
         }
         listStruct.clear();
-        Long lenListStruct = from.readInt() & 0xFFFFFFFFL;
+        Long lenListStruct = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListStruct = 0L; iListStruct < lenListStruct; ++iListStruct) {
             Custom n1 = Custom.Create();
-            n1.read(from);
+            n1.read(from_);
             listStruct.add(n1);
         }
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeInt(listI08.size());
+        dest_.writeInt(listI08.size());
         for (java.lang.Byte n1 : listI08) {
-            dest.writeByte(n1);
+            dest_.writeByte(n1);
         }
-        dest.writeInt(listI16.size());
+        dest_.writeInt(listI16.size());
         for (Short n1 : listI16) {
-            dest.writeShort(n1);
+            dest_.writeShort(n1);
         }
-        dest.writeInt(listI32.size());
+        dest_.writeInt(listI32.size());
         for (Integer n1 : listI32) {
-            dest.writeShort(n1);
+            dest_.writeShort(n1);
         }
-        dest.writeInt(listI64.size());
+        dest_.writeInt(listI64.size());
         for (Long n1 : listI64) {
-            dest.writeInt(n1.intValue());
+            dest_.writeInt(n1.intValue());
         }
-        dest.writeInt(listU08.size());
+        dest_.writeInt(listU08.size());
         for (java.lang.Integer n1 : listU08) {
-            dest.writeShort(n1);
+            dest_.writeShort(n1);
         }
-        dest.writeInt(listU16.size());
+        dest_.writeInt(listU16.size());
         for (java.lang.Integer n1 : listU16) {
-            dest.writeShort(n1);
+            dest_.writeShort(n1);
         }
-        dest.writeInt(listU32.size());
+        dest_.writeInt(listU32.size());
         for (java.lang.Long n1 : listU32) {
-            dest.writeInt(n1.intValue());
+            dest_.writeInt(n1.intValue());
         }
-        dest.writeInt(listU64.size());
+        dest_.writeInt(listU64.size());
         for (BigInteger n1 : listU64) {
-            dest.writeLong(n1.longValue());
+            dest_.writeLong(n1.longValue());
         }
-        dest.writeInt(listSingle.size());
+        dest_.writeInt(listSingle.size());
         for (Float n1 : listSingle) {
-            dest.writeFloat(n1);
+            dest_.writeFloat(n1);
         }
-        dest.writeInt(listDouble.size());
+        dest_.writeInt(listDouble.size());
         for (java.lang.Double n1 : listDouble) {
-            dest.writeDouble(n1);
+            dest_.writeDouble(n1);
         }
-        dest.writeInt(listBoolean.size());
+        dest_.writeInt(listBoolean.size());
         for (java.lang.Boolean n1 : listBoolean) {
-            dest.writeBoolean(n1);
+            dest_.writeBoolean(n1);
         }
-        dest.writeInt(listString.size());
+        dest_.writeInt(listString.size());
         for (java.lang.String n1 : listString) {
-            dest.writeUTF(n1);
+            dest_.writeUTF(n1);
         }
-        dest.writeInt(listEnum.size());
+        dest_.writeInt(listEnum.size());
         for (Gender n1 : listEnum) {
-            dest.writeInt(n1.value());
+            dest_.writeInt(n1.value());
         }
-        dest.writeInt(listStruct.size());
+        dest_.writeInt(listStruct.size());
         for (Custom n1 : listStruct) {
-            n1.write(dest);
+            n1.write(dest_);
         }
     }
 
@@ -368,206 +368,206 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
         boolean listI08Exists = (null != listI08 && listI08.size() > 0);
-        if (listI08Exists) { s.append('"').append("listI08").append('"').append(':'); comma = ','; }
+        if (listI08Exists) { _.append('"').append("listI08").append('"').append(':'); comma = ','; }
         int listI08Size = (null == listI08 ? 0 : listI08.size());
         if (listI08Size > 0) {
-            s.append('[');
+            _.append('[');
             int listI08Idx = 0;
             for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                 ++listI08Idx;
-                s.append(n1.toString());
-                if (listI08Idx != listI08Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listI08Idx != listI08Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listI16Exists = (null != listI16 && listI16.size() > 0);
-        if ('\0' != comma && listI16Exists) { s.append(comma); comma = '\0'; }
-        if (listI16Exists) { s.append('"').append("listI16").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listI16Exists) { _.append(comma); comma = '\0'; }
+        if (listI16Exists) { _.append('"').append("listI16").append('"').append(':'); comma = ','; }
         int listI16Size = (null == listI16 ? 0 : listI16.size());
         if (listI16Size > 0) {
-            s.append('[');
+            _.append('[');
             int listI16Idx = 0;
             for (Short n1 : listI16) { /* vec.for: listI16 */
                 ++listI16Idx;
-                s.append(n1.toString());
-                if (listI16Idx != listI16Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listI16Idx != listI16Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listI32Exists = (null != listI32 && listI32.size() > 0);
-        if ('\0' != comma && listI32Exists) { s.append(comma); comma = '\0'; }
-        if (listI32Exists) { s.append('"').append("listI32").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listI32Exists) { _.append(comma); comma = '\0'; }
+        if (listI32Exists) { _.append('"').append("listI32").append('"').append(':'); comma = ','; }
         int listI32Size = (null == listI32 ? 0 : listI32.size());
         if (listI32Size > 0) {
-            s.append('[');
+            _.append('[');
             int listI32Idx = 0;
             for (Integer n1 : listI32) { /* vec.for: listI32 */
                 ++listI32Idx;
-                s.append(n1.toString());
-                if (listI32Idx != listI32Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listI32Idx != listI32Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listI64Exists = (null != listI64 && listI64.size() > 0);
-        if ('\0' != comma && listI64Exists) { s.append(comma); comma = '\0'; }
-        if (listI64Exists) { s.append('"').append("listI64").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listI64Exists) { _.append(comma); comma = '\0'; }
+        if (listI64Exists) { _.append('"').append("listI64").append('"').append(':'); comma = ','; }
         int listI64Size = (null == listI64 ? 0 : listI64.size());
         if (listI64Size > 0) {
-            s.append('[');
+            _.append('[');
             int listI64Idx = 0;
             for (Long n1 : listI64) { /* vec.for: listI64 */
                 ++listI64Idx;
-                s.append(n1.toString());
-                if (listI64Idx != listI64Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listI64Idx != listI64Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listU08Exists = (null != listU08 && listU08.size() > 0);
-        if ('\0' != comma && listU08Exists) { s.append(comma); comma = '\0'; }
-        if (listU08Exists) { s.append('"').append("listU08").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listU08Exists) { _.append(comma); comma = '\0'; }
+        if (listU08Exists) { _.append('"').append("listU08").append('"').append(':'); comma = ','; }
         int listU08Size = (null == listU08 ? 0 : listU08.size());
         if (listU08Size > 0) {
-            s.append('[');
+            _.append('[');
             int listU08Idx = 0;
             for (java.lang.Integer n1 : listU08) { /* vec.for: listU08 */
                 ++listU08Idx;
-                s.append(n1.toString());
-                if (listU08Idx != listU08Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listU08Idx != listU08Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listU16Exists = (null != listU16 && listU16.size() > 0);
-        if ('\0' != comma && listU16Exists) { s.append(comma); comma = '\0'; }
-        if (listU16Exists) { s.append('"').append("listU16").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listU16Exists) { _.append(comma); comma = '\0'; }
+        if (listU16Exists) { _.append('"').append("listU16").append('"').append(':'); comma = ','; }
         int listU16Size = (null == listU16 ? 0 : listU16.size());
         if (listU16Size > 0) {
-            s.append('[');
+            _.append('[');
             int listU16Idx = 0;
             for (java.lang.Integer n1 : listU16) { /* vec.for: listU16 */
                 ++listU16Idx;
-                s.append(n1.toString());
-                if (listU16Idx != listU16Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listU16Idx != listU16Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listU32Exists = (null != listU32 && listU32.size() > 0);
-        if ('\0' != comma && listU32Exists) { s.append(comma); comma = '\0'; }
-        if (listU32Exists) { s.append('"').append("listU32").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listU32Exists) { _.append(comma); comma = '\0'; }
+        if (listU32Exists) { _.append('"').append("listU32").append('"').append(':'); comma = ','; }
         int listU32Size = (null == listU32 ? 0 : listU32.size());
         if (listU32Size > 0) {
-            s.append('[');
+            _.append('[');
             int listU32Idx = 0;
             for (java.lang.Long n1 : listU32) { /* vec.for: listU32 */
                 ++listU32Idx;
-                s.append(n1.toString());
-                if (listU32Idx != listU32Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listU32Idx != listU32Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listU64Exists = (null != listU64 && listU64.size() > 0);
-        if ('\0' != comma && listU64Exists) { s.append(comma); comma = '\0'; }
-        if (listU64Exists) { s.append('"').append("listU64").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listU64Exists) { _.append(comma); comma = '\0'; }
+        if (listU64Exists) { _.append('"').append("listU64").append('"').append(':'); comma = ','; }
         int listU64Size = (null == listU64 ? 0 : listU64.size());
         if (listU64Size > 0) {
-            s.append('[');
+            _.append('[');
             int listU64Idx = 0;
             for (BigInteger n1 : listU64) { /* vec.for: listU64 */
                 ++listU64Idx;
-                s.append(n1.toString());
-                if (listU64Idx != listU64Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listU64Idx != listU64Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listSingleExists = (null != listSingle && listSingle.size() > 0);
-        if ('\0' != comma && listSingleExists) { s.append(comma); comma = '\0'; }
-        if (listSingleExists) { s.append('"').append("listSingle").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listSingleExists) { _.append(comma); comma = '\0'; }
+        if (listSingleExists) { _.append('"').append("listSingle").append('"').append(':'); comma = ','; }
         int listSingleSize = (null == listSingle ? 0 : listSingle.size());
         if (listSingleSize > 0) {
-            s.append('[');
+            _.append('[');
             int listSingleIdx = 0;
             for (Float n1 : listSingle) { /* vec.for: listSingle */
                 ++listSingleIdx;
-                s.append(n1.toString());
-                if (listSingleIdx != listSingleSize) { s.append(','); }
+                _.append(n1.toString());
+                if (listSingleIdx != listSingleSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listDoubleExists = (null != listDouble && listDouble.size() > 0);
-        if ('\0' != comma && listDoubleExists) { s.append(comma); comma = '\0'; }
-        if (listDoubleExists) { s.append('"').append("listDouble").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listDoubleExists) { _.append(comma); comma = '\0'; }
+        if (listDoubleExists) { _.append('"').append("listDouble").append('"').append(':'); comma = ','; }
         int listDoubleSize = (null == listDouble ? 0 : listDouble.size());
         if (listDoubleSize > 0) {
-            s.append('[');
+            _.append('[');
             int listDoubleIdx = 0;
             for (java.lang.Double n1 : listDouble) { /* vec.for: listDouble */
                 ++listDoubleIdx;
-                s.append(n1.toString());
-                if (listDoubleIdx != listDoubleSize) { s.append(','); }
+                _.append(n1.toString());
+                if (listDoubleIdx != listDoubleSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listBooleanExists = (null != listBoolean && listBoolean.size() > 0);
-        if ('\0' != comma && listBooleanExists) { s.append(comma); comma = '\0'; }
-        if (listBooleanExists) { s.append('"').append("listBoolean").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listBooleanExists) { _.append(comma); comma = '\0'; }
+        if (listBooleanExists) { _.append('"').append("listBoolean").append('"').append(':'); comma = ','; }
         int listBooleanSize = (null == listBoolean ? 0 : listBoolean.size());
         if (listBooleanSize > 0) {
-            s.append('[');
+            _.append('[');
             int listBooleanIdx = 0;
             for (java.lang.Boolean n1 : listBoolean) { /* vec.for: listBoolean */
                 ++listBooleanIdx;
-                s.append(n1.toString().toLowerCase());
-                if (listBooleanIdx != listBooleanSize) { s.append(','); }
+                _.append(n1.toString().toLowerCase());
+                if (listBooleanIdx != listBooleanSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listStringExists = (null != listString && listString.size() > 0);
-        if ('\0' != comma && listStringExists) { s.append(comma); comma = '\0'; }
-        if (listStringExists) { s.append('"').append("listString").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listStringExists) { _.append(comma); comma = '\0'; }
+        if (listStringExists) { _.append('"').append("listString").append('"').append(':'); comma = ','; }
         int listStringSize = (null == listString ? 0 : listString.size());
         if (listStringSize > 0) {
-            s.append('[');
+            _.append('[');
             int listStringIdx = 0;
             for (java.lang.String n1 : listString) { /* vec.for: listString */
                 ++listStringIdx;
-                s.append('"').append(n1.toString()).append('"');
-                if (listStringIdx != listStringSize) { s.append(','); }
+                _.append('"').append(n1.toString()).append('"');
+                if (listStringIdx != listStringSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listEnumExists = (null != listEnum && listEnum.size() > 0);
-        if ('\0' != comma && listEnumExists) { s.append(comma); comma = '\0'; }
-        if (listEnumExists) { s.append('"').append("listEnum").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listEnumExists) { _.append(comma); comma = '\0'; }
+        if (listEnumExists) { _.append('"').append("listEnum").append('"').append(':'); comma = ','; }
         int listEnumSize = (null == listEnum ? 0 : listEnum.size());
         if (listEnumSize > 0) {
-            s.append('[');
+            _.append('[');
             int listEnumIdx = 0;
             for (Gender n1 : listEnum) { /* vec.for: listEnum */
                 ++listEnumIdx;
-                s.append(n1.value());
-                if (listEnumIdx != listEnumSize) { s.append(','); }
+                _.append(n1.value());
+                if (listEnumIdx != listEnumSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean listStructExists = (null != listStruct && listStruct.size() > 0);
-        if ('\0' != comma && listStructExists) { s.append(comma); comma = '\0'; }
-        if (listStructExists) { s.append('"').append("listStruct").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listStructExists) { _.append(comma); comma = '\0'; }
+        if (listStructExists) { _.append('"').append("listStruct").append('"').append(':'); comma = ','; }
         int listStructSize = (null == listStruct ? 0 : listStruct.size());
         if (listStructSize > 0) {
-            s.append('[');
+            _.append('[');
             int listStructIdx = 0;
             for (Custom n1 : listStruct) { /* vec.for: listStruct */
                 ++listStructIdx;
-                n1.writeJSON(s);
-                if (listStructIdx != listStructSize) { s.append(','); }
+                n1.writeJSON(_);
+                if (listStructIdx != listStructSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
-        s.append('}');
+        _.append('}');
     } /* TestList::writeJSON(...) */
 
     public String toStringXML()
@@ -577,7 +577,7 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
@@ -681,7 +681,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listEnum").append('>');
             for (Gender n1 : listEnum) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(n1.toString()).append('"').append('/').append('>');
+                nodes.append(nodes.append(n1.value())).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listEnum").append('>');
         }
@@ -692,12 +692,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             nodes.append('<').append('/').append("listStruct").append('>');
         }
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* TestList::writeXML(...) */
 

@@ -272,132 +272,132 @@ invar.lib.InvarCodec.XMLEncode
     public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
-    public Info copy(Info from)
+    public Info copy(Info from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
-        key = from.key;
-        number01 = from.number01;
-        number02 = from.number02;
-        number03 = from.number03;
-        number04 = from.number04;
-        number05 = from.number05;
-        number06 = from.number06;
-        number07 = from.number07;
-        number08 = from.number08;
-        number09 = from.number09;
-        number10 = from.number10;
-        isReal = from.isReal;
-        s = from.s;
+        key = from_.key;
+        number01 = from_.number01;
+        number02 = from_.number02;
+        number03 = from_.number03;
+        number04 = from_.number04;
+        number05 = from_.number05;
+        number06 = from_.number06;
+        number07 = from_.number07;
+        number08 = from_.number08;
+        number09 = from_.number09;
+        number10 = from_.number10;
+        isReal = from_.isReal;
+        s = from_.s;
         world.clear();
-        world.addAll(from.world);
-        gender = from.gender;
-        if (from.next != null) {
-            next.copy(from.next);
+        world.addAll(from_.world);
+        gender = from_.gender;
+        if (from_.next != null) {
+            next.copy(from_.next);
         } else {
             next = null;
         }
-        conflict = from.conflict;
+        conflict = from_.conflict;
         conflicts.clear();
-        conflicts.addAll(from.conflicts);
+        conflicts.addAll(from_.conflicts);
         numbers.clear();
-        numbers.addAll(from.numbers);
+        numbers.addAll(from_.numbers);
         mapInfoG.clear();
-        mapInfoG.putAll(from.mapInfoG);
+        mapInfoG.putAll(from_.mapInfoG);
         mapGenderInfo.clear();
-        mapGenderInfo.putAll(from.mapGenderInfo);
+        mapGenderInfo.putAll(from_.mapGenderInfo);
         mapDouble.clear();
-        mapDouble.putAll(from.mapDouble);
-        if (null == from.hotfix) {
+        mapDouble.putAll(from_.mapDouble);
+        if (null == from_.hotfix) {
             hotfix = null;
         } else {
             if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             else { hotfix.clear(); }
-            hotfix.putAll(from.hotfix);
+            hotfix.putAll(from_.hotfix);
         }
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
-        key = from.readInt();
-        number01 = from.readByte();
-        number02 = from.readShort();
-        number03 = from.readInt();
-        number04 = from.readLong();
-        number05 = from.readUnsignedByte();
-        number06 = from.readUnsignedShort();
-        number07 = from.readInt() & 0xFFFFFFFFL;
-        byte[] number08Bytes = new byte[8]; from.readFully(number08Bytes, 0, 8);
+        key = from_.readInt();
+        number01 = from_.readByte();
+        number02 = from_.readShort();
+        number03 = from_.readInt();
+        number04 = from_.readLong();
+        number05 = from_.readUnsignedByte();
+        number06 = from_.readUnsignedShort();
+        number07 = from_.readInt() & 0xFFFFFFFFL;
+        byte[] number08Bytes = new byte[8]; from_.readFully(number08Bytes, 0, 8);
         number08 = new BigInteger(1, number08Bytes);
-        number09 = from.readFloat();
-        number10 = from.readDouble();
-        isReal = from.readBoolean();
-        s = from.readUTF();
+        number09 = from_.readFloat();
+        number10 = from_.readDouble();
+        isReal = from_.readBoolean();
+        s = from_.readUTF();
         world.clear();
-        Long lenWorld = from.readInt() & 0xFFFFFFFFL;
+        Long lenWorld = from_.readInt() & 0xFFFFFFFFL;
         for (Long iWorld = 0L; iWorld < lenWorld; ++iWorld) {
-            java.lang.String n1 = from.readUTF();
+            java.lang.String n1 = from_.readUTF();
             world.add(n1);
         }
-        gender = Gender.valueOf(from.readInt());
-        byte nextExists = from.readByte();
+        gender = Gender.valueOf(from_.readInt());
+        byte nextExists = from_.readByte();
         if ((byte)0x01 == nextExists) {
             if (next == null) { next = Info.Create(); }
-            next.read(from);
+            next.read(from_);
         }
         else if ((byte)0x00 == nextExists) { next = null; }
         else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
-        conflict.read(from);
+        conflict.read(from_);
         conflicts.clear();
-        Long lenConflicts = from.readInt() & 0xFFFFFFFFL;
+        Long lenConflicts = from_.readInt() & 0xFFFFFFFFL;
         for (Long iConflicts = 0L; iConflicts < lenConflicts; ++iConflicts) {
             test.xyz.Conflict n1 = test.xyz.Conflict.Create();
-            n1.read(from);
+            n1.read(from_);
             conflicts.add(n1);
         }
         numbers.clear();
-        Long lenNumbers = from.readInt() & 0xFFFFFFFFL;
+        Long lenNumbers = from_.readInt() & 0xFFFFFFFFL;
         for (Long iNumbers = 0L; iNumbers < lenNumbers; ++iNumbers) {
-            java.lang.Double n1 = from.readDouble();
+            java.lang.Double n1 = from_.readDouble();
             numbers.add(n1);
         }
         mapInfoG.clear();
-        Long lenMapInfoG = from.readInt() & 0xFFFFFFFFL;
+        Long lenMapInfoG = from_.readInt() & 0xFFFFFFFFL;
         for (Long iMapInfoG = 0L; iMapInfoG < lenMapInfoG; ++iMapInfoG) {
             Info k1 = Info.Create();
-            k1.read(from);
-            Gender v1 = Gender.valueOf(from.readInt());
+            k1.read(from_);
+            Gender v1 = Gender.valueOf(from_.readInt());
             mapInfoG.put(k1,v1);
         }
         mapGenderInfo.clear();
-        Long lenMapGenderInfo = from.readInt() & 0xFFFFFFFFL;
+        Long lenMapGenderInfo = from_.readInt() & 0xFFFFFFFFL;
         for (Long iMapGenderInfo = 0L; iMapGenderInfo < lenMapGenderInfo; ++iMapGenderInfo) {
-            Gender k1 = Gender.valueOf(from.readInt());
+            Gender k1 = Gender.valueOf(from_.readInt());
             Info v1 = Info.Create();
-            v1.read(from);
+            v1.read(from_);
             mapGenderInfo.put(k1,v1);
         }
         mapDouble.clear();
-        Long lenMapDouble = from.readInt() & 0xFFFFFFFFL;
+        Long lenMapDouble = from_.readInt() & 0xFFFFFFFFL;
         for (Long iMapDouble = 0L; iMapDouble < lenMapDouble; ++iMapDouble) {
-            Integer k1 = from.readUnsignedShort();
-            java.lang.Double v1 = from.readDouble();
+            Integer k1 = from_.readUnsignedShort();
+            java.lang.Double v1 = from_.readDouble();
             mapDouble.put(k1,v1);
         }
-        byte hotfixExists = from.readByte();
+        byte hotfixExists = from_.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
-            Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
+            Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
-                java.lang.String k1 = from.readUTF();
-                java.lang.String v1 = from.readUTF();
+                java.lang.String k1 = from_.readUTF();
+                java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
             }
         }
@@ -405,78 +405,78 @@ invar.lib.InvarCodec.XMLEncode
         else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeInt(key);
-        dest.writeByte(number01);
-        dest.writeShort(number02);
-        dest.writeInt(number03);
-        dest.writeLong(number04);
-        dest.writeByte(number05);
-        dest.writeShort(number06);
-        dest.writeInt(number07.intValue());
-        dest.writeLong(number08.longValue());
-        dest.writeFloat(number09);
-        dest.writeDouble(number10);
-        dest.writeBoolean(isReal);
-        dest.writeUTF(s);
-        dest.writeInt(world.size());
+        dest_.writeInt(key);
+        dest_.writeByte(number01);
+        dest_.writeShort(number02);
+        dest_.writeInt(number03);
+        dest_.writeLong(number04);
+        dest_.writeByte(number05);
+        dest_.writeShort(number06);
+        dest_.writeInt(number07.intValue());
+        dest_.writeLong(number08.longValue());
+        dest_.writeFloat(number09);
+        dest_.writeDouble(number10);
+        dest_.writeBoolean(isReal);
+        dest_.writeUTF(s);
+        dest_.writeInt(world.size());
         for (java.lang.String n1 : world) {
-            dest.writeUTF(n1);
+            dest_.writeUTF(n1);
         }
-        dest.writeInt(gender.value());
+        dest_.writeInt(gender.value());
         if (next != null) {
-            dest.writeByte((byte)0x01);
-            next.write(dest);
+            dest_.writeByte((byte)0x01);
+            next.write(dest_);
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
-        conflict.write(dest);
-        dest.writeInt(conflicts.size());
+        conflict.write(dest_);
+        dest_.writeInt(conflicts.size());
         for (test.xyz.Conflict n1 : conflicts) {
-            n1.write(dest);
+            n1.write(dest_);
         }
-        dest.writeInt(numbers.size());
+        dest_.writeInt(numbers.size());
         for (java.lang.Double n1 : numbers) {
-            dest.writeDouble(n1);
+            dest_.writeDouble(n1);
         }
-        dest.writeInt(mapInfoG.size());
+        dest_.writeInt(mapInfoG.size());
         for (Map.Entry<Info,Gender> mapInfoGIter : mapInfoG.entrySet()) {
             Info k1 = mapInfoGIter.getKey();
-            k1.write(dest);
+            k1.write(dest_);
             Gender v1 = mapInfoGIter.getValue();
-            dest.writeInt(v1.value());
+            dest_.writeInt(v1.value());
         }
-        dest.writeInt(mapGenderInfo.size());
+        dest_.writeInt(mapGenderInfo.size());
         for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) {
             Gender k1 = mapGenderInfoIter.getKey();
-            dest.writeInt(k1.value());
+            dest_.writeInt(k1.value());
             Info v1 = mapGenderInfoIter.getValue();
-            v1.write(dest);
+            v1.write(dest_);
         }
-        dest.writeInt(mapDouble.size());
+        dest_.writeInt(mapDouble.size());
         for (Map.Entry<Integer,java.lang.Double> mapDoubleIter : mapDouble.entrySet()) {
             Integer k1 = mapDoubleIter.getKey();
-            dest.writeShort(k1);
+            dest_.writeShort(k1);
             java.lang.Double v1 = mapDoubleIter.getValue();
-            dest.writeDouble(v1);
+            dest_.writeDouble(v1);
         }
         if (hotfix != null) {
-            dest.writeByte((byte)0x01);
-            dest.writeInt(hotfix.size());
+            dest_.writeByte((byte)0x01);
+            dest_.writeInt(hotfix.size());
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                dest.writeUTF(k1);
+                dest_.writeUTF(k1);
                 java.lang.String v1 = hotfixIter.getValue();
-                dest.writeUTF(v1);
+                dest_.writeUTF(v1);
             }
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
     }
 
@@ -550,175 +550,175 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
-        s.append('"').append("key").append('"').append(':');
-        s.append(key.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number01").append('"').append(':');
-        s.append(number01.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number02").append('"').append(':');
-        s.append(number02.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number03").append('"').append(':');
-        s.append(number03.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number04").append('"').append(':');
-        s.append(number04.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number05").append('"').append(':');
-        s.append(number05.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number06").append('"').append(':');
-        s.append(number06.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number07").append('"').append(':');
-        s.append(number07.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number08").append('"').append(':');
-        s.append(number08.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number09").append('"').append(':');
-        s.append(number09.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("number10").append('"').append(':');
-        s.append(number10.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("isReal").append('"').append(':');
-        s.append(isReal.toString().toLowerCase()); comma = ',';
+        _.append('"').append("key").append('"').append(':');
+        _.append(key.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number01").append('"').append(':');
+        _.append(number01.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number02").append('"').append(':');
+        _.append(number02.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number03").append('"').append(':');
+        _.append(number03.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number04").append('"').append(':');
+        _.append(number04.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number05").append('"').append(':');
+        _.append(number05.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number06").append('"').append(':');
+        _.append(number06.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number07").append('"').append(':');
+        _.append(number07.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number08").append('"').append(':');
+        _.append(number08.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number09").append('"').append(':');
+        _.append(number09.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("number10").append('"').append(':');
+        _.append(number10.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("isReal").append('"').append(':');
+        _.append(isReal.toString().toLowerCase()); comma = ',';
         boolean sExists = s != null && s.length() > 0;
-        if ('\0' != comma && sExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && sExists) { _.append(comma); comma = '\0'; }
         if (sExists) {
-            s.append('"').append("s").append('"').append(':'); comma = ','; s.append('"').append(s.toString()).append('"');
+            _.append('"').append("s").append('"').append(':'); comma = ','; _.append('"').append(s.toString()).append('"');
         }
         boolean worldExists = (null != world && world.size() > 0);
-        if ('\0' != comma && worldExists) { s.append(comma); comma = '\0'; }
-        if (worldExists) { s.append('"').append("world").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && worldExists) { _.append(comma); comma = '\0'; }
+        if (worldExists) { _.append('"').append("world").append('"').append(':'); comma = ','; }
         int worldSize = (null == world ? 0 : world.size());
         if (worldSize > 0) {
-            s.append('[');
+            _.append('[');
             int worldIdx = 0;
             for (java.lang.String n1 : world) { /* vec.for: world */
                 ++worldIdx;
-                s.append('"').append(n1.toString()).append('"');
-                if (worldIdx != worldSize) { s.append(','); }
+                _.append('"').append(n1.toString()).append('"');
+                if (worldIdx != worldSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("gender").append('"').append(':');
-        s.append(gender.value()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("gender").append('"').append(':');
+        _.append(gender.value()); comma = ',';
         boolean nextExists = (null != next);
-        if ('\0' != comma && nextExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && nextExists) { _.append(comma); comma = '\0'; }
         if (nextExists) {
-            s.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(s);
+            _.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(_);
         }
         boolean conflictExists = (null != conflict);
-        if ('\0' != comma && conflictExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && conflictExists) { _.append(comma); comma = '\0'; }
         if (conflictExists) {
-            s.append('"').append("conflict").append('"').append(':'); comma = ','; conflict.writeJSON(s);
+            _.append('"').append("conflict").append('"').append(':'); comma = ','; conflict.writeJSON(_);
         }
         boolean conflictsExists = (null != conflicts && conflicts.size() > 0);
-        if ('\0' != comma && conflictsExists) { s.append(comma); comma = '\0'; }
-        if (conflictsExists) { s.append('"').append("conflicts").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && conflictsExists) { _.append(comma); comma = '\0'; }
+        if (conflictsExists) { _.append('"').append("conflicts").append('"').append(':'); comma = ','; }
         int conflictsSize = (null == conflicts ? 0 : conflicts.size());
         if (conflictsSize > 0) {
-            s.append('[');
+            _.append('[');
             int conflictsIdx = 0;
             for (test.xyz.Conflict n1 : conflicts) { /* vec.for: conflicts */
                 ++conflictsIdx;
-                n1.writeJSON(s);
-                if (conflictsIdx != conflictsSize) { s.append(','); }
+                n1.writeJSON(_);
+                if (conflictsIdx != conflictsSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean numbersExists = (null != numbers && numbers.size() > 0);
-        if ('\0' != comma && numbersExists) { s.append(comma); comma = '\0'; }
-        if (numbersExists) { s.append('"').append("numbers").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && numbersExists) { _.append(comma); comma = '\0'; }
+        if (numbersExists) { _.append('"').append("numbers").append('"').append(':'); comma = ','; }
         int numbersSize = (null == numbers ? 0 : numbers.size());
         if (numbersSize > 0) {
-            s.append('[');
+            _.append('[');
             int numbersIdx = 0;
             for (java.lang.Double n1 : numbers) { /* vec.for: numbers */
                 ++numbersIdx;
-                s.append(n1.toString());
-                if (numbersIdx != numbersSize) { s.append(','); }
+                _.append(n1.toString());
+                if (numbersIdx != numbersSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean mapInfoGExists = (null != mapInfoG && mapInfoG.size() > 0);
-        if ('\0' != comma && mapInfoGExists) { s.append(comma); comma = '\0'; }
-        if (mapInfoGExists) { s.append('"').append("mapInfoG").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mapInfoGExists) { _.append(comma); comma = '\0'; }
+        if (mapInfoGExists) { _.append('"').append("mapInfoG").append('"').append(':'); comma = ','; }
         int mapInfoGSize = (null == mapInfoG ? 0 : mapInfoG.size());
         if (mapInfoGSize > 0) {
-            s.append('{');
+            _.append('{');
             int mapInfoGIdx = 0;
             for (Map.Entry<Info,Gender> mapInfoGIter : mapInfoG.entrySet()) { /* map.for: mapInfoG */
                 ++mapInfoGIdx;
                 Info k1 = mapInfoGIter.getKey(); /* nest.k */
-                s.append('"'); k1.writeJSON(s); s.append('"').append(':');
+                _.append('"'); k1.writeJSON(_); _.append('"').append(':');
                 Gender v1 = mapInfoGIter.getValue(); /* nest.v */
-                s.append(v1.value());
-                if (mapInfoGIdx != mapInfoGSize) { s.append(','); }
+                _.append(v1.value());
+                if (mapInfoGIdx != mapInfoGSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean mapGenderInfoExists = (null != mapGenderInfo && mapGenderInfo.size() > 0);
-        if ('\0' != comma && mapGenderInfoExists) { s.append(comma); comma = '\0'; }
-        if (mapGenderInfoExists) { s.append('"').append("mapGenderInfo").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mapGenderInfoExists) { _.append(comma); comma = '\0'; }
+        if (mapGenderInfoExists) { _.append('"').append("mapGenderInfo").append('"').append(':'); comma = ','; }
         int mapGenderInfoSize = (null == mapGenderInfo ? 0 : mapGenderInfo.size());
         if (mapGenderInfoSize > 0) {
-            s.append('{');
+            _.append('{');
             int mapGenderInfoIdx = 0;
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) { /* map.for: mapGenderInfo */
                 ++mapGenderInfoIdx;
                 Gender k1 = mapGenderInfoIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.value()); s.append('"').append(':');
+                _.append('"'); _.append(k1.value()); _.append('"').append(':');
                 Info v1 = mapGenderInfoIter.getValue(); /* nest.v */
-                v1.writeJSON(s);
-                if (mapGenderInfoIdx != mapGenderInfoSize) { s.append(','); }
+                v1.writeJSON(_);
+                if (mapGenderInfoIdx != mapGenderInfoSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean mapDoubleExists = (null != mapDouble && mapDouble.size() > 0);
-        if ('\0' != comma && mapDoubleExists) { s.append(comma); comma = '\0'; }
-        if (mapDoubleExists) { s.append('"').append("mapDouble").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mapDoubleExists) { _.append(comma); comma = '\0'; }
+        if (mapDoubleExists) { _.append('"').append("mapDouble").append('"').append(':'); comma = ','; }
         int mapDoubleSize = (null == mapDouble ? 0 : mapDouble.size());
         if (mapDoubleSize > 0) {
-            s.append('{');
+            _.append('{');
             int mapDoubleIdx = 0;
             for (Map.Entry<Integer,java.lang.Double> mapDoubleIter : mapDouble.entrySet()) { /* map.for: mapDouble */
                 ++mapDoubleIdx;
                 Integer k1 = mapDoubleIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 java.lang.Double v1 = mapDoubleIter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (mapDoubleIdx != mapDoubleSize) { s.append(','); }
+                _.append(v1.toString());
+                if (mapDoubleIdx != mapDoubleSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('{');
+                _.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    s.append('"').append(k1.toString()).append('"'); s.append(':');
+                    _.append('"').append(k1.toString()).append('"'); _.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    s.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                    _.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { _.append(','); }
                 }
-                s.append('}');
+                _.append('}');
             } comma = ',';
         }
-        s.append('}');
+        _.append('}');
     } /* Info::writeJSON(...) */
 
     public String toStringXML()
@@ -728,7 +728,7 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
@@ -767,7 +767,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append('/').append("world").append('>');
         }
         attrs.append(' ').append("gender").append('=').append('"');
-        attrs.append(gender.toString()).append('"');
+        attrs.append(nodes.append(gender.value())).append('"');
         if (next != null) {
             next.writeXML(nodes, "next");
         }
@@ -794,7 +794,7 @@ invar.lib.InvarCodec.XMLEncode
                 k1.writeXML(nodes, "k1");
                 Gender v1 = mapInfoGIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('/').append('>');
+                nodes.append(nodes.append(v1.value())).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("mapInfoG").append('>');
         }
@@ -803,7 +803,7 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) {
                 Gender k1 = mapGenderInfoIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('/').append('>');
+                nodes.append(nodes.append(k1.value())).append('"').append('/').append('>');
                 Info v1 = mapGenderInfoIter.getValue();
                 v1.writeXML(nodes, "v1");
             }
@@ -833,12 +833,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* Info::writeXML(...) */
 

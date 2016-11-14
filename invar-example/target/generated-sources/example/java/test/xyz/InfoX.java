@@ -135,67 +135,67 @@ invar.lib.InvarCodec.XMLEncode
     public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
-    public InfoX copy(InfoX from)
+    public InfoX copy(InfoX from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
         infos.clear();
-        infos.addAll(from.infos);
-        conflict_x = from.conflict_x;
-        conflict_a = from.conflict_a;
+        infos.addAll(from_.infos);
+        conflict_x = from_.conflict_x;
+        conflict_a = from_.conflict_a;
         mConflict.clear();
-        mConflict.putAll(from.mConflict);
+        mConflict.putAll(from_.mConflict);
         info2d.clear();
-        info2d.addAll(from.info2d);
+        info2d.addAll(from_.info2d);
         info3d.clear();
-        info3d.addAll(from.info3d);
+        info3d.addAll(from_.info3d);
         info5d.clear();
-        info5d.addAll(from.info5d);
+        info5d.addAll(from_.info5d);
         infovm.clear();
-        infovm.addAll(from.infovm);
+        infovm.addAll(from_.infovm);
         mvei.clear();
-        mvei.putAll(from.mvei);
+        mvei.putAll(from_.mvei);
         mive.clear();
-        mive.putAll(from.mive);
+        mive.putAll(from_.mive);
         mvive.clear();
-        mvive.putAll(from.mvive);
+        mvive.putAll(from_.mvive);
         vmvive.clear();
-        vmvive.addAll(from.vmvive);
-        if (null == from.hotfix) {
+        vmvive.addAll(from_.vmvive);
+        if (null == from_.hotfix) {
             hotfix = null;
         } else {
             if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             else { hotfix.clear(); }
-            hotfix.putAll(from.hotfix);
+            hotfix.putAll(from_.hotfix);
         }
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
         infos.clear();
-        Long lenInfos = from.readInt() & 0xFFFFFFFFL;
+        Long lenInfos = from_.readInt() & 0xFFFFFFFFL;
         for (Long iInfos = 0L; iInfos < lenInfos; ++iInfos) {
             LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 = new LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>(); //read.vec.head
-            Long lenN1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<LinkedList<LinkedList<Info>>> n2 = new LinkedList<LinkedList<LinkedList<Info>>>(); //read.vec.head
-                Long lenN2 = from.readInt() & 0xFFFFFFFFL;
+                Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
                 for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
                     LinkedList<LinkedList<Info>> n3 = new LinkedList<LinkedList<Info>>(); //read.vec.head
-                    Long lenN3 = from.readInt() & 0xFFFFFFFFL;
+                    Long lenN3 = from_.readInt() & 0xFFFFFFFFL;
                     for (Long iN3 = 0L; iN3 < lenN3; ++iN3) {
                         LinkedList<Info> n4 = new LinkedList<Info>(); //read.vec.head
-                        Long lenN4 = from.readInt() & 0xFFFFFFFFL;
+                        Long lenN4 = from_.readInt() & 0xFFFFFFFFL;
                         for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
                             Info n5 = Info.Create();
-                            n5.read(from);
+                            n5.read(from_);
                             n4.add(n5);
                         }
                         n3.add(n4);
@@ -206,39 +206,39 @@ invar.lib.InvarCodec.XMLEncode
             }
             infos.add(n1);
         }
-        conflict_x.read(from);
-        conflict_a.read(from);
+        conflict_x.read(from_);
+        conflict_a.read(from_);
         mConflict.clear();
-        Long lenMConflict = from.readInt() & 0xFFFFFFFFL;
+        Long lenMConflict = from_.readInt() & 0xFFFFFFFFL;
         for (Long iMConflict = 0L; iMConflict < lenMConflict; ++iMConflict) {
-            Integer k1 = from.readUnsignedShort();
+            Integer k1 = from_.readUnsignedShort();
             test.abc.Conflict v1 = test.abc.Conflict.Create();
-            v1.read(from);
+            v1.read(from_);
             mConflict.put(k1,v1);
         }
         info2d.clear();
-        Long lenInfo2d = from.readInt() & 0xFFFFFFFFL;
+        Long lenInfo2d = from_.readInt() & 0xFFFFFFFFL;
         for (Long iInfo2d = 0L; iInfo2d < lenInfo2d; ++iInfo2d) {
             LinkedList<Info> n1 = new LinkedList<Info>(); //read.vec.head
-            Long lenN1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
                 Info n2 = Info.Create();
-                n2.read(from);
+                n2.read(from_);
                 n1.add(n2);
             }
             info2d.add(n1);
         }
         info3d.clear();
-        Long lenInfo3d = from.readInt() & 0xFFFFFFFFL;
+        Long lenInfo3d = from_.readInt() & 0xFFFFFFFFL;
         for (Long iInfo3d = 0L; iInfo3d < lenInfo3d; ++iInfo3d) {
             LinkedList<LinkedList<Info>> n1 = new LinkedList<LinkedList<Info>>(); //read.vec.head
-            Long lenN1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<Info> n2 = new LinkedList<Info>(); //read.vec.head
-                Long lenN2 = from.readInt() & 0xFFFFFFFFL;
+                Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
                 for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
                     Info n3 = Info.Create();
-                    n3.read(from);
+                    n3.read(from_);
                     n2.add(n3);
                 }
                 n1.add(n2);
@@ -246,22 +246,22 @@ invar.lib.InvarCodec.XMLEncode
             info3d.add(n1);
         }
         info5d.clear();
-        Long lenInfo5d = from.readInt() & 0xFFFFFFFFL;
+        Long lenInfo5d = from_.readInt() & 0xFFFFFFFFL;
         for (Long iInfo5d = 0L; iInfo5d < lenInfo5d; ++iInfo5d) {
             LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 = new LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>(); //read.vec.head
-            Long lenN1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<LinkedList<LinkedList<Info>>> n2 = new LinkedList<LinkedList<LinkedList<Info>>>(); //read.vec.head
-                Long lenN2 = from.readInt() & 0xFFFFFFFFL;
+                Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
                 for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
                     LinkedList<LinkedList<Info>> n3 = new LinkedList<LinkedList<Info>>(); //read.vec.head
-                    Long lenN3 = from.readInt() & 0xFFFFFFFFL;
+                    Long lenN3 = from_.readInt() & 0xFFFFFFFFL;
                     for (Long iN3 = 0L; iN3 < lenN3; ++iN3) {
                         LinkedList<Info> n4 = new LinkedList<Info>(); //read.vec.head
-                        Long lenN4 = from.readInt() & 0xFFFFFFFFL;
+                        Long lenN4 = from_.readInt() & 0xFFFFFFFFL;
                         for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
                             Info n5 = Info.Create();
-                            n5.read(from);
+                            n5.read(from_);
                             n4.add(n5);
                         }
                         n3.add(n4);
@@ -273,92 +273,92 @@ invar.lib.InvarCodec.XMLEncode
             info5d.add(n1);
         }
         infovm.clear();
-        Long lenInfovm = from.readInt() & 0xFFFFFFFFL;
+        Long lenInfovm = from_.readInt() & 0xFFFFFFFFL;
         for (Long iInfovm = 0L; iInfovm < lenInfovm; ++iInfovm) {
             LinkedHashMap<Short,Info> n1 = new LinkedHashMap<Short,Info>(); //read.vec.head
-            Long lenN1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
-                Short k2 = from.readShort();
+                Short k2 = from_.readShort();
                 Info v2 = Info.Create();
-                v2.read(from);
+                v2.read(from_);
                 n1.put(k2,v2);
             }
             infovm.add(n1);
         }
         mvei.clear();
-        Long lenMvei = from.readInt() & 0xFFFFFFFFL;
+        Long lenMvei = from_.readInt() & 0xFFFFFFFFL;
         for (Long iMvei = 0L; iMvei < lenMvei; ++iMvei) {
             LinkedList<Gender> k1 = new LinkedList<Gender>(); //read.map.head
-            Long lenK1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenK1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iK1 = 0L; iK1 < lenK1; ++iK1) {
-                Gender n2 = Gender.valueOf(from.readInt());
+                Gender n2 = Gender.valueOf(from_.readInt());
                 k1.add(n2);
             }
             Info v1 = Info.Create();
-            v1.read(from);
+            v1.read(from_);
             mvei.put(k1,v1);
         }
         mive.clear();
-        Long lenMive = from.readInt() & 0xFFFFFFFFL;
+        Long lenMive = from_.readInt() & 0xFFFFFFFFL;
         for (Long iMive = 0L; iMive < lenMive; ++iMive) {
             Info k1 = Info.Create();
-            k1.read(from);
+            k1.read(from_);
             LinkedList<Gender> v1 = new LinkedList<Gender>(); //read.map.head
-            Long lenV1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenV1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iV1 = 0L; iV1 < lenV1; ++iV1) {
-                Gender n2 = Gender.valueOf(from.readInt());
+                Gender n2 = Gender.valueOf(from_.readInt());
                 v1.add(n2);
             }
             mive.put(k1,v1);
         }
         mvive.clear();
-        Long lenMvive = from.readInt() & 0xFFFFFFFFL;
+        Long lenMvive = from_.readInt() & 0xFFFFFFFFL;
         for (Long iMvive = 0L; iMvive < lenMvive; ++iMvive) {
             LinkedList<Info> k1 = new LinkedList<Info>(); //read.map.head
-            Long lenK1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenK1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iK1 = 0L; iK1 < lenK1; ++iK1) {
                 Info n2 = Info.Create();
-                n2.read(from);
+                n2.read(from_);
                 k1.add(n2);
             }
             LinkedList<Gender> v1 = new LinkedList<Gender>(); //read.map.head
-            Long lenV1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenV1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iV1 = 0L; iV1 < lenV1; ++iV1) {
-                Gender n2 = Gender.valueOf(from.readInt());
+                Gender n2 = Gender.valueOf(from_.readInt());
                 v1.add(n2);
             }
             mvive.put(k1,v1);
         }
         vmvive.clear();
-        Long lenVmvive = from.readInt() & 0xFFFFFFFFL;
+        Long lenVmvive = from_.readInt() & 0xFFFFFFFFL;
         for (Long iVmvive = 0L; iVmvive < lenVmvive; ++iVmvive) {
             LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> n1 = new LinkedHashMap<LinkedList<Info>,LinkedList<Gender>>(); //read.vec.head
-            Long lenN1 = from.readInt() & 0xFFFFFFFFL;
+            Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
             for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<Info> k2 = new LinkedList<Info>(); //read.map.head
-                Long lenK2 = from.readInt() & 0xFFFFFFFFL;
+                Long lenK2 = from_.readInt() & 0xFFFFFFFFL;
                 for (Long iK2 = 0L; iK2 < lenK2; ++iK2) {
                     Info n3 = Info.Create();
-                    n3.read(from);
+                    n3.read(from_);
                     k2.add(n3);
                 }
                 LinkedList<Gender> v2 = new LinkedList<Gender>(); //read.map.head
-                Long lenV2 = from.readInt() & 0xFFFFFFFFL;
+                Long lenV2 = from_.readInt() & 0xFFFFFFFFL;
                 for (Long iV2 = 0L; iV2 < lenV2; ++iV2) {
-                    Gender n3 = Gender.valueOf(from.readInt());
+                    Gender n3 = Gender.valueOf(from_.readInt());
                     v2.add(n3);
                 }
                 n1.put(k2,v2);
             }
             vmvive.add(n1);
         }
-        byte hotfixExists = from.readByte();
+        byte hotfixExists = from_.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
-            Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
+            Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
-                java.lang.String k1 = from.readUTF();
-                java.lang.String v1 = from.readUTF();
+                java.lang.String k1 = from_.readUTF();
+                java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
             }
         }
@@ -366,141 +366,141 @@ invar.lib.InvarCodec.XMLEncode
         else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeInt(infos.size());
+        dest_.writeInt(infos.size());
         for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : infos) {
-            dest.writeInt(n1.size());
+            dest_.writeInt(n1.size());
             for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) {
-                dest.writeInt(n2.size());
+                dest_.writeInt(n2.size());
                 for (LinkedList<LinkedList<Info>> n3 : n2) {
-                    dest.writeInt(n3.size());
+                    dest_.writeInt(n3.size());
                     for (LinkedList<Info> n4 : n3) {
-                        dest.writeInt(n4.size());
+                        dest_.writeInt(n4.size());
                         for (Info n5 : n4) {
-                            n5.write(dest);
+                            n5.write(dest_);
                         }
                     }
                 }
             }
         }
-        conflict_x.write(dest);
-        conflict_a.write(dest);
-        dest.writeInt(mConflict.size());
+        conflict_x.write(dest_);
+        conflict_a.write(dest_);
+        dest_.writeInt(mConflict.size());
         for (Map.Entry<Integer,test.abc.Conflict> mConflictIter : mConflict.entrySet()) {
             Integer k1 = mConflictIter.getKey();
-            dest.writeShort(k1);
+            dest_.writeShort(k1);
             test.abc.Conflict v1 = mConflictIter.getValue();
-            v1.write(dest);
+            v1.write(dest_);
         }
-        dest.writeInt(info2d.size());
+        dest_.writeInt(info2d.size());
         for (LinkedList<Info> n1 : info2d) {
-            dest.writeInt(n1.size());
+            dest_.writeInt(n1.size());
             for (Info n2 : n1) {
-                n2.write(dest);
+                n2.write(dest_);
             }
         }
-        dest.writeInt(info3d.size());
+        dest_.writeInt(info3d.size());
         for (LinkedList<LinkedList<Info>> n1 : info3d) {
-            dest.writeInt(n1.size());
+            dest_.writeInt(n1.size());
             for (LinkedList<Info> n2 : n1) {
-                dest.writeInt(n2.size());
+                dest_.writeInt(n2.size());
                 for (Info n3 : n2) {
-                    n3.write(dest);
+                    n3.write(dest_);
                 }
             }
         }
-        dest.writeInt(info5d.size());
+        dest_.writeInt(info5d.size());
         for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : info5d) {
-            dest.writeInt(n1.size());
+            dest_.writeInt(n1.size());
             for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) {
-                dest.writeInt(n2.size());
+                dest_.writeInt(n2.size());
                 for (LinkedList<LinkedList<Info>> n3 : n2) {
-                    dest.writeInt(n3.size());
+                    dest_.writeInt(n3.size());
                     for (LinkedList<Info> n4 : n3) {
-                        dest.writeInt(n4.size());
+                        dest_.writeInt(n4.size());
                         for (Info n5 : n4) {
-                            n5.write(dest);
+                            n5.write(dest_);
                         }
                     }
                 }
             }
         }
-        dest.writeInt(infovm.size());
+        dest_.writeInt(infovm.size());
         for (LinkedHashMap<Short,Info> n1 : infovm) {
-            dest.writeInt(n1.size());
+            dest_.writeInt(n1.size());
             for (Map.Entry<Short,Info> n1Iter : n1.entrySet()) {
                 Short k2 = n1Iter.getKey();
-                dest.writeShort(k2);
+                dest_.writeShort(k2);
                 Info v2 = n1Iter.getValue();
-                v2.write(dest);
+                v2.write(dest_);
             }
         }
-        dest.writeInt(mvei.size());
+        dest_.writeInt(mvei.size());
         for (Map.Entry<LinkedList<Gender>,Info> mveiIter : mvei.entrySet()) {
             LinkedList<Gender> k1 = mveiIter.getKey();
-            dest.writeInt(k1.size());
+            dest_.writeInt(k1.size());
             for (Gender n2 : k1) {
-                dest.writeInt(n2.value());
+                dest_.writeInt(n2.value());
             }
             Info v1 = mveiIter.getValue();
-            v1.write(dest);
+            v1.write(dest_);
         }
-        dest.writeInt(mive.size());
+        dest_.writeInt(mive.size());
         for (Map.Entry<Info,LinkedList<Gender>> miveIter : mive.entrySet()) {
             Info k1 = miveIter.getKey();
-            k1.write(dest);
+            k1.write(dest_);
             LinkedList<Gender> v1 = miveIter.getValue();
-            dest.writeInt(v1.size());
+            dest_.writeInt(v1.size());
             for (Gender n2 : v1) {
-                dest.writeInt(n2.value());
+                dest_.writeInt(n2.value());
             }
         }
-        dest.writeInt(mvive.size());
+        dest_.writeInt(mvive.size());
         for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> mviveIter : mvive.entrySet()) {
             LinkedList<Info> k1 = mviveIter.getKey();
-            dest.writeInt(k1.size());
+            dest_.writeInt(k1.size());
             for (Info n2 : k1) {
-                n2.write(dest);
+                n2.write(dest_);
             }
             LinkedList<Gender> v1 = mviveIter.getValue();
-            dest.writeInt(v1.size());
+            dest_.writeInt(v1.size());
             for (Gender n2 : v1) {
-                dest.writeInt(n2.value());
+                dest_.writeInt(n2.value());
             }
         }
-        dest.writeInt(vmvive.size());
+        dest_.writeInt(vmvive.size());
         for (LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> n1 : vmvive) {
-            dest.writeInt(n1.size());
+            dest_.writeInt(n1.size());
             for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> n1Iter : n1.entrySet()) {
                 LinkedList<Info> k2 = n1Iter.getKey();
-                dest.writeInt(k2.size());
+                dest_.writeInt(k2.size());
                 for (Info n3 : k2) {
-                    n3.write(dest);
+                    n3.write(dest_);
                 }
                 LinkedList<Gender> v2 = n1Iter.getValue();
-                dest.writeInt(v2.size());
+                dest_.writeInt(v2.size());
                 for (Gender n3 : v2) {
-                    dest.writeInt(n3.value());
+                    dest_.writeInt(n3.value());
                 }
             }
         }
         if (hotfix != null) {
-            dest.writeByte((byte)0x01);
-            dest.writeInt(hotfix.size());
+            dest_.writeByte((byte)0x01);
+            dest_.writeInt(hotfix.size());
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                dest.writeUTF(k1);
+                dest_.writeUTF(k1);
                 java.lang.String v1 = hotfixIter.getValue();
-                dest.writeUTF(v1);
+                dest_.writeUTF(v1);
             }
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
     }
 
@@ -550,386 +550,386 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
         boolean infosExists = (null != infos && infos.size() > 0);
-        if (infosExists) { s.append('"').append("infos").append('"').append(':'); comma = ','; }
+        if (infosExists) { _.append('"').append("infos").append('"').append(':'); comma = ','; }
         int infosSize = (null == infos ? 0 : infos.size());
         if (infosSize > 0) {
-            s.append('[');
+            _.append('[');
             int infosIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : infos) { /* vec.for: infos */
                 ++infosIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            s.append('[');
+                            _.append('[');
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Info>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
                                 int n3Size = (null == n3 ? 0 : n3.size());
                                 if (n3Size > 0) {
-                                    s.append('[');
+                                    _.append('[');
                                     int n3Idx = 0;
                                     for (LinkedList<Info> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
                                         int n4Size = (null == n4 ? 0 : n4.size());
                                         if (n4Size > 0) {
-                                            s.append('[');
+                                            _.append('[');
                                             int n4Idx = 0;
                                             for (Info n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
-                                                n5.writeJSON(s);
-                                                if (n4Idx != n4Size) { s.append(','); }
+                                                n5.writeJSON(_);
+                                                if (n4Idx != n4Size) { _.append(','); }
                                             }
-                                            s.append(']');
+                                            _.append(']');
                                         }
-                                        if (n3Idx != n3Size) { s.append(','); }
+                                        if (n3Idx != n3Size) { _.append(','); }
                                     }
-                                    s.append(']');
+                                    _.append(']');
                                 }
-                                if (n2Idx != n2Size) { s.append(','); }
+                                if (n2Idx != n2Size) { _.append(','); }
                             }
-                            s.append(']');
+                            _.append(']');
                         }
-                        if (n1Idx != n1Size) { s.append(','); }
+                        if (n1Idx != n1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
-                if (infosIdx != infosSize) { s.append(','); }
+                if (infosIdx != infosSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean conflict_xExists = (null != conflict_x);
-        if ('\0' != comma && conflict_xExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && conflict_xExists) { _.append(comma); comma = '\0'; }
         if (conflict_xExists) {
-            s.append('"').append("conflict_x").append('"').append(':'); comma = ','; conflict_x.writeJSON(s);
+            _.append('"').append("conflict_x").append('"').append(':'); comma = ','; conflict_x.writeJSON(_);
         }
         boolean conflict_aExists = (null != conflict_a);
-        if ('\0' != comma && conflict_aExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && conflict_aExists) { _.append(comma); comma = '\0'; }
         if (conflict_aExists) {
-            s.append('"').append("conflict_a").append('"').append(':'); comma = ','; conflict_a.writeJSON(s);
+            _.append('"').append("conflict_a").append('"').append(':'); comma = ','; conflict_a.writeJSON(_);
         }
         boolean mConflictExists = (null != mConflict && mConflict.size() > 0);
-        if ('\0' != comma && mConflictExists) { s.append(comma); comma = '\0'; }
-        if (mConflictExists) { s.append('"').append("mConflict").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mConflictExists) { _.append(comma); comma = '\0'; }
+        if (mConflictExists) { _.append('"').append("mConflict").append('"').append(':'); comma = ','; }
         int mConflictSize = (null == mConflict ? 0 : mConflict.size());
         if (mConflictSize > 0) {
-            s.append('{');
+            _.append('{');
             int mConflictIdx = 0;
             for (Map.Entry<Integer,test.abc.Conflict> mConflictIter : mConflict.entrySet()) { /* map.for: mConflict */
                 ++mConflictIdx;
                 Integer k1 = mConflictIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 test.abc.Conflict v1 = mConflictIter.getValue(); /* nest.v */
-                v1.writeJSON(s);
-                if (mConflictIdx != mConflictSize) { s.append(','); }
+                v1.writeJSON(_);
+                if (mConflictIdx != mConflictSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean info2dExists = (null != info2d && info2d.size() > 0);
-        if ('\0' != comma && info2dExists) { s.append(comma); comma = '\0'; }
-        if (info2dExists) { s.append('"').append("info2d").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && info2dExists) { _.append(comma); comma = '\0'; }
+        if (info2dExists) { _.append('"').append("info2d").append('"').append(':'); comma = ','; }
         int info2dSize = (null == info2d ? 0 : info2d.size());
         if (info2dSize > 0) {
-            s.append('[');
+            _.append('[');
             int info2dIdx = 0;
             for (LinkedList<Info> n1 : info2d) { /* vec.for: info2d */
                 ++info2dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int n1Idx = 0;
                     for (Info n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
-                        n2.writeJSON(s);
-                        if (n1Idx != n1Size) { s.append(','); }
+                        n2.writeJSON(_);
+                        if (n1Idx != n1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
-                if (info2dIdx != info2dSize) { s.append(','); }
+                if (info2dIdx != info2dSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean info3dExists = (null != info3d && info3d.size() > 0);
-        if ('\0' != comma && info3dExists) { s.append(comma); comma = '\0'; }
-        if (info3dExists) { s.append('"').append("info3d").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && info3dExists) { _.append(comma); comma = '\0'; }
+        if (info3dExists) { _.append('"').append("info3d").append('"').append(':'); comma = ','; }
         int info3dSize = (null == info3d ? 0 : info3d.size());
         if (info3dSize > 0) {
-            s.append('[');
+            _.append('[');
             int info3dIdx = 0;
             for (LinkedList<LinkedList<Info>> n1 : info3d) { /* vec.for: info3d */
                 ++info3dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int n1Idx = 0;
                     for (LinkedList<Info> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            s.append('[');
+                            _.append('[');
                             int n2Idx = 0;
                             for (Info n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
-                                n3.writeJSON(s);
-                                if (n2Idx != n2Size) { s.append(','); }
+                                n3.writeJSON(_);
+                                if (n2Idx != n2Size) { _.append(','); }
                             }
-                            s.append(']');
+                            _.append(']');
                         }
-                        if (n1Idx != n1Size) { s.append(','); }
+                        if (n1Idx != n1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
-                if (info3dIdx != info3dSize) { s.append(','); }
+                if (info3dIdx != info3dSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean info5dExists = (null != info5d && info5d.size() > 0);
-        if ('\0' != comma && info5dExists) { s.append(comma); comma = '\0'; }
-        if (info5dExists) { s.append('"').append("info5d").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && info5dExists) { _.append(comma); comma = '\0'; }
+        if (info5dExists) { _.append('"').append("info5d").append('"').append(':'); comma = ','; }
         int info5dSize = (null == info5d ? 0 : info5d.size());
         if (info5dSize > 0) {
-            s.append('[');
+            _.append('[');
             int info5dIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : info5d) { /* vec.for: info5d */
                 ++info5dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            s.append('[');
+                            _.append('[');
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Info>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
                                 int n3Size = (null == n3 ? 0 : n3.size());
                                 if (n3Size > 0) {
-                                    s.append('[');
+                                    _.append('[');
                                     int n3Idx = 0;
                                     for (LinkedList<Info> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
                                         int n4Size = (null == n4 ? 0 : n4.size());
                                         if (n4Size > 0) {
-                                            s.append('[');
+                                            _.append('[');
                                             int n4Idx = 0;
                                             for (Info n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
-                                                n5.writeJSON(s);
-                                                if (n4Idx != n4Size) { s.append(','); }
+                                                n5.writeJSON(_);
+                                                if (n4Idx != n4Size) { _.append(','); }
                                             }
-                                            s.append(']');
+                                            _.append(']');
                                         }
-                                        if (n3Idx != n3Size) { s.append(','); }
+                                        if (n3Idx != n3Size) { _.append(','); }
                                     }
-                                    s.append(']');
+                                    _.append(']');
                                 }
-                                if (n2Idx != n2Size) { s.append(','); }
+                                if (n2Idx != n2Size) { _.append(','); }
                             }
-                            s.append(']');
+                            _.append(']');
                         }
-                        if (n1Idx != n1Size) { s.append(','); }
+                        if (n1Idx != n1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
-                if (info5dIdx != info5dSize) { s.append(','); }
+                if (info5dIdx != info5dSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean infovmExists = (null != infovm && infovm.size() > 0);
-        if ('\0' != comma && infovmExists) { s.append(comma); comma = '\0'; }
-        if (infovmExists) { s.append('"').append("infovm").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && infovmExists) { _.append(comma); comma = '\0'; }
+        if (infovmExists) { _.append('"').append("infovm").append('"').append(':'); comma = ','; }
         int infovmSize = (null == infovm ? 0 : infovm.size());
         if (infovmSize > 0) {
-            s.append('[');
+            _.append('[');
             int infovmIdx = 0;
             for (LinkedHashMap<Short,Info> n1 : infovm) { /* vec.for: infovm */
                 ++infovmIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('{');
+                    _.append('{');
                     int n1Idx = 0;
                     for (Map.Entry<Short,Info> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
                         Short k2 = n1Iter.getKey(); /* nest.k */
-                        s.append('"'); s.append(k2.toString()); s.append('"').append(':');
+                        _.append('"'); _.append(k2.toString()); _.append('"').append(':');
                         Info v2 = n1Iter.getValue(); /* nest.v */
-                        v2.writeJSON(s);
-                        if (n1Idx != n1Size) { s.append(','); }
+                        v2.writeJSON(_);
+                        if (n1Idx != n1Size) { _.append(','); }
                     }
-                    s.append('}');
+                    _.append('}');
                 }
-                if (infovmIdx != infovmSize) { s.append(','); }
+                if (infovmIdx != infovmSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean mveiExists = (null != mvei && mvei.size() > 0);
-        if ('\0' != comma && mveiExists) { s.append(comma); comma = '\0'; }
-        if (mveiExists) { s.append('"').append("mvei").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mveiExists) { _.append(comma); comma = '\0'; }
+        if (mveiExists) { _.append('"').append("mvei").append('"').append(':'); comma = ','; }
         int mveiSize = (null == mvei ? 0 : mvei.size());
         if (mveiSize > 0) {
-            s.append('{');
+            _.append('{');
             int mveiIdx = 0;
             for (Map.Entry<LinkedList<Gender>,Info> mveiIter : mvei.entrySet()) { /* map.for: mvei */
                 ++mveiIdx;
                 LinkedList<Gender> k1 = mveiIter.getKey();
                 int k1Size = (null == k1 ? 0 : k1.size());
                 if (k1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int k1Idx = 0;
                     for (Gender n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
-                        s.append(n2.value());
-                        if (k1Idx != k1Size) { s.append(','); }
+                        _.append(n2.value());
+                        if (k1Idx != k1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
                 Info v1 = mveiIter.getValue(); /* nest.v */
-                v1.writeJSON(s);
-                if (mveiIdx != mveiSize) { s.append(','); }
+                v1.writeJSON(_);
+                if (mveiIdx != mveiSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean miveExists = (null != mive && mive.size() > 0);
-        if ('\0' != comma && miveExists) { s.append(comma); comma = '\0'; }
-        if (miveExists) { s.append('"').append("mive").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && miveExists) { _.append(comma); comma = '\0'; }
+        if (miveExists) { _.append('"').append("mive").append('"').append(':'); comma = ','; }
         int miveSize = (null == mive ? 0 : mive.size());
         if (miveSize > 0) {
-            s.append('{');
+            _.append('{');
             int miveIdx = 0;
             for (Map.Entry<Info,LinkedList<Gender>> miveIter : mive.entrySet()) { /* map.for: mive */
                 ++miveIdx;
                 Info k1 = miveIter.getKey(); /* nest.k */
-                s.append('"'); k1.writeJSON(s); s.append('"').append(':');
+                _.append('"'); k1.writeJSON(_); _.append('"').append(':');
                 LinkedList<Gender> v1 = miveIter.getValue();
                 int v1Size = (null == v1 ? 0 : v1.size());
                 if (v1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
-                        s.append(n2.value());
-                        if (v1Idx != v1Size) { s.append(','); }
+                        _.append(n2.value());
+                        if (v1Idx != v1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
-                if (miveIdx != miveSize) { s.append(','); }
+                if (miveIdx != miveSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean mviveExists = (null != mvive && mvive.size() > 0);
-        if ('\0' != comma && mviveExists) { s.append(comma); comma = '\0'; }
-        if (mviveExists) { s.append('"').append("mvive").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mviveExists) { _.append(comma); comma = '\0'; }
+        if (mviveExists) { _.append('"').append("mvive").append('"').append(':'); comma = ','; }
         int mviveSize = (null == mvive ? 0 : mvive.size());
         if (mviveSize > 0) {
-            s.append('{');
+            _.append('{');
             int mviveIdx = 0;
             for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> mviveIter : mvive.entrySet()) { /* map.for: mvive */
                 ++mviveIdx;
                 LinkedList<Info> k1 = mviveIter.getKey();
                 int k1Size = (null == k1 ? 0 : k1.size());
                 if (k1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int k1Idx = 0;
                     for (Info n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
-                        n2.writeJSON(s);
-                        if (k1Idx != k1Size) { s.append(','); }
+                        n2.writeJSON(_);
+                        if (k1Idx != k1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
                 LinkedList<Gender> v1 = mviveIter.getValue();
                 int v1Size = (null == v1 ? 0 : v1.size());
                 if (v1Size > 0) {
-                    s.append('[');
+                    _.append('[');
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
-                        s.append(n2.value());
-                        if (v1Idx != v1Size) { s.append(','); }
+                        _.append(n2.value());
+                        if (v1Idx != v1Size) { _.append(','); }
                     }
-                    s.append(']');
+                    _.append(']');
                 }
-                if (mviveIdx != mviveSize) { s.append(','); }
+                if (mviveIdx != mviveSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean vmviveExists = (null != vmvive && vmvive.size() > 0);
-        if ('\0' != comma && vmviveExists) { s.append(comma); comma = '\0'; }
-        if (vmviveExists) { s.append('"').append("vmvive").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && vmviveExists) { _.append(comma); comma = '\0'; }
+        if (vmviveExists) { _.append('"').append("vmvive").append('"').append(':'); comma = ','; }
         int vmviveSize = (null == vmvive ? 0 : vmvive.size());
         if (vmviveSize > 0) {
-            s.append('[');
+            _.append('[');
             int vmviveIdx = 0;
             for (LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> n1 : vmvive) { /* vec.for: vmvive */
                 ++vmviveIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    s.append('{');
+                    _.append('{');
                     int n1Idx = 0;
                     for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
                         LinkedList<Info> k2 = n1Iter.getKey();
                         int k2Size = (null == k2 ? 0 : k2.size());
                         if (k2Size > 0) {
-                            s.append('[');
+                            _.append('[');
                             int k2Idx = 0;
                             for (Info n3 : k2) { /* vec.for: k2 */
                                 ++k2Idx;
-                                n3.writeJSON(s);
-                                if (k2Idx != k2Size) { s.append(','); }
+                                n3.writeJSON(_);
+                                if (k2Idx != k2Size) { _.append(','); }
                             }
-                            s.append(']');
+                            _.append(']');
                         }
                         LinkedList<Gender> v2 = n1Iter.getValue();
                         int v2Size = (null == v2 ? 0 : v2.size());
                         if (v2Size > 0) {
-                            s.append('[');
+                            _.append('[');
                             int v2Idx = 0;
                             for (Gender n3 : v2) { /* vec.for: v2 */
                                 ++v2Idx;
-                                s.append(n3.value());
-                                if (v2Idx != v2Size) { s.append(','); }
+                                _.append(n3.value());
+                                if (v2Idx != v2Size) { _.append(','); }
                             }
-                            s.append(']');
+                            _.append(']');
                         }
-                        if (n1Idx != n1Size) { s.append(','); }
+                        if (n1Idx != n1Size) { _.append(','); }
                     }
-                    s.append('}');
+                    _.append('}');
                 }
-                if (vmviveIdx != vmviveSize) { s.append(','); }
+                if (vmviveIdx != vmviveSize) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('{');
+                _.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    s.append('"').append(k1.toString()).append('"'); s.append(':');
+                    _.append('"').append(k1.toString()).append('"'); _.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    s.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                    _.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { _.append(','); }
                 }
-                s.append('}');
+                _.append('}');
             } comma = ',';
         }
-        s.append('}');
+        _.append('}');
     } /* InfoX::writeJSON(...) */
 
     public String toStringXML()
@@ -939,7 +939,7 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
@@ -1050,7 +1050,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("k1").append('>');
                 for (Gender n2 : k1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(n2.toString()).append('"').append('/').append('>');
+                    nodes.append(nodes.append(n2.value())).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("k1").append('>');
                 Info v1 = mveiIter.getValue();
@@ -1067,7 +1067,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("v1").append('>');
                 for (Gender n2 : v1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(n2.toString()).append('"').append('/').append('>');
+                    nodes.append(nodes.append(n2.value())).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("v1").append('>');
             }
@@ -1086,7 +1086,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("v1").append('>');
                 for (Gender n2 : v1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(n2.toString()).append('"').append('/').append('>');
+                    nodes.append(nodes.append(n2.value())).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("v1").append('>');
             }
@@ -1107,7 +1107,7 @@ invar.lib.InvarCodec.XMLEncode
                     nodes.append('<').append("v2").append('>');
                     for (Gender n3 : v2) {
                         nodes.append('<').append("n3").append(' ').append("value").append('=').append('"');
-                        nodes.append(n3.toString()).append('"').append('/').append('>');
+                        nodes.append(nodes.append(n3.value())).append('"').append('/').append('>');
                     }
                     nodes.append('<').append('/').append("v2").append('>');
                 }
@@ -1127,12 +1127,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* InfoX::writeXML(...) */
 

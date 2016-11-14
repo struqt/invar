@@ -141,165 +141,165 @@ invar.lib.InvarCodec.XMLEncode
     public void setHotfix(LinkedHashMap<java.lang.String,java.lang.String> value) { this.hotfix = value; }
 
     /** Shallow copy */
-    public TestDict copy(TestDict from)
+    public TestDict copy(TestDict from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
         dictI08.clear();
-        dictI08.putAll(from.dictI08);
+        dictI08.putAll(from_.dictI08);
         dictI16.clear();
-        dictI16.putAll(from.dictI16);
+        dictI16.putAll(from_.dictI16);
         dictI32.clear();
-        dictI32.putAll(from.dictI32);
+        dictI32.putAll(from_.dictI32);
         dictI64.clear();
-        dictI64.putAll(from.dictI64);
+        dictI64.putAll(from_.dictI64);
         dictU08.clear();
-        dictU08.putAll(from.dictU08);
+        dictU08.putAll(from_.dictU08);
         dictU16.clear();
-        dictU16.putAll(from.dictU16);
+        dictU16.putAll(from_.dictU16);
         dictU32.clear();
-        dictU32.putAll(from.dictU32);
+        dictU32.putAll(from_.dictU32);
         dictU64.clear();
-        dictU64.putAll(from.dictU64);
+        dictU64.putAll(from_.dictU64);
         dictSingle.clear();
-        dictSingle.putAll(from.dictSingle);
+        dictSingle.putAll(from_.dictSingle);
         dictDouble.clear();
-        dictDouble.putAll(from.dictDouble);
+        dictDouble.putAll(from_.dictDouble);
         dictBoolean.clear();
-        dictBoolean.putAll(from.dictBoolean);
+        dictBoolean.putAll(from_.dictBoolean);
         dictString.clear();
-        dictString.putAll(from.dictString);
+        dictString.putAll(from_.dictString);
         dictEnum.clear();
-        dictEnum.putAll(from.dictEnum);
+        dictEnum.putAll(from_.dictEnum);
         dictStruct.clear();
-        dictStruct.putAll(from.dictStruct);
-        if (null == from.hotfix) {
+        dictStruct.putAll(from_.dictStruct);
+        if (null == from_.hotfix) {
             hotfix = null;
         } else {
             if (null == hotfix) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             else { hotfix.clear(); }
-            hotfix.putAll(from.hotfix);
+            hotfix.putAll(from_.hotfix);
         }
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
         dictI08.clear();
-        Long lenDictI08 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictI08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
-            java.lang.Byte k1 = from.readByte();
-            java.lang.Byte v1 = from.readByte();
+            java.lang.Byte k1 = from_.readByte();
+            java.lang.Byte v1 = from_.readByte();
             dictI08.put(k1,v1);
         }
         dictI16.clear();
-        Long lenDictI16 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictI16 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictI16 = 0L; iDictI16 < lenDictI16; ++iDictI16) {
-            Short k1 = from.readShort();
-            Short v1 = from.readShort();
+            Short k1 = from_.readShort();
+            Short v1 = from_.readShort();
             dictI16.put(k1,v1);
         }
         dictI32.clear();
-        Long lenDictI32 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictI32 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictI32 = 0L; iDictI32 < lenDictI32; ++iDictI32) {
-            Integer k1 = from.readUnsignedShort();
-            Integer v1 = from.readUnsignedShort();
+            Integer k1 = from_.readUnsignedShort();
+            Integer v1 = from_.readUnsignedShort();
             dictI32.put(k1,v1);
         }
         dictI64.clear();
-        Long lenDictI64 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictI64 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictI64 = 0L; iDictI64 < lenDictI64; ++iDictI64) {
-            Long k1 = from.readInt() & 0xFFFFFFFFL;
-            Long v1 = from.readInt() & 0xFFFFFFFFL;
+            Long k1 = from_.readInt() & 0xFFFFFFFFL;
+            Long v1 = from_.readInt() & 0xFFFFFFFFL;
             dictI64.put(k1,v1);
         }
         dictU08.clear();
-        Long lenDictU08 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictU08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictU08 = 0L; iDictU08 < lenDictU08; ++iDictU08) {
-            java.lang.Integer k1 = from.readUnsignedShort();
-            java.lang.Integer v1 = from.readUnsignedShort();
+            java.lang.Integer k1 = from_.readUnsignedShort();
+            java.lang.Integer v1 = from_.readUnsignedShort();
             dictU08.put(k1,v1);
         }
         dictU16.clear();
-        Long lenDictU16 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictU16 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictU16 = 0L; iDictU16 < lenDictU16; ++iDictU16) {
-            java.lang.Integer k1 = from.readUnsignedShort();
-            java.lang.Integer v1 = from.readUnsignedShort();
+            java.lang.Integer k1 = from_.readUnsignedShort();
+            java.lang.Integer v1 = from_.readUnsignedShort();
             dictU16.put(k1,v1);
         }
         dictU32.clear();
-        Long lenDictU32 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictU32 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictU32 = 0L; iDictU32 < lenDictU32; ++iDictU32) {
-            java.lang.Long k1 = from.readInt() & 0xFFFFFFFFL;
-            java.lang.Long v1 = from.readInt() & 0xFFFFFFFFL;
+            java.lang.Long k1 = from_.readInt() & 0xFFFFFFFFL;
+            java.lang.Long v1 = from_.readInt() & 0xFFFFFFFFL;
             dictU32.put(k1,v1);
         }
         dictU64.clear();
-        Long lenDictU64 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictU64 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictU64 = 0L; iDictU64 < lenDictU64; ++iDictU64) {
-            byte[] k1Bytes = new byte[8]; from.readFully(k1Bytes, 0, 8);
+            byte[] k1Bytes = new byte[8]; from_.readFully(k1Bytes, 0, 8);
             BigInteger k1 = new BigInteger(1, k1Bytes);
-            byte[] v1Bytes = new byte[8]; from.readFully(v1Bytes, 0, 8);
+            byte[] v1Bytes = new byte[8]; from_.readFully(v1Bytes, 0, 8);
             BigInteger v1 = new BigInteger(1, v1Bytes);
             dictU64.put(k1,v1);
         }
         dictSingle.clear();
-        Long lenDictSingle = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictSingle = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictSingle = 0L; iDictSingle < lenDictSingle; ++iDictSingle) {
-            Float k1 = from.readFloat();
-            Float v1 = from.readFloat();
+            Float k1 = from_.readFloat();
+            Float v1 = from_.readFloat();
             dictSingle.put(k1,v1);
         }
         dictDouble.clear();
-        Long lenDictDouble = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictDouble = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictDouble = 0L; iDictDouble < lenDictDouble; ++iDictDouble) {
-            java.lang.Double k1 = from.readDouble();
-            java.lang.Double v1 = from.readDouble();
+            java.lang.Double k1 = from_.readDouble();
+            java.lang.Double v1 = from_.readDouble();
             dictDouble.put(k1,v1);
         }
         dictBoolean.clear();
-        Long lenDictBoolean = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictBoolean = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictBoolean = 0L; iDictBoolean < lenDictBoolean; ++iDictBoolean) {
-            java.lang.Boolean k1 = from.readBoolean();
-            java.lang.Boolean v1 = from.readBoolean();
+            java.lang.Boolean k1 = from_.readBoolean();
+            java.lang.Boolean v1 = from_.readBoolean();
             dictBoolean.put(k1,v1);
         }
         dictString.clear();
-        Long lenDictString = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictString = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictString = 0L; iDictString < lenDictString; ++iDictString) {
-            java.lang.String k1 = from.readUTF();
-            java.lang.String v1 = from.readUTF();
+            java.lang.String k1 = from_.readUTF();
+            java.lang.String v1 = from_.readUTF();
             dictString.put(k1,v1);
         }
         dictEnum.clear();
-        Long lenDictEnum = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictEnum = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictEnum = 0L; iDictEnum < lenDictEnum; ++iDictEnum) {
-            Gender k1 = Gender.valueOf(from.readInt());
-            Gender v1 = Gender.valueOf(from.readInt());
+            Gender k1 = Gender.valueOf(from_.readInt());
+            Gender v1 = Gender.valueOf(from_.readInt());
             dictEnum.put(k1,v1);
         }
         dictStruct.clear();
-        Long lenDictStruct = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictStruct = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictStruct = 0L; iDictStruct < lenDictStruct; ++iDictStruct) {
             Custom k1 = Custom.Create();
-            k1.read(from);
+            k1.read(from_);
             Custom v1 = Custom.Create();
-            v1.read(from);
+            v1.read(from_);
             dictStruct.put(k1,v1);
         }
-        byte hotfixExists = from.readByte();
+        byte hotfixExists = from_.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
-            Long lenHotfix = from.readInt() & 0xFFFFFFFFL;
+            Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
             for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
-                java.lang.String k1 = from.readUTF();
-                java.lang.String v1 = from.readUTF();
+                java.lang.String k1 = from_.readUTF();
+                java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
             }
         }
@@ -307,122 +307,122 @@ invar.lib.InvarCodec.XMLEncode
         else { throw new CodecError(CodecError.ERR_DECODE_VEC_MAP_P); }
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeInt(dictI08.size());
+        dest_.writeInt(dictI08.size());
         for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) {
             java.lang.Byte k1 = dictI08Iter.getKey();
-            dest.writeByte(k1);
+            dest_.writeByte(k1);
             java.lang.Byte v1 = dictI08Iter.getValue();
-            dest.writeByte(v1);
+            dest_.writeByte(v1);
         }
-        dest.writeInt(dictI16.size());
+        dest_.writeInt(dictI16.size());
         for (Map.Entry<Short,Short> dictI16Iter : dictI16.entrySet()) {
             Short k1 = dictI16Iter.getKey();
-            dest.writeShort(k1);
+            dest_.writeShort(k1);
             Short v1 = dictI16Iter.getValue();
-            dest.writeShort(v1);
+            dest_.writeShort(v1);
         }
-        dest.writeInt(dictI32.size());
+        dest_.writeInt(dictI32.size());
         for (Map.Entry<Integer,Integer> dictI32Iter : dictI32.entrySet()) {
             Integer k1 = dictI32Iter.getKey();
-            dest.writeShort(k1);
+            dest_.writeShort(k1);
             Integer v1 = dictI32Iter.getValue();
-            dest.writeShort(v1);
+            dest_.writeShort(v1);
         }
-        dest.writeInt(dictI64.size());
+        dest_.writeInt(dictI64.size());
         for (Map.Entry<Long,Long> dictI64Iter : dictI64.entrySet()) {
             Long k1 = dictI64Iter.getKey();
-            dest.writeInt(k1.intValue());
+            dest_.writeInt(k1.intValue());
             Long v1 = dictI64Iter.getValue();
-            dest.writeInt(v1.intValue());
+            dest_.writeInt(v1.intValue());
         }
-        dest.writeInt(dictU08.size());
+        dest_.writeInt(dictU08.size());
         for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU08Iter : dictU08.entrySet()) {
             java.lang.Integer k1 = dictU08Iter.getKey();
-            dest.writeShort(k1);
+            dest_.writeShort(k1);
             java.lang.Integer v1 = dictU08Iter.getValue();
-            dest.writeShort(v1);
+            dest_.writeShort(v1);
         }
-        dest.writeInt(dictU16.size());
+        dest_.writeInt(dictU16.size());
         for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU16Iter : dictU16.entrySet()) {
             java.lang.Integer k1 = dictU16Iter.getKey();
-            dest.writeShort(k1);
+            dest_.writeShort(k1);
             java.lang.Integer v1 = dictU16Iter.getValue();
-            dest.writeShort(v1);
+            dest_.writeShort(v1);
         }
-        dest.writeInt(dictU32.size());
+        dest_.writeInt(dictU32.size());
         for (Map.Entry<java.lang.Long,java.lang.Long> dictU32Iter : dictU32.entrySet()) {
             java.lang.Long k1 = dictU32Iter.getKey();
-            dest.writeInt(k1.intValue());
+            dest_.writeInt(k1.intValue());
             java.lang.Long v1 = dictU32Iter.getValue();
-            dest.writeInt(v1.intValue());
+            dest_.writeInt(v1.intValue());
         }
-        dest.writeInt(dictU64.size());
+        dest_.writeInt(dictU64.size());
         for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) {
             BigInteger k1 = dictU64Iter.getKey();
-            dest.writeLong(k1.longValue());
+            dest_.writeLong(k1.longValue());
             BigInteger v1 = dictU64Iter.getValue();
-            dest.writeLong(v1.longValue());
+            dest_.writeLong(v1.longValue());
         }
-        dest.writeInt(dictSingle.size());
+        dest_.writeInt(dictSingle.size());
         for (Map.Entry<Float,Float> dictSingleIter : dictSingle.entrySet()) {
             Float k1 = dictSingleIter.getKey();
-            dest.writeFloat(k1);
+            dest_.writeFloat(k1);
             Float v1 = dictSingleIter.getValue();
-            dest.writeFloat(v1);
+            dest_.writeFloat(v1);
         }
-        dest.writeInt(dictDouble.size());
+        dest_.writeInt(dictDouble.size());
         for (Map.Entry<java.lang.Double,java.lang.Double> dictDoubleIter : dictDouble.entrySet()) {
             java.lang.Double k1 = dictDoubleIter.getKey();
-            dest.writeDouble(k1);
+            dest_.writeDouble(k1);
             java.lang.Double v1 = dictDoubleIter.getValue();
-            dest.writeDouble(v1);
+            dest_.writeDouble(v1);
         }
-        dest.writeInt(dictBoolean.size());
+        dest_.writeInt(dictBoolean.size());
         for (Map.Entry<java.lang.Boolean,java.lang.Boolean> dictBooleanIter : dictBoolean.entrySet()) {
             java.lang.Boolean k1 = dictBooleanIter.getKey();
-            dest.writeBoolean(k1);
+            dest_.writeBoolean(k1);
             java.lang.Boolean v1 = dictBooleanIter.getValue();
-            dest.writeBoolean(v1);
+            dest_.writeBoolean(v1);
         }
-        dest.writeInt(dictString.size());
+        dest_.writeInt(dictString.size());
         for (Map.Entry<java.lang.String,java.lang.String> dictStringIter : dictString.entrySet()) {
             java.lang.String k1 = dictStringIter.getKey();
-            dest.writeUTF(k1);
+            dest_.writeUTF(k1);
             java.lang.String v1 = dictStringIter.getValue();
-            dest.writeUTF(v1);
+            dest_.writeUTF(v1);
         }
-        dest.writeInt(dictEnum.size());
+        dest_.writeInt(dictEnum.size());
         for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) {
             Gender k1 = dictEnumIter.getKey();
-            dest.writeInt(k1.value());
+            dest_.writeInt(k1.value());
             Gender v1 = dictEnumIter.getValue();
-            dest.writeInt(v1.value());
+            dest_.writeInt(v1.value());
         }
-        dest.writeInt(dictStruct.size());
+        dest_.writeInt(dictStruct.size());
         for (Map.Entry<Custom,Custom> dictStructIter : dictStruct.entrySet()) {
             Custom k1 = dictStructIter.getKey();
-            k1.write(dest);
+            k1.write(dest_);
             Custom v1 = dictStructIter.getValue();
-            v1.write(dest);
+            v1.write(dest_);
         }
         if (hotfix != null) {
-            dest.writeByte((byte)0x01);
-            dest.writeInt(hotfix.size());
+            dest_.writeByte((byte)0x01);
+            dest_.writeInt(hotfix.size());
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {
                 java.lang.String k1 = hotfixIter.getKey();
-                dest.writeUTF(k1);
+                dest_.writeUTF(k1);
                 java.lang.String v1 = hotfixIter.getValue();
-                dest.writeUTF(v1);
+                dest_.writeUTF(v1);
             }
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
     }
 
@@ -476,266 +476,266 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
         boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
-        if (dictI08Exists) { s.append('"').append("dictI08").append('"').append(':'); comma = ','; }
+        if (dictI08Exists) { _.append('"').append("dictI08").append('"').append(':'); comma = ','; }
         int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
         if (dictI08Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictI08Idx = 0;
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                 ++dictI08Idx;
                 java.lang.Byte k1 = dictI08Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 java.lang.Byte v1 = dictI08Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictI08Idx != dictI08Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictI08Idx != dictI08Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictI16Exists = (null != dictI16 && dictI16.size() > 0);
-        if ('\0' != comma && dictI16Exists) { s.append(comma); comma = '\0'; }
-        if (dictI16Exists) { s.append('"').append("dictI16").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictI16Exists) { _.append(comma); comma = '\0'; }
+        if (dictI16Exists) { _.append('"').append("dictI16").append('"').append(':'); comma = ','; }
         int dictI16Size = (null == dictI16 ? 0 : dictI16.size());
         if (dictI16Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictI16Idx = 0;
             for (Map.Entry<Short,Short> dictI16Iter : dictI16.entrySet()) { /* map.for: dictI16 */
                 ++dictI16Idx;
                 Short k1 = dictI16Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 Short v1 = dictI16Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictI16Idx != dictI16Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictI16Idx != dictI16Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictI32Exists = (null != dictI32 && dictI32.size() > 0);
-        if ('\0' != comma && dictI32Exists) { s.append(comma); comma = '\0'; }
-        if (dictI32Exists) { s.append('"').append("dictI32").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictI32Exists) { _.append(comma); comma = '\0'; }
+        if (dictI32Exists) { _.append('"').append("dictI32").append('"').append(':'); comma = ','; }
         int dictI32Size = (null == dictI32 ? 0 : dictI32.size());
         if (dictI32Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictI32Idx = 0;
             for (Map.Entry<Integer,Integer> dictI32Iter : dictI32.entrySet()) { /* map.for: dictI32 */
                 ++dictI32Idx;
                 Integer k1 = dictI32Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 Integer v1 = dictI32Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictI32Idx != dictI32Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictI32Idx != dictI32Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictI64Exists = (null != dictI64 && dictI64.size() > 0);
-        if ('\0' != comma && dictI64Exists) { s.append(comma); comma = '\0'; }
-        if (dictI64Exists) { s.append('"').append("dictI64").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictI64Exists) { _.append(comma); comma = '\0'; }
+        if (dictI64Exists) { _.append('"').append("dictI64").append('"').append(':'); comma = ','; }
         int dictI64Size = (null == dictI64 ? 0 : dictI64.size());
         if (dictI64Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictI64Idx = 0;
             for (Map.Entry<Long,Long> dictI64Iter : dictI64.entrySet()) { /* map.for: dictI64 */
                 ++dictI64Idx;
                 Long k1 = dictI64Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 Long v1 = dictI64Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictI64Idx != dictI64Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictI64Idx != dictI64Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictU08Exists = (null != dictU08 && dictU08.size() > 0);
-        if ('\0' != comma && dictU08Exists) { s.append(comma); comma = '\0'; }
-        if (dictU08Exists) { s.append('"').append("dictU08").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictU08Exists) { _.append(comma); comma = '\0'; }
+        if (dictU08Exists) { _.append('"').append("dictU08").append('"').append(':'); comma = ','; }
         int dictU08Size = (null == dictU08 ? 0 : dictU08.size());
         if (dictU08Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictU08Idx = 0;
             for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU08Iter : dictU08.entrySet()) { /* map.for: dictU08 */
                 ++dictU08Idx;
                 java.lang.Integer k1 = dictU08Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 java.lang.Integer v1 = dictU08Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictU08Idx != dictU08Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictU08Idx != dictU08Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictU16Exists = (null != dictU16 && dictU16.size() > 0);
-        if ('\0' != comma && dictU16Exists) { s.append(comma); comma = '\0'; }
-        if (dictU16Exists) { s.append('"').append("dictU16").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictU16Exists) { _.append(comma); comma = '\0'; }
+        if (dictU16Exists) { _.append('"').append("dictU16").append('"').append(':'); comma = ','; }
         int dictU16Size = (null == dictU16 ? 0 : dictU16.size());
         if (dictU16Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictU16Idx = 0;
             for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU16Iter : dictU16.entrySet()) { /* map.for: dictU16 */
                 ++dictU16Idx;
                 java.lang.Integer k1 = dictU16Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 java.lang.Integer v1 = dictU16Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictU16Idx != dictU16Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictU16Idx != dictU16Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictU32Exists = (null != dictU32 && dictU32.size() > 0);
-        if ('\0' != comma && dictU32Exists) { s.append(comma); comma = '\0'; }
-        if (dictU32Exists) { s.append('"').append("dictU32").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictU32Exists) { _.append(comma); comma = '\0'; }
+        if (dictU32Exists) { _.append('"').append("dictU32").append('"').append(':'); comma = ','; }
         int dictU32Size = (null == dictU32 ? 0 : dictU32.size());
         if (dictU32Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictU32Idx = 0;
             for (Map.Entry<java.lang.Long,java.lang.Long> dictU32Iter : dictU32.entrySet()) { /* map.for: dictU32 */
                 ++dictU32Idx;
                 java.lang.Long k1 = dictU32Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 java.lang.Long v1 = dictU32Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictU32Idx != dictU32Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictU32Idx != dictU32Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictU64Exists = (null != dictU64 && dictU64.size() > 0);
-        if ('\0' != comma && dictU64Exists) { s.append(comma); comma = '\0'; }
-        if (dictU64Exists) { s.append('"').append("dictU64").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictU64Exists) { _.append(comma); comma = '\0'; }
+        if (dictU64Exists) { _.append('"').append("dictU64").append('"').append(':'); comma = ','; }
         int dictU64Size = (null == dictU64 ? 0 : dictU64.size());
         if (dictU64Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictU64Idx = 0;
             for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) { /* map.for: dictU64 */
                 ++dictU64Idx;
                 BigInteger k1 = dictU64Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 BigInteger v1 = dictU64Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictU64Idx != dictU64Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictU64Idx != dictU64Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictSingleExists = (null != dictSingle && dictSingle.size() > 0);
-        if ('\0' != comma && dictSingleExists) { s.append(comma); comma = '\0'; }
-        if (dictSingleExists) { s.append('"').append("dictSingle").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictSingleExists) { _.append(comma); comma = '\0'; }
+        if (dictSingleExists) { _.append('"').append("dictSingle").append('"').append(':'); comma = ','; }
         int dictSingleSize = (null == dictSingle ? 0 : dictSingle.size());
         if (dictSingleSize > 0) {
-            s.append('{');
+            _.append('{');
             int dictSingleIdx = 0;
             for (Map.Entry<Float,Float> dictSingleIter : dictSingle.entrySet()) { /* map.for: dictSingle */
                 ++dictSingleIdx;
                 Float k1 = dictSingleIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 Float v1 = dictSingleIter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictSingleIdx != dictSingleSize) { s.append(','); }
+                _.append(v1.toString());
+                if (dictSingleIdx != dictSingleSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictDoubleExists = (null != dictDouble && dictDouble.size() > 0);
-        if ('\0' != comma && dictDoubleExists) { s.append(comma); comma = '\0'; }
-        if (dictDoubleExists) { s.append('"').append("dictDouble").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictDoubleExists) { _.append(comma); comma = '\0'; }
+        if (dictDoubleExists) { _.append('"').append("dictDouble").append('"').append(':'); comma = ','; }
         int dictDoubleSize = (null == dictDouble ? 0 : dictDouble.size());
         if (dictDoubleSize > 0) {
-            s.append('{');
+            _.append('{');
             int dictDoubleIdx = 0;
             for (Map.Entry<java.lang.Double,java.lang.Double> dictDoubleIter : dictDouble.entrySet()) { /* map.for: dictDouble */
                 ++dictDoubleIdx;
                 java.lang.Double k1 = dictDoubleIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 java.lang.Double v1 = dictDoubleIter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictDoubleIdx != dictDoubleSize) { s.append(','); }
+                _.append(v1.toString());
+                if (dictDoubleIdx != dictDoubleSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictBooleanExists = (null != dictBoolean && dictBoolean.size() > 0);
-        if ('\0' != comma && dictBooleanExists) { s.append(comma); comma = '\0'; }
-        if (dictBooleanExists) { s.append('"').append("dictBoolean").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictBooleanExists) { _.append(comma); comma = '\0'; }
+        if (dictBooleanExists) { _.append('"').append("dictBoolean").append('"').append(':'); comma = ','; }
         int dictBooleanSize = (null == dictBoolean ? 0 : dictBoolean.size());
         if (dictBooleanSize > 0) {
-            s.append('{');
+            _.append('{');
             int dictBooleanIdx = 0;
             for (Map.Entry<java.lang.Boolean,java.lang.Boolean> dictBooleanIter : dictBoolean.entrySet()) { /* map.for: dictBoolean */
                 ++dictBooleanIdx;
                 java.lang.Boolean k1 = dictBooleanIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString().toLowerCase()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString().toLowerCase()); _.append('"').append(':');
                 java.lang.Boolean v1 = dictBooleanIter.getValue(); /* nest.v */
-                s.append(v1.toString().toLowerCase());
-                if (dictBooleanIdx != dictBooleanSize) { s.append(','); }
+                _.append(v1.toString().toLowerCase());
+                if (dictBooleanIdx != dictBooleanSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictStringExists = (null != dictString && dictString.size() > 0);
-        if ('\0' != comma && dictStringExists) { s.append(comma); comma = '\0'; }
-        if (dictStringExists) { s.append('"').append("dictString").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictStringExists) { _.append(comma); comma = '\0'; }
+        if (dictStringExists) { _.append('"').append("dictString").append('"').append(':'); comma = ','; }
         int dictStringSize = (null == dictString ? 0 : dictString.size());
         if (dictStringSize > 0) {
-            s.append('{');
+            _.append('{');
             int dictStringIdx = 0;
             for (Map.Entry<java.lang.String,java.lang.String> dictStringIter : dictString.entrySet()) { /* map.for: dictString */
                 ++dictStringIdx;
                 java.lang.String k1 = dictStringIter.getKey(); /* nest.k */
-                s.append('"').append(k1.toString()).append('"'); s.append(':');
+                _.append('"').append(k1.toString()).append('"'); _.append(':');
                 java.lang.String v1 = dictStringIter.getValue(); /* nest.v */
-                s.append('"').append(v1.toString()).append('"');
-                if (dictStringIdx != dictStringSize) { s.append(','); }
+                _.append('"').append(v1.toString()).append('"');
+                if (dictStringIdx != dictStringSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictEnumExists = (null != dictEnum && dictEnum.size() > 0);
-        if ('\0' != comma && dictEnumExists) { s.append(comma); comma = '\0'; }
-        if (dictEnumExists) { s.append('"').append("dictEnum").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictEnumExists) { _.append(comma); comma = '\0'; }
+        if (dictEnumExists) { _.append('"').append("dictEnum").append('"').append(':'); comma = ','; }
         int dictEnumSize = (null == dictEnum ? 0 : dictEnum.size());
         if (dictEnumSize > 0) {
-            s.append('{');
+            _.append('{');
             int dictEnumIdx = 0;
             for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) { /* map.for: dictEnum */
                 ++dictEnumIdx;
                 Gender k1 = dictEnumIter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.value()); s.append('"').append(':');
+                _.append('"'); _.append(k1.value()); _.append('"').append(':');
                 Gender v1 = dictEnumIter.getValue(); /* nest.v */
-                s.append(v1.value());
-                if (dictEnumIdx != dictEnumSize) { s.append(','); }
+                _.append(v1.value());
+                if (dictEnumIdx != dictEnumSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean dictStructExists = (null != dictStruct && dictStruct.size() > 0);
-        if ('\0' != comma && dictStructExists) { s.append(comma); comma = '\0'; }
-        if (dictStructExists) { s.append('"').append("dictStruct").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictStructExists) { _.append(comma); comma = '\0'; }
+        if (dictStructExists) { _.append('"').append("dictStruct").append('"').append(':'); comma = ','; }
         int dictStructSize = (null == dictStruct ? 0 : dictStruct.size());
         if (dictStructSize > 0) {
-            s.append('{');
+            _.append('{');
             int dictStructIdx = 0;
             for (Map.Entry<Custom,Custom> dictStructIter : dictStruct.entrySet()) { /* map.for: dictStruct */
                 ++dictStructIdx;
                 Custom k1 = dictStructIter.getKey(); /* nest.k */
-                s.append('"'); k1.writeJSON(s); s.append('"').append(':');
+                _.append('"'); k1.writeJSON(_); _.append('"').append(':');
                 Custom v1 = dictStructIter.getValue(); /* nest.v */
-                v1.writeJSON(s);
-                if (dictStructIdx != dictStructSize) { s.append(','); }
+                v1.writeJSON(_);
+                if (dictStructIdx != dictStructSize) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                s.append('{');
+                _.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    s.append('"').append(k1.toString()).append('"'); s.append(':');
+                    _.append('"').append(k1.toString()).append('"'); _.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    s.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { s.append(','); }
+                    _.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { _.append(','); }
                 }
-                s.append('}');
+                _.append('}');
             } comma = ',';
         }
-        s.append('}');
+        _.append('}');
     } /* TestDict::writeJSON(...) */
 
     public String toStringXML()
@@ -745,7 +745,7 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
@@ -898,10 +898,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) {
                 Gender k1 = dictEnumIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(k1.toString()).append('"').append('/').append('>');
+                nodes.append(nodes.append(k1.value())).append('"').append('/').append('>');
                 Gender v1 = dictEnumIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(v1.toString()).append('"').append('/').append('>');
+                nodes.append(nodes.append(v1.value())).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictEnum").append('>');
         }
@@ -927,12 +927,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             nodes.append('<').append('/').append("hotfix").append('>');
         }
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* TestDict::writeXML(...) */
 

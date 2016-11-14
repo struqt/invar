@@ -230,118 +230,118 @@ invar.lib.InvarCodec.XMLEncode
     public void setSelf(TestRefer value) { this.self = value; }
 
     /** Shallow copy */
-    public TestRefer copy(TestRefer from)
+    public TestRefer copy(TestRefer from_)
     {
-        if (this == from || from == null) {
+        if (this == from_ || from_ == null) {
             return this;
         }
-        numberi08 = from.numberi08;
-        numberi16 = from.numberi16;
-        numberi32 = from.numberi32;
-        numberi64 = from.numberi64;
-        numberu08 = from.numberu08;
-        numberu16 = from.numberu16;
-        numberu32 = from.numberu32;
-        numberu64 = from.numberu64;
-        numberSingle = from.numberSingle;
-        numberDouble = from.numberDouble;
-        boolValue = from.boolValue;
-        stringValue = from.stringValue;
-        enumValue = from.enumValue;
-        other = from.other;
-        if (from.self != null) {
-            self.copy(from.self);
+        numberi08 = from_.numberi08;
+        numberi16 = from_.numberi16;
+        numberi32 = from_.numberi32;
+        numberi64 = from_.numberi64;
+        numberu08 = from_.numberu08;
+        numberu16 = from_.numberu16;
+        numberu32 = from_.numberu32;
+        numberu64 = from_.numberu64;
+        numberSingle = from_.numberSingle;
+        numberDouble = from_.numberDouble;
+        boolValue = from_.boolValue;
+        stringValue = from_.stringValue;
+        enumValue = from_.enumValue;
+        other = from_.other;
+        if (from_.self != null) {
+            self.copy(from_.self);
         } else {
             self = null;
         }
         listI08.clear();
-        listI08.addAll(from.listI08);
+        listI08.addAll(from_.listI08);
         dictI08.clear();
-        dictI08.putAll(from.dictI08);
+        dictI08.putAll(from_.dictI08);
         return this;
     } /* copyFrom(...) */
 
-    public void read(InputStream from) throws IOException, CodecError
+    public void read(InputStream from_) throws IOException, CodecError
     {
-        this.read((DataInput)new DataInputStream(from));
+        this.read((DataInput)new DataInputStream(from_));
     }
 
-    public void read(DataInput from) throws IOException, CodecError
+    public void read(DataInput from_) throws IOException, CodecError
     {
-        numberi08 = from.readByte();
-        numberi16 = from.readShort();
-        numberi32 = from.readInt();
-        numberi64 = from.readLong();
-        numberu08 = from.readUnsignedByte();
-        numberu16 = from.readUnsignedShort();
-        numberu32 = from.readInt() & 0xFFFFFFFFL;
-        byte[] numberu64Bytes = new byte[8]; from.readFully(numberu64Bytes, 0, 8);
+        numberi08 = from_.readByte();
+        numberi16 = from_.readShort();
+        numberi32 = from_.readInt();
+        numberi64 = from_.readLong();
+        numberu08 = from_.readUnsignedByte();
+        numberu16 = from_.readUnsignedShort();
+        numberu32 = from_.readInt() & 0xFFFFFFFFL;
+        byte[] numberu64Bytes = new byte[8]; from_.readFully(numberu64Bytes, 0, 8);
         numberu64 = new BigInteger(1, numberu64Bytes);
-        numberSingle = from.readFloat();
-        numberDouble = from.readDouble();
-        boolValue = from.readBoolean();
-        stringValue = from.readUTF();
-        enumValue = Gender.valueOf(from.readInt());
-        other.read(from);
-        byte selfExists = from.readByte();
+        numberSingle = from_.readFloat();
+        numberDouble = from_.readDouble();
+        boolValue = from_.readBoolean();
+        stringValue = from_.readUTF();
+        enumValue = Gender.valueOf(from_.readInt());
+        other.read(from_);
+        byte selfExists = from_.readByte();
         if ((byte)0x01 == selfExists) {
             if (self == null) { self = TestRefer.Create(); }
-            self.read(from);
+            self.read(from_);
         }
         else if ((byte)0x00 == selfExists) { self = null; }
         else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         listI08.clear();
-        Long lenListI08 = from.readInt() & 0xFFFFFFFFL;
+        Long lenListI08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
-            java.lang.Byte n1 = from.readByte();
+            java.lang.Byte n1 = from_.readByte();
             listI08.add(n1);
         }
         dictI08.clear();
-        Long lenDictI08 = from.readInt() & 0xFFFFFFFFL;
+        Long lenDictI08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
-            java.lang.Byte k1 = from.readByte();
-            java.lang.Byte v1 = from.readByte();
+            java.lang.Byte k1 = from_.readByte();
+            java.lang.Byte v1 = from_.readByte();
             dictI08.put(k1,v1);
         }
     }
 
-    public void write(OutputStream from) throws IOException
+    public void write(OutputStream dest_) throws IOException
     {
-        this.write((DataOutput)new DataOutputStream(from));
+        this.write((DataOutput)new DataOutputStream(dest_));
     }
 
-    public void write(DataOutput dest) throws IOException
+    public void write(DataOutput dest_) throws IOException
     {
-        dest.writeByte(numberi08);
-        dest.writeShort(numberi16);
-        dest.writeInt(numberi32);
-        dest.writeLong(numberi64);
-        dest.writeByte(numberu08);
-        dest.writeShort(numberu16);
-        dest.writeInt(numberu32.intValue());
-        dest.writeLong(numberu64.longValue());
-        dest.writeFloat(numberSingle);
-        dest.writeDouble(numberDouble);
-        dest.writeBoolean(boolValue);
-        dest.writeUTF(stringValue);
-        dest.writeInt(enumValue.value());
-        other.write(dest);
+        dest_.writeByte(numberi08);
+        dest_.writeShort(numberi16);
+        dest_.writeInt(numberi32);
+        dest_.writeLong(numberi64);
+        dest_.writeByte(numberu08);
+        dest_.writeShort(numberu16);
+        dest_.writeInt(numberu32.intValue());
+        dest_.writeLong(numberu64.longValue());
+        dest_.writeFloat(numberSingle);
+        dest_.writeDouble(numberDouble);
+        dest_.writeBoolean(boolValue);
+        dest_.writeUTF(stringValue);
+        dest_.writeInt(enumValue.value());
+        other.write(dest_);
         if (self != null) {
-            dest.writeByte((byte)0x01);
-            self.write(dest);
+            dest_.writeByte((byte)0x01);
+            self.write(dest_);
         } else {
-            dest.writeByte((byte)0x00);
+            dest_.writeByte((byte)0x00);
         }
-        dest.writeInt(listI08.size());
+        dest_.writeInt(listI08.size());
         for (java.lang.Byte n1 : listI08) {
-            dest.writeByte(n1);
+            dest_.writeByte(n1);
         }
-        dest.writeInt(dictI08.size());
+        dest_.writeInt(dictI08.size());
         for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) {
             java.lang.Byte k1 = dictI08Iter.getKey();
-            dest.writeByte(k1);
+            dest_.writeByte(k1);
             java.lang.Byte v1 = dictI08Iter.getValue();
-            dest.writeByte(v1);
+            dest_.writeByte(v1);
         }
     }
 
@@ -399,92 +399,92 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder s)
+    public void writeJSON(StringBuilder _)
     {
-        s.append('{');
+        _.append('{');
         char comma = '\0';
-        s.append('"').append("numberi08").append('"').append(':');
-        s.append(numberi08.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberi16").append('"').append(':');
-        s.append(numberi16.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberi32").append('"').append(':');
-        s.append(numberi32.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberi64").append('"').append(':');
-        s.append(numberi64.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberu08").append('"').append(':');
-        s.append(numberu08.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberu16").append('"').append(':');
-        s.append(numberu16.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberu32").append('"').append(':');
-        s.append(numberu32.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberu64").append('"').append(':');
-        s.append(numberu64.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberSingle").append('"').append(':');
-        s.append(numberSingle.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("numberDouble").append('"').append(':');
-        s.append(numberDouble.toString()); comma = ',';
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("boolValue").append('"').append(':');
-        s.append(boolValue.toString().toLowerCase()); comma = ',';
+        _.append('"').append("numberi08").append('"').append(':');
+        _.append(numberi08.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberi16").append('"').append(':');
+        _.append(numberi16.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberi32").append('"').append(':');
+        _.append(numberi32.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberi64").append('"').append(':');
+        _.append(numberi64.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberu08").append('"').append(':');
+        _.append(numberu08.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberu16").append('"').append(':');
+        _.append(numberu16.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberu32").append('"').append(':');
+        _.append(numberu32.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberu64").append('"').append(':');
+        _.append(numberu64.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberSingle").append('"').append(':');
+        _.append(numberSingle.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("numberDouble").append('"').append(':');
+        _.append(numberDouble.toString()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("boolValue").append('"').append(':');
+        _.append(boolValue.toString().toLowerCase()); comma = ',';
         boolean stringValueExists = stringValue != null && stringValue.length() > 0;
-        if ('\0' != comma && stringValueExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && stringValueExists) { _.append(comma); comma = '\0'; }
         if (stringValueExists) {
-            s.append('"').append("stringValue").append('"').append(':'); comma = ','; s.append('"').append(stringValue.toString()).append('"');
+            _.append('"').append("stringValue").append('"').append(':'); comma = ','; _.append('"').append(stringValue.toString()).append('"');
         }
-        if ('\0' != comma) { s.append(comma); comma = '\0'; }
-        s.append('"').append("enumValue").append('"').append(':');
-        s.append(enumValue.value()); comma = ',';
+        if ('\0' != comma) { _.append(comma); comma = '\0'; }
+        _.append('"').append("enumValue").append('"').append(':');
+        _.append(enumValue.value()); comma = ',';
         boolean otherExists = (null != other);
-        if ('\0' != comma && otherExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && otherExists) { _.append(comma); comma = '\0'; }
         if (otherExists) {
-            s.append('"').append("other").append('"').append(':'); comma = ','; other.writeJSON(s);
+            _.append('"').append("other").append('"').append(':'); comma = ','; other.writeJSON(_);
         }
         boolean selfExists = (null != self);
-        if ('\0' != comma && selfExists) { s.append(comma); comma = '\0'; }
+        if ('\0' != comma && selfExists) { _.append(comma); comma = '\0'; }
         if (selfExists) {
-            s.append('"').append("self").append('"').append(':'); comma = ','; self.writeJSON(s);
+            _.append('"').append("self").append('"').append(':'); comma = ','; self.writeJSON(_);
         }
         boolean listI08Exists = (null != listI08 && listI08.size() > 0);
-        if ('\0' != comma && listI08Exists) { s.append(comma); comma = '\0'; }
-        if (listI08Exists) { s.append('"').append("listI08").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listI08Exists) { _.append(comma); comma = '\0'; }
+        if (listI08Exists) { _.append('"').append("listI08").append('"').append(':'); comma = ','; }
         int listI08Size = (null == listI08 ? 0 : listI08.size());
         if (listI08Size > 0) {
-            s.append('[');
+            _.append('[');
             int listI08Idx = 0;
             for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                 ++listI08Idx;
-                s.append(n1.toString());
-                if (listI08Idx != listI08Size) { s.append(','); }
+                _.append(n1.toString());
+                if (listI08Idx != listI08Size) { _.append(','); }
             }
-            s.append(']');
+            _.append(']');
         }
         boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
-        if ('\0' != comma && dictI08Exists) { s.append(comma); comma = '\0'; }
-        if (dictI08Exists) { s.append('"').append("dictI08").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictI08Exists) { _.append(comma); comma = '\0'; }
+        if (dictI08Exists) { _.append('"').append("dictI08").append('"').append(':'); comma = ','; }
         int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
         if (dictI08Size > 0) {
-            s.append('{');
+            _.append('{');
             int dictI08Idx = 0;
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                 ++dictI08Idx;
                 java.lang.Byte k1 = dictI08Iter.getKey(); /* nest.k */
-                s.append('"'); s.append(k1.toString()); s.append('"').append(':');
+                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
                 java.lang.Byte v1 = dictI08Iter.getValue(); /* nest.v */
-                s.append(v1.toString());
-                if (dictI08Idx != dictI08Size) { s.append(','); }
+                _.append(v1.toString());
+                if (dictI08Idx != dictI08Size) { _.append(','); }
             }
-            s.append('}');
+            _.append('}');
         }
-        s.append('}');
+        _.append('}');
     } /* TestRefer::writeJSON(...) */
 
     public String toStringXML()
@@ -494,7 +494,7 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeXML(StringBuilder result, String name)
+    public void writeXML(StringBuilder result_, String name_)
     {
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
@@ -523,7 +523,7 @@ invar.lib.InvarCodec.XMLEncode
         attrs.append(' ').append("stringValue").append('=').append('"');
         attrs.append(stringValue).append('"');
         attrs.append(' ').append("enumValue").append('=').append('"');
-        attrs.append(enumValue.toString()).append('"');
+        attrs.append(nodes.append(enumValue.value())).append('"');
         other.writeXML(nodes, "other");
         if (self != null) {
             self.writeXML(nodes, "self");
@@ -548,12 +548,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             nodes.append('<').append('/').append("dictI08").append('>');
         }
-        result.append('<').append(name).append(attrs);
+        result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
-            result.append('/').append('>');
+            result_.append('/').append('>');
         } else {
-            result.append('>').append(nodes);
-            result.append('<').append('/').append(name).append('>');
+            result_.append('>').append(nodes);
+            result_.append('<').append('/').append(name_).append('>');
         }
     } /* TestRefer::writeXML(...) */
 
