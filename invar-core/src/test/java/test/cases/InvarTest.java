@@ -9,7 +9,6 @@ import test.simple.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.math.BigInteger;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

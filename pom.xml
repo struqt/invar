@@ -10,8 +10,8 @@
   <modules>
     <module>invar-lib</module>
     <module>invar-core</module>
-    <module>invar-example</module>
     <module>invar-standalone</module>
+    <module>invar-example</module>
   </modules>
 
   <name>invar</name>
@@ -34,15 +34,6 @@
     <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
   <prerequisites>
     <maven>3.0.4</maven>
   </prerequisites>
@@ -53,13 +44,16 @@
         <groupId>${project.groupId}</groupId>
         <artifactId>invar-core</artifactId>
         <version>${project.version}</version>
-        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>invar-lib</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
-        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

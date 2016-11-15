@@ -5,6 +5,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
+  <!--
   <export resPath="java/lib/InvarRule.java" destDir="invar/lib" destName="InvarRule.java"/>
   <export resPath="java/lib/InvarEnum.java" destDir="invar/lib" destName="InvarEnum.java"/>
   <export resPath="java/lib/InvarCodec.java" destDir="invar/lib" destName="InvarCodec.java"/>
@@ -16,6 +17,7 @@
   <export resPath="java/lib/RecvNotify.java" destDir="invar/lib" destName="RecvNotify.java"/>
   <export resPath="java/lib/RecvContext.java" destDir="invar/lib" destName="RecvContext.java"/>
   <export resPath="java/lib/CodecError.java" destDir="invar/lib" destName="CodecError.java"/>
+  -->
 
   <!-- Redefine 14 Invar buildin types to adapt Java language -->
   <!-- & &amp; < &lt; > &gt; " &quot; ' &apos; -->
@@ -36,6 +38,8 @@
     <map pack="    java.util" type="LinkedHashMap" generic="&lt;?,?&gt;"/>
 
     <dialect pack="invar.lib" type="CodecError"/>
+    <dialect pack="invar.lib.data" type="InvarReadData"/>
+
     <dialect pack="java.io" type="IOException"/>
     <dialect pack="java.io" type="InputStream"/>
     <dialect pack="java.io" type="DataInput"/>
@@ -741,6 +745,7 @@
   ]]></template>
 
   <!-- InvarRuntime Class -->
+  <template key="runtime.import"><![CDATA[ invar.lib.data::InvarReadData ]]></template>
   <template key="runtime.pack"><![CDATA[ invar.lib ]]></template>
   <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
   <template key="runtime.type.split"><![CDATA[ . ]]></template>

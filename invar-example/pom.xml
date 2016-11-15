@@ -21,8 +21,18 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.struqt</groupId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>invar-lib</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>invar-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

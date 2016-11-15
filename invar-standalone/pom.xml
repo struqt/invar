@@ -14,6 +14,10 @@
   <dependencies>
     <dependency>
       <groupId>com.struqt</groupId>
+      <artifactId>invar-lib</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.struqt</groupId>
       <artifactId>invar-core</artifactId>
     </dependency>
   </dependencies>
