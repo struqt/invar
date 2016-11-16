@@ -17,27 +17,28 @@ import java.util.*;
  */
 public class DataMapperJson extends DataMapper<DataMapperJson> {
 
-    static DataParserJson decoder = new DataParserJson();
+    static final public Charset UTF8 = Charset.forName("utf-8");
+    static final DataParserJson decoder = new DataParserJson();
 
-    public <T> void map(T root, String content) throws Exception {
-        if (content == null || content.length() <= 0) {
-            return;
+    public <T> T map(T dest, String from) throws Exception {
+        if (from == null || from.length() <= 0) {
+            return dest;
         }
-        //Charset.availableCharsets().containsKey(charset);
-        byte[] bytes = content.getBytes(Charset.forName(charset));
+        byte[] bytes = from.getBytes(UTF8);
         InputStream i = new ByteArrayInputStream(bytes);
-        this.map(root, i);
+        return map(dest, i);
     }
 
-    public <T> void map(T root, InputStream input) throws Exception {
-        if (null == input) {
-            return;
+    public <T> T map(T dest, InputStream from) throws Exception {
+        if (null == from) {
+            return dest;
         }
-        if (null == root) {
-            return;
+        if (null == dest) {
+            return null;
         }
-        DataNode node = decoder.parse(input);
-        parse(root, node);
+        DataNode node = decoder.parse(from);
+        parse(dest, node);
+        return dest;
     }
 
     void parse(Object o, DataNode n) throws Exception {
@@ -138,13 +139,8 @@ public class DataMapperJson extends DataMapper<DataMapperJson> {
                 return null;
             case BOOL:
                 return cn.getValue();
-            case DOUBLE:
+            case BIGINT:
                 return cn.getValue();
-            case OBJECT:
-            case ARRAY:
-                Object co = Cls.newInstance();
-                parse(co, cn, rule, debug);
-                return co;
             case STRING:
                 if (aliasEnums.containsValue(Cls)) {
                     return EnumFromString((String) cn.getValue(),
@@ -159,6 +155,18 @@ public class DataMapperJson extends DataMapper<DataMapperJson> {
                 } else {
                     return parseInteger(cn, rule, debug);
                 }
+            case DOUBLE:
+                if ("float".equals(rule)) {
+                    Double v = (Double) cn.getValue();
+                    return v.floatValue();
+                } else {
+                    return cn.getValue();
+                }
+            case OBJECT:
+            case ARRAY:
+                Object co = Cls.newInstance();
+                parse(co, cn, rule, debug);
+                return co;
             default:
                 return null;
         }

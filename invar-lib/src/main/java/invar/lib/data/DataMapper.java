@@ -9,26 +9,19 @@ import invar.lib.InvarEnum;
 import invar.lib.InvarRule;
 
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.HashMap;
 
 /**
  * Created by wangkang on 11/14/16
  */
-public class DataMapper<T extends DataMapper<T>> {
-
-    static public String charset = "utf-8";
+public abstract class DataMapper<T extends DataMapper<T>> {
 
     static public HashMap<String, Class<?>> aliasBasics = null;
     static public HashMap<String, Class<?>> aliasEnums = null;
     static public HashMap<String, Class<?>> aliasStructs = null;
 
-    static protected final
-    HashMap<Class<?>, HashMap<String, Method>> mapClassSetters = new HashMap<Class<?>, HashMap<String, Method>>();
-    static protected final
-    HashMap<Class<?>, HashMap<String, Method>> mapClassGetters = new HashMap<Class<?>, HashMap<String, Method>>();
-
-
-    protected Class<?> loadGenericClass(String rule) throws Exception {
+    Class<?> loadGenericClass(String rule) throws Exception {
         String name = ruleLeft(rule);
         Class<?> Cls = getClassByAlias(name);
         if (Cls == null)
@@ -38,7 +31,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return Cls;
     }
 
-    protected Object invokeGetter(String key, Object o, Object node) throws Exception {
+    Object invokeGetter(String key, Object o, Object node) throws Exception {
         HashMap<String, Method> map = getGetters(o.getClass());
         Method method = map.get(key);
         if (method == null) {
@@ -52,7 +45,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return method.invoke(o);
     }
 
-    protected Object parseInteger(DataNode n, String rule, String debug) throws Exception {
+    Object parseInteger(DataNode n, String rule, String debug) throws Exception {
         if (!n.getTypeId().equals(DataNode.TypeId.INT64)) {
             return 0;
         }
@@ -78,7 +71,7 @@ public class DataMapper<T extends DataMapper<T>> {
             checkInteger(s, 0L, 0xFFFFFFFFL, debug, n);
             return s;
         } else if ("uint64".equals(rule)) {
-            return s;
+            return BigInteger.valueOf(s);
         } else {
             return s;
         }
@@ -90,15 +83,15 @@ public class DataMapper<T extends DataMapper<T>> {
         }
     }
 
-    protected void onError(String hint) throws Exception {
+    void onError(String hint) throws Exception {
         throw new Exception("\n" + hint + "\n" + path);
     }
 
-    protected void onError(String hint, Object n) throws Exception {
+    void onError(String hint, Object n) throws Exception {
         throw new Exception("\n" + hint + "\n" + n + "\n" + path);
     }
 
-    protected String getRule(Class<?> ClsO, String key, DataNode n) throws Exception {
+    String getRule(Class<?> ClsO, String key, DataNode n) throws Exception {
         HashMap<String, Method> map = getGetters(ClsO);
         Method method = map.get(key);
         if (method == null) {
@@ -116,7 +109,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return rule;
     }
 
-    protected void invokeSetter(Object value, String key, Object o, DataNode n, String debug) throws Exception {
+    void invokeSetter(Object value, String key, Object o, DataNode n, String debug) throws Exception {
         HashMap<String, Method> map = getSetters(o.getClass());
         Method method = map.get(key);
         if (method == null) {
@@ -133,19 +126,26 @@ public class DataMapper<T extends DataMapper<T>> {
         try {
             method.invoke(o, value);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(debug + "." + key);
+            System.err.println(n);
+            //e.printStackTrace();
         }
     }
 
-    static protected final String GENERIC_SPLIT = ",";
-    static private final String GENERIC_LEFT = "<";
-    static private final String GENERIC_RIGHT = ">";
-    static private final String PREFIX_SETTER = "set";
-    static private final String PREFIX_GETTER = "get";
-    static private final String ATTR_MAP_KEY = "key";
-    static private final String ATTR_VALUE = "value";
 
-    static protected HashMap<String, Method> getSetters(Class<?> ClsO) {
+    static final
+    HashMap<Class<?>, HashMap<String, Method>> mapClassSetters = new HashMap<Class<?>, HashMap<String, Method>>();
+    static final
+    HashMap<Class<?>, HashMap<String, Method>> mapClassGetters = new HashMap<Class<?>, HashMap<String, Method>>();
+    static final String GENERIC_SPLIT = ",";
+    static final String GENERIC_LEFT = "<";
+    static final String GENERIC_RIGHT = ">";
+    static final String PREFIX_SETTER = "set";
+    static final String PREFIX_GETTER = "get";
+    static final String ATTR_MAP_KEY = "key";
+    static final String ATTR_VALUE = "value";
+
+    static HashMap<String, Method> getSetters(Class<?> ClsO) {
         HashMap<String, Method> methods = mapClassSetters.get(ClsO);
         if (methods == null) {
             Method[] meths = ClsO.getMethods();
@@ -165,7 +165,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return methods;
     }
 
-    static protected HashMap<String, Method> getGetters(Class<?> ClsO) {
+    static HashMap<String, Method> getGetters(Class<?> ClsO) {
         HashMap<String, Method> methods = mapClassGetters.get(ClsO);
         if (methods == null) {
             Method[] meths = ClsO.getMethods();
@@ -185,7 +185,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return methods;
     }
 
-    static protected String ruleLeft(String rule) {
+    static String ruleLeft(String rule) {
         String name = rule;
         int index = rule.indexOf(GENERIC_LEFT);
         if (index >= 0) {
@@ -194,7 +194,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return name;
     }
 
-    static protected String ruleRight(String rule) {
+    static String ruleRight(String rule) {
         int iBegin = rule.indexOf(GENERIC_LEFT) + 1;
         int iEnd = rule.lastIndexOf(GENERIC_RIGHT);
         if (iBegin > 0 && iEnd > iBegin) {
@@ -203,7 +203,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return null;
     }
 
-    static protected Class<?> getClassByAlias(String name) {
+    static Class<?> getClassByAlias(String name) {
         Class<?> ClsN = aliasBasics.get(name);
         if (ClsN == null)
             ClsN = aliasEnums.get(name);
@@ -212,11 +212,11 @@ public class DataMapper<T extends DataMapper<T>> {
         return ClsN;
     }
 
-    static protected String upperHeadChar(String s) {
+    static String upperHeadChar(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
     }
 
-    public static <T extends InvarEnum> Object EnumFromInt(int v, Class<T> clazz) {
+    static <T extends InvarEnum> Object EnumFromInt(int v, Class<T> clazz) {
         for (T t : clazz.getEnumConstants()) {
             if (t.value().equals(v)) {
                 return t;
@@ -225,7 +225,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return null;
     }
 
-    static public <T extends InvarEnum> T EnumFromString(String v, Class<T> clazz) {
+    static <T extends InvarEnum> T EnumFromString(String v, Class<T> clazz) {
         for (T t : clazz.getEnumConstants()) {
             if (t.name().equals(v)) {
                 return t;
@@ -234,7 +234,7 @@ public class DataMapper<T extends DataMapper<T>> {
         return null;
     }
 
-    static protected void log(Object txt) {
+    static void log(Object txt) {
         System.out.println("| " + txt);
     }
 

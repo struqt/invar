@@ -6,11 +6,13 @@
 package invar.lib.data;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 
 /**
  * Parse a data stream to a DataNode tree.
@@ -99,8 +101,15 @@ public class DataParserJson {
                     fieldName = null;
                     break;
                 case VALUE_NUMBER_INT:
-                    parent.addChild(DataNode.createLong().setFieldName(fieldName)
-                        .setValue(parser.getValueAsLong()));
+                    try {
+                        Long v = parser.getValueAsLong();
+                        parent.addChild(DataNode.createLong()
+                            .setFieldName(fieldName).setValue(v));
+                    } catch (JsonParseException e) {
+                        BigInteger v = parser.getBigIntegerValue();
+                        parent.addChild(DataNode.createBigInt()
+                            .setFieldName(fieldName).setValue(v));
+                    }
                     fieldName = null;
                     break;
                 case VALUE_NUMBER_FLOAT:

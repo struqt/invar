@@ -5,6 +5,7 @@
 
 package invar.lib.data;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class DataNode<T> {
 
     public enum TypeId {
-        INT64, DOUBLE, BOOL, STRING, NULL, OBJECT, ARRAY
+        INT64, BIGINT, DOUBLE, BOOL, STRING, NULL, OBJECT, ARRAY
     }
 
     static private <T> DataNode<T> create() {
@@ -43,6 +44,10 @@ public class DataNode<T> {
 
     static public DataNode<Long> createLong() {
         return DataNode.<Long>create().setTypeId(TypeId.INT64);
+    }
+
+    static public DataNode<BigInteger> createBigInt() {
+        return DataNode.<BigInteger>create().setTypeId(TypeId.BIGINT);
     }
 
     static public DataNode<Double> createDouble() {
@@ -127,9 +132,12 @@ public class DataNode<T> {
             return;
         }
         if (getFieldName() != null) {
-            s.append('"');
+            //s.append('"');
             s.append(getFieldName());
-            s.append('"');
+            //s.append('"');
+            s.append('<');
+            s.append(getTypeId().name());
+            s.append('>');
             s.append(':');
         }
         if (TypeId.OBJECT.equals(getTypeId())) {

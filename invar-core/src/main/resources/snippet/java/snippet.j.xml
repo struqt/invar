@@ -38,6 +38,7 @@
     <map pack="    java.util" type="LinkedHashMap" generic="&lt;?,?&gt;"/>
 
     <dialect pack="invar.lib" type="CodecError"/>
+    <dialect pack="invar.lib.data" type="DataMapper"/>
     <dialect pack="invar.lib.data" type="InvarReadData"/>
 
     <dialect pack="java.io" type="IOException"/>
@@ -745,13 +746,14 @@
   ]]></template>
 
   <!-- InvarRuntime Class -->
-  <template key="runtime.import"><![CDATA[ invar.lib.data::InvarReadData ]]></template>
+  <template key="runtime.import"><![CDATA[
+    invar.lib.data::InvarReadData,invar.lib.data::DataMapper ]]></template>
   <template key="runtime.pack"><![CDATA[ invar.lib ]]></template>
   <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
   <template key="runtime.type.split"><![CDATA[ . ]]></template>
   <template key="runtime.alias"><![CDATA[
     (#blank)
-    (#tab)static private LinkedHashMap<String,Class<?>> (#name) ()
+    (#tab)static public LinkedHashMap<String,Class<?>> (#name) ()
     (#tab){
     (#tab)(#tab)LinkedHashMap<String,Class<?>> map = new LinkedHashMap<String,Class<?>>();(#body)
     (#tab)(#tab)return map;
@@ -766,21 +768,27 @@
   <template key="runtime.body"><![CDATA[
     public final class InvarRuntime
     {
+    (#tab)static boolean inited = false;
+    (#blank)
+    (#tab)static public void init() {
+    (#tab)(#tab)if (inited) {
+    (#tab)(#tab)(#tab)return;
+    (#tab)(#tab)}
+    (#tab)(#tab)inited = true;
+    (#tab)(#tab)InvarReadData.aliasBasics = DataMapper.aliasBasics = aliasBasic();
+    (#tab)(#tab)InvarReadData.aliasEnums = DataMapper.aliasEnums = aliasEnum();
+    (#tab)(#tab)InvarReadData.aliasStructs = DataMapper.aliasStructs = aliasStruct();
+    (#tab)}
     (#blank)
     (#tab)static public <T> void parse(T root, java.io.InputStream input) throws Exception
     (#tab){
-    (#tab)(#tab)InvarRuntime.MakeXmlReader().parse(root, input);
+    (#tab)(#tab)MakeXmlReader().parse(root, input);
     (#tab)}
     (#blank)
     (#tab)static public InvarReadData MakeXmlReader()
     (#tab){
-    (#tab)(#tab)if (InvarReadData.aliasBasics == null)
-    (#tab)(#tab){
-    (#tab)(#tab)(#tab)InvarReadData.aliasBasics = aliasBasic();
-    (#tab)(#tab)(#tab)InvarReadData.aliasEnums = aliasEnum();
-    (#tab)(#tab)(#tab)InvarReadData.aliasStructs = aliasStruct();
-    (#tab)(#tab)}
-    (#tab)(#tab) return new InvarReadData();
+    (#tab)(#tab)init();
+    (#tab)(#tab)return new InvarReadData();
     (#tab)}
     (#body)
     } ]]></template>
