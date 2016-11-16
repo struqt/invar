@@ -738,8 +738,41 @@ public final class InvarWriteCode extends InvarWrite {
         if (!empty.equals(snippetTryGet(Key.RUNTIME_ALIAS))) {
             block += makeRuntimeAliasBlock(imps);
         }
+        if (!empty.equals(snippetTryGet(Key.RUNTIME_PROTOC_IDS_FUNC))) {
+            block += makeRuntimeIdsBlock(imps);
+        }
         s = replace(s, Token.Body, block);
         s = replace(s, Token.Type, snippetTryGet(Key.RUNTIME_NAME));
+        return s;
+    }
+
+    private String makeRuntimeIdsBlock(TreeSet<String> imps) {
+        StringBuilder block = new StringBuilder(4096);
+        Iterator<Integer> ids = TypeProtocol.allIds();
+        while (ids.hasNext()) {
+            Integer id = ids.next();
+            TypeStruct tStruct;
+            tStruct = TypeProtocol.findClient(id);
+            if (tStruct == null) {
+                tStruct = TypeProtocol.findServer(id);
+            }
+            if (tStruct == null) {
+                continue;
+            }
+            impsCheckAdd(imps, tStruct, null, true);
+            String split = snippetTryGet(Key.RUNTIME_TYPE_SPLIT);
+            String full = tStruct.fullName(split);
+            String type = tStruct.getConflict(context) ? full : tStruct.getName();
+            log(id + " -----> " + type);
+            String item = snippetGet(Key.RUNTIME_PROTOC_IDS_FUNC_ITEM);
+            item = replace(item, Token.Key, id.toString());
+            item = replace(item, Token.Type, type);
+            block.append(item);
+        }
+        String name = snippetGet(Key.RUNTIME_PROTOC_IDS_FUNC_NAME);
+        String s = snippetGet(Key.RUNTIME_PROTOC_IDS_FUNC);
+        s = replace(s, Token.Name, name);
+        s = replace(s, Token.Body, block.toString());
         return s;
     }
 

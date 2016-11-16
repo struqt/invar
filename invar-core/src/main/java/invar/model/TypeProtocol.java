@@ -21,6 +21,10 @@ public class TypeProtocol extends InvarType {
         return new TreeSet<Integer>(mapServers.keySet()).iterator();
     }
 
+    static public Iterator<Integer> allIds() {
+        return ids.iterator();
+    }
+
     static public TypeStruct findClient(Integer key) {
         return mapClients.get(key);
     }

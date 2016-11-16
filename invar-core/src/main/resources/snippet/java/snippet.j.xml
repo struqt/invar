@@ -753,7 +753,7 @@
   <template key="runtime.type.split"><![CDATA[ . ]]></template>
   <template key="runtime.alias"><![CDATA[
     (#blank)
-    (#tab)static public LinkedHashMap<String,Class<?>> (#name) ()
+    (#tab)static public LinkedHashMap<String,Class<?>> (#name)()
     (#tab){
     (#tab)(#tab)LinkedHashMap<String,Class<?>> map = new LinkedHashMap<String,Class<?>>();(#body)
     (#tab)(#tab)return map;
@@ -828,6 +828,19 @@
     (#tab)(#tab)}
     (#tab)} /* (#name)(...) */
   ]]></template>
+
+  <template key="runtime.protoc.ids.func.name"><![CDATA[ makeProtocMap ]]></template>
+  <template key="runtime.protoc.ids.func.item"><![CDATA[
+    (#brk)(#tab)(#tab)map.put((#key), (#type).class);]]></template>
+  <template key="runtime.protoc.ids.func"><![CDATA[
+    (#blank)
+    (#tab)static public LinkedHashMap<Integer,Class<?>> (#name)()
+    (#tab){
+    (#tab)(#tab)LinkedHashMap<Integer,Class<?>> map = new LinkedHashMap<Integer,Class<?>>();(#body)
+    (#tab)(#tab)return map;
+    (#tab)}
+  ]]></template>
+
 
   <!-- SQL Params -->
   <template key="sql.params.method"><![CDATA[

@@ -267,6 +267,9 @@ final public class InvarSnippet {
         final static public String RUNTIME_PROTOC_HANDLE_NTF = "runtime.protoc.handle.notify";
         final static public String RUNTIME_PROTOC_HANDLE_RESP = "runtime.protoc.handle.response";
         final static public String RUNTIME_PROTOC_HANDLE_REQ = "runtime.protoc.handle.request";
+        final static public String RUNTIME_PROTOC_IDS_FUNC = "runtime.protoc.ids.func";
+        final static public String RUNTIME_PROTOC_IDS_FUNC_NAME = "runtime.protoc.ids.func.name";
+        final static public String RUNTIME_PROTOC_IDS_FUNC_ITEM = "runtime.protoc.ids.func.item";
 
 
         final static public String ENUM = "enum";
