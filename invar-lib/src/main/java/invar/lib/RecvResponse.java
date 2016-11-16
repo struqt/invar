@@ -12,6 +12,7 @@ public abstract class RecvResponse<R extends InvarCodec.ProtocResponse> {
 
     static Map<Class<?>, RecvResponse> map = new HashMap<Class<?>, RecvResponse>(256);
 
+    @SuppressWarnings("unchecked")
     static public <
         T extends InvarCodec.ProtocResponse,
         C extends RecvContext> int recv(C ctx, T resp) {

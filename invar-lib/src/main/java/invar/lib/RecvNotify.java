@@ -12,6 +12,7 @@ public abstract class RecvNotify<N extends InvarCodec.ProtocNotify> {
 
     static Map<Class<?>, RecvNotify> map = new HashMap<Class<?>, RecvNotify>(256);
 
+    @SuppressWarnings("unchecked")
     static public <
         N extends InvarCodec.ProtocNotify,
         C extends RecvContext> int recv(C ctx, N ntf) {

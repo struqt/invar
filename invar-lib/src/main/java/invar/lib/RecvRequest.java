@@ -14,13 +14,15 @@ public abstract class RecvRequest<
 
     static Map<Class<?>, RecvRequest> map = new HashMap<Class<?>, RecvRequest>(256);
 
+    @SuppressWarnings("unchecked")
     static public <
         T extends InvarCodec.ProtocRequest,
         R extends InvarCodec.ProtocResponse,
         C extends RecvContext> void recv(C ctx, T req, R resp) {
 
         if (map.containsKey(req.getClass())) {
-            map.get(req.getClass()).handle(req, resp, ctx);
+            RecvRequest recv = map.get(req.getClass());
+            recv.handle(req, resp, ctx);
         } else {
             resp.setProtocError(CodecError.ERR_PROTOC_NO_HANDLER);
         }
