@@ -421,13 +421,13 @@
     }
   ]]></template>
   <template key="tojson.field.head.string"><![CDATA[
-    let (#namer)Exists: boolean = (!(#name) || 0 === (#name).length)
+    let (#namer)Exists: boolean = !(!(#name) || (#name).length <= 0)
   ]]></template>
   <template key="tojson.field.head.struct"><![CDATA[
-    let (#namer)Exists: boolean = (!(#name) || false)
+    let (#namer)Exists: boolean = !(!(#name) || false)
   ]]></template>
   <template key="tojson.field.head.vec | tojson.field.head.map"><![CDATA[
-    let (#namer)Exists: boolean = ((#name) && (#name).length > 0)
+    let (#namer)Exists: boolean = !(!(#name) || (#name).length <= 0)
   ]]></template>
   <template key="tojson.field.space.any"><![CDATA[
     if (comma && comma.length > 0) { (#arg).push(comma), comma = null }

@@ -116,7 +116,7 @@ public abstract class DataMapper<T extends DataMapper<T>> {
             String nameSetter = PREFIX_SETTER + upperHeadChar(key);
             method = map.get(nameSetter);
             if (method == null) {
-                onError("No setter named \"" + nameSetter + "()\" in " + o.getClass(), n);
+                //onError("No setter named \"" + nameSetter + "()\" in " + o.getClass(), n);
                 return;
             }
         }
