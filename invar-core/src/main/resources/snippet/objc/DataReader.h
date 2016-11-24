@@ -15,6 +15,9 @@
 + (instancetype) CreateWithData:(const NSData * const)data andOffset:(NSUInteger)offset;
 + (instancetype) CreateWithBytes:(const void * const)bytes andLength:(NSUInteger)len;
 
+- (instancetype) bigEndian;
+- (instancetype) littleEndian;
+
 - (int8_t)    readInt8   : (BOOL *)eof;
 - (int16_t)   readInt16  : (BOOL *)eof;
 - (int32_t)   readInt32  : (BOOL *)eof;

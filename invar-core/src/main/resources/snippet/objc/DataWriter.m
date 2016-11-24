@@ -12,12 +12,15 @@
 
 @interface DataWriter ()
 {
-    NSMutableData* _data;
+    CFByteOrder    _byteOrder;
+    NSMutableData *_data;
 }
 @end
 
 
 @implementation DataWriter
+
+static const CFByteOrder ByteOrderDeftW = CFByteOrderBigEndian;
 
 + (instancetype) Create
 {
@@ -29,18 +32,19 @@
     return [[DataWriter alloc] initWithData:data];
 }
 
-- (instancetype)init
+- (instancetype) init
 {
     return [self initWithData:[[NSMutableData alloc] initWithCapacity:128]];
 }
 
-- (instancetype)initWithData:(NSMutableData*)data
+- (instancetype) initWithData:(NSMutableData*)data
 {
     self = [super init];
     if (!self || !data) {
         return nil;
     }
     _data = data;
+    _byteOrder = ByteOrderDeftW;
     return self;
 }
 
@@ -49,7 +53,19 @@
     if (_data) { _data = nil; }
 }
 
-- (NSData*)data
+- (instancetype) bigEndian
+{
+    _byteOrder = CFByteOrderBigEndian;
+    return self;
+}
+
+- (instancetype) littleEndian
+{
+    _byteOrder = CFByteOrderLittleEndian;
+    return self;
+}
+
+- (NSData*) data
 {
     return _data;
 }
@@ -61,16 +77,25 @@
 
 - (void) writeInt16:(int16_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt16HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(int16_t)];
 }
 
 - (void) writeInt32:(int32_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt32HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(int32_t)];
 }
 
 - (void) writeInt64:(int64_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt64HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(int64_t)];
 }
 
@@ -81,26 +106,41 @@
 
 - (void) writeUInt16:(uint16_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt16HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(uint16_t)];
 }
 
 - (void) writeUInt32:(uint32_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt32HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(uint32_t)];
 }
 
 - (void) writeUInt64:(uint64_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt64HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(uint64_t)];
 }
 
 - (void) writeFloat:(float_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt32HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(float_t)];
 }
 
 - (void) writeDouble:(double_t)v
 {
+    if (CFByteOrderBigEndian == _byteOrder) {
+        v = CFSwapInt64HostToBig(v);
+    }
     [_data appendBytes:&v length:sizeof(double_t)];
 }
 
@@ -112,8 +152,7 @@
 - (void) writeString:(NSString*)v
 {
     NSData *data = [v dataUsingEncoding:NSUTF8StringEncoding];
-    uint32_t len = (uint32_t)data.length;
-    [_data appendBytes:&len length:sizeof(uint32_t)];
+    [self writeUInt16:(uint16_t)data.length];
     [_data appendData:data];
 }
 
