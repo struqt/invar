@@ -14,11 +14,6 @@
 #import "TestProtocTestUserLogin2S.h"
 #import "TestProtocTestUserLoginR2C.h"
 
-typedef void (^RecvRequest)(id req, id resp);
-typedef void (^RecvResponse)(id resp);
-typedef void (^RecvNotify)(id ntf);
-typedef void (^HandleError)(NSInteger err, uint16_t protoc);
-
 @interface InvarRuntime : NSObject
 
 @property (nonatomic, strong) RecvRequest  blockRecvRequest;
@@ -27,8 +22,8 @@ typedef void (^HandleError)(NSInteger err, uint16_t protoc);
 @property (nonatomic, strong) HandleError  blockHandleError;
 
 + (instancetype) shared;
-+ (id<InvarEncode>)HandleProtocAsServer:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
-+ (id<InvarEncode>)HandleProtocAsClient:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
++ (id<ProtocResponse>) HandleProtocAsServer:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
++ (id<ProtocResponse>) HandleProtocAsClient:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
 
 @end
 
@@ -72,7 +67,9 @@ extern void HandleTestHeartBeat2C(TestHeartBeat2C *req, TestHeartBeatR2S *resp);
 } /* extern "C" */
 #endif
 
+#ifdef INVAR_C_STYLE_HANDLER
 #import "ProtocHandlers.h"
+#endif
 
 
 #endif /* INVARRUNTIME_H_ */

@@ -43,18 +43,19 @@
     _blockRecvNotify = ^(id ntf) {
         NSLog(@"Unhandled notify: No function named 'Handle%@'.", [ntf class]);
     };
-    _blockHandleError = ^(NSInteger code, uint16_t protoc) {
+    _blockHandleError = ^(NSInteger code, NSInteger protoc) {
         NSLog(@"Error when handle protocol %@, the error code is %@", @(protoc), @(code));
     };
     return self;
 }
 
-+ (id<InvarEncode>)HandleProtocAsServer:(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
++ (id<ProtocResponse>)HandleProtocAsServer:(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
 {
-    BOOL eof = NO; id resp = nil;
+    BOOL eof = NO; id<ProtocResponse> resp = nil;
     NSInteger code = INVAR_ERR_PROTOC_UNHANDLED;
-    NSUInteger request = [r peekUInt16:&eof];
+    uint16_t request = [r peekUInt16:&eof];
     if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
+    [r rewind];
     switch (request) {
      case 65527: /* 客户端请求,服务端响应 */ {
         id req = [[TestUserLogin2S alloc] init]; resp = [[TestUserLoginR2C alloc] init];
@@ -65,7 +66,7 @@
         if (INVAR_ERR_NONE == (code = [ntf read:r])) { HandleTestUserLocationN2S(ntf); }
         break; }
      case 65533: /* 服务端请求,客户端响应 */ {
-        id rep = [[TestHeartBeatR2S alloc] init];
+        id rep = resp = [[TestHeartBeatR2S alloc] init];
         if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestHeartBeatR2S(rep); }
         break; }
      default: { code = INVAR_ERR_PROTOC_NO_HANDLER; break; }
@@ -74,24 +75,22 @@ error:
     if (INVAR_ERR_NONE != code && [[[self class] shared] blockHandleError]) {
         [[[self class] shared] blockHandleError](code, request);
     }
-    if (resp) {
-        [resp setProtocError:code];
-    }
     *p = request;
     *e = code;
     return resp;
 }
 /* HandleProtocAsServer */
 
-+ (id<InvarEncode>)HandleProtocAsClient:(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
++ (id<ProtocResponse>)HandleProtocAsClient:(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
 {
-    BOOL eof = NO; id resp = nil;
+    BOOL eof = NO; id<ProtocResponse> resp = nil;
     NSInteger code = INVAR_ERR_PROTOC_UNHANDLED;
-    NSUInteger request = [r peekUInt16:&eof];
+    uint16_t request = [r peekUInt16:&eof];
     if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
+    [r rewind];
     switch (request) {
      case 65528: /* 客户端请求,服务端响应 */ {
-        id rep = [[TestUserLoginR2C alloc] init];
+        id rep = resp = [[TestUserLoginR2C alloc] init];
         if (INVAR_ERR_NONE == (code = [rep read:r])) { HandleTestUserLoginR2C(rep); }
         break; }
      case 65530: /* 服务器通知客户端 */ {
@@ -107,9 +106,6 @@ error:
 error:
     if (INVAR_ERR_NONE != code && [[[self class] shared] blockHandleError]) {
         [[[self class] shared] blockHandleError](code, request);
-    }
-    if (resp) {
-        [resp setProtocError:code];
     }
     *p = request;
     *e = code;

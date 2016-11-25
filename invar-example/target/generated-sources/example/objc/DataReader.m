@@ -12,14 +12,16 @@
 
 @interface DataReader ()
 {
+    CFByteOrder _byteOrder;
     const char *_bytes;
     NSUInteger  _bytesLen;
     NSUInteger  _bytesPos;
 }
 @end
 
-
 @implementation DataReader
+
+static const CFByteOrder ByteOrderDeftR = CFByteOrderBigEndian;
 
 + (instancetype) CreateWithBytes:(const void * const)bytes andLength:(NSUInteger)length
 {
@@ -38,7 +40,7 @@
     return [[DataReader alloc] initWithBytes:data.bytes + offset andLength:data.length];
 }
 
-- (instancetype)initWithBytes:(const void * const)bytes andLength:(NSUInteger)len
+- (instancetype) initWithBytes:(const void * const)bytes andLength:(NSUInteger)len
 {
     self = [super init];
     if (!self) {
@@ -47,14 +49,33 @@
     _bytes = bytes;
     _bytesLen = len;
     _bytesPos = 0;
+    _byteOrder = ByteOrderDeftR;
     return self;
 }
 
-- (void)dealloc
+- (void) dealloc
 {
     _bytes = NULL;
     _bytesLen = 0;
     _bytesPos = 0;
+}
+
+- (instancetype) rewind
+{
+    _bytesPos = 0;
+    return self;
+}
+
+- (instancetype) bigEndian
+{
+    _byteOrder = CFByteOrderBigEndian;
+    return self;
+}
+
+- (instancetype) littleEndian
+{
+    _byteOrder = CFByteOrderLittleEndian;
+    return self;
 }
 
 - (int8_t) readInt8:(BOOL*)eof
@@ -72,7 +93,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(int16_t);
-    return *(int16_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return CFSwapInt16HostToBig(*(int16_t*)p);
+    } else {
+        return *(int16_t*)p;
+    }
 }
 
 - (int32_t) readInt32:(BOOL*)eof
@@ -81,7 +106,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(int32_t);
-    return *(int32_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return CFSwapInt32HostToBig(*(int32_t*)p);
+    } else {
+        return *(int32_t*)p;
+    }
 }
 
 - (int64_t) readInt64:(BOOL*)eof
@@ -90,7 +119,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(int64_t);
-    return *(int64_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return CFSwapInt64HostToBig(*(int64_t*)p);
+    } else {
+        return *(int64_t*)p;
+    }
 }
 
 - (uint8_t) readUInt8:(BOOL*)eof
@@ -108,7 +141,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(uint16_t);
-    return *(uint16_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return CFSwapInt16HostToBig(*(uint16_t*)p);
+    } else {
+        return *(uint16_t*)p;
+    }
 }
 
 - (uint16_t) peekUInt16:(BOOL *)eof
@@ -116,7 +153,11 @@
     if (![self checkAvailable:2]) { *eof = YES; }
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
-    return *(uint16_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return CFSwapInt16HostToBig(*(uint16_t*)p);
+    } else {
+        return *(uint16_t*)p;
+    }
 }
 
 - (uint32_t) readUInt32:(BOOL*)eof
@@ -125,7 +166,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(uint32_t);
-    return *(uint32_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return CFSwapInt32HostToBig(*(uint32_t*)p);
+    } else {
+        return *(uint32_t*)p;
+    }
 }
 
 - (uint64_t) readUInt64:(BOOL*)eof
@@ -134,7 +179,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(uint64_t);
-    return *(uint64_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return CFSwapInt64HostToBig(*(uint64_t*)p);
+    } else {
+        return *(uint64_t*)p;
+    }
 }
 
 - (float_t) readFloat:(BOOL*)eof
@@ -143,7 +192,11 @@
     if (*eof) { return 0; }
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(float_t);
-    return *(float_t*)p;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        return (float_t)CFSwapInt32HostToBig(*(uint32_t*)p);
+    } else {
+        return *(float_t*)p;
+    }
 }
 
 - (double_t) readDouble:(BOOL*)eof
@@ -153,8 +206,12 @@
     const char *p = _bytes + _bytesPos;
     _bytesPos += sizeof(double_t);
     // return *(double_t*)p; /* Cause EXC_ARM_DA_ALIGN */
-    double_t number;
+    if (CFByteOrderBigEndian == _byteOrder) {
+        uint64_t a = CFSwapInt64HostToBig(*(uint64_t*)p);
+        p = (char *)&a;
+    }
     id data = [[NSData alloc] initWithBytes:p length:sizeof(double_t)];
+    double_t number;
     [data getBytes:&number length:sizeof(double_t)];
     return number;
 }
@@ -170,9 +227,9 @@
 
 - (NSString*) readString:(BOOL*)eof
 {
-    if (![self checkAvailable:4]) { *eof = YES; }
+    if (![self checkAvailable:2]) { *eof = YES; }
     if (*eof) { return nil; }
-    NSUInteger len = [self readUInt32:eof];
+    NSUInteger len = [self readUInt16:eof];
     if (len == 0 || ![self checkAvailable:len]) {
         return @"";
     }

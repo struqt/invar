@@ -14,6 +14,8 @@
 + (instancetype) Create;
 + (instancetype) CreateWithData:(NSMutableData * const)data;
 
+- (instancetype) bigEndian;
+- (instancetype) littleEndian;
 - (NSData*) data;
 
 - (void) writeInt8   : (int8_t)    v;
