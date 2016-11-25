@@ -31,21 +31,32 @@
 
 @end
 
-@protocol InvarProtoc
-- (uint16_t) protocId   ;
-- (uint32_t) protocCRC  ;
+@protocol InvarProtoc <InvarEncode, InvarDecode, InvarEncodeJSON>
+- (uint16_t) protocId;
+- (uint32_t) protocCRC;
 @end
 
 @protocol ProtocNotify <InvarProtoc>
 @end
 
 @protocol ProtocRequest <InvarProtoc>
+
 @end
 
 @protocol ProtocResponse <InvarProtoc>
 - (uint16_t) protocError;
 @end
 
+typedef void (^RecvRequest)(id<ProtocRequest> req, id<ProtocResponse> resp);
+typedef void (^RecvResponse)(id<ProtocResponse> resp);
+typedef void (^RecvNotify)(id<ProtocNotify> ntf);
+typedef void (^HandleError)(NSInteger err, NSInteger protoc);
+
+@interface InvarClient : NSObject
++ (void) handleResponse:(NSData *)data onYes:(RecvResponse)blockResp onErr:(HandleError)blockErr;
+// ... handleNotify
+// ... handleRequest
+@end
 
 #define FORMAT_S        @"%@"
 #define LINE_FEED_S     @"\n"

@@ -15,6 +15,7 @@
 + (instancetype) CreateWithData:(const NSData * const)data andOffset:(NSUInteger)offset;
 + (instancetype) CreateWithBytes:(const void * const)bytes andLength:(NSUInteger)len;
 
+- (instancetype) rewind;
 - (instancetype) bigEndian;
 - (instancetype) littleEndian;
 

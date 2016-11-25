@@ -119,11 +119,6 @@
   <template key="runtime.pack"><![CDATA[ ]]></template>
   <template key="runtime.name"><![CDATA[ InvarRuntime ]]></template>
   <template key="runtime.body"><![CDATA[
-    typedef void (^RecvRequest)(id req, id resp);
-    typedef void (^RecvResponse)(id resp);
-    typedef void (^RecvNotify)(id ntf);
-    typedef void (^HandleError)(NSInteger err, uint16_t protoc);
-    (#blank)
     @interface InvarRuntime : NSObject
     (#blank)
     @property (nonatomic, strong) RecvRequest  blockRecvRequest;
@@ -132,8 +127,8 @@
     @property (nonatomic, strong) HandleError  blockHandleError;
     (#blank)
     + (instancetype) shared;
-    + (id<InvarEncode>)HandleProtocAsServer:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
-    + (id<InvarEncode>)HandleProtocAsClient:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
+    + (id<ProtocResponse>) HandleProtocAsServer:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
+    + (id<ProtocResponse>) HandleProtocAsClient:(DataReader * const)input Protoc:(uint16_t *)req Error:(uint16_t *)code;
     (#blank)
     @end
     (#blank)
@@ -146,7 +141,9 @@
     } /* extern "C" */
     #endif
     (#blank)
+    #ifdef INVAR_C_STYLE_HANDLER
     #import "ProtocHandlers.h"
+    #endif
   ]]></template>
   <template key="runtime.protoc.handle.client"><![CDATA[ HandleProtocAsServer ]]></template>
   <template key="runtime.protoc.handle.server"><![CDATA[ HandleProtocAsClient ]]></template>

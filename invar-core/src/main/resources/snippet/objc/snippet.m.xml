@@ -6,6 +6,7 @@
   xsi:schemaLocation="http://invar.struqt.com/snippet/1.0 http://struqt.com/xsd/invar-snippet-1.0.xsd">
 
   <export resPath="objc/Invar.m" destDir="" destName="Invar.m"/>
+  <export resPath="objc/InvarClient.m" destDir="" destName="InvarClient.m"/>
   <export resPath="objc/DataReader.m" destDir="" destName="DataReader.m"/>
   <export resPath="objc/DataWriter.m" destDir="" destName="DataWriter.m"/>
 
@@ -682,7 +683,7 @@
     (#tab)_blockRecvNotify = ^(id ntf) {
     (#tab)(#tab)NSLog(@"Unhandled notify: No function named 'Handle%@'.", [ntf class]);
     (#tab)};
-    (#tab)_blockHandleError = ^(NSInteger code, uint16_t protoc) {
+    (#tab)_blockHandleError = ^(NSInteger code, NSInteger protoc) {
     (#tab)(#tab)NSLog(@"Error when handle protocol %@, the error code is %@", @(protoc), @(code));
     (#tab)};
     (#tab)return self;
@@ -699,7 +700,7 @@
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.response"><![CDATA[ (#blank)
     (#tab)(#space)case (#key): /* (#doc) */ {
-    (#tab)(#tab)id (#name) = [[(#type) alloc] init];
+    (#tab)(#tab)id (#name) = resp = [[(#type) alloc] init];
     (#tab)(#tab)if (INVAR_ERR_NONE == (code = [(#name) read:r])) { Handle(#type)((#name)); }
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.request"><![CDATA[ (#blank)
@@ -709,21 +710,19 @@
     (#tab)(#tab)break; } ]]></template>
   <template key="runtime.protoc.handle.method"><![CDATA[
     (#blank)
-    + (id<InvarEncode>)(#name):(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
+    + (id<ProtocResponse>)(#name):(DataReader * const)r Protoc:(uint16_t *)p Error:(uint16_t *)e
     {
-    (#tab)BOOL eof = NO; id resp = nil;
+    (#tab)BOOL eof = NO; id<ProtocResponse> resp = nil;
     (#tab)NSInteger code = INVAR_ERR_PROTOC_UNHANDLED;
-    (#tab)NSUInteger request = [r peekUInt16:&eof];
+    (#tab)uint16_t request = [r peekUInt16:&eof];
     (#tab)if (eof) { code = INVAR_ERR_DECODE_EOF; goto error; }
+    (#tab)[r rewind];
     (#tab)switch (request) {(#body)
     (#tab)(#space)default: { code = INVAR_ERR_PROTOC_NO_HANDLER; break; }
     (#tab)}
     error:
     (#tab)if (INVAR_ERR_NONE != code && [[[self class] shared] blockHandleError]) {
     (#tab)(#tab)[[[self class] shared] blockHandleError](code, request);
-    (#tab)}
-    (#tab)if (resp) {
-    (#tab)(#tab)[resp setProtocError:code];
     (#tab)}
     (#tab)*p = request;
     (#tab)*e = code;

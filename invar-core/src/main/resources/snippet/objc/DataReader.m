@@ -60,6 +60,12 @@ static const CFByteOrder ByteOrderDeftR = CFByteOrderBigEndian;
     _bytesPos = 0;
 }
 
+- (instancetype) rewind
+{
+    _bytesPos = 0;
+    return self;
+}
+
 - (instancetype) bigEndian
 {
     _byteOrder = CFByteOrderBigEndian;
