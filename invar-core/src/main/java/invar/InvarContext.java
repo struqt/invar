@@ -25,6 +25,7 @@ final public class InvarContext {
     private TypeStruct structRoot;
     private TypeStruct structProtoc2S;
     private TypeStruct structProtoc2C;
+    private String language = "";
 
     public InvarContext() throws Exception {
         packOutFilter = new HashSet<String>();
@@ -217,5 +218,13 @@ final public class InvarContext {
 
     public boolean checkPackFilter(String s) {
         return packOutFilter.contains(s);
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

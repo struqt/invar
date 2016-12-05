@@ -19,10 +19,10 @@ import java.util.LinkedHashMap;
 
 final public class InvarSnippet {
 
-    final static String empty = "";
-    final static String whiteSpace = " ";
-    final static String br = "\n";
-    final static String indent = whiteSpace + whiteSpace + whiteSpace + whiteSpace;
+    private final static String empty = "";
+    private final static String whiteSpace = " ";
+    private final static String br = "\n";
+    private final static String indent = whiteSpace + whiteSpace + whiteSpace + whiteSpace;
 
     final private Document snippetDoc;
     final private HashMap<String, String> snippetMap;
@@ -34,7 +34,7 @@ final public class InvarSnippet {
     //For C++ template "> >" issue in GCC
     private Boolean genericOverride = false;
 
-    public InvarSnippet(InvarContext ctx, String dir, String path, InvarWrite writer) throws Exception {
+    InvarSnippet(InvarContext ctx, String dir, String path, InvarWrite writer) throws Exception {
         this.context = ctx;
         this.writer = writer;
         this.snippetDir = dir;
@@ -43,10 +43,11 @@ final public class InvarSnippet {
         this.snippetMap = new LinkedHashMap<String, String>();
     }
 
-    public void buildSnippetMap(InvarContext c) {
+    void buildSnippetMap(InvarContext c) {
         if (!snippetDoc.hasChildNodes())
             return;
         Node root = snippetDoc.getFirstChild();
+        c.setLanguage(getAttrOptional(root, "language"));
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node n = nodes.item(i);
@@ -62,7 +63,7 @@ final public class InvarSnippet {
         }
     }
 
-    public void buildExportFiles() {
+    void buildExportFiles() {
         if (!snippetDoc.hasChildNodes())
             return;
         String fileHead = this.tryGet(Key.FILE_HEAD, empty);
@@ -79,18 +80,18 @@ final public class InvarSnippet {
         }
     }
 
-    public String tryGet(String key, String deft) {
+    String tryGet(String key, String deft) {
         if (!snippetMap.containsKey(key)) {
             return deft;
         }
         return snippetMap.get(key);
     }
 
-    public String getSnippetPath() {
+    String getSnippetPath() {
         return snippetPath;
     }
 
-    public Boolean getGenericOverride() {
+    Boolean getGenericOverride() {
         return genericOverride;
     }
 
@@ -219,72 +220,66 @@ final public class InvarSnippet {
     }
 
     static public class Key {
-        final static public String REFER_SPEC = "refer.spec";
-        final static public String REFER_INVOKE = "refer.invoke";
-        final static public String REFER_CONST = "refer.const";
-        final static public String POINTER_NULL = "pointer.null";
-        final static public String POINTER_SPEC = "pointer.spec";
-        final static public String POINTER_INVOKE = "pointer.invoke";
+        final static String REFER_SPEC = "refer.spec";
+        final static String REFER_INVOKE = "refer.invoke";
+        final static String REFER_CONST = "refer.const";
+        final static String POINTER_NULL = "pointer.null";
+        final static String POINTER_SPEC = "pointer.spec";
+        final static String POINTER_INVOKE = "pointer.invoke";
 
-        final static public String FILE = "file";
-        final static public String FILE_HEAD = "file.head";
-        final static public String FILE_PACK = "file.pack";
-        final static public String FILE_PACK_SPLIT = "file.pack.split";
-        final static public String FILE_TYPE_SPLIT = "file.type.split";
-        final static public String FILE_BODY = "file.body";
-        final static public String FILE_INCLUDE = "file.include";
-        final static public String FILE_INCLUDE_WRAP = "file.include.wrap";
+        final static String FILE = "file";
+        final static String FILE_HEAD = "file.head";
+        final static String FILE_PACK = "file.pack";
+        final static String FILE_PACK_SPLIT = "file.pack.split";
+        final static String FILE_TYPE_SPLIT = "file.type.split";
+        final static String FILE_BODY = "file.body";
+        final static String FILE_INCLUDE = "file.include";
+        final static String FILE_INCLUDE_WRAP = "file.include.wrap";
 
-        final static public String DOC = "doc";
-        final static public String DOC_LINE = "doc.line";
-        final static public String IMPORT = "import";
-        final static public String IMPORT_SPLIT = "import.split";
-        final static public String IMPORT_BODY = "import.body";
-        /*
-        final static public String NULL_BYTE_YES = "null.byte.yes";
-        final static public String NULL_BYTE_NO = "null.byte.no";
-        final static public String INIT_STRUCT = "init.struct";
-        final static public String INIT_ENUM = "init.enum";
-        final static public String CODE_FOREACH = "code.foreach";
-        final static public String CODE_FORI = "code.fori"; //*/
-        final static public String CODE_ASSIGNMENT = "code.assignment";
-        final static public String CODE_DEFINITION = "code.definition";
+        final static String DOC = "doc";
+        final static String DOC_LINE = "doc.line";
+        final static String IMPORT = "import";
+        final static String IMPORT_SPLIT = "import.split";
+        final static String IMPORT_BODY = "import.body";
 
-        final static public String RUNTIME_IMPORT = "runtime.import";
-        final static public String RUNTIME_FILE = "runtime.file";
-        final static public String RUNTIME_PACK = "runtime.pack";
-        final static public String RUNTIME_NAME = "runtime.name";
-        final static public String RUNTIME_BODY = "runtime.body";
-        final static public String RUNTIME_ALIAS = "runtime.alias";
-        final static public String RUNTIME_ALIAS_BASIC = "runtime.alias.basic";
-        final static public String RUNTIME_ALIAS_VEC = "runtime.alias.list";
-        final static public String RUNTIME_ALIAS_MAP = "runtime.alias.map";
-        final static public String RUNTIME_TYPE_SPLIT = "runtime.type.split";
-        final static public String RUNTIME_TYPE_FULL = "runtime.type.full";
-        final static public String RUNTIME_PROTOC_HANDLE_2S = "runtime.protoc.handle.client";
-        final static public String RUNTIME_PROTOC_HANDLE_2C = "runtime.protoc.handle.server";
-        final static public String RUNTIME_PROTOC_HANDLE_M = "runtime.protoc.handle.method";
-        final static public String RUNTIME_PROTOC_HANDLE_NTF = "runtime.protoc.handle.notify";
-        final static public String RUNTIME_PROTOC_HANDLE_RESP = "runtime.protoc.handle.response";
-        final static public String RUNTIME_PROTOC_HANDLE_REQ = "runtime.protoc.handle.request";
-        final static public String RUNTIME_PROTOC_IDS_FUNC = "runtime.protoc.ids.func";
-        final static public String RUNTIME_PROTOC_IDS_FUNC_NAME = "runtime.protoc.ids.func.name";
-        final static public String RUNTIME_PROTOC_IDS_FUNC_ITEM = "runtime.protoc.ids.func.item";
+        final static String CODE_ASSIGNMENT = "code.assignment";
+        final static String CODE_DEFINITION = "code.definition";
+
+        final static String RUNTIME_IMPORT = "runtime.import";
+        final static String RUNTIME_FILE = "runtime.file";
+        final static String RUNTIME_PACK = "runtime.pack";
+        final static String RUNTIME_NAME = "runtime.name";
+        final static String RUNTIME_BODY = "runtime.body";
+        final static String RUNTIME_ALIAS = "runtime.alias";
+        final static String RUNTIME_ALIAS_BASIC = "runtime.alias.basic";
+        final static String RUNTIME_ALIAS_VEC = "runtime.alias.list";
+        final static String RUNTIME_ALIAS_MAP = "runtime.alias.map";
+        final static String RUNTIME_TYPE_SPLIT = "runtime.type.split";
+        final static String RUNTIME_TYPE_FULL = "runtime.type.full";
+        final static String RUNTIME_PROTOC_HANDLE_2S = "runtime.protoc.handle.client";
+        final static String RUNTIME_PROTOC_HANDLE_2C = "runtime.protoc.handle.server";
+        final static String RUNTIME_PROTOC_HANDLE_M = "runtime.protoc.handle.method";
+        final static String RUNTIME_PROTOC_HANDLE_NTF = "runtime.protoc.handle.notify";
+        final static String RUNTIME_PROTOC_HANDLE_RESP = "runtime.protoc.handle.response";
+        final static String RUNTIME_PROTOC_HANDLE_REQ = "runtime.protoc.handle.request";
+        final static String RUNTIME_PROTOC_IDS_FUNC = "runtime.protoc.ids.func";
+        final static String RUNTIME_PROTOC_IDS_FUNC_NAME = "runtime.protoc.ids.func.name";
+        final static String RUNTIME_PROTOC_IDS_FUNC_ITEM = "runtime.protoc.ids.func.item";
 
 
-        final static public String ENUM = "enum";
-        final static public String ENUM_FIELD = "enum.field";
-        final static public String STRUCT = "struct";
-        final static public String STRUCT_META = "struct.meta";
-        final static public String STRUCT_FIELD = "struct.field";
-        final static public String STRUCT_GETTER = "struct.getter";
-        final static public String STRUCT_SETTER = "struct.setter";
+        final static String ENUM = "enum";
+        final static String ENUM_FIELD = "enum.field";
+        final static String STRUCT = "struct";
+        final static String STRUCT_META = "struct.meta";
+        final static String STRUCT_FIELD = "struct.field";
+        final static String STRUCT_GETTER = "struct.getter";
+        final static String STRUCT_SETTER = "struct.setter";
 
-        final static public String CONSTRUCT_FIELD = "ctor.field";
-        final static public String CONSTRUCT_FIELD_SPLIT = "ctor.field.split";
+        final static String CONSTRUCT_FIELD = "ctor.field";
+        final static String CONSTRUCT_FIELD_SPLIT = "ctor.field.split";
     }
 
-    static public class Token {
+    static class Token {
         final static String Br = wrapToken("brk");
         final static String Concat = wrapToken("concat");
         final static String ConcatAll = wrapToken("concat-all");
