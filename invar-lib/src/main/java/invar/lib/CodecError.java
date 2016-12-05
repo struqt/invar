@@ -24,11 +24,12 @@ public class CodecError extends Exception {
     private final int code;
 
     public CodecError(int code) {
+        super(String.valueOf(code));
         this.code = code;
     }
 
     public CodecError(int code, Throwable cause) {
-        super(cause);
+        super(String.valueOf(code), cause);
         this.code = code;
     }
 
