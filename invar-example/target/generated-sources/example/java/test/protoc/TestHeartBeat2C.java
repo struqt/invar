@@ -31,8 +31,8 @@ invar.lib.InvarCodec.XMLEncode
         return new TestHeartBeat2C();
     }
 
-    private Integer                      protocId ;/* [AutoAdd] ProtocolID */
-    private Long                         protocCRC;/* [AutoAdd] Protocol CRC32 */
+    private Integer/*U16*/               protocId ;/* [AutoAdd] ProtocolID */
+    private Long/*U32*/                  protocCRC;/* [AutoAdd] Protocol CRC32 */
     private Protoc2C                     protoc2C ;/* [AutoAdd] 服务端响应的公共数据 */
     private LinkedHashMap<String,String> hotfix   ;/* [AutoAdd] Hotfix */
 
@@ -59,10 +59,10 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] ProtocolID */
     @invar.lib.InvarRule(T="uint16", S="f0")
-    public Integer getProtocId() { return protocId; }
+    public Integer/*U16*/ getProtocId() { return protocId; }
     /** [AutoAdd] Protocol CRC32 */
     @invar.lib.InvarRule(T="uint32", S="f1")
-    public Long getProtocCRC() { return protocCRC; }
+    public Long/*U32*/ getProtocCRC() { return protocCRC; }
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f2")
     public Protoc2C getProtoc2C() { return protoc2C; }
@@ -121,7 +121,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);

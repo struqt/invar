@@ -29,20 +29,20 @@ invar.lib.InvarCodec.XMLEncode
         return new TestBasic();
     }
 
-    private Byte       numberI08   ;/* 有符号的8位整数 */
-    private Short      numberI16   ;/* 有符号的16位整数 */
-    private Integer    numberI32   ;/* 有符号的32位整数 */
-    private Long       numberI64   ;/* 有符号的64位整数 */
-    private Integer    numberU08   ;/* 无符号的8位整数 */
-    private Integer    numberU16   ;/* 无符号的16位整数 */
-    private Long       numberU32   ;/* 无符号的32位整数 */
-    private BigInteger numberU64   ;/* 无符号的64位整数 */
-    private Float      numberSingle;/* 单精度浮点小数 */
-    private Double     numberDouble;/* 双精度浮点小数 */
-    private Boolean    boolValue   ;/* 布尔值 */
-    private String     stringValue ;/* 字符串 */
-    private Gender     enumValue   ;/* 枚举值 */
-    private Gender     enumDeft    ;/* 枚举值制定默认值 */
+    private Byte           numberI08   ;/* 有符号的8位整数 */
+    private Short          numberI16   ;/* 有符号的16位整数 */
+    private Integer        numberI32   ;/* 有符号的32位整数 */
+    private Long           numberI64   ;/* 有符号的64位整数 */
+    private Integer/*U08*/ numberU08   ;/* 无符号的8位整数 */
+    private Integer/*U16*/ numberU16   ;/* 无符号的16位整数 */
+    private Long/*U32*/    numberU32   ;/* 无符号的32位整数 */
+    private BigInteger     numberU64   ;/* 无符号的64位整数 */
+    private Float          numberSingle;/* 单精度浮点小数 */
+    private Double         numberDouble;/* 双精度浮点小数 */
+    private Boolean        boolValue   ;/* 布尔值 */
+    private String         stringValue ;/* 字符串 */
+    private Gender         enumValue   ;/* 枚举值 */
+    private Gender         enumDeft    ;/* 枚举值制定默认值 */
 
     public TestBasic()
     {
@@ -95,13 +95,13 @@ invar.lib.InvarCodec.XMLEncode
     public Long getNumberI64() { return numberI64; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="uint8", S="f4")
-    public Integer getNumberU08() { return numberU08; }
+    public Integer/*U08*/ getNumberU08() { return numberU08; }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="uint16", S="f5")
-    public Integer getNumberU16() { return numberU16; }
+    public Integer/*U16*/ getNumberU16() { return numberU16; }
     /** 无符号的32位整数 */
     @invar.lib.InvarRule(T="uint32", S="f6")
-    public Long getNumberU32() { return numberU32; }
+    public Long/*U32*/ getNumberU32() { return numberU32; }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="uint64", S="f7")
     public BigInteger getNumberU64() { return numberU64; }

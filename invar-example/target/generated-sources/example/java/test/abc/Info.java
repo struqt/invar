@@ -37,9 +37,9 @@ invar.lib.InvarCodec.XMLEncode
     private Short                         number02     ;
     private Integer                       number03     ;
     private Long                          number04     ;/* Test field comments */
-    private Integer                       number05     ;
-    private Integer                       number06     ;
-    private Long                          number07     ;
+    private Integer/*U08*/                number05     ;
+    private Integer/*U16*/                number06     ;
+    private Long/*U32*/                   number07     ;
     private BigInteger                    number08     ;
     private Float                         number09     ;
     private Double                        number10     ;
@@ -132,13 +132,13 @@ invar.lib.InvarCodec.XMLEncode
     public Long getNumber04() { return number04; }
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f5")
-    public Integer getNumber05() { return number05; }
+    public Integer/*U08*/ getNumber05() { return number05; }
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f6")
-    public Integer getNumber06() { return number06; }
+    public Integer/*U16*/ getNumber06() { return number06; }
     /**  */
     @invar.lib.InvarRule(T="uint32", S="f7")
-    public Long getNumber07() { return number07; }
+    public Long/*U32*/ getNumber07() { return number07; }
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f8")
     public BigInteger getNumber08() { return number08; }
@@ -342,7 +342,7 @@ invar.lib.InvarCodec.XMLEncode
         s = from_.readUTF();
         world.clear();
         Long lenWorld = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iWorld = 0L; iWorld < lenWorld; ++iWorld) {
+        for (Long/*U32*/ iWorld = 0L; iWorld < lenWorld; ++iWorld) {
             java.lang.String n1 = from_.readUTF();
             world.add(n1);
         }
@@ -357,20 +357,20 @@ invar.lib.InvarCodec.XMLEncode
         conflict.read(from_);
         conflicts.clear();
         Long lenConflicts = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iConflicts = 0L; iConflicts < lenConflicts; ++iConflicts) {
+        for (Long/*U32*/ iConflicts = 0L; iConflicts < lenConflicts; ++iConflicts) {
             test.xyz.Conflict n1 = test.xyz.Conflict.Create();
             n1.read(from_);
             conflicts.add(n1);
         }
         numbers.clear();
         Long lenNumbers = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iNumbers = 0L; iNumbers < lenNumbers; ++iNumbers) {
+        for (Long/*U32*/ iNumbers = 0L; iNumbers < lenNumbers; ++iNumbers) {
             java.lang.Double n1 = from_.readDouble();
             numbers.add(n1);
         }
         mapInfoG.clear();
         Long lenMapInfoG = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iMapInfoG = 0L; iMapInfoG < lenMapInfoG; ++iMapInfoG) {
+        for (Long/*U32*/ iMapInfoG = 0L; iMapInfoG < lenMapInfoG; ++iMapInfoG) {
             Info k1 = Info.Create();
             k1.read(from_);
             Gender v1 = Gender.valueOf(from_.readInt());
@@ -378,7 +378,7 @@ invar.lib.InvarCodec.XMLEncode
         }
         mapGenderInfo.clear();
         Long lenMapGenderInfo = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iMapGenderInfo = 0L; iMapGenderInfo < lenMapGenderInfo; ++iMapGenderInfo) {
+        for (Long/*U32*/ iMapGenderInfo = 0L; iMapGenderInfo < lenMapGenderInfo; ++iMapGenderInfo) {
             Gender k1 = Gender.valueOf(from_.readInt());
             Info v1 = Info.Create();
             v1.read(from_);
@@ -386,8 +386,8 @@ invar.lib.InvarCodec.XMLEncode
         }
         mapDouble.clear();
         Long lenMapDouble = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iMapDouble = 0L; iMapDouble < lenMapDouble; ++iMapDouble) {
-            Integer k1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iMapDouble = 0L; iMapDouble < lenMapDouble; ++iMapDouble) {
+            Integer k1 = from_.readInt();
             java.lang.Double v1 = from_.readDouble();
             mapDouble.put(k1,v1);
         }
@@ -395,7 +395,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
@@ -462,7 +462,7 @@ invar.lib.InvarCodec.XMLEncode
         dest_.writeInt(mapDouble.size());
         for (Map.Entry<Integer,java.lang.Double> mapDoubleIter : mapDouble.entrySet()) {
             Integer k1 = mapDoubleIter.getKey();
-            dest_.writeShort(k1);
+            dest_.writeInt(k1);
             java.lang.Double v1 = mapDoubleIter.getValue();
             dest_.writeDouble(v1);
         }

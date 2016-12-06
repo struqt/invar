@@ -184,7 +184,7 @@ invar.lib.InvarCodec.XMLEncode
         abc.read(from_);
         children.clear();
         Long lenChildren = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iChildren = 0L; iChildren < lenChildren; ++iChildren) {
+        for (Long/*U32*/ iChildren = 0L; iChildren < lenChildren; ++iChildren) {
             Custom n1 = Custom.Create();
             n1.read(from_);
             children.add(n1);

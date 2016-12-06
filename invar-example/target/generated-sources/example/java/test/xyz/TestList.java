@@ -32,20 +32,20 @@ invar.lib.InvarCodec.XMLEncode
         return new TestList();
     }
 
-    private LinkedList<Byte>       listI08    ;/* 有符号的8位整数 */
-    private LinkedList<Short>      listI16    ;/* 有符号的16位整数 */
-    private LinkedList<Integer>    listI32    ;/* 有符号的32位整数 */
-    private LinkedList<Long>       listI64    ;/* 有符号的64位整数 */
-    private LinkedList<Integer>    listU08    ;/* 无符号的8位整数 */
-    private LinkedList<Integer>    listU16    ;/* 无符号的16位整数 */
-    private LinkedList<Long>       listU32    ;/* 无符号的32位整数 */
-    private LinkedList<BigInteger> listU64    ;/* 无符号的64位整数 */
-    private LinkedList<Float>      listSingle ;/* 单精度浮点小数 */
-    private LinkedList<Double>     listDouble ;/* 双精度浮点小数 */
-    private LinkedList<Boolean>    listBoolean;/* 布尔值 */
-    private LinkedList<String>     listString ;/* 字符串 */
-    private LinkedList<Gender>     listEnum   ;/* 枚举值 */
-    private LinkedList<Custom>     listStruct ;/* 自定义结构 */
+    private LinkedList<Byte>           listI08    ;/* 有符号的8位整数 */
+    private LinkedList<Short>          listI16    ;/* 有符号的16位整数 */
+    private LinkedList<Integer>        listI32    ;/* 有符号的32位整数 */
+    private LinkedList<Long>           listI64    ;/* 有符号的64位整数 */
+    private LinkedList<Integer/*U08*/> listU08    ;/* 无符号的8位整数 */
+    private LinkedList<Integer/*U16*/> listU16    ;/* 无符号的16位整数 */
+    private LinkedList<Long/*U32*/>    listU32    ;/* 无符号的32位整数 */
+    private LinkedList<BigInteger>     listU64    ;/* 无符号的64位整数 */
+    private LinkedList<Float>          listSingle ;/* 单精度浮点小数 */
+    private LinkedList<Double>         listDouble ;/* 双精度浮点小数 */
+    private LinkedList<Boolean>        listBoolean;/* 布尔值 */
+    private LinkedList<String>         listString ;/* 字符串 */
+    private LinkedList<Gender>         listEnum   ;/* 枚举值 */
+    private LinkedList<Custom>         listStruct ;/* 自定义结构 */
 
     public TestList()
     {
@@ -53,9 +53,9 @@ invar.lib.InvarCodec.XMLEncode
         listI16     = new LinkedList<Short>();
         listI32     = new LinkedList<Integer>();
         listI64     = new LinkedList<Long>();
-        listU08     = new LinkedList<Integer>();
-        listU16     = new LinkedList<Integer>();
-        listU32     = new LinkedList<Long>();
+        listU08     = new LinkedList<Integer/*U08*/>();
+        listU16     = new LinkedList<Integer/*U16*/>();
+        listU32     = new LinkedList<Long/*U32*/>();
         listU64     = new LinkedList<BigInteger>();
         listSingle  = new LinkedList<Float>();
         listDouble  = new LinkedList<Double>();
@@ -98,13 +98,13 @@ invar.lib.InvarCodec.XMLEncode
     public LinkedList<Long> getListI64() { return listI64; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="vec<uint8>", S="f4")
-    public LinkedList<java.lang.Integer> getListU08() { return listU08; }
+    public LinkedList<Integer/*U08*/> getListU08() { return listU08; }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="vec<uint16>", S="f5")
-    public LinkedList<java.lang.Integer> getListU16() { return listU16; }
+    public LinkedList<Integer/*U16*/> getListU16() { return listU16; }
     /** 无符号的32位整数 */
     @invar.lib.InvarRule(T="vec<uint32>", S="f6")
-    public LinkedList<java.lang.Long> getListU32() { return listU32; }
+    public LinkedList<Long/*U32*/> getListU32() { return listU32; }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="vec<uint64>", S="f7")
     public LinkedList<BigInteger> getListU64() { return listU64; }
@@ -173,86 +173,86 @@ invar.lib.InvarCodec.XMLEncode
     {
         listI08.clear();
         Long lenListI08 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
+        for (Long/*U32*/ iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
             java.lang.Byte n1 = from_.readByte();
             listI08.add(n1);
         }
         listI16.clear();
         Long lenListI16 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListI16 = 0L; iListI16 < lenListI16; ++iListI16) {
+        for (Long/*U32*/ iListI16 = 0L; iListI16 < lenListI16; ++iListI16) {
             Short n1 = from_.readShort();
             listI16.add(n1);
         }
         listI32.clear();
         Long lenListI32 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListI32 = 0L; iListI32 < lenListI32; ++iListI32) {
-            Integer n1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iListI32 = 0L; iListI32 < lenListI32; ++iListI32) {
+            Integer n1 = from_.readInt();
             listI32.add(n1);
         }
         listI64.clear();
         Long lenListI64 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListI64 = 0L; iListI64 < lenListI64; ++iListI64) {
-            Long n1 = from_.readInt() & 0xFFFFFFFFL;
+        for (Long/*U32*/ iListI64 = 0L; iListI64 < lenListI64; ++iListI64) {
+            Long n1 = from_.readLong();
             listI64.add(n1);
         }
         listU08.clear();
         Long lenListU08 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListU08 = 0L; iListU08 < lenListU08; ++iListU08) {
-            java.lang.Integer n1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iListU08 = 0L; iListU08 < lenListU08; ++iListU08) {
+            Integer/*U08*/ n1 = from_.readUnsignedByte();
             listU08.add(n1);
         }
         listU16.clear();
         Long lenListU16 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListU16 = 0L; iListU16 < lenListU16; ++iListU16) {
-            java.lang.Integer n1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iListU16 = 0L; iListU16 < lenListU16; ++iListU16) {
+            Integer/*U16*/ n1 = from_.readUnsignedShort();
             listU16.add(n1);
         }
         listU32.clear();
         Long lenListU32 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListU32 = 0L; iListU32 < lenListU32; ++iListU32) {
-            java.lang.Long n1 = from_.readInt() & 0xFFFFFFFFL;
+        for (Long/*U32*/ iListU32 = 0L; iListU32 < lenListU32; ++iListU32) {
+            Long/*U32*/ n1 = from_.readInt() & 0xFFFFFFFFL;
             listU32.add(n1);
         }
         listU64.clear();
         Long lenListU64 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListU64 = 0L; iListU64 < lenListU64; ++iListU64) {
+        for (Long/*U32*/ iListU64 = 0L; iListU64 < lenListU64; ++iListU64) {
             byte[] n1Bytes = new byte[8]; from_.readFully(n1Bytes, 0, 8);
             BigInteger n1 = new BigInteger(1, n1Bytes);
             listU64.add(n1);
         }
         listSingle.clear();
         Long lenListSingle = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListSingle = 0L; iListSingle < lenListSingle; ++iListSingle) {
+        for (Long/*U32*/ iListSingle = 0L; iListSingle < lenListSingle; ++iListSingle) {
             Float n1 = from_.readFloat();
             listSingle.add(n1);
         }
         listDouble.clear();
         Long lenListDouble = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListDouble = 0L; iListDouble < lenListDouble; ++iListDouble) {
+        for (Long/*U32*/ iListDouble = 0L; iListDouble < lenListDouble; ++iListDouble) {
             java.lang.Double n1 = from_.readDouble();
             listDouble.add(n1);
         }
         listBoolean.clear();
         Long lenListBoolean = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListBoolean = 0L; iListBoolean < lenListBoolean; ++iListBoolean) {
+        for (Long/*U32*/ iListBoolean = 0L; iListBoolean < lenListBoolean; ++iListBoolean) {
             java.lang.Boolean n1 = from_.readBoolean();
             listBoolean.add(n1);
         }
         listString.clear();
         Long lenListString = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListString = 0L; iListString < lenListString; ++iListString) {
+        for (Long/*U32*/ iListString = 0L; iListString < lenListString; ++iListString) {
             java.lang.String n1 = from_.readUTF();
             listString.add(n1);
         }
         listEnum.clear();
         Long lenListEnum = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListEnum = 0L; iListEnum < lenListEnum; ++iListEnum) {
+        for (Long/*U32*/ iListEnum = 0L; iListEnum < lenListEnum; ++iListEnum) {
             Gender n1 = Gender.valueOf(from_.readInt());
             listEnum.add(n1);
         }
         listStruct.clear();
         Long lenListStruct = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListStruct = 0L; iListStruct < lenListStruct; ++iListStruct) {
+        for (Long/*U32*/ iListStruct = 0L; iListStruct < lenListStruct; ++iListStruct) {
             Custom n1 = Custom.Create();
             n1.read(from_);
             listStruct.add(n1);
@@ -276,22 +276,22 @@ invar.lib.InvarCodec.XMLEncode
         }
         dest_.writeInt(listI32.size());
         for (Integer n1 : listI32) {
-            dest_.writeShort(n1);
+            dest_.writeInt(n1);
         }
         dest_.writeInt(listI64.size());
         for (Long n1 : listI64) {
-            dest_.writeInt(n1.intValue());
+            dest_.writeLong(n1);
         }
         dest_.writeInt(listU08.size());
-        for (java.lang.Integer n1 : listU08) {
-            dest_.writeShort(n1);
+        for (Integer/*U08*/ n1 : listU08) {
+            dest_.writeByte(n1);
         }
         dest_.writeInt(listU16.size());
-        for (java.lang.Integer n1 : listU16) {
+        for (Integer/*U16*/ n1 : listU16) {
             dest_.writeShort(n1);
         }
         dest_.writeInt(listU32.size());
-        for (java.lang.Long n1 : listU32) {
+        for (Long/*U32*/ n1 : listU32) {
             dest_.writeInt(n1.intValue());
         }
         dest_.writeInt(listU64.size());
@@ -434,7 +434,7 @@ invar.lib.InvarCodec.XMLEncode
         if (listU08Size > 0) {
             _.append('[');
             int listU08Idx = 0;
-            for (java.lang.Integer n1 : listU08) { /* vec.for: listU08 */
+            for (Integer/*U08*/ n1 : listU08) { /* vec.for: listU08 */
                 ++listU08Idx;
                 _.append(n1.toString());
                 if (listU08Idx != listU08Size) { _.append(','); }
@@ -448,7 +448,7 @@ invar.lib.InvarCodec.XMLEncode
         if (listU16Size > 0) {
             _.append('[');
             int listU16Idx = 0;
-            for (java.lang.Integer n1 : listU16) { /* vec.for: listU16 */
+            for (Integer/*U16*/ n1 : listU16) { /* vec.for: listU16 */
                 ++listU16Idx;
                 _.append(n1.toString());
                 if (listU16Idx != listU16Size) { _.append(','); }
@@ -462,7 +462,7 @@ invar.lib.InvarCodec.XMLEncode
         if (listU32Size > 0) {
             _.append('[');
             int listU32Idx = 0;
-            for (java.lang.Long n1 : listU32) { /* vec.for: listU32 */
+            for (Long/*U32*/ n1 : listU32) { /* vec.for: listU32 */
                 ++listU32Idx;
                 _.append(n1.toString());
                 if (listU32Idx != listU32Size) { _.append(','); }
@@ -615,7 +615,7 @@ invar.lib.InvarCodec.XMLEncode
         }
         if (listU08.size() > 0) {
             nodes.append('<').append("listU08").append('>');
-            for (java.lang.Integer n1 : listU08) {
+            for (Integer/*U08*/ n1 : listU08) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
                 nodes.append(n1.toString()).append('"').append('/').append('>');
             }
@@ -623,7 +623,7 @@ invar.lib.InvarCodec.XMLEncode
         }
         if (listU16.size() > 0) {
             nodes.append('<').append("listU16").append('>');
-            for (java.lang.Integer n1 : listU16) {
+            for (Integer/*U16*/ n1 : listU16) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
                 nodes.append(n1.toString()).append('"').append('/').append('>');
             }
@@ -631,7 +631,7 @@ invar.lib.InvarCodec.XMLEncode
         }
         if (listU32.size() > 0) {
             nodes.append('<').append("listU32").append('>');
-            for (java.lang.Long n1 : listU32) {
+            for (Long/*U32*/ n1 : listU32) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
                 nodes.append(n1.toString()).append('"').append('/').append('>');
             }

@@ -111,7 +111,7 @@ invar.lib.InvarCodec.XMLEncode
         text = from_.readUTF();
         bytes.clear();
         Long lenBytes = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iBytes = 0L; iBytes < lenBytes; ++iBytes) {
+        for (Long/*U32*/ iBytes = 0L; iBytes < lenBytes; ++iBytes) {
             java.lang.Byte n1 = from_.readByte();
             bytes.add(n1);
         }
@@ -119,7 +119,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);

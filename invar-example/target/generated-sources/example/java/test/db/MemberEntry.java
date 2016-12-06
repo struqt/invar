@@ -32,7 +32,7 @@ invar.lib.InvarCodec.XMLEncode
         return new MemberEntry();
     }
 
-    private Long                         id        ;/* 主键，自增长 */
+    private Long/*U32*/                  id        ;/* 主键，自增长 */
     private String                       phone     ;/* 手机号码 */
     private String                       nickName  ;/* 会员昵称 */
     private Long                         createTime;/* 创建时间 */
@@ -64,7 +64,7 @@ invar.lib.InvarCodec.XMLEncode
 
     /** 主键，自增长 */
     @invar.lib.InvarRule(T="uint32", S="f0")
-    public Long getId() { return id; }
+    public Long/*U32*/ getId() { return id; }
     /** 手机号码 */
     @invar.lib.InvarRule(T="string", S="f1")
     public String getPhone() { return phone; }
@@ -143,7 +143,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);

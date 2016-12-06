@@ -38,9 +38,9 @@ invar.lib.InvarCodec.XMLEncode
     private Short                    numberi16   ;
     private Integer                  numberi32   ;
     private Long                     numberi64   ;
-    private Integer                  numberu08   ;
-    private Integer                  numberu16   ;
-    private Long                     numberu32   ;
+    private Integer/*U08*/           numberu08   ;
+    private Integer/*U16*/           numberu16   ;
+    private Long/*U32*/              numberu32   ;
     private BigInteger               numberu64   ;
     private Float                    numberSingle;
     private Double                   numberDouble;
@@ -111,13 +111,13 @@ invar.lib.InvarCodec.XMLEncode
     public Long getNumberi64() { return numberi64; }
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f4")
-    public Integer getNumberu08() { return numberu08; }
+    public Integer/*U08*/ getNumberu08() { return numberu08; }
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f5")
-    public Integer getNumberu16() { return numberu16; }
+    public Integer/*U16*/ getNumberu16() { return numberu16; }
     /**  */
     @invar.lib.InvarRule(T="uint32", S="f6")
-    public Long getNumberu32() { return numberu32; }
+    public Long/*U32*/ getNumberu32() { return numberu32; }
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f7")
     public BigInteger getNumberu64() { return numberu64; }
@@ -292,13 +292,13 @@ invar.lib.InvarCodec.XMLEncode
         else { throw new CodecError(CodecError.ERR_DECODE_STRUCT_P); }
         listI08.clear();
         Long lenListI08 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
+        for (Long/*U32*/ iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
             java.lang.Byte n1 = from_.readByte();
             listI08.add(n1);
         }
         dictI08.clear();
         Long lenDictI08 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
+        for (Long/*U32*/ iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
             java.lang.Byte k1 = from_.readByte();
             java.lang.Byte v1 = from_.readByte();
             dictI08.put(k1,v1);

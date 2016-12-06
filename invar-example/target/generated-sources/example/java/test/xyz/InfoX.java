@@ -181,19 +181,19 @@ invar.lib.InvarCodec.XMLEncode
     {
         infos.clear();
         Long lenInfos = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iInfos = 0L; iInfos < lenInfos; ++iInfos) {
+        for (Long/*U32*/ iInfos = 0L; iInfos < lenInfos; ++iInfos) {
             LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 = new LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<LinkedList<LinkedList<Info>>> n2 = new LinkedList<LinkedList<LinkedList<Info>>>(); //read.vec.head
                 Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
-                for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
+                for (Long/*U32*/ iN2 = 0L; iN2 < lenN2; ++iN2) {
                     LinkedList<LinkedList<Info>> n3 = new LinkedList<LinkedList<Info>>(); //read.vec.head
                     Long lenN3 = from_.readInt() & 0xFFFFFFFFL;
-                    for (Long iN3 = 0L; iN3 < lenN3; ++iN3) {
+                    for (Long/*U32*/ iN3 = 0L; iN3 < lenN3; ++iN3) {
                         LinkedList<Info> n4 = new LinkedList<Info>(); //read.vec.head
                         Long lenN4 = from_.readInt() & 0xFFFFFFFFL;
-                        for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
+                        for (Long/*U32*/ iN4 = 0L; iN4 < lenN4; ++iN4) {
                             Info n5 = Info.Create();
                             n5.read(from_);
                             n4.add(n5);
@@ -210,18 +210,18 @@ invar.lib.InvarCodec.XMLEncode
         conflict_a.read(from_);
         mConflict.clear();
         Long lenMConflict = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iMConflict = 0L; iMConflict < lenMConflict; ++iMConflict) {
-            Integer k1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iMConflict = 0L; iMConflict < lenMConflict; ++iMConflict) {
+            Integer k1 = from_.readInt();
             test.abc.Conflict v1 = test.abc.Conflict.Create();
             v1.read(from_);
             mConflict.put(k1,v1);
         }
         info2d.clear();
         Long lenInfo2d = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iInfo2d = 0L; iInfo2d < lenInfo2d; ++iInfo2d) {
+        for (Long/*U32*/ iInfo2d = 0L; iInfo2d < lenInfo2d; ++iInfo2d) {
             LinkedList<Info> n1 = new LinkedList<Info>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 Info n2 = Info.Create();
                 n2.read(from_);
                 n1.add(n2);
@@ -230,13 +230,13 @@ invar.lib.InvarCodec.XMLEncode
         }
         info3d.clear();
         Long lenInfo3d = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iInfo3d = 0L; iInfo3d < lenInfo3d; ++iInfo3d) {
+        for (Long/*U32*/ iInfo3d = 0L; iInfo3d < lenInfo3d; ++iInfo3d) {
             LinkedList<LinkedList<Info>> n1 = new LinkedList<LinkedList<Info>>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<Info> n2 = new LinkedList<Info>(); //read.vec.head
                 Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
-                for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
+                for (Long/*U32*/ iN2 = 0L; iN2 < lenN2; ++iN2) {
                     Info n3 = Info.Create();
                     n3.read(from_);
                     n2.add(n3);
@@ -247,19 +247,19 @@ invar.lib.InvarCodec.XMLEncode
         }
         info5d.clear();
         Long lenInfo5d = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iInfo5d = 0L; iInfo5d < lenInfo5d; ++iInfo5d) {
+        for (Long/*U32*/ iInfo5d = 0L; iInfo5d < lenInfo5d; ++iInfo5d) {
             LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 = new LinkedList<LinkedList<LinkedList<LinkedList<Info>>>>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<LinkedList<LinkedList<Info>>> n2 = new LinkedList<LinkedList<LinkedList<Info>>>(); //read.vec.head
                 Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
-                for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
+                for (Long/*U32*/ iN2 = 0L; iN2 < lenN2; ++iN2) {
                     LinkedList<LinkedList<Info>> n3 = new LinkedList<LinkedList<Info>>(); //read.vec.head
                     Long lenN3 = from_.readInt() & 0xFFFFFFFFL;
-                    for (Long iN3 = 0L; iN3 < lenN3; ++iN3) {
+                    for (Long/*U32*/ iN3 = 0L; iN3 < lenN3; ++iN3) {
                         LinkedList<Info> n4 = new LinkedList<Info>(); //read.vec.head
                         Long lenN4 = from_.readInt() & 0xFFFFFFFFL;
-                        for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
+                        for (Long/*U32*/ iN4 = 0L; iN4 < lenN4; ++iN4) {
                             Info n5 = Info.Create();
                             n5.read(from_);
                             n4.add(n5);
@@ -274,10 +274,10 @@ invar.lib.InvarCodec.XMLEncode
         }
         infovm.clear();
         Long lenInfovm = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iInfovm = 0L; iInfovm < lenInfovm; ++iInfovm) {
+        for (Long/*U32*/ iInfovm = 0L; iInfovm < lenInfovm; ++iInfovm) {
             LinkedHashMap<Short,Info> n1 = new LinkedHashMap<Short,Info>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 Short k2 = from_.readShort();
                 Info v2 = Info.Create();
                 v2.read(from_);
@@ -287,10 +287,10 @@ invar.lib.InvarCodec.XMLEncode
         }
         mvei.clear();
         Long lenMvei = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iMvei = 0L; iMvei < lenMvei; ++iMvei) {
+        for (Long/*U32*/ iMvei = 0L; iMvei < lenMvei; ++iMvei) {
             LinkedList<Gender> k1 = new LinkedList<Gender>(); //read.map.head
             Long lenK1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iK1 = 0L; iK1 < lenK1; ++iK1) {
+            for (Long/*U32*/ iK1 = 0L; iK1 < lenK1; ++iK1) {
                 Gender n2 = Gender.valueOf(from_.readInt());
                 k1.add(n2);
             }
@@ -300,12 +300,12 @@ invar.lib.InvarCodec.XMLEncode
         }
         mive.clear();
         Long lenMive = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iMive = 0L; iMive < lenMive; ++iMive) {
+        for (Long/*U32*/ iMive = 0L; iMive < lenMive; ++iMive) {
             Info k1 = Info.Create();
             k1.read(from_);
             LinkedList<Gender> v1 = new LinkedList<Gender>(); //read.map.head
             Long lenV1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iV1 = 0L; iV1 < lenV1; ++iV1) {
+            for (Long/*U32*/ iV1 = 0L; iV1 < lenV1; ++iV1) {
                 Gender n2 = Gender.valueOf(from_.readInt());
                 v1.add(n2);
             }
@@ -313,17 +313,17 @@ invar.lib.InvarCodec.XMLEncode
         }
         mvive.clear();
         Long lenMvive = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iMvive = 0L; iMvive < lenMvive; ++iMvive) {
+        for (Long/*U32*/ iMvive = 0L; iMvive < lenMvive; ++iMvive) {
             LinkedList<Info> k1 = new LinkedList<Info>(); //read.map.head
             Long lenK1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iK1 = 0L; iK1 < lenK1; ++iK1) {
+            for (Long/*U32*/ iK1 = 0L; iK1 < lenK1; ++iK1) {
                 Info n2 = Info.Create();
                 n2.read(from_);
                 k1.add(n2);
             }
             LinkedList<Gender> v1 = new LinkedList<Gender>(); //read.map.head
             Long lenV1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iV1 = 0L; iV1 < lenV1; ++iV1) {
+            for (Long/*U32*/ iV1 = 0L; iV1 < lenV1; ++iV1) {
                 Gender n2 = Gender.valueOf(from_.readInt());
                 v1.add(n2);
             }
@@ -331,20 +331,20 @@ invar.lib.InvarCodec.XMLEncode
         }
         vmvive.clear();
         Long lenVmvive = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iVmvive = 0L; iVmvive < lenVmvive; ++iVmvive) {
+        for (Long/*U32*/ iVmvive = 0L; iVmvive < lenVmvive; ++iVmvive) {
             LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> n1 = new LinkedHashMap<LinkedList<Info>,LinkedList<Gender>>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<Info> k2 = new LinkedList<Info>(); //read.map.head
                 Long lenK2 = from_.readInt() & 0xFFFFFFFFL;
-                for (Long iK2 = 0L; iK2 < lenK2; ++iK2) {
+                for (Long/*U32*/ iK2 = 0L; iK2 < lenK2; ++iK2) {
                     Info n3 = Info.Create();
                     n3.read(from_);
                     k2.add(n3);
                 }
                 LinkedList<Gender> v2 = new LinkedList<Gender>(); //read.map.head
                 Long lenV2 = from_.readInt() & 0xFFFFFFFFL;
-                for (Long iV2 = 0L; iV2 < lenV2; ++iV2) {
+                for (Long/*U32*/ iV2 = 0L; iV2 < lenV2; ++iV2) {
                     Gender n3 = Gender.valueOf(from_.readInt());
                     v2.add(n3);
                 }
@@ -356,7 +356,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
@@ -394,7 +394,7 @@ invar.lib.InvarCodec.XMLEncode
         dest_.writeInt(mConflict.size());
         for (Map.Entry<Integer,test.abc.Conflict> mConflictIter : mConflict.entrySet()) {
             Integer k1 = mConflictIter.getKey();
-            dest_.writeShort(k1);
+            dest_.writeInt(k1);
             test.abc.Conflict v1 = mConflictIter.getValue();
             v1.write(dest_);
         }

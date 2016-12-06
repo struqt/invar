@@ -85,10 +85,10 @@ invar.lib.InvarCodec.XMLEncode
     {
         listDict.clear();
         Long lenListDict = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iListDict = 0L; iListDict < lenListDict; ++iListDict) {
+        for (Long/*U32*/ iListDict = 0L; iListDict < lenListDict; ++iListDict) {
             LinkedHashMap<java.lang.String,Custom> n1 = new LinkedHashMap<java.lang.String,Custom>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 java.lang.String k2 = from_.readUTF();
                 Custom v2 = Custom.Create();
                 v2.read(from_);
@@ -98,16 +98,16 @@ invar.lib.InvarCodec.XMLEncode
         }
         dictList.clear();
         Long lenDictList = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictList = 0L; iDictList < lenDictList; ++iDictList) {
+        for (Long/*U32*/ iDictList = 0L; iDictList < lenDictList; ++iDictList) {
             LinkedList<java.lang.String> k1 = new LinkedList<java.lang.String>(); //read.map.head
             Long lenK1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iK1 = 0L; iK1 < lenK1; ++iK1) {
+            for (Long/*U32*/ iK1 = 0L; iK1 < lenK1; ++iK1) {
                 java.lang.String n2 = from_.readUTF();
                 k1.add(n2);
             }
             LinkedList<Custom> v1 = new LinkedList<Custom>(); //read.map.head
             Long lenV1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iV1 = 0L; iV1 < lenV1; ++iV1) {
+            for (Long/*U32*/ iV1 = 0L; iV1 < lenV1; ++iV1) {
                 Custom n2 = Custom.Create();
                 n2.read(from_);
                 v1.add(n2);
@@ -116,19 +116,19 @@ invar.lib.InvarCodec.XMLEncode
         }
         list5d.clear();
         Long lenList5d = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iList5d = 0L; iList5d < lenList5d; ++iList5d) {
+        for (Long/*U32*/ iList5d = 0L; iList5d < lenList5d; ++iList5d) {
             LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>> n1 = new LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>>(); //read.vec.head
             Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+            for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                 LinkedList<LinkedList<LinkedList<Custom>>> n2 = new LinkedList<LinkedList<LinkedList<Custom>>>(); //read.vec.head
                 Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
-                for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
+                for (Long/*U32*/ iN2 = 0L; iN2 < lenN2; ++iN2) {
                     LinkedList<LinkedList<Custom>> n3 = new LinkedList<LinkedList<Custom>>(); //read.vec.head
                     Long lenN3 = from_.readInt() & 0xFFFFFFFFL;
-                    for (Long iN3 = 0L; iN3 < lenN3; ++iN3) {
+                    for (Long/*U32*/ iN3 = 0L; iN3 < lenN3; ++iN3) {
                         LinkedList<Custom> n4 = new LinkedList<Custom>(); //read.vec.head
                         Long lenN4 = from_.readInt() & 0xFFFFFFFFL;
-                        for (Long iN4 = 0L; iN4 < lenN4; ++iN4) {
+                        for (Long/*U32*/ iN4 = 0L; iN4 < lenN4; ++iN4) {
                             Custom n5 = Custom.Create();
                             n5.read(from_);
                             n4.add(n5);

@@ -32,9 +32,9 @@ invar.lib.InvarCodec.XMLEncode
         return new TestUserLoginR2C();
     }
 
-    private Integer                      protocError;/* [AutoAdd] Protocol error code */
-    private Integer                      protocId   ;/* [AutoAdd] ProtocolID */
-    private Long                         protocCRC  ;/* [AutoAdd] Protocol CRC32 */
+    private Integer/*U16*/               protocError;/* [AutoAdd] Protocol error code */
+    private Integer/*U16*/               protocId   ;/* [AutoAdd] ProtocolID */
+    private Long/*U32*/                  protocCRC  ;/* [AutoAdd] Protocol CRC32 */
     private Protoc2C                     protoc2C   ;/* [AutoAdd] 服务端响应的公共数据 */
     private String                       userId     ;
     private String                       userName   ;
@@ -72,13 +72,13 @@ invar.lib.InvarCodec.XMLEncode
 
     /** [AutoAdd] Protocol error code */
     @invar.lib.InvarRule(T="uint16", S="f0")
-    public Integer getProtocError() { return protocError; }
+    public Integer/*U16*/ getProtocError() { return protocError; }
     /** [AutoAdd] ProtocolID */
     @invar.lib.InvarRule(T="uint16", S="f1")
-    public Integer getProtocId() { return protocId; }
+    public Integer/*U16*/ getProtocId() { return protocId; }
     /** [AutoAdd] Protocol CRC32 */
     @invar.lib.InvarRule(T="uint32", S="f2")
-    public Long getProtocCRC() { return protocCRC; }
+    public Long/*U32*/ getProtocCRC() { return protocCRC; }
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f3")
     public Protoc2C getProtoc2C() { return protoc2C; }
@@ -170,15 +170,15 @@ invar.lib.InvarCodec.XMLEncode
         userName = from_.readUTF();
         roles.clear();
         Long lenRoles = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iRoles = 0L; iRoles < lenRoles; ++iRoles) {
-            Integer n1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iRoles = 0L; iRoles < lenRoles; ++iRoles) {
+            Integer n1 = from_.readInt();
             roles.add(n1);
         }
         byte hotfixExists = from_.readByte();
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
@@ -208,7 +208,7 @@ invar.lib.InvarCodec.XMLEncode
         dest_.writeUTF(userName);
         dest_.writeInt(roles.size());
         for (Integer n1 : roles) {
-            dest_.writeShort(n1);
+            dest_.writeInt(n1);
         }
         if (hotfix != null) {
             dest_.writeByte((byte)0x01);

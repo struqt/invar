@@ -223,7 +223,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == listI08Exists) {
             if (listI08 == null) { listI08 = new LinkedList<java.lang.Byte>(); }
             Long lenListI08 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
+            for (Long/*U32*/ iListI08 = 0L; iListI08 < lenListI08; ++iListI08) {
                 java.lang.Byte n1 = from_.readByte();
                 listI08.add(n1);
             }
@@ -234,7 +234,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == dictI08Exists) {
             if (dictI08 == null) { dictI08 = new LinkedHashMap<java.lang.Byte,java.lang.Byte>(); }
             Long lenDictI08 = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
+            for (Long/*U32*/ iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
                 java.lang.Byte k1 = from_.readByte();
                 java.lang.Byte v1 = from_.readByte();
                 dictI08.put(k1,v1);
@@ -246,16 +246,16 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == listNestedExists) {
             if (listNested == null) { listNested = new LinkedList<LinkedList<LinkedList<LinkedList<TestPointer>>>>(); }
             Long lenListNested = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iListNested = 0L; iListNested < lenListNested; ++iListNested) {
+            for (Long/*U32*/ iListNested = 0L; iListNested < lenListNested; ++iListNested) {
                 LinkedList<LinkedList<LinkedList<TestPointer>>> n1 = new LinkedList<LinkedList<LinkedList<TestPointer>>>(); //read.vec.head
                 Long lenN1 = from_.readInt() & 0xFFFFFFFFL;
-                for (Long iN1 = 0L; iN1 < lenN1; ++iN1) {
+                for (Long/*U32*/ iN1 = 0L; iN1 < lenN1; ++iN1) {
                     LinkedList<LinkedList<TestPointer>> n2 = new LinkedList<LinkedList<TestPointer>>(); //read.vec.head
                     Long lenN2 = from_.readInt() & 0xFFFFFFFFL;
-                    for (Long iN2 = 0L; iN2 < lenN2; ++iN2) {
+                    for (Long/*U32*/ iN2 = 0L; iN2 < lenN2; ++iN2) {
                         LinkedList<TestPointer> n3 = new LinkedList<TestPointer>(); //read.vec.head
                         Long lenN3 = from_.readInt() & 0xFFFFFFFFL;
-                        for (Long iN3 = 0L; iN3 < lenN3; ++iN3) {
+                        for (Long/*U32*/ iN3 = 0L; iN3 < lenN3; ++iN3) {
                             TestPointer n4 = TestPointer.Create();
                             n4.read(from_);
                             n3.add(n4);
@@ -275,7 +275,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);

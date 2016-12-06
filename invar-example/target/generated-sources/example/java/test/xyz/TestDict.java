@@ -33,21 +33,21 @@ invar.lib.InvarCodec.XMLEncode
         return new TestDict();
     }
 
-    private LinkedHashMap<Byte,Byte>             dictI08    ;/* 有符号的8位整数 */
-    private LinkedHashMap<Short,Short>           dictI16    ;/* 有符号的16位整数 */
-    private LinkedHashMap<Integer,Integer>       dictI32    ;/* 有符号的32位整数 */
-    private LinkedHashMap<Long,Long>             dictI64    ;/* 有符号的64位整数 */
-    private LinkedHashMap<Integer,Integer>       dictU08    ;/* 无符号的8位整数 */
-    private LinkedHashMap<Integer,Integer>       dictU16    ;/* 无符号的16位整数 */
-    private LinkedHashMap<Long,Long>             dictU32    ;/* 无符号的32位整数 */
-    private LinkedHashMap<BigInteger,BigInteger> dictU64    ;/* 无符号的64位整数 */
-    private LinkedHashMap<Float,Float>           dictSingle ;/* 单精度浮点小数 */
-    private LinkedHashMap<Double,Double>         dictDouble ;/* 双精度浮点小数 */
-    private LinkedHashMap<Boolean,Boolean>       dictBoolean;/* 布尔值 */
-    private LinkedHashMap<String,String>         dictString ;/* 字符串 */
-    private LinkedHashMap<Gender,Gender>         dictEnum   ;/* 枚举值 */
-    private LinkedHashMap<Custom,Custom>         dictStruct ;/* 自定义结构 */
-    private LinkedHashMap<String,String>         hotfix     ;/* [AutoAdd] Hotfix */
+    private LinkedHashMap<Byte,Byte>                     dictI08    ;/* 有符号的8位整数 */
+    private LinkedHashMap<Short,Short>                   dictI16    ;/* 有符号的16位整数 */
+    private LinkedHashMap<Integer,Integer>               dictI32    ;/* 有符号的32位整数 */
+    private LinkedHashMap<Long,Long>                     dictI64    ;/* 有符号的64位整数 */
+    private LinkedHashMap<Integer/*U08*/,Integer/*U08*/> dictU08    ;/* 无符号的8位整数 */
+    private LinkedHashMap<Integer/*U16*/,Integer/*U16*/> dictU16    ;/* 无符号的16位整数 */
+    private LinkedHashMap<Long/*U32*/,Long/*U32*/>       dictU32    ;/* 无符号的32位整数 */
+    private LinkedHashMap<BigInteger,BigInteger>         dictU64    ;/* 无符号的64位整数 */
+    private LinkedHashMap<Float,Float>                   dictSingle ;/* 单精度浮点小数 */
+    private LinkedHashMap<Double,Double>                 dictDouble ;/* 双精度浮点小数 */
+    private LinkedHashMap<Boolean,Boolean>               dictBoolean;/* 布尔值 */
+    private LinkedHashMap<String,String>                 dictString ;/* 字符串 */
+    private LinkedHashMap<Gender,Gender>                 dictEnum   ;/* 枚举值 */
+    private LinkedHashMap<Custom,Custom>                 dictStruct ;/* 自定义结构 */
+    private LinkedHashMap<String,String>                 hotfix     ;/* [AutoAdd] Hotfix */
 
     public TestDict()
     {
@@ -55,9 +55,9 @@ invar.lib.InvarCodec.XMLEncode
         dictI16     = new LinkedHashMap<Short,Short>();
         dictI32     = new LinkedHashMap<Integer,Integer>();
         dictI64     = new LinkedHashMap<Long,Long>();
-        dictU08     = new LinkedHashMap<Integer,Integer>();
-        dictU16     = new LinkedHashMap<Integer,Integer>();
-        dictU32     = new LinkedHashMap<Long,Long>();
+        dictU08     = new LinkedHashMap<Integer/*U08*/,Integer/*U08*/>();
+        dictU16     = new LinkedHashMap<Integer/*U16*/,Integer/*U16*/>();
+        dictU32     = new LinkedHashMap<Long/*U32*/,Long/*U32*/>();
         dictU64     = new LinkedHashMap<BigInteger,BigInteger>();
         dictSingle  = new LinkedHashMap<Float,Float>();
         dictDouble  = new LinkedHashMap<Double,Double>();
@@ -104,13 +104,13 @@ invar.lib.InvarCodec.XMLEncode
     public LinkedHashMap<Long,Long> getDictI64() { return dictI64; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="map<uint8,uint8>", S="f4")
-    public LinkedHashMap<java.lang.Integer,java.lang.Integer> getDictU08() { return dictU08; }
+    public LinkedHashMap<Integer/*U08*/,Integer/*U08*/> getDictU08() { return dictU08; }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="map<uint16,uint16>", S="f5")
-    public LinkedHashMap<java.lang.Integer,java.lang.Integer> getDictU16() { return dictU16; }
+    public LinkedHashMap<Integer/*U16*/,Integer/*U16*/> getDictU16() { return dictU16; }
     /** 无符号的32位整数 */
     @invar.lib.InvarRule(T="map<uint32,uint32>", S="f6")
-    public LinkedHashMap<java.lang.Long,java.lang.Long> getDictU32() { return dictU32; }
+    public LinkedHashMap<Long/*U32*/,Long/*U32*/> getDictU32() { return dictU32; }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="map<uint64,uint64>", S="f7")
     public LinkedHashMap<BigInteger,BigInteger> getDictU64() { return dictU64; }
@@ -193,56 +193,56 @@ invar.lib.InvarCodec.XMLEncode
     {
         dictI08.clear();
         Long lenDictI08 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
+        for (Long/*U32*/ iDictI08 = 0L; iDictI08 < lenDictI08; ++iDictI08) {
             java.lang.Byte k1 = from_.readByte();
             java.lang.Byte v1 = from_.readByte();
             dictI08.put(k1,v1);
         }
         dictI16.clear();
         Long lenDictI16 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictI16 = 0L; iDictI16 < lenDictI16; ++iDictI16) {
+        for (Long/*U32*/ iDictI16 = 0L; iDictI16 < lenDictI16; ++iDictI16) {
             Short k1 = from_.readShort();
             Short v1 = from_.readShort();
             dictI16.put(k1,v1);
         }
         dictI32.clear();
         Long lenDictI32 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictI32 = 0L; iDictI32 < lenDictI32; ++iDictI32) {
-            Integer k1 = from_.readUnsignedShort();
-            Integer v1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iDictI32 = 0L; iDictI32 < lenDictI32; ++iDictI32) {
+            Integer k1 = from_.readInt();
+            Integer v1 = from_.readInt();
             dictI32.put(k1,v1);
         }
         dictI64.clear();
         Long lenDictI64 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictI64 = 0L; iDictI64 < lenDictI64; ++iDictI64) {
-            Long k1 = from_.readInt() & 0xFFFFFFFFL;
-            Long v1 = from_.readInt() & 0xFFFFFFFFL;
+        for (Long/*U32*/ iDictI64 = 0L; iDictI64 < lenDictI64; ++iDictI64) {
+            Long k1 = from_.readLong();
+            Long v1 = from_.readLong();
             dictI64.put(k1,v1);
         }
         dictU08.clear();
         Long lenDictU08 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictU08 = 0L; iDictU08 < lenDictU08; ++iDictU08) {
-            java.lang.Integer k1 = from_.readUnsignedShort();
-            java.lang.Integer v1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iDictU08 = 0L; iDictU08 < lenDictU08; ++iDictU08) {
+            Integer/*U08*/ k1 = from_.readUnsignedByte();
+            Integer/*U08*/ v1 = from_.readUnsignedByte();
             dictU08.put(k1,v1);
         }
         dictU16.clear();
         Long lenDictU16 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictU16 = 0L; iDictU16 < lenDictU16; ++iDictU16) {
-            java.lang.Integer k1 = from_.readUnsignedShort();
-            java.lang.Integer v1 = from_.readUnsignedShort();
+        for (Long/*U32*/ iDictU16 = 0L; iDictU16 < lenDictU16; ++iDictU16) {
+            Integer/*U16*/ k1 = from_.readUnsignedShort();
+            Integer/*U16*/ v1 = from_.readUnsignedShort();
             dictU16.put(k1,v1);
         }
         dictU32.clear();
         Long lenDictU32 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictU32 = 0L; iDictU32 < lenDictU32; ++iDictU32) {
-            java.lang.Long k1 = from_.readInt() & 0xFFFFFFFFL;
-            java.lang.Long v1 = from_.readInt() & 0xFFFFFFFFL;
+        for (Long/*U32*/ iDictU32 = 0L; iDictU32 < lenDictU32; ++iDictU32) {
+            Long/*U32*/ k1 = from_.readInt() & 0xFFFFFFFFL;
+            Long/*U32*/ v1 = from_.readInt() & 0xFFFFFFFFL;
             dictU32.put(k1,v1);
         }
         dictU64.clear();
         Long lenDictU64 = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictU64 = 0L; iDictU64 < lenDictU64; ++iDictU64) {
+        for (Long/*U32*/ iDictU64 = 0L; iDictU64 < lenDictU64; ++iDictU64) {
             byte[] k1Bytes = new byte[8]; from_.readFully(k1Bytes, 0, 8);
             BigInteger k1 = new BigInteger(1, k1Bytes);
             byte[] v1Bytes = new byte[8]; from_.readFully(v1Bytes, 0, 8);
@@ -251,42 +251,42 @@ invar.lib.InvarCodec.XMLEncode
         }
         dictSingle.clear();
         Long lenDictSingle = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictSingle = 0L; iDictSingle < lenDictSingle; ++iDictSingle) {
+        for (Long/*U32*/ iDictSingle = 0L; iDictSingle < lenDictSingle; ++iDictSingle) {
             Float k1 = from_.readFloat();
             Float v1 = from_.readFloat();
             dictSingle.put(k1,v1);
         }
         dictDouble.clear();
         Long lenDictDouble = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictDouble = 0L; iDictDouble < lenDictDouble; ++iDictDouble) {
+        for (Long/*U32*/ iDictDouble = 0L; iDictDouble < lenDictDouble; ++iDictDouble) {
             java.lang.Double k1 = from_.readDouble();
             java.lang.Double v1 = from_.readDouble();
             dictDouble.put(k1,v1);
         }
         dictBoolean.clear();
         Long lenDictBoolean = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictBoolean = 0L; iDictBoolean < lenDictBoolean; ++iDictBoolean) {
+        for (Long/*U32*/ iDictBoolean = 0L; iDictBoolean < lenDictBoolean; ++iDictBoolean) {
             java.lang.Boolean k1 = from_.readBoolean();
             java.lang.Boolean v1 = from_.readBoolean();
             dictBoolean.put(k1,v1);
         }
         dictString.clear();
         Long lenDictString = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictString = 0L; iDictString < lenDictString; ++iDictString) {
+        for (Long/*U32*/ iDictString = 0L; iDictString < lenDictString; ++iDictString) {
             java.lang.String k1 = from_.readUTF();
             java.lang.String v1 = from_.readUTF();
             dictString.put(k1,v1);
         }
         dictEnum.clear();
         Long lenDictEnum = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictEnum = 0L; iDictEnum < lenDictEnum; ++iDictEnum) {
+        for (Long/*U32*/ iDictEnum = 0L; iDictEnum < lenDictEnum; ++iDictEnum) {
             Gender k1 = Gender.valueOf(from_.readInt());
             Gender v1 = Gender.valueOf(from_.readInt());
             dictEnum.put(k1,v1);
         }
         dictStruct.clear();
         Long lenDictStruct = from_.readInt() & 0xFFFFFFFFL;
-        for (Long iDictStruct = 0L; iDictStruct < lenDictStruct; ++iDictStruct) {
+        for (Long/*U32*/ iDictStruct = 0L; iDictStruct < lenDictStruct; ++iDictStruct) {
             Custom k1 = Custom.Create();
             k1.read(from_);
             Custom v1 = Custom.Create();
@@ -297,7 +297,7 @@ invar.lib.InvarCodec.XMLEncode
         if ((byte)0x01 == hotfixExists) {
             if (hotfix == null) { hotfix = new LinkedHashMap<java.lang.String,java.lang.String>(); }
             Long lenHotfix = from_.readInt() & 0xFFFFFFFFL;
-            for (Long iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
+            for (Long/*U32*/ iHotfix = 0L; iHotfix < lenHotfix; ++iHotfix) {
                 java.lang.String k1 = from_.readUTF();
                 java.lang.String v1 = from_.readUTF();
                 hotfix.put(k1,v1);
@@ -331,36 +331,36 @@ invar.lib.InvarCodec.XMLEncode
         dest_.writeInt(dictI32.size());
         for (Map.Entry<Integer,Integer> dictI32Iter : dictI32.entrySet()) {
             Integer k1 = dictI32Iter.getKey();
-            dest_.writeShort(k1);
+            dest_.writeInt(k1);
             Integer v1 = dictI32Iter.getValue();
-            dest_.writeShort(v1);
+            dest_.writeInt(v1);
         }
         dest_.writeInt(dictI64.size());
         for (Map.Entry<Long,Long> dictI64Iter : dictI64.entrySet()) {
             Long k1 = dictI64Iter.getKey();
-            dest_.writeInt(k1.intValue());
+            dest_.writeLong(k1);
             Long v1 = dictI64Iter.getValue();
-            dest_.writeInt(v1.intValue());
+            dest_.writeLong(v1);
         }
         dest_.writeInt(dictU08.size());
-        for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU08Iter : dictU08.entrySet()) {
-            java.lang.Integer k1 = dictU08Iter.getKey();
-            dest_.writeShort(k1);
-            java.lang.Integer v1 = dictU08Iter.getValue();
-            dest_.writeShort(v1);
+        for (Map.Entry<Integer/*U08*/,Integer/*U08*/> dictU08Iter : dictU08.entrySet()) {
+            Integer/*U08*/ k1 = dictU08Iter.getKey();
+            dest_.writeByte(k1);
+            Integer/*U08*/ v1 = dictU08Iter.getValue();
+            dest_.writeByte(v1);
         }
         dest_.writeInt(dictU16.size());
-        for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU16Iter : dictU16.entrySet()) {
-            java.lang.Integer k1 = dictU16Iter.getKey();
+        for (Map.Entry<Integer/*U16*/,Integer/*U16*/> dictU16Iter : dictU16.entrySet()) {
+            Integer/*U16*/ k1 = dictU16Iter.getKey();
             dest_.writeShort(k1);
-            java.lang.Integer v1 = dictU16Iter.getValue();
+            Integer/*U16*/ v1 = dictU16Iter.getValue();
             dest_.writeShort(v1);
         }
         dest_.writeInt(dictU32.size());
-        for (Map.Entry<java.lang.Long,java.lang.Long> dictU32Iter : dictU32.entrySet()) {
-            java.lang.Long k1 = dictU32Iter.getKey();
+        for (Map.Entry<Long/*U32*/,Long/*U32*/> dictU32Iter : dictU32.entrySet()) {
+            Long/*U32*/ k1 = dictU32Iter.getKey();
             dest_.writeInt(k1.intValue());
-            java.lang.Long v1 = dictU32Iter.getValue();
+            Long/*U32*/ v1 = dictU32Iter.getValue();
             dest_.writeInt(v1.intValue());
         }
         dest_.writeInt(dictU64.size());
@@ -554,11 +554,11 @@ invar.lib.InvarCodec.XMLEncode
         if (dictU08Size > 0) {
             _.append('{');
             int dictU08Idx = 0;
-            for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU08Iter : dictU08.entrySet()) { /* map.for: dictU08 */
+            for (Map.Entry<Integer/*U08*/,Integer/*U08*/> dictU08Iter : dictU08.entrySet()) { /* map.for: dictU08 */
                 ++dictU08Idx;
-                java.lang.Integer k1 = dictU08Iter.getKey(); /* nest.k */
+                Integer/*U08*/ k1 = dictU08Iter.getKey(); /* nest.k */
                 _.append('"'); _.append(k1.toString()); _.append('"').append(':');
-                java.lang.Integer v1 = dictU08Iter.getValue(); /* nest.v */
+                Integer/*U08*/ v1 = dictU08Iter.getValue(); /* nest.v */
                 _.append(v1.toString());
                 if (dictU08Idx != dictU08Size) { _.append(','); }
             }
@@ -571,11 +571,11 @@ invar.lib.InvarCodec.XMLEncode
         if (dictU16Size > 0) {
             _.append('{');
             int dictU16Idx = 0;
-            for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU16Iter : dictU16.entrySet()) { /* map.for: dictU16 */
+            for (Map.Entry<Integer/*U16*/,Integer/*U16*/> dictU16Iter : dictU16.entrySet()) { /* map.for: dictU16 */
                 ++dictU16Idx;
-                java.lang.Integer k1 = dictU16Iter.getKey(); /* nest.k */
+                Integer/*U16*/ k1 = dictU16Iter.getKey(); /* nest.k */
                 _.append('"'); _.append(k1.toString()); _.append('"').append(':');
-                java.lang.Integer v1 = dictU16Iter.getValue(); /* nest.v */
+                Integer/*U16*/ v1 = dictU16Iter.getValue(); /* nest.v */
                 _.append(v1.toString());
                 if (dictU16Idx != dictU16Size) { _.append(','); }
             }
@@ -588,11 +588,11 @@ invar.lib.InvarCodec.XMLEncode
         if (dictU32Size > 0) {
             _.append('{');
             int dictU32Idx = 0;
-            for (Map.Entry<java.lang.Long,java.lang.Long> dictU32Iter : dictU32.entrySet()) { /* map.for: dictU32 */
+            for (Map.Entry<Long/*U32*/,Long/*U32*/> dictU32Iter : dictU32.entrySet()) { /* map.for: dictU32 */
                 ++dictU32Idx;
-                java.lang.Long k1 = dictU32Iter.getKey(); /* nest.k */
+                Long/*U32*/ k1 = dictU32Iter.getKey(); /* nest.k */
                 _.append('"'); _.append(k1.toString()); _.append('"').append(':');
-                java.lang.Long v1 = dictU32Iter.getValue(); /* nest.v */
+                Long/*U32*/ v1 = dictU32Iter.getValue(); /* nest.v */
                 _.append(v1.toString());
                 if (dictU32Idx != dictU32Size) { _.append(','); }
             }
@@ -799,11 +799,11 @@ invar.lib.InvarCodec.XMLEncode
         }
         if (dictU08.size() > 0) {
             nodes.append('<').append("dictU08").append('>');
-            for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU08Iter : dictU08.entrySet()) {
-                java.lang.Integer k1 = dictU08Iter.getKey();
+            for (Map.Entry<Integer/*U08*/,Integer/*U08*/> dictU08Iter : dictU08.entrySet()) {
+                Integer/*U08*/ k1 = dictU08Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
                 nodes.append(k1.toString()).append('"').append('/').append('>');
-                java.lang.Integer v1 = dictU08Iter.getValue();
+                Integer/*U08*/ v1 = dictU08Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
                 nodes.append(v1.toString()).append('"').append('/').append('>');
             }
@@ -811,11 +811,11 @@ invar.lib.InvarCodec.XMLEncode
         }
         if (dictU16.size() > 0) {
             nodes.append('<').append("dictU16").append('>');
-            for (Map.Entry<java.lang.Integer,java.lang.Integer> dictU16Iter : dictU16.entrySet()) {
-                java.lang.Integer k1 = dictU16Iter.getKey();
+            for (Map.Entry<Integer/*U16*/,Integer/*U16*/> dictU16Iter : dictU16.entrySet()) {
+                Integer/*U16*/ k1 = dictU16Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
                 nodes.append(k1.toString()).append('"').append('/').append('>');
-                java.lang.Integer v1 = dictU16Iter.getValue();
+                Integer/*U16*/ v1 = dictU16Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
                 nodes.append(v1.toString()).append('"').append('/').append('>');
             }
@@ -823,11 +823,11 @@ invar.lib.InvarCodec.XMLEncode
         }
         if (dictU32.size() > 0) {
             nodes.append('<').append("dictU32").append('>');
-            for (Map.Entry<java.lang.Long,java.lang.Long> dictU32Iter : dictU32.entrySet()) {
-                java.lang.Long k1 = dictU32Iter.getKey();
+            for (Map.Entry<Long/*U32*/,Long/*U32*/> dictU32Iter : dictU32.entrySet()) {
+                Long/*U32*/ k1 = dictU32Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
                 nodes.append(k1.toString()).append('"').append('/').append('>');
-                java.lang.Long v1 = dictU32Iter.getValue();
+                Long/*U32*/ v1 = dictU32Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
                 nodes.append(v1.toString()).append('"').append('/').append('>');
             }
