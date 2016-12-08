@@ -1,5 +1,13 @@
-package invar.lib.data;
+/*
+ * Copyright (c) 2016. Kang Wang. The following code is distributed under
+ * the terms of the MIT license found at http://opensource.org/licenses/MIT
+ */
 
+package invar;
+
+import invar.lib.data.DataNode;
+import invar.lib.data.DataParser;
+import invar.lib.data.DataParserJson;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -9,9 +17,9 @@ import org.junit.runners.MethodSorters;
 import java.io.IOException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class JsonTest {
+public class TestJsonParser {
 
-    static DataParserJson decoder = new DataParserJson();
+    private static DataParser decoder = new DataParserJson();
 
     @BeforeClass
     static public void testInit() throws IOException {

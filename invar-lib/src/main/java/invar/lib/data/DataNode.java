@@ -22,35 +22,35 @@ public class DataNode<T> {
         return new DataNode<T>();
     }
 
-    static public DataNode<Object> createNull() {
+    static DataNode<Object> createNull() {
         return DataNode.create().setTypeId(TypeId.NULL);
     }
 
-    static public DataNode createArray() {
+    static DataNode createArray() {
         return create().setTypeId(TypeId.ARRAY);
     }
 
-    static public DataNode createObject() {
+    static DataNode createObject() {
         return create().setTypeId(TypeId.OBJECT);
     }
 
-    static public DataNode<String> createString() {
+    static DataNode<String> createString() {
         return DataNode.<String>create().setTypeId(TypeId.STRING);
     }
 
-    static public DataNode<Boolean> createBoolean() {
+    static DataNode<Boolean> createBoolean() {
         return DataNode.<Boolean>create().setTypeId(TypeId.BOOL);
     }
 
-    static public DataNode<Long> createLong() {
+    static DataNode<Long> createLong() {
         return DataNode.<Long>create().setTypeId(TypeId.INT64);
     }
 
-    static public DataNode<BigInteger> createBigInt() {
+    static DataNode<BigInteger> createBigInt() {
         return DataNode.<BigInteger>create().setTypeId(TypeId.BIGINT);
     }
 
-    static public DataNode<Double> createDouble() {
+    static DataNode<Double> createDouble() {
         return DataNode.<Double>create().setTypeId(TypeId.DOUBLE);
     }
 
@@ -64,31 +64,36 @@ public class DataNode<T> {
         children = new ArrayList<DataNode>(32);
     }
 
-    public DataNode<T> setValue(T value) {
+    DataNode<T> setValue(T value) {
         this.value = value;
         return this;
     }
 
-    public DataNode<T> setTypeId(TypeId typeId) {
-        this.typeId = typeId;
-        return this;
-    }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public DataNode<T> setFieldName(String fieldName) {
+    DataNode<T> setFieldName(String fieldName) {
         this.fieldName = fieldName;
         return this;
     }
 
-    public DataNode<T> addChild(DataNode node) {
+    DataNode<T> addChild(DataNode node) {
         if (node == null) {
             return this;
         }
         node.setParent(this);
         this.children.add(node);
+        return this;
+    }
+
+    private DataNode<T> setTypeId(TypeId typeId) {
+        this.typeId = typeId;
+        return this;
+    }
+
+    private DataNode<T> setParent(DataNode parent) {
+        if (parent == this) {
+            return this;
+        }
+        this.parent = parent;
         return this;
     }
 
@@ -112,13 +117,10 @@ public class DataNode<T> {
         return value;
     }
 
-    private DataNode<T> setParent(DataNode parent) {
-        if (parent == this) {
-            return this;
-        }
-        this.parent = parent;
-        return this;
+    public String getFieldName() {
+        return fieldName;
     }
+
 
     @Override
     public String toString() {

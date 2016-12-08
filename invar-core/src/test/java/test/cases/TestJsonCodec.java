@@ -6,7 +6,7 @@
 package test.cases;
 
 import invar.lib.InvarRuntime;
-import invar.lib.data.DataMapperJson;
+import invar.lib.data.DataMapper;
 import invar.lib.data.DataNode;
 import invar.lib.data.DataParserJson;
 import org.junit.Assert;
@@ -26,14 +26,14 @@ import java.math.BigInteger;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestJsonCodec {
 
-    static DataParserJson parser;
-    static DataMapperJson mapper;
+    private static DataParserJson parser;
+    private static DataMapper mapper;
 
     @BeforeClass
     public static void init() {
         InvarRuntime.init();
         parser = new DataParserJson();
-        mapper = new DataMapperJson();
+        mapper = new DataMapper(parser);
         try {
             parser.parse("[{\"a\":[123]}]");
             mapper.map(Numbers.Create(), "{}");

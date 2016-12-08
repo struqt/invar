@@ -9,6 +9,7 @@ public class CodecError extends Exception {
 
     static public final int ERR_NONE                 =   0;
     static public final int ERR_UNKNOWN              =   1;
+    static public final int ERR_PROTOC_NO_SESSION    = 403;
     static public final int ERR_SIZE_TOO_LONG        = 493;
     static public final int ERR_INVALID_REQ          = 494;
     static public final int ERR_DECODE_EOF           = 495;
@@ -19,7 +20,6 @@ public class CodecError extends Exception {
     static public final int ERR_PROTOC_UNHANDLED     = 500;
     static public final int ERR_PROTOC_INVALID_ID    = 501;
     static public final int ERR_PROTOC_NO_HANDLER    = 503;
-    static public final int ERR_PROTOC_NO_SESSION    = 403;
 
     private final int code;
 

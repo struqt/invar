@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * Parse a data stream to a DataNode tree.
  * Created by wangkang on 11/12/16
  */
-public class DataParserJson {
+public class DataParserJson implements DataParser {
 
     private final JsonFactory factory;
 
@@ -50,12 +50,12 @@ public class DataParserJson {
         return root.numChildren() > 0 ? root.getChild(0) : root;
     }
 
-    void initParser(JsonParser parser) {
+    private void initParser(JsonParser parser) {
         parser.enable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
         parser.enable(JsonParser.Feature.IGNORE_UNDEFINED);
     }
 
-    void parse(JsonParser parser, DataNode root) throws IOException {
+    private void parse(JsonParser parser, DataNode root) throws IOException {
         String fieldName = null;
         DataNode parent = root;
         while (!parser.isClosed()) {
