@@ -14,15 +14,13 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.io.IOException;
-
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestJsonParser {
 
     private static DataParser decoder = new DataParserJson();
 
     @BeforeClass
-    static public void testInit() throws IOException {
+    static public void testInit() throws Exception {
         DataNode node = decoder.parse("0");
         Assert.assertEquals(0L, node.getValue());
     }
@@ -63,7 +61,7 @@ public class TestJsonParser {
     }
 
     @Test
-    public void test006() throws IOException {
+    public void test006() throws Exception {
         DataNode node = decoder
             .parse("{\"a\":1,\"b\":{},\"c\":[{},[[{},{}]]]}");
         Assert.assertEquals(3, node.numChildren());

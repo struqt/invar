@@ -6,6 +6,7 @@
 package invar.lib.data;
 
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,10 @@ import java.util.List;
  */
 public class DataNode<T> {
 
+    static final public Charset UTF8 = Charset.forName("utf-8");
+
     public enum TypeId {
-        INT64, BIGINT, DOUBLE, BOOL, STRING, NULL, OBJECT, ARRAY
+        INT64, BIGINT, DOUBLE, BOOL, STRING, NULL, OBJECT, ARRAY, ANY
     }
 
     static private <T> DataNode<T> create() {
@@ -30,8 +33,12 @@ public class DataNode<T> {
         return create().setTypeId(TypeId.ARRAY);
     }
 
-    static DataNode createObject() {
+    static DataNode<Object> createObject() {
         return create().setTypeId(TypeId.OBJECT);
+    }
+
+    static DataNode<Object> createAny() {
+        return create().setTypeId(TypeId.ANY);
     }
 
     static DataNode<String> createString() {
@@ -68,7 +75,6 @@ public class DataNode<T> {
         this.value = value;
         return this;
     }
-
 
     DataNode<T> setFieldName(String fieldName) {
         this.fieldName = fieldName;
@@ -120,7 +126,6 @@ public class DataNode<T> {
     public String getFieldName() {
         return fieldName;
     }
-
 
     @Override
     public String toString() {

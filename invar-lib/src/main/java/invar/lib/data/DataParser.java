@@ -5,7 +5,6 @@
 
 package invar.lib.data;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -13,8 +12,8 @@ import java.io.InputStream;
  */
 public interface DataParser {
 
-    DataNode parse(String content) throws IOException;
+    DataNode parse(String content) throws Exception;
 
-    DataNode parse(InputStream input) throws IOException;
+    DataNode parse(InputStream input) throws Exception;
 
 }
