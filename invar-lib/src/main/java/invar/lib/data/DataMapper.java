@@ -8,8 +8,7 @@ package invar.lib.data;
 import invar.lib.InvarEnum;
 import invar.lib.InvarRule;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -21,11 +20,60 @@ import java.util.*;
 public class DataMapper {
 
     static public DataMapper forJson() {
-        return new DataMapper(new DataParserJson());
+        return new DataMapper(new DataParserJson()).setVerbose(false);
     }
 
     static public DataMapper forXml() {
-        return new DataMapper(new DataParserXml());
+        return new DataMapper(new DataParserXml()).setVerbose(false);
+    }
+
+    static public void mapFiles(Object root, String dir, final String suffix) throws Exception {
+        File file = new File(dir);
+        if (!file.exists())
+            throw new IOException("Path doesn't exist:\n" + file.getAbsolutePath());
+        if (aliasBasics == null)
+            throw new Exception("InvarReadData.aliasBasics is null");
+        if (aliasEnums == null)
+            throw new Exception("InvarReadData.aliasEnums is null");
+        if (aliasStructs == null)
+            throw new Exception("InvarReadData.aliasStructs is null");
+        FilenameFilter filter = new FilenameFilter() {
+            //@Override
+            public boolean accept(File dir, String name) {
+                File f = new File(dir, name);
+                return f.isDirectory()
+                    && !f.getName().startsWith(".")
+                    && !f.getName().startsWith("_")
+                    || name.endsWith(suffix);
+            }
+        };
+        List<File> files = new ArrayList<File>();
+        recursiveReadFile(files, file, filter);
+        for (File f : files) {
+            String path = f.getAbsolutePath();
+            if (suffix.endsWith("xml")) {
+                forXml().setPath(path).map(root, new FileInputStream(f));
+                log("Read <- " + path);
+            } else if (suffix.endsWith("json")) {
+                forJson().setPath(path).map(root, new FileInputStream(f));
+                log("Read <- " + path);
+            }
+        }
+    }
+
+    static private void recursiveReadFile(List<File> all, File file, FilenameFilter filter) {
+        if (all.size() > 1024) {
+            return;
+        }
+        if (file.isFile()) {
+            all.add(file);
+        } else if (file.isDirectory()) {
+            File[] files = file.listFiles(filter);
+            assert files != null;
+            for (File file1 : files) {
+                recursiveReadFile(all, file1, filter);
+            }
+        }
     }
 
     static final public Charset UTF8 = Charset.forName("utf-8");
@@ -56,12 +104,13 @@ public class DataMapper {
             return null;
         }
         DataNode node = parser.parse(from);
+        assert node != null;
         parse(dest, node);
         return dest;
     }
 
     private void parse(Object o, DataNode n) throws Exception {
-        parse(o, n, o.getClass().getName(), "o");
+        parse(o, n, o.getClass().getName(), o.getClass().getSimpleName());
     }
 
     @SuppressWarnings("unchecked")
@@ -91,26 +140,25 @@ public class DataMapper {
             if (key == null || key.length() <= 0) {
                 continue;
             }
+            if (key.equals("schemaLocation")) {
+                continue;
+            }
             String ruleX = getRule(ClsO, key, n);
             if (ruleX == null) {
                 continue;
             }
             Class<?> ClsX = loadGenericClass(ruleX);
             Object v;
-            switch (x.getTypeId()) {
-                case OBJECT:
-                case ARRAY:
-                    v = invokeGetter(key, o, x);
-                    if (v == null && ClsX != Vector.class) {
-                        v = ClsX.newInstance();
-                        invokeSetter(v, key, o, x, debug);
-                    }
-                    parse(v, x, ruleX, debug + '.' + key);
-                    break;
-                default:
-                    v = parseGenericChild(x, ClsX, ruleX, debug);
+            if (isSimple(ClsX)) {
+                v = parseGenericChild(x, ClsX, ruleX, debug);
+                invokeSetter(v, key, o, x, debug);
+            } else {
+                v = invokeGetter(key, o, x);
+                if (v == null && ClsX != Vector.class) {
+                    v = ClsX.newInstance();
                     invokeSetter(v, key, o, x, debug);
-                    break;
+                }
+                parse(v, x, ruleX, debug + '.' + key);
             }
         }
     }
@@ -122,9 +170,13 @@ public class DataMapper {
         Class<?> Cls = loadGenericClass(R);
         int len = n.numChildren();
         for (int i = 0; i < len; i++) {
+            final String d = debug + "[" + list.size() + "]";
             DataNode vn = n.getChild(i);
-            Object v = parseGenericChild(vn, Cls, R, debug + "[" + list.size() + "]");
+            Object v = parseGenericChild(vn, Cls, R, d);
             list.add(v);
+            if (getVerbose()) {
+                log(d + ": " + v);
+            }
         }
     }
 
@@ -138,22 +190,130 @@ public class DataMapper {
         if (typeNames.length != 2) {
             onError("Unexpected type: " + rule, n);
         }
+        Class<?> ClsK = loadGenericClass(typeNames[0]);
         Class<?> ClsV = loadGenericClass(typeNames[1]);
-        int len = n.numChildren();
-        for (int i = 0; i < len; i++) {
-            DataNode vn = n.getChild(i);
-            String k = vn.getFieldName();
-            if (k == null || k.length() <= 0) {
-                continue;
+        final int len = n.numChildren();
+        if (shortenMapEntry) {
+            for (int i = 0; i < len; i++) {
+                DataNode vn = n.getChild(i);
+                Object k = vn.getFieldName();
+                if (vn.numChildren() > 0) {
+                    int size = vn.numChildren();
+                    for (int j = 0; j < size; j++) {
+                        DataNode node = vn.getChild(j);
+                        if (ATTR_MAP_KEY.equals(node.getFieldName())) {
+                            k = parseGenericChildAny(node, ClsK, typeNames[0], debug + ".k");
+                            break;
+                        }
+                    }
+                }
+                if (k == null) {
+                    onError("No key for map: ", debug);
+                }
+                Object v = parseGenericChild(vn, ClsV, typeNames[1], debug + ".v");
+                map.put(k, v);
+                if (getVerbose()) {
+                    log(debug + "." + k + ": " + v);
+                }
             }
-            Object v = parseGenericChild(vn, ClsV, typeNames[1], debug + ".v");
-            map.put(k, v);
+        } else {
+            if ((0x01 & len) != 0) {
+                onError("Invalid amount of children: " + len, n);
+            }
+            for (int i = 0; i < len; i += 2) {
+                DataNode kn = n.getChild(i);
+                DataNode vn = n.getChild(i + 1);
+                Object k = parseGenericChildAny(kn, ClsK, typeNames[0], debug + ".k");
+                Object v = parseGenericChildAny(vn, ClsV, typeNames[1], debug + ".v");
+                map.put(k, v);
+                if (getVerbose()) {
+                    log(debug + "." + k + ": " + v);
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object parseGenericChildAny(DataNode cn, Class<?> Cls, String rule, String debug) throws Exception {
+        final int radix = 10;
+        if (!isSimple(Cls)) {
+            Object co = Cls.newInstance();
+            parse(co, cn, rule, debug);
+            return co;
+        }
+        Object o = cn.getValue(); /*<n>123</n>*/
+        if (o == null) {
+            if (cn.numChildren() == 1) {
+                o = cn.getChild(0).getValue(); /*<n x="123"/>*/
+            } else if (cn.numChildren() > 1) {
+                int len = cn.numChildren(); /*<n key="abc" value="123"/>*/
+                for (int i = 0; i < len; i++) {
+                    DataNode node = cn.getChild(i);
+                    String field = node.getFieldName();
+                    if ("v".equals(field) || "val".equals(field) || ATTR_VALUE.equals(field)) {
+                        o = node.getValue();
+                    }
+                }
+            }
+        }
+        if (o == null) {
+            onError("No value for: " + debug);
+        }
+        if (!(o instanceof String)) {
+            onError("Need string value for: " + debug);
+            return null;
+        }
+        String s = (String) o;
+        if (s.length() <= 0) {
+            return s;
+        }
+        if (aliasEnums.containsValue(Cls)) {
+            char head = s.charAt(0);
+            if (head == '-' || Character.isDigit(s.charAt(0))) {
+                Integer i = Integer.valueOf(s, radix);
+                return EnumFromInt(i, (Class<? extends InvarEnum>) Cls);
+            } else {
+                return EnumFromString(s, (Class<? extends InvarEnum>) Cls);
+            }
+        } else {
+            if ("int8".equals(rule)) {
+                return Byte.valueOf(s, radix);
+            } else if ("int16".equals(rule)) {
+                return Short.valueOf(s, radix);
+            } else if ("int32".equals(rule)) {
+                return Integer.valueOf(s, radix);
+            } else if ("int64".equals(rule)) {
+                return Long.valueOf(s, radix);
+            } else if ("uint8".equals(rule)) {
+                return Integer.valueOf(s, radix);
+            } else if ("uint16".equals(rule)) {
+                return Integer.valueOf(s, radix);
+            } else if ("uint32".equals(rule)) {
+                return Long.valueOf(s, radix);
+            } else if ("uint64".equals(rule)) {
+                return new BigInteger(s, radix);
+            } else if ("float".equals(rule)) {
+                return Float.valueOf(s);
+            } else if ("double".equals(rule)) {
+                return Double.valueOf(s);
+            } else if ("string".equals(rule)) {
+                return s;
+            } else if ("bool".equals(rule)) {
+                return Boolean.valueOf(s.trim());
+            } else {
+                onError(debug);
+                return null;
+            }
         }
     }
 
     @SuppressWarnings("unchecked")
     private Object parseGenericChild(DataNode cn, Class<?> Cls, String rule, String debug) throws Exception {
-        switch (cn.getTypeId()) {
+        DataNode.TypeId id = cn.getTypeId();
+        if (DataNode.TypeId.ANY.equals(id)) {
+            return parseGenericChildAny(cn, Cls, rule, debug);
+        }
+        switch (id) {
             case NULL:
                 return null;
             case BOOL:
@@ -172,7 +332,8 @@ public class DataMapper {
                     return EnumFromInt(((Long) cn.getValue()).intValue(),
                         (Class<? extends InvarEnum>) Cls);
                 } else {
-                    return parseInteger(cn, rule, debug);
+                    Long s = (Long) cn.getValue();
+                    return determineInteger(s, cn, rule, debug);
                 }
             case DOUBLE:
                 if ("float".equals(rule)) {
@@ -191,11 +352,13 @@ public class DataMapper {
         }
     }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
     private String path;
     private Boolean verbose = false;
+    private Boolean shortenMapEntry = true;
 
     public String getPath() {
         return path;
@@ -206,12 +369,17 @@ public class DataMapper {
         return this;
     }
 
-    public Boolean getVerbose() {
+    private Boolean getVerbose() {
         return verbose;
     }
 
     public DataMapper setVerbose(Boolean verbose) {
         this.verbose = verbose;
+        return this;
+    }
+
+    public DataMapper setShortenMapEntry(Boolean shortenMapEntry) {
+        this.shortenMapEntry = shortenMapEntry;
         return this;
     }
 
@@ -239,35 +407,31 @@ public class DataMapper {
         return method.invoke(o);
     }
 
-    private Object parseInteger(DataNode n, String rule, String debug) throws Exception {
-        if (!n.getTypeId().equals(DataNode.TypeId.INT64)) {
-            return 0;
-        }
-        Long s = (Long) n.getValue();
+    private Object determineInteger(Long v, DataNode n, String rule, String debug) throws Exception {
         if ("int8".equals(rule)) {
-            checkInteger(s, -0x80L, 0x7FL, debug, n);
-            return s.byteValue();
+            checkInteger(v, -0x80L, 0x7FL, debug, n);
+            return v.byteValue();
         } else if ("int16".equals(rule)) {
-            checkInteger(s, -0x8000L, 0x7FFFL, debug, n);
-            return s.shortValue();
+            checkInteger(v, -0x8000L, 0x7FFFL, debug, n);
+            return v.shortValue();
         } else if ("int32".equals(rule)) {
-            checkInteger(s, -0x80000000L, 0x7FFFFFFFL, debug, n);
-            return s.intValue();
+            checkInteger(v, -0x80000000L, 0x7FFFFFFFL, debug, n);
+            return v.intValue();
         } else if ("int64".equals(rule)) {
-            return s;
+            return v;
         } else if ("uint8".equals(rule)) {
-            checkInteger(s, 0L, 0xFFL, debug, n);
-            return s.shortValue();
+            checkInteger(v, 0L, 0xFFL, debug, n);
+            return v.shortValue();
         } else if ("uint16".equals(rule)) {
-            checkInteger(s, 0L, 0xFFFFL, debug, n);
-            return s.intValue();
+            checkInteger(v, 0L, 0xFFFFL, debug, n);
+            return v.intValue();
         } else if ("uint32".equals(rule)) {
-            checkInteger(s, 0L, 0xFFFFFFFFL, debug, n);
-            return s;
+            checkInteger(v, 0L, 0xFFFFFFFFL, debug, n);
+            return v;
         } else if ("uint64".equals(rule)) {
-            return BigInteger.valueOf(s);
+            return BigInteger.valueOf(v);
         } else {
-            return s;
+            return v;
         }
     }
 
@@ -278,11 +442,20 @@ public class DataMapper {
     }
 
     private void onError(String hint) throws Exception {
-        throw new Exception("\n" + hint + "\n" + path);
+        if (path != null && path.length() > 0) {
+            hint += "\n" + path;
+        }
+        throw new Exception("\n" + hint);
     }
 
     private void onError(String hint, Object n) throws Exception {
-        throw new Exception("\n" + hint + "\n" + n + "\n" + path);
+        if (n != null) {
+            hint += "\n" + n;
+        }
+        if (path != null && path.length() > 0) {
+            hint += "\n" + path;
+        }
+        throw new Exception("\n" + hint);
     }
 
     private String getRule(Class<?> ClsO, String key, DataNode n) throws Exception {
@@ -291,15 +464,19 @@ public class DataMapper {
         if (method == null) {
             String nameGetter = PREFIX_GETTER + upperHeadChar(key);
             method = map.get(nameGetter);
-            if (method == null && !ATTR_MAP_KEY.equals(key))
-                onError("No getter named '" + nameGetter + "' in " + ClsO, n);
+            if (method == null) {
+                if (!ATTR_MAP_KEY.equals(key)) {
+                    onError("No getter named '" + nameGetter + "' in " + ClsO, n);
+                }
+            }
         }
-        if (method == null)
+        if (method == null) {
             return null;
+        }
         String rule = method.getGenericReturnType().toString();
-        InvarRule anno = method.getAnnotation(InvarRule.class);
-        if (anno != null)
-            rule = anno.T();
+        InvarRule a = method.getAnnotation(InvarRule.class);
+        if (a != null)
+            rule = a.T();
         return rule;
     }
 
@@ -314,7 +491,7 @@ public class DataMapper {
                 return;
             }
         }
-        if (verbose) {
+        if (getVerbose()) {
             log(debug + "." + key + ": " + value);
         }
         try {
@@ -322,7 +499,7 @@ public class DataMapper {
         } catch (Exception e) {
             System.err.println(debug + "." + key);
             System.err.println(n);
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -337,7 +514,7 @@ public class DataMapper {
     private static final String PREFIX_SETTER = "set";
     private static final String PREFIX_GETTER = "get";
     private static final String ATTR_MAP_KEY = "key";
-    //static final String ATTR_VALUE = "value";
+    private static final String ATTR_VALUE = "value";
 
     private static HashMap<String, Method> getSetters(Class<?> ClsO) {
         HashMap<String, Method> methods = mapClassSetters.get(ClsO);
@@ -367,9 +544,9 @@ public class DataMapper {
             for (Method method : meths) {
                 if (method.getName().startsWith(PREFIX_GETTER)) {
                     methods.put(method.getName(), method);
-                    InvarRule anno = method.getAnnotation(InvarRule.class);
-                    if (anno != null) {
-                        String shortName = anno.S();
+                    InvarRule a = method.getAnnotation(InvarRule.class);
+                    if (a != null) {
+                        String shortName = a.S();
                         methods.put(shortName, method);
                     }
                 }
@@ -421,16 +598,25 @@ public class DataMapper {
 
     private static <T extends InvarEnum> T EnumFromString(String v, Class<T> clazz) {
         for (T t : clazz.getEnumConstants()) {
-            if (t.name().equals(v)) {
+            if (t.name().equals(v.trim())) {
                 return t;
             }
         }
         return null;
     }
 
+    private static boolean isSimple(Class<?> Cls) {
+        return aliasEnums.containsValue(Cls)
+            || aliasBasics.containsValue(Cls)
+            && LinkedList.class != Cls
+            && HashMap.class != Cls
+            && LinkedHashMap.class != Cls
+            && !aliasStructs.containsValue(Cls)
+            ;
+    }
+
     private static void log(Object txt) {
         System.out.println("| " + txt);
     }
-
 
 }

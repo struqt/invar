@@ -112,13 +112,13 @@ public class DataParserXml implements DataParser {
             n.setFieldName(name);
             stack.push(n);
         } else {
-            DataNode<Object> n = DataNode.createObject();
+            DataNode<Object> n = DataNode.createAny();
             n.setFieldName(name);
             stack.push(n);
             for (int i = 0; i < len; i++) {
                 String k = r.getAttributeName(i).getLocalPart();
                 String v = r.getAttributeValue(i);
-                DataNode<String> n1 = DataNode.createString();
+                DataNode<Object> n1 = DataNode.createAny();
                 n1.setFieldName(k);
                 n1.setValue(v);
                 n.addChild(n1);

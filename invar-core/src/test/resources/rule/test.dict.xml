@@ -20,6 +20,7 @@
     <field name="enums     " type="Map-Color-Color" doc="Field with Enumeration type"/>
     <field name="string    " type="Map-String-String" doc="Field with String type"/>
     <field name="records   " type="Map-SimpleRecord-SimpleRecord" doc="Field with struct"/>
+    <field name="numbers   " type="Map-String-Numbers" doc="Field with struct"/>
   </struct>
 
   <struct name="SimpleDictList" nohotfix="true" doc="Struct with dictionary fields">

@@ -17,6 +17,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
+@Deprecated
 final public class InvarReadData {
     static public String charset = "utf-8";
     static public Boolean verbose = false;
