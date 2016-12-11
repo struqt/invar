@@ -7,6 +7,40 @@
 #import "Invar.h"
 #import "InvarRuntime.h"
 
+typedef union { unsigned char c[2]; uint16_t i; } invar_union_uint16_chars_t;
+typedef union { float_t       f;    uint32_t i; } invar_union_float32_int_t;
+typedef union { double_t      f;    uint64_t i; } invar_union_float64_int_t;
+
+boolean_t invar_is_big_endian (void)
+{
+    const invar_union_uint16_chars_t u = { .i = 0x0102 };
+    return 0x01 == u.c[0];
+}
+
+float_t invar_decode_float32 (uint32_t x)
+{
+    const invar_union_float32_int_t u = { .i = x };
+    return u.f;
+}
+
+double_t invar_decode_float64 (uint64_t x)
+{
+    const invar_union_float64_int_t u = { .i = x };
+    return u.f;
+}
+
+uint32_t invar_encode_float32 (float_t x)
+{
+    const invar_union_float32_int_t u = { .f = x };
+    return u.i;
+}
+
+uint64_t invar_encode_float64 (double_t x)
+{
+    const invar_union_float64_int_t u = { .f = x };
+    return u.i;
+}
+
 void handle_no_reply (const void * const input, int32_t length, BOOL server)
 {
     assert(length >= 0);

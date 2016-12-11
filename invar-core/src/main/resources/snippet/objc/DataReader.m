@@ -8,6 +8,7 @@
 #error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag
 #endif //*/
 
+#import "Invar.h"
 #import "DataReader.h"
 
 @interface DataReader ()
@@ -188,32 +189,16 @@ static const CFByteOrder ByteOrderDeftR = CFByteOrderBigEndian;
 
 - (float_t) readFloat:(BOOL*)eof
 {
-    if (![self checkAvailable:4]) { *eof = YES; }
+    uint32_t i = [self readUInt32:eof];
     if (*eof) { return 0; }
-    const char *p = _bytes + _bytesPos;
-    _bytesPos += sizeof(float_t);
-    if (CFByteOrderBigEndian == _byteOrder) {
-        return (float_t)CFSwapInt32HostToBig(*(uint32_t*)p);
-    } else {
-        return *(float_t*)p;
-    }
+    return invar_decode_float32(i);
 }
 
 - (double_t) readDouble:(BOOL*)eof
 {
-    if (![self checkAvailable:8]) { *eof = YES; }
+    uint64_t i = [self readUInt64:eof];
     if (*eof) { return 0; }
-    const char *p = _bytes + _bytesPos;
-    _bytesPos += sizeof(double_t);
-    // return *(double_t*)p; /* Cause EXC_ARM_DA_ALIGN */
-    if (CFByteOrderBigEndian == _byteOrder) {
-        uint64_t a = CFSwapInt64HostToBig(*(uint64_t*)p);
-        p = (char *)&a;
-    }
-    id data = [[NSData alloc] initWithBytes:p length:sizeof(double_t)];
-    double_t number;
-    [data getBytes:&number length:sizeof(double_t)];
-    return number;
+    return invar_decode_float64(i);
 }
 
 - (boolean_t) readBool:(BOOL*)eof

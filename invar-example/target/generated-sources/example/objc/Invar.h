@@ -7,7 +7,7 @@
 #ifndef Invar_h
 #define Invar_h
 
-#import <stdint.h>
+#import <Foundation/Foundation.h>
 
 typedef struct _ResponseBytes {
     const void * bytes;
@@ -23,5 +23,11 @@ void          HandleResponse2S (const void * const, int32_t);
 void          HandleResponse2C (const void * const, int32_t);
 ResponseBytes HandleRequest2S  (const void * const, int32_t);
 ResponseBytes HandleRequest2C  (const void * const, int32_t);
+
+boolean_t invar_is_big_endian(void);
+float_t   invar_decode_float32(uint32_t x);
+double_t  invar_decode_float64(uint64_t x);
+uint32_t  invar_encode_float32(float_t  x);
+uint64_t  invar_encode_float64(double_t x);
 
 #endif /* Invar_h */

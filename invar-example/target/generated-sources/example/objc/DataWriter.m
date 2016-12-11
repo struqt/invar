@@ -8,6 +8,7 @@
 #error This file must be compiled with ARC. Either turn on ARC for the project or use -fobjc-arc flag
 #endif //*/
 
+#import "Invar.h"
 #import "DataWriter.h"
 
 @interface DataWriter ()
@@ -130,18 +131,12 @@ static const CFByteOrder ByteOrderDeftW = CFByteOrderBigEndian;
 
 - (void) writeFloat:(float_t)v
 {
-    if (CFByteOrderBigEndian == _byteOrder) {
-        v = CFSwapInt32HostToBig(v);
-    }
-    [_data appendBytes:&v length:sizeof(float_t)];
+    [self writeUInt32:invar_encode_float32(v)];
 }
 
 - (void) writeDouble:(double_t)v
 {
-    if (CFByteOrderBigEndian == _byteOrder) {
-        v = CFSwapInt64HostToBig(v);
-    }
-    [_data appendBytes:&v length:sizeof(double_t)];
+    [self writeUInt64:invar_encode_float64(v)];
 }
 
 - (void) writeBool:(boolean_t)v
