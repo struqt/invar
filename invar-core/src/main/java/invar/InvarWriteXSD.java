@@ -262,11 +262,11 @@ public class InvarWriteXSD {
             String name = basics.get(id);
             String nameXsd = typeXsd.get(id);
             code.append(br);
-            code.append("<xs:complexType name=\"" + name + "\">");
-            //code.append(brIndent);
-            code.append("<xs:attribute type=\"" + nameXsd + "\" name=\"value\" use=\"required\"" + "/>");
+            code.append("<xs:complexType name=\"" + name + "\"><xs:simpleContent><xs:extension base=\"xs:string\">");
+            code.append(brIndent);
+            code.append("<xs:attribute type=\"" + nameXsd + "\" name=\"value\" use=\"optional\"" + "/>");
             //code.append(br);
-            code.append("</xs:complexType>");
+            code.append("</xs:extension></xs:simpleContent></xs:complexType>");
             typeBasic.put(name, id);
         }
     }

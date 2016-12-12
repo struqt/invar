@@ -4,18 +4,30 @@ xmlns:tns="invar.data" targetNamespace="invar.data">
 
 <xs:element name="root" type="tns:test.xyz.ConfigRoot" />
 
-<xs:complexType name="int8"><xs:attribute type="xs:byte" name="value" use="required"/></xs:complexType>
-<xs:complexType name="int16"><xs:attribute type="xs:short" name="value" use="required"/></xs:complexType>
-<xs:complexType name="int32"><xs:attribute type="xs:int" name="value" use="required"/></xs:complexType>
-<xs:complexType name="int64"><xs:attribute type="xs:long" name="value" use="required"/></xs:complexType>
-<xs:complexType name="uint8"><xs:attribute type="xs:unsignedByte" name="value" use="required"/></xs:complexType>
-<xs:complexType name="uint16"><xs:attribute type="xs:unsignedShort" name="value" use="required"/></xs:complexType>
-<xs:complexType name="uint32"><xs:attribute type="xs:unsignedInt" name="value" use="required"/></xs:complexType>
-<xs:complexType name="uint64"><xs:attribute type="xs:unsignedLong" name="value" use="required"/></xs:complexType>
-<xs:complexType name="float"><xs:attribute type="xs:float" name="value" use="required"/></xs:complexType>
-<xs:complexType name="double"><xs:attribute type="xs:double" name="value" use="required"/></xs:complexType>
-<xs:complexType name="bool"><xs:attribute type="xs:boolean" name="value" use="required"/></xs:complexType>
-<xs:complexType name="string"><xs:attribute type="xs:string" name="value" use="required"/></xs:complexType>
+<xs:complexType name="int8"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:byte" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="int16"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:short" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="int32"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:int" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="int64"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:long" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="uint8"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:unsignedByte" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="uint16"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:unsignedShort" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="uint32"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:unsignedInt" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="uint64"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:unsignedLong" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="float"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:float" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="double"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:double" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="bool"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:boolean" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
+<xs:complexType name="string"><xs:simpleContent><xs:extension base="xs:string">
+  <xs:attribute type="xs:string" name="value" use="optional"/></xs:extension></xs:simpleContent></xs:complexType>
 
 <xs:complexType name="test.db.MemberEntry">
   <xs:sequence>
