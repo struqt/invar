@@ -184,50 +184,50 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
-        _.append('"').append("key").append('"').append(':');
-        _.append(key.value()); comma = ',';
+        s_.append('"').append("key").append('"').append(':');
+        s_.append(key.value()); comma = ',';
         boolean textExists = text != null && text.length() > 0;
-        if ('\0' != comma && textExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && textExists) { s_.append(comma); comma = '\0'; }
         if (textExists) {
-            _.append('"').append("text").append('"').append(':'); comma = ','; _.append('"').append(text.toString()).append('"');
+            s_.append('"').append("text").append('"').append(':'); comma = ','; s_.append('"').append(text.toString()).append('"');
         }
         boolean bytesExists = (null != bytes && bytes.size() > 0);
-        if ('\0' != comma && bytesExists) { _.append(comma); comma = '\0'; }
-        if (bytesExists) { _.append('"').append("bytes").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && bytesExists) { s_.append(comma); comma = '\0'; }
+        if (bytesExists) { s_.append('"').append("bytes").append('"').append(':'); comma = ','; }
         int bytesSize = (null == bytes ? 0 : bytes.size());
         if (bytesSize > 0) {
-            _.append('[');
+            s_.append('[');
             int bytesIdx = 0;
             for (java.lang.Byte n1 : bytes) { /* vec.for: bytes */
                 ++bytesIdx;
-                _.append(n1.toString());
-                if (bytesIdx != bytesSize) { _.append(','); }
+                s_.append(n1.toString());
+                if (bytesIdx != bytesSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                _.append('{');
+                s_.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    _.append('"').append(k1.toString()).append('"'); _.append(':');
+                    s_.append('"').append(k1.toString()).append('"'); s_.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    _.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { _.append(','); }
+                    s_.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
-                _.append('}');
+                s_.append('}');
             } comma = ',';
         }
-        _.append('}');
+        s_.append('}');
     } /* Conflict::writeJSON(...) */
 
     public String toStringXML()

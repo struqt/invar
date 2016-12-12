@@ -317,54 +317,54 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
-        _.append('"').append("numberI08").append('"').append(':');
-        _.append(numberI08.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberI16").append('"').append(':');
-        _.append(numberI16.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberI32").append('"').append(':');
-        _.append(numberI32.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberI64").append('"').append(':');
-        _.append(numberI64.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberU08").append('"').append(':');
-        _.append(numberU08.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberU16").append('"').append(':');
-        _.append(numberU16.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberU32").append('"').append(':');
-        _.append(numberU32.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberU64").append('"').append(':');
-        _.append(numberU64.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberSingle").append('"').append(':');
-        _.append(numberSingle.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberDouble").append('"').append(':');
-        _.append(numberDouble.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("boolValue").append('"').append(':');
-        _.append(boolValue.toString().toLowerCase()); comma = ',';
+        s_.append('"').append("numberI08").append('"').append(':');
+        s_.append(numberI08.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberI16").append('"').append(':');
+        s_.append(numberI16.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberI32").append('"').append(':');
+        s_.append(numberI32.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberI64").append('"').append(':');
+        s_.append(numberI64.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberU08").append('"').append(':');
+        s_.append(numberU08.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberU16").append('"').append(':');
+        s_.append(numberU16.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberU32").append('"').append(':');
+        s_.append(numberU32.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberU64").append('"').append(':');
+        s_.append(numberU64.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberSingle").append('"').append(':');
+        s_.append(numberSingle.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberDouble").append('"').append(':');
+        s_.append(numberDouble.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("boolValue").append('"').append(':');
+        s_.append(boolValue.toString().toLowerCase()); comma = ',';
         boolean stringValueExists = stringValue != null && stringValue.length() > 0;
-        if ('\0' != comma && stringValueExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && stringValueExists) { s_.append(comma); comma = '\0'; }
         if (stringValueExists) {
-            _.append('"').append("stringValue").append('"').append(':'); comma = ','; _.append('"').append(stringValue.toString()).append('"');
+            s_.append('"').append("stringValue").append('"').append(':'); comma = ','; s_.append('"').append(stringValue.toString()).append('"');
         }
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("enumValue").append('"').append(':');
-        _.append(enumValue.value()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("enumDeft").append('"').append(':');
-        _.append(enumDeft.value()); comma = ',';
-        _.append('}');
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("enumValue").append('"').append(':');
+        s_.append(enumValue.value()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("enumDeft").append('"').append(':');
+        s_.append(enumDeft.value()); comma = ',';
+        s_.append('}');
     } /* TestBasic::writeJSON(...) */
 
     public String toStringXML()

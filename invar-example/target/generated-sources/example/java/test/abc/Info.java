@@ -550,175 +550,175 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
-        _.append('"').append("key").append('"').append(':');
-        _.append(key.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number01").append('"').append(':');
-        _.append(number01.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number02").append('"').append(':');
-        _.append(number02.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number03").append('"').append(':');
-        _.append(number03.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number04").append('"').append(':');
-        _.append(number04.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number05").append('"').append(':');
-        _.append(number05.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number06").append('"').append(':');
-        _.append(number06.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number07").append('"').append(':');
-        _.append(number07.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number08").append('"').append(':');
-        _.append(number08.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number09").append('"').append(':');
-        _.append(number09.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("number10").append('"').append(':');
-        _.append(number10.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("isReal").append('"').append(':');
-        _.append(isReal.toString().toLowerCase()); comma = ',';
+        s_.append('"').append("key").append('"').append(':');
+        s_.append(key.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number01").append('"').append(':');
+        s_.append(number01.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number02").append('"').append(':');
+        s_.append(number02.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number03").append('"').append(':');
+        s_.append(number03.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number04").append('"').append(':');
+        s_.append(number04.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number05").append('"').append(':');
+        s_.append(number05.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number06").append('"').append(':');
+        s_.append(number06.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number07").append('"').append(':');
+        s_.append(number07.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number08").append('"').append(':');
+        s_.append(number08.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number09").append('"').append(':');
+        s_.append(number09.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("number10").append('"').append(':');
+        s_.append(number10.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("isReal").append('"').append(':');
+        s_.append(isReal.toString().toLowerCase()); comma = ',';
         boolean sExists = s != null && s.length() > 0;
-        if ('\0' != comma && sExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && sExists) { s_.append(comma); comma = '\0'; }
         if (sExists) {
-            _.append('"').append("s").append('"').append(':'); comma = ','; _.append('"').append(s.toString()).append('"');
+            s_.append('"').append("s").append('"').append(':'); comma = ','; s_.append('"').append(s.toString()).append('"');
         }
         boolean worldExists = (null != world && world.size() > 0);
-        if ('\0' != comma && worldExists) { _.append(comma); comma = '\0'; }
-        if (worldExists) { _.append('"').append("world").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && worldExists) { s_.append(comma); comma = '\0'; }
+        if (worldExists) { s_.append('"').append("world").append('"').append(':'); comma = ','; }
         int worldSize = (null == world ? 0 : world.size());
         if (worldSize > 0) {
-            _.append('[');
+            s_.append('[');
             int worldIdx = 0;
             for (java.lang.String n1 : world) { /* vec.for: world */
                 ++worldIdx;
-                _.append('"').append(n1.toString()).append('"');
-                if (worldIdx != worldSize) { _.append(','); }
+                s_.append('"').append(n1.toString()).append('"');
+                if (worldIdx != worldSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("gender").append('"').append(':');
-        _.append(gender.value()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("gender").append('"').append(':');
+        s_.append(gender.value()); comma = ',';
         boolean nextExists = (null != next);
-        if ('\0' != comma && nextExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && nextExists) { s_.append(comma); comma = '\0'; }
         if (nextExists) {
-            _.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(_);
+            s_.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(s_);
         }
         boolean conflictExists = (null != conflict);
-        if ('\0' != comma && conflictExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && conflictExists) { s_.append(comma); comma = '\0'; }
         if (conflictExists) {
-            _.append('"').append("conflict").append('"').append(':'); comma = ','; conflict.writeJSON(_);
+            s_.append('"').append("conflict").append('"').append(':'); comma = ','; conflict.writeJSON(s_);
         }
         boolean conflictsExists = (null != conflicts && conflicts.size() > 0);
-        if ('\0' != comma && conflictsExists) { _.append(comma); comma = '\0'; }
-        if (conflictsExists) { _.append('"').append("conflicts").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && conflictsExists) { s_.append(comma); comma = '\0'; }
+        if (conflictsExists) { s_.append('"').append("conflicts").append('"').append(':'); comma = ','; }
         int conflictsSize = (null == conflicts ? 0 : conflicts.size());
         if (conflictsSize > 0) {
-            _.append('[');
+            s_.append('[');
             int conflictsIdx = 0;
             for (test.xyz.Conflict n1 : conflicts) { /* vec.for: conflicts */
                 ++conflictsIdx;
-                n1.writeJSON(_);
-                if (conflictsIdx != conflictsSize) { _.append(','); }
+                n1.writeJSON(s_);
+                if (conflictsIdx != conflictsSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean numbersExists = (null != numbers && numbers.size() > 0);
-        if ('\0' != comma && numbersExists) { _.append(comma); comma = '\0'; }
-        if (numbersExists) { _.append('"').append("numbers").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && numbersExists) { s_.append(comma); comma = '\0'; }
+        if (numbersExists) { s_.append('"').append("numbers").append('"').append(':'); comma = ','; }
         int numbersSize = (null == numbers ? 0 : numbers.size());
         if (numbersSize > 0) {
-            _.append('[');
+            s_.append('[');
             int numbersIdx = 0;
             for (java.lang.Double n1 : numbers) { /* vec.for: numbers */
                 ++numbersIdx;
-                _.append(n1.toString());
-                if (numbersIdx != numbersSize) { _.append(','); }
+                s_.append(n1.toString());
+                if (numbersIdx != numbersSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean mapInfoGExists = (null != mapInfoG && mapInfoG.size() > 0);
-        if ('\0' != comma && mapInfoGExists) { _.append(comma); comma = '\0'; }
-        if (mapInfoGExists) { _.append('"').append("mapInfoG").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mapInfoGExists) { s_.append(comma); comma = '\0'; }
+        if (mapInfoGExists) { s_.append('"').append("mapInfoG").append('"').append(':'); comma = ','; }
         int mapInfoGSize = (null == mapInfoG ? 0 : mapInfoG.size());
         if (mapInfoGSize > 0) {
-            _.append('{');
+            s_.append('{');
             int mapInfoGIdx = 0;
             for (Map.Entry<Info,Gender> mapInfoGIter : mapInfoG.entrySet()) { /* map.for: mapInfoG */
                 ++mapInfoGIdx;
                 Info k1 = mapInfoGIter.getKey(); /* nest.k */
-                _.append('"'); k1.writeJSON(_); _.append('"').append(':');
+                s_.append('"'); k1.writeJSON(s_); s_.append('"').append(':');
                 Gender v1 = mapInfoGIter.getValue(); /* nest.v */
-                _.append(v1.value());
-                if (mapInfoGIdx != mapInfoGSize) { _.append(','); }
+                s_.append(v1.value());
+                if (mapInfoGIdx != mapInfoGSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean mapGenderInfoExists = (null != mapGenderInfo && mapGenderInfo.size() > 0);
-        if ('\0' != comma && mapGenderInfoExists) { _.append(comma); comma = '\0'; }
-        if (mapGenderInfoExists) { _.append('"').append("mapGenderInfo").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mapGenderInfoExists) { s_.append(comma); comma = '\0'; }
+        if (mapGenderInfoExists) { s_.append('"').append("mapGenderInfo").append('"').append(':'); comma = ','; }
         int mapGenderInfoSize = (null == mapGenderInfo ? 0 : mapGenderInfo.size());
         if (mapGenderInfoSize > 0) {
-            _.append('{');
+            s_.append('{');
             int mapGenderInfoIdx = 0;
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) { /* map.for: mapGenderInfo */
                 ++mapGenderInfoIdx;
                 Gender k1 = mapGenderInfoIter.getKey(); /* nest.k */
-                _.append('"'); _.append(k1.value()); _.append('"').append(':');
+                s_.append('"'); s_.append(k1.value()); s_.append('"').append(':');
                 Info v1 = mapGenderInfoIter.getValue(); /* nest.v */
-                v1.writeJSON(_);
-                if (mapGenderInfoIdx != mapGenderInfoSize) { _.append(','); }
+                v1.writeJSON(s_);
+                if (mapGenderInfoIdx != mapGenderInfoSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean mapDoubleExists = (null != mapDouble && mapDouble.size() > 0);
-        if ('\0' != comma && mapDoubleExists) { _.append(comma); comma = '\0'; }
-        if (mapDoubleExists) { _.append('"').append("mapDouble").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mapDoubleExists) { s_.append(comma); comma = '\0'; }
+        if (mapDoubleExists) { s_.append('"').append("mapDouble").append('"').append(':'); comma = ','; }
         int mapDoubleSize = (null == mapDouble ? 0 : mapDouble.size());
         if (mapDoubleSize > 0) {
-            _.append('{');
+            s_.append('{');
             int mapDoubleIdx = 0;
             for (Map.Entry<Integer,java.lang.Double> mapDoubleIter : mapDouble.entrySet()) { /* map.for: mapDouble */
                 ++mapDoubleIdx;
                 Integer k1 = mapDoubleIter.getKey(); /* nest.k */
-                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
+                s_.append('"'); s_.append(k1.toString()); s_.append('"').append(':');
                 java.lang.Double v1 = mapDoubleIter.getValue(); /* nest.v */
-                _.append(v1.toString());
-                if (mapDoubleIdx != mapDoubleSize) { _.append(','); }
+                s_.append(v1.toString());
+                if (mapDoubleIdx != mapDoubleSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                _.append('{');
+                s_.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    _.append('"').append(k1.toString()).append('"'); _.append(':');
+                    s_.append('"').append(k1.toString()).append('"'); s_.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    _.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { _.append(','); }
+                    s_.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
-                _.append('}');
+                s_.append('}');
             } comma = ',';
         }
-        _.append('}');
+        s_.append('}');
     } /* Info::writeJSON(...) */
 
     public String toStringXML()

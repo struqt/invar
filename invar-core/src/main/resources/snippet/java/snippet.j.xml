@@ -653,7 +653,7 @@
   <!-- Write data to JSON data format -->
   <template key="tojson.import">
     <![CDATA[ System.Text::StringBuilder ]]></template>
-  <template key="tojson.method.arg">  <![CDATA[ _ ]]></template>
+  <template key="tojson.method.arg">  <![CDATA[ s_ ]]></template>
   <template key="tojson.method"><![CDATA[
     (#tab)public String toStringJSON()
     (#tab){
@@ -661,11 +661,11 @@
     (#tab)(#tab)this.writeJSON(code);
     (#tab)(#tab)return code.toString();
     (#tab)}(#brk)
-    (#tab)public void writeJSON(StringBuilder _)
+    (#tab)public void writeJSON(StringBuilder (#arg))
     (#tab){
-    (#tab)(#tab)_.append('{');
+    (#tab)(#tab)(#arg).append('{');
     (#tab)(#tab)char comma = '\\0';(#body)
-    (#tab)(#tab)_.append('}');
+    (#tab)(#tab)(#arg).append('}');
     (#tab)} /* (#type)::writeJSON(...) */ ]]></template>
   <template key="tojson.any"><![CDATA[ (#arg).append((#name).toString()) ]]></template>
   <template key="tojson.enum"><![CDATA[ (#arg).append((#name).value()) ]]></template>

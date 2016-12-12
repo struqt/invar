@@ -218,58 +218,58 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
         boolean revisionExists = revision != null && revision.length() > 0;
         if (revisionExists) {
-            _.append('"').append("revision").append('"').append(':'); comma = ','; _.append('"').append(revision.toString()).append('"');
+            s_.append('"').append("revision").append('"').append(':'); comma = ','; s_.append('"').append(revision.toString()).append('"');
         }
         boolean listExists = (null != list);
-        if ('\0' != comma && listExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && listExists) { s_.append(comma); comma = '\0'; }
         if (listExists) {
-            _.append('"').append("list").append('"').append(':'); comma = ','; list.writeJSON(_);
+            s_.append('"').append("list").append('"').append(':'); comma = ','; list.writeJSON(s_);
         }
         boolean dictExists = (null != dict);
-        if ('\0' != comma && dictExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && dictExists) { s_.append(comma); comma = '\0'; }
         if (dictExists) {
-            _.append('"').append("dict").append('"').append(':'); comma = ','; dict.writeJSON(_);
+            s_.append('"').append("dict").append('"').append(':'); comma = ','; dict.writeJSON(s_);
         }
         boolean nestExists = (null != nest);
-        if ('\0' != comma && nestExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && nestExists) { s_.append(comma); comma = '\0'; }
         if (nestExists) {
-            _.append('"').append("nest").append('"').append(':'); comma = ','; nest.writeJSON(_);
+            s_.append('"').append("nest").append('"').append(':'); comma = ','; nest.writeJSON(s_);
         }
         boolean infoExists = (null != info);
-        if ('\0' != comma && infoExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && infoExists) { s_.append(comma); comma = '\0'; }
         if (infoExists) {
-            _.append('"').append("info").append('"').append(':'); comma = ','; info.writeJSON(_);
+            s_.append('"').append("info").append('"').append(':'); comma = ','; info.writeJSON(s_);
         }
         boolean infoxExists = (null != infox);
-        if ('\0' != comma && infoxExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && infoxExists) { s_.append(comma); comma = '\0'; }
         if (infoxExists) {
-            _.append('"').append("infox").append('"').append(':'); comma = ','; infox.writeJSON(_);
+            s_.append('"').append("infox").append('"').append(':'); comma = ','; infox.writeJSON(s_);
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                _.append('{');
+                s_.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    _.append('"').append(k1.toString()).append('"'); _.append(':');
+                    s_.append('"').append(k1.toString()).append('"'); s_.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    _.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { _.append(','); }
+                    s_.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
-                _.append('}');
+                s_.append('}');
             } comma = ',';
         }
-        _.append('}');
+        s_.append('}');
     } /* ConfigRoot::writeJSON(...) */
 
     public String toStringXML()

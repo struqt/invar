@@ -206,42 +206,42 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
-        _.append('"').append("protocId").append('"').append(':');
-        _.append(protocId.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("protocCRC").append('"').append(':');
-        _.append(protocCRC.toString()); comma = ',';
+        s_.append('"').append("protocId").append('"').append(':');
+        s_.append(protocId.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("protocCRC").append('"').append(':');
+        s_.append(protocCRC.toString()); comma = ',';
         boolean protoc2CExists = (null != protoc2C);
-        if ('\0' != comma && protoc2CExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && protoc2CExists) { s_.append(comma); comma = '\0'; }
         if (protoc2CExists) {
-            _.append('"').append("protoc2C").append('"').append(':'); comma = ','; protoc2C.writeJSON(_);
+            s_.append('"').append("protoc2C").append('"').append(':'); comma = ','; protoc2C.writeJSON(s_);
         }
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("time").append('"').append(':');
-        _.append(time.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("time").append('"').append(':');
+        s_.append(time.toString()); comma = ',';
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                _.append('{');
+                s_.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    _.append('"').append(k1.toString()).append('"'); _.append(':');
+                    s_.append('"').append(k1.toString()).append('"'); s_.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    _.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { _.append(','); }
+                    s_.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
-                _.append('}');
+                s_.append('}');
             } comma = ',';
         }
-        _.append('}');
+        s_.append('}');
     } /* TestServerTimeN2C::writeJSON(...) */
 
     public String toStringXML()

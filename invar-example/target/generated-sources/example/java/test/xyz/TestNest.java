@@ -213,128 +213,128 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
         boolean listDictExists = (null != listDict && listDict.size() > 0);
-        if (listDictExists) { _.append('"').append("listDict").append('"').append(':'); comma = ','; }
+        if (listDictExists) { s_.append('"').append("listDict").append('"').append(':'); comma = ','; }
         int listDictSize = (null == listDict ? 0 : listDict.size());
         if (listDictSize > 0) {
-            _.append('[');
+            s_.append('[');
             int listDictIdx = 0;
             for (LinkedHashMap<java.lang.String,Custom> n1 : listDict) { /* vec.for: listDict */
                 ++listDictIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('{');
+                    s_.append('{');
                     int n1Idx = 0;
                     for (Map.Entry<java.lang.String,Custom> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
                         java.lang.String k2 = n1Iter.getKey(); /* nest.k */
-                        _.append('"').append(k2.toString()).append('"'); _.append(':');
+                        s_.append('"').append(k2.toString()).append('"'); s_.append(':');
                         Custom v2 = n1Iter.getValue(); /* nest.v */
-                        v2.writeJSON(_);
-                        if (n1Idx != n1Size) { _.append(','); }
+                        v2.writeJSON(s_);
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append('}');
+                    s_.append('}');
                 }
-                if (listDictIdx != listDictSize) { _.append(','); }
+                if (listDictIdx != listDictSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean dictListExists = (null != dictList && dictList.size() > 0);
-        if ('\0' != comma && dictListExists) { _.append(comma); comma = '\0'; }
-        if (dictListExists) { _.append('"').append("dictList").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictListExists) { s_.append(comma); comma = '\0'; }
+        if (dictListExists) { s_.append('"').append("dictList").append('"').append(':'); comma = ','; }
         int dictListSize = (null == dictList ? 0 : dictList.size());
         if (dictListSize > 0) {
-            _.append('{');
+            s_.append('{');
             int dictListIdx = 0;
             for (Map.Entry<LinkedList<java.lang.String>,LinkedList<Custom>> dictListIter : dictList.entrySet()) { /* map.for: dictList */
                 ++dictListIdx;
                 LinkedList<java.lang.String> k1 = dictListIter.getKey();
                 int k1Size = (null == k1 ? 0 : k1.size());
                 if (k1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int k1Idx = 0;
                     for (java.lang.String n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
-                        _.append('"').append(n2.toString()).append('"');
-                        if (k1Idx != k1Size) { _.append(','); }
+                        s_.append('"').append(n2.toString()).append('"');
+                        if (k1Idx != k1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
                 LinkedList<Custom> v1 = dictListIter.getValue();
                 int v1Size = (null == v1 ? 0 : v1.size());
                 if (v1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int v1Idx = 0;
                     for (Custom n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
-                        n2.writeJSON(_);
-                        if (v1Idx != v1Size) { _.append(','); }
+                        n2.writeJSON(s_);
+                        if (v1Idx != v1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (dictListIdx != dictListSize) { _.append(','); }
+                if (dictListIdx != dictListSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean list5dExists = (null != list5d && list5d.size() > 0);
-        if ('\0' != comma && list5dExists) { _.append(comma); comma = '\0'; }
-        if (list5dExists) { _.append('"').append("list5d").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && list5dExists) { s_.append(comma); comma = '\0'; }
+        if (list5dExists) { s_.append('"').append("list5d").append('"').append(':'); comma = ','; }
         int list5dSize = (null == list5d ? 0 : list5d.size());
         if (list5dSize > 0) {
-            _.append('[');
+            s_.append('[');
             int list5dIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>> n1 : list5d) { /* vec.for: list5d */
                 ++list5dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Custom>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            _.append('[');
+                            s_.append('[');
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Custom>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
                                 int n3Size = (null == n3 ? 0 : n3.size());
                                 if (n3Size > 0) {
-                                    _.append('[');
+                                    s_.append('[');
                                     int n3Idx = 0;
                                     for (LinkedList<Custom> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
                                         int n4Size = (null == n4 ? 0 : n4.size());
                                         if (n4Size > 0) {
-                                            _.append('[');
+                                            s_.append('[');
                                             int n4Idx = 0;
                                             for (Custom n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
-                                                n5.writeJSON(_);
-                                                if (n4Idx != n4Size) { _.append(','); }
+                                                n5.writeJSON(s_);
+                                                if (n4Idx != n4Size) { s_.append(','); }
                                             }
-                                            _.append(']');
+                                            s_.append(']');
                                         }
-                                        if (n3Idx != n3Size) { _.append(','); }
+                                        if (n3Idx != n3Size) { s_.append(','); }
                                     }
-                                    _.append(']');
+                                    s_.append(']');
                                 }
-                                if (n2Idx != n2Size) { _.append(','); }
+                                if (n2Idx != n2Size) { s_.append(','); }
                             }
-                            _.append(']');
+                            s_.append(']');
                         }
-                        if (n1Idx != n1Size) { _.append(','); }
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (list5dIdx != list5dSize) { _.append(','); }
+                if (list5dIdx != list5dSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
-        _.append('}');
+        s_.append('}');
     } /* TestNest::writeJSON(...) */
 
     public String toStringXML()

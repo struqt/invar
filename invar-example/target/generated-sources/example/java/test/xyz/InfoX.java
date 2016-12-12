@@ -550,386 +550,386 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
         boolean infosExists = (null != infos && infos.size() > 0);
-        if (infosExists) { _.append('"').append("infos").append('"').append(':'); comma = ','; }
+        if (infosExists) { s_.append('"').append("infos").append('"').append(':'); comma = ','; }
         int infosSize = (null == infos ? 0 : infos.size());
         if (infosSize > 0) {
-            _.append('[');
+            s_.append('[');
             int infosIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : infos) { /* vec.for: infos */
                 ++infosIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            _.append('[');
+                            s_.append('[');
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Info>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
                                 int n3Size = (null == n3 ? 0 : n3.size());
                                 if (n3Size > 0) {
-                                    _.append('[');
+                                    s_.append('[');
                                     int n3Idx = 0;
                                     for (LinkedList<Info> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
                                         int n4Size = (null == n4 ? 0 : n4.size());
                                         if (n4Size > 0) {
-                                            _.append('[');
+                                            s_.append('[');
                                             int n4Idx = 0;
                                             for (Info n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
-                                                n5.writeJSON(_);
-                                                if (n4Idx != n4Size) { _.append(','); }
+                                                n5.writeJSON(s_);
+                                                if (n4Idx != n4Size) { s_.append(','); }
                                             }
-                                            _.append(']');
+                                            s_.append(']');
                                         }
-                                        if (n3Idx != n3Size) { _.append(','); }
+                                        if (n3Idx != n3Size) { s_.append(','); }
                                     }
-                                    _.append(']');
+                                    s_.append(']');
                                 }
-                                if (n2Idx != n2Size) { _.append(','); }
+                                if (n2Idx != n2Size) { s_.append(','); }
                             }
-                            _.append(']');
+                            s_.append(']');
                         }
-                        if (n1Idx != n1Size) { _.append(','); }
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (infosIdx != infosSize) { _.append(','); }
+                if (infosIdx != infosSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean conflict_xExists = (null != conflict_x);
-        if ('\0' != comma && conflict_xExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && conflict_xExists) { s_.append(comma); comma = '\0'; }
         if (conflict_xExists) {
-            _.append('"').append("conflict_x").append('"').append(':'); comma = ','; conflict_x.writeJSON(_);
+            s_.append('"').append("conflict_x").append('"').append(':'); comma = ','; conflict_x.writeJSON(s_);
         }
         boolean conflict_aExists = (null != conflict_a);
-        if ('\0' != comma && conflict_aExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && conflict_aExists) { s_.append(comma); comma = '\0'; }
         if (conflict_aExists) {
-            _.append('"').append("conflict_a").append('"').append(':'); comma = ','; conflict_a.writeJSON(_);
+            s_.append('"').append("conflict_a").append('"').append(':'); comma = ','; conflict_a.writeJSON(s_);
         }
         boolean mConflictExists = (null != mConflict && mConflict.size() > 0);
-        if ('\0' != comma && mConflictExists) { _.append(comma); comma = '\0'; }
-        if (mConflictExists) { _.append('"').append("mConflict").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mConflictExists) { s_.append(comma); comma = '\0'; }
+        if (mConflictExists) { s_.append('"').append("mConflict").append('"').append(':'); comma = ','; }
         int mConflictSize = (null == mConflict ? 0 : mConflict.size());
         if (mConflictSize > 0) {
-            _.append('{');
+            s_.append('{');
             int mConflictIdx = 0;
             for (Map.Entry<Integer,test.abc.Conflict> mConflictIter : mConflict.entrySet()) { /* map.for: mConflict */
                 ++mConflictIdx;
                 Integer k1 = mConflictIter.getKey(); /* nest.k */
-                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
+                s_.append('"'); s_.append(k1.toString()); s_.append('"').append(':');
                 test.abc.Conflict v1 = mConflictIter.getValue(); /* nest.v */
-                v1.writeJSON(_);
-                if (mConflictIdx != mConflictSize) { _.append(','); }
+                v1.writeJSON(s_);
+                if (mConflictIdx != mConflictSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean info2dExists = (null != info2d && info2d.size() > 0);
-        if ('\0' != comma && info2dExists) { _.append(comma); comma = '\0'; }
-        if (info2dExists) { _.append('"').append("info2d").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && info2dExists) { s_.append(comma); comma = '\0'; }
+        if (info2dExists) { s_.append('"').append("info2d").append('"').append(':'); comma = ','; }
         int info2dSize = (null == info2d ? 0 : info2d.size());
         if (info2dSize > 0) {
-            _.append('[');
+            s_.append('[');
             int info2dIdx = 0;
             for (LinkedList<Info> n1 : info2d) { /* vec.for: info2d */
                 ++info2dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int n1Idx = 0;
                     for (Info n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
-                        n2.writeJSON(_);
-                        if (n1Idx != n1Size) { _.append(','); }
+                        n2.writeJSON(s_);
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (info2dIdx != info2dSize) { _.append(','); }
+                if (info2dIdx != info2dSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean info3dExists = (null != info3d && info3d.size() > 0);
-        if ('\0' != comma && info3dExists) { _.append(comma); comma = '\0'; }
-        if (info3dExists) { _.append('"').append("info3d").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && info3dExists) { s_.append(comma); comma = '\0'; }
+        if (info3dExists) { s_.append('"').append("info3d").append('"').append(':'); comma = ','; }
         int info3dSize = (null == info3d ? 0 : info3d.size());
         if (info3dSize > 0) {
-            _.append('[');
+            s_.append('[');
             int info3dIdx = 0;
             for (LinkedList<LinkedList<Info>> n1 : info3d) { /* vec.for: info3d */
                 ++info3dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int n1Idx = 0;
                     for (LinkedList<Info> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            _.append('[');
+                            s_.append('[');
                             int n2Idx = 0;
                             for (Info n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
-                                n3.writeJSON(_);
-                                if (n2Idx != n2Size) { _.append(','); }
+                                n3.writeJSON(s_);
+                                if (n2Idx != n2Size) { s_.append(','); }
                             }
-                            _.append(']');
+                            s_.append(']');
                         }
-                        if (n1Idx != n1Size) { _.append(','); }
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (info3dIdx != info3dSize) { _.append(','); }
+                if (info3dIdx != info3dSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean info5dExists = (null != info5d && info5d.size() > 0);
-        if ('\0' != comma && info5dExists) { _.append(comma); comma = '\0'; }
-        if (info5dExists) { _.append('"').append("info5d").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && info5dExists) { s_.append(comma); comma = '\0'; }
+        if (info5dExists) { s_.append('"').append("info5d").append('"').append(':'); comma = ','; }
         int info5dSize = (null == info5d ? 0 : info5d.size());
         if (info5dSize > 0) {
-            _.append('[');
+            s_.append('[');
             int info5dIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : info5d) { /* vec.for: info5d */
                 ++info5dIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
                         int n2Size = (null == n2 ? 0 : n2.size());
                         if (n2Size > 0) {
-                            _.append('[');
+                            s_.append('[');
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Info>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
                                 int n3Size = (null == n3 ? 0 : n3.size());
                                 if (n3Size > 0) {
-                                    _.append('[');
+                                    s_.append('[');
                                     int n3Idx = 0;
                                     for (LinkedList<Info> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
                                         int n4Size = (null == n4 ? 0 : n4.size());
                                         if (n4Size > 0) {
-                                            _.append('[');
+                                            s_.append('[');
                                             int n4Idx = 0;
                                             for (Info n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
-                                                n5.writeJSON(_);
-                                                if (n4Idx != n4Size) { _.append(','); }
+                                                n5.writeJSON(s_);
+                                                if (n4Idx != n4Size) { s_.append(','); }
                                             }
-                                            _.append(']');
+                                            s_.append(']');
                                         }
-                                        if (n3Idx != n3Size) { _.append(','); }
+                                        if (n3Idx != n3Size) { s_.append(','); }
                                     }
-                                    _.append(']');
+                                    s_.append(']');
                                 }
-                                if (n2Idx != n2Size) { _.append(','); }
+                                if (n2Idx != n2Size) { s_.append(','); }
                             }
-                            _.append(']');
+                            s_.append(']');
                         }
-                        if (n1Idx != n1Size) { _.append(','); }
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (info5dIdx != info5dSize) { _.append(','); }
+                if (info5dIdx != info5dSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean infovmExists = (null != infovm && infovm.size() > 0);
-        if ('\0' != comma && infovmExists) { _.append(comma); comma = '\0'; }
-        if (infovmExists) { _.append('"').append("infovm").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && infovmExists) { s_.append(comma); comma = '\0'; }
+        if (infovmExists) { s_.append('"').append("infovm").append('"').append(':'); comma = ','; }
         int infovmSize = (null == infovm ? 0 : infovm.size());
         if (infovmSize > 0) {
-            _.append('[');
+            s_.append('[');
             int infovmIdx = 0;
             for (LinkedHashMap<Short,Info> n1 : infovm) { /* vec.for: infovm */
                 ++infovmIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('{');
+                    s_.append('{');
                     int n1Idx = 0;
                     for (Map.Entry<Short,Info> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
                         Short k2 = n1Iter.getKey(); /* nest.k */
-                        _.append('"'); _.append(k2.toString()); _.append('"').append(':');
+                        s_.append('"'); s_.append(k2.toString()); s_.append('"').append(':');
                         Info v2 = n1Iter.getValue(); /* nest.v */
-                        v2.writeJSON(_);
-                        if (n1Idx != n1Size) { _.append(','); }
+                        v2.writeJSON(s_);
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append('}');
+                    s_.append('}');
                 }
-                if (infovmIdx != infovmSize) { _.append(','); }
+                if (infovmIdx != infovmSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean mveiExists = (null != mvei && mvei.size() > 0);
-        if ('\0' != comma && mveiExists) { _.append(comma); comma = '\0'; }
-        if (mveiExists) { _.append('"').append("mvei").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mveiExists) { s_.append(comma); comma = '\0'; }
+        if (mveiExists) { s_.append('"').append("mvei").append('"').append(':'); comma = ','; }
         int mveiSize = (null == mvei ? 0 : mvei.size());
         if (mveiSize > 0) {
-            _.append('{');
+            s_.append('{');
             int mveiIdx = 0;
             for (Map.Entry<LinkedList<Gender>,Info> mveiIter : mvei.entrySet()) { /* map.for: mvei */
                 ++mveiIdx;
                 LinkedList<Gender> k1 = mveiIter.getKey();
                 int k1Size = (null == k1 ? 0 : k1.size());
                 if (k1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int k1Idx = 0;
                     for (Gender n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
-                        _.append(n2.value());
-                        if (k1Idx != k1Size) { _.append(','); }
+                        s_.append(n2.value());
+                        if (k1Idx != k1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
                 Info v1 = mveiIter.getValue(); /* nest.v */
-                v1.writeJSON(_);
-                if (mveiIdx != mveiSize) { _.append(','); }
+                v1.writeJSON(s_);
+                if (mveiIdx != mveiSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean miveExists = (null != mive && mive.size() > 0);
-        if ('\0' != comma && miveExists) { _.append(comma); comma = '\0'; }
-        if (miveExists) { _.append('"').append("mive").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && miveExists) { s_.append(comma); comma = '\0'; }
+        if (miveExists) { s_.append('"').append("mive").append('"').append(':'); comma = ','; }
         int miveSize = (null == mive ? 0 : mive.size());
         if (miveSize > 0) {
-            _.append('{');
+            s_.append('{');
             int miveIdx = 0;
             for (Map.Entry<Info,LinkedList<Gender>> miveIter : mive.entrySet()) { /* map.for: mive */
                 ++miveIdx;
                 Info k1 = miveIter.getKey(); /* nest.k */
-                _.append('"'); k1.writeJSON(_); _.append('"').append(':');
+                s_.append('"'); k1.writeJSON(s_); s_.append('"').append(':');
                 LinkedList<Gender> v1 = miveIter.getValue();
                 int v1Size = (null == v1 ? 0 : v1.size());
                 if (v1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
-                        _.append(n2.value());
-                        if (v1Idx != v1Size) { _.append(','); }
+                        s_.append(n2.value());
+                        if (v1Idx != v1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (miveIdx != miveSize) { _.append(','); }
+                if (miveIdx != miveSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean mviveExists = (null != mvive && mvive.size() > 0);
-        if ('\0' != comma && mviveExists) { _.append(comma); comma = '\0'; }
-        if (mviveExists) { _.append('"').append("mvive").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && mviveExists) { s_.append(comma); comma = '\0'; }
+        if (mviveExists) { s_.append('"').append("mvive").append('"').append(':'); comma = ','; }
         int mviveSize = (null == mvive ? 0 : mvive.size());
         if (mviveSize > 0) {
-            _.append('{');
+            s_.append('{');
             int mviveIdx = 0;
             for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> mviveIter : mvive.entrySet()) { /* map.for: mvive */
                 ++mviveIdx;
                 LinkedList<Info> k1 = mviveIter.getKey();
                 int k1Size = (null == k1 ? 0 : k1.size());
                 if (k1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int k1Idx = 0;
                     for (Info n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
-                        n2.writeJSON(_);
-                        if (k1Idx != k1Size) { _.append(','); }
+                        n2.writeJSON(s_);
+                        if (k1Idx != k1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
                 LinkedList<Gender> v1 = mviveIter.getValue();
                 int v1Size = (null == v1 ? 0 : v1.size());
                 if (v1Size > 0) {
-                    _.append('[');
+                    s_.append('[');
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
-                        _.append(n2.value());
-                        if (v1Idx != v1Size) { _.append(','); }
+                        s_.append(n2.value());
+                        if (v1Idx != v1Size) { s_.append(','); }
                     }
-                    _.append(']');
+                    s_.append(']');
                 }
-                if (mviveIdx != mviveSize) { _.append(','); }
+                if (mviveIdx != mviveSize) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
         boolean vmviveExists = (null != vmvive && vmvive.size() > 0);
-        if ('\0' != comma && vmviveExists) { _.append(comma); comma = '\0'; }
-        if (vmviveExists) { _.append('"').append("vmvive").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && vmviveExists) { s_.append(comma); comma = '\0'; }
+        if (vmviveExists) { s_.append('"').append("vmvive").append('"').append(':'); comma = ','; }
         int vmviveSize = (null == vmvive ? 0 : vmvive.size());
         if (vmviveSize > 0) {
-            _.append('[');
+            s_.append('[');
             int vmviveIdx = 0;
             for (LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> n1 : vmvive) { /* vec.for: vmvive */
                 ++vmviveIdx;
                 int n1Size = (null == n1 ? 0 : n1.size());
                 if (n1Size > 0) {
-                    _.append('{');
+                    s_.append('{');
                     int n1Idx = 0;
                     for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
                         LinkedList<Info> k2 = n1Iter.getKey();
                         int k2Size = (null == k2 ? 0 : k2.size());
                         if (k2Size > 0) {
-                            _.append('[');
+                            s_.append('[');
                             int k2Idx = 0;
                             for (Info n3 : k2) { /* vec.for: k2 */
                                 ++k2Idx;
-                                n3.writeJSON(_);
-                                if (k2Idx != k2Size) { _.append(','); }
+                                n3.writeJSON(s_);
+                                if (k2Idx != k2Size) { s_.append(','); }
                             }
-                            _.append(']');
+                            s_.append(']');
                         }
                         LinkedList<Gender> v2 = n1Iter.getValue();
                         int v2Size = (null == v2 ? 0 : v2.size());
                         if (v2Size > 0) {
-                            _.append('[');
+                            s_.append('[');
                             int v2Idx = 0;
                             for (Gender n3 : v2) { /* vec.for: v2 */
                                 ++v2Idx;
-                                _.append(n3.value());
-                                if (v2Idx != v2Size) { _.append(','); }
+                                s_.append(n3.value());
+                                if (v2Idx != v2Size) { s_.append(','); }
                             }
-                            _.append(']');
+                            s_.append(']');
                         }
-                        if (n1Idx != n1Size) { _.append(','); }
+                        if (n1Idx != n1Size) { s_.append(','); }
                     }
-                    _.append('}');
+                    s_.append('}');
                 }
-                if (vmviveIdx != vmviveSize) { _.append(','); }
+                if (vmviveIdx != vmviveSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                _.append('{');
+                s_.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    _.append('"').append(k1.toString()).append('"'); _.append(':');
+                    s_.append('"').append(k1.toString()).append('"'); s_.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    _.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { _.append(','); }
+                    s_.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
-                _.append('}');
+                s_.append('}');
             } comma = ',';
         }
-        _.append('}');
+        s_.append('}');
     } /* InfoX::writeJSON(...) */
 
     public String toStringXML()

@@ -302,70 +302,70 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
-        _.append('"').append("x").append('"').append(':');
-        _.append(x.value()); comma = ',';
+        s_.append('"').append("x").append('"').append(':');
+        s_.append(x.value()); comma = ',';
         boolean test_Exists = (null != test_);
-        if ('\0' != comma && test_Exists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && test_Exists) { s_.append(comma); comma = '\0'; }
         if (test_Exists) {
-            _.append('"').append("test_").append('"').append(':'); comma = ','; test_.writeJSON(_);
+            s_.append('"').append("test_").append('"').append(':'); comma = ','; test_.writeJSON(s_);
         }
         boolean xyzExists = (null != xyz);
-        if ('\0' != comma && xyzExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && xyzExists) { s_.append(comma); comma = '\0'; }
         if (xyzExists) {
-            _.append('"').append("xyz").append('"').append(':'); comma = ','; xyz.writeJSON(_);
+            s_.append('"').append("xyz").append('"').append(':'); comma = ','; xyz.writeJSON(s_);
         }
         boolean abcExists = (null != abc);
-        if ('\0' != comma && abcExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && abcExists) { s_.append(comma); comma = '\0'; }
         if (abcExists) {
-            _.append('"').append("abc").append('"').append(':'); comma = ','; abc.writeJSON(_);
+            s_.append('"').append("abc").append('"').append(':'); comma = ','; abc.writeJSON(s_);
         }
         boolean childrenExists = (null != children && children.size() > 0);
-        if ('\0' != comma && childrenExists) { _.append(comma); comma = '\0'; }
-        if (childrenExists) { _.append('"').append("children").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && childrenExists) { s_.append(comma); comma = '\0'; }
+        if (childrenExists) { s_.append('"').append("children").append('"').append(':'); comma = ','; }
         int childrenSize = (null == children ? 0 : children.size());
         if (childrenSize > 0) {
-            _.append('[');
+            s_.append('[');
             int childrenIdx = 0;
             for (Custom n1 : children) { /* vec.for: children */
                 ++childrenIdx;
-                n1.writeJSON(_);
-                if (childrenIdx != childrenSize) { _.append(','); }
+                n1.writeJSON(s_);
+                if (childrenIdx != childrenSize) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("noSetter").append('"').append(':');
-        _.append(noSetter.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("noSetter").append('"').append(':');
+        s_.append(noSetter.toString()); comma = ',';
         boolean useRefExists = useRef != null && useRef.length() > 0;
-        if ('\0' != comma && useRefExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && useRefExists) { s_.append(comma); comma = '\0'; }
         if (useRefExists) {
-            _.append('"').append("useRef").append('"').append(':'); comma = ','; _.append('"').append(useRef.toString()).append('"');
+            s_.append('"').append("useRef").append('"').append(':'); comma = ','; s_.append('"').append(useRef.toString()).append('"');
         }
         boolean usePtrExists = usePtr != null && usePtr.length() > 0;
-        if ('\0' != comma && usePtrExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && usePtrExists) { s_.append(comma); comma = '\0'; }
         if (usePtrExists) {
-            _.append('"').append("usePtr").append('"').append(':'); comma = ','; _.append('"').append(usePtr.toString()).append('"');
+            s_.append('"').append("usePtr").append('"').append(':'); comma = ','; s_.append('"').append(usePtr.toString()).append('"');
         }
         boolean prevExists = (null != prev);
-        if ('\0' != comma && prevExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && prevExists) { s_.append(comma); comma = '\0'; }
         if (prevExists) {
-            _.append('"').append("prev").append('"').append(':'); comma = ','; prev.writeJSON(_);
+            s_.append('"').append("prev").append('"').append(':'); comma = ','; prev.writeJSON(s_);
         }
         boolean nextExists = (null != next);
-        if ('\0' != comma && nextExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && nextExists) { s_.append(comma); comma = '\0'; }
         if (nextExists) {
-            _.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(_);
+            s_.append('"').append("next").append('"').append(':'); comma = ','; next.writeJSON(s_);
         }
         boolean emptyDocExists = emptyDoc != null && emptyDoc.length() > 0;
-        if ('\0' != comma && emptyDocExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && emptyDocExists) { s_.append(comma); comma = '\0'; }
         if (emptyDocExists) {
-            _.append('"').append("emptyDoc").append('"').append(':'); comma = ','; _.append('"').append(emptyDoc.toString()).append('"');
+            s_.append('"').append("emptyDoc").append('"').append(':'); comma = ','; s_.append('"').append(emptyDoc.toString()).append('"');
         }
-        _.append('}');
+        s_.append('}');
     } /* Custom::writeJSON(...) */
 
     public String toStringXML()

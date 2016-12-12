@@ -399,92 +399,92 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
-        _.append('"').append("numberi08").append('"').append(':');
-        _.append(numberi08.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberi16").append('"').append(':');
-        _.append(numberi16.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberi32").append('"').append(':');
-        _.append(numberi32.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberi64").append('"').append(':');
-        _.append(numberi64.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberu08").append('"').append(':');
-        _.append(numberu08.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberu16").append('"').append(':');
-        _.append(numberu16.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberu32").append('"').append(':');
-        _.append(numberu32.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberu64").append('"').append(':');
-        _.append(numberu64.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberSingle").append('"').append(':');
-        _.append(numberSingle.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("numberDouble").append('"').append(':');
-        _.append(numberDouble.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("boolValue").append('"').append(':');
-        _.append(boolValue.toString().toLowerCase()); comma = ',';
+        s_.append('"').append("numberi08").append('"').append(':');
+        s_.append(numberi08.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberi16").append('"').append(':');
+        s_.append(numberi16.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberi32").append('"').append(':');
+        s_.append(numberi32.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberi64").append('"').append(':');
+        s_.append(numberi64.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberu08").append('"').append(':');
+        s_.append(numberu08.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberu16").append('"').append(':');
+        s_.append(numberu16.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberu32").append('"').append(':');
+        s_.append(numberu32.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberu64").append('"').append(':');
+        s_.append(numberu64.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberSingle").append('"').append(':');
+        s_.append(numberSingle.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("numberDouble").append('"').append(':');
+        s_.append(numberDouble.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("boolValue").append('"').append(':');
+        s_.append(boolValue.toString().toLowerCase()); comma = ',';
         boolean stringValueExists = stringValue != null && stringValue.length() > 0;
-        if ('\0' != comma && stringValueExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && stringValueExists) { s_.append(comma); comma = '\0'; }
         if (stringValueExists) {
-            _.append('"').append("stringValue").append('"').append(':'); comma = ','; _.append('"').append(stringValue.toString()).append('"');
+            s_.append('"').append("stringValue").append('"').append(':'); comma = ','; s_.append('"').append(stringValue.toString()).append('"');
         }
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("enumValue").append('"').append(':');
-        _.append(enumValue.value()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("enumValue").append('"').append(':');
+        s_.append(enumValue.value()); comma = ',';
         boolean otherExists = (null != other);
-        if ('\0' != comma && otherExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && otherExists) { s_.append(comma); comma = '\0'; }
         if (otherExists) {
-            _.append('"').append("other").append('"').append(':'); comma = ','; other.writeJSON(_);
+            s_.append('"').append("other").append('"').append(':'); comma = ','; other.writeJSON(s_);
         }
         boolean selfExists = (null != self);
-        if ('\0' != comma && selfExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && selfExists) { s_.append(comma); comma = '\0'; }
         if (selfExists) {
-            _.append('"').append("self").append('"').append(':'); comma = ','; self.writeJSON(_);
+            s_.append('"').append("self").append('"').append(':'); comma = ','; self.writeJSON(s_);
         }
         boolean listI08Exists = (null != listI08 && listI08.size() > 0);
-        if ('\0' != comma && listI08Exists) { _.append(comma); comma = '\0'; }
-        if (listI08Exists) { _.append('"').append("listI08").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && listI08Exists) { s_.append(comma); comma = '\0'; }
+        if (listI08Exists) { s_.append('"').append("listI08").append('"').append(':'); comma = ','; }
         int listI08Size = (null == listI08 ? 0 : listI08.size());
         if (listI08Size > 0) {
-            _.append('[');
+            s_.append('[');
             int listI08Idx = 0;
             for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                 ++listI08Idx;
-                _.append(n1.toString());
-                if (listI08Idx != listI08Size) { _.append(','); }
+                s_.append(n1.toString());
+                if (listI08Idx != listI08Size) { s_.append(','); }
             }
-            _.append(']');
+            s_.append(']');
         }
         boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
-        if ('\0' != comma && dictI08Exists) { _.append(comma); comma = '\0'; }
-        if (dictI08Exists) { _.append('"').append("dictI08").append('"').append(':'); comma = ','; }
+        if ('\0' != comma && dictI08Exists) { s_.append(comma); comma = '\0'; }
+        if (dictI08Exists) { s_.append('"').append("dictI08").append('"').append(':'); comma = ','; }
         int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
         if (dictI08Size > 0) {
-            _.append('{');
+            s_.append('{');
             int dictI08Idx = 0;
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                 ++dictI08Idx;
                 java.lang.Byte k1 = dictI08Iter.getKey(); /* nest.k */
-                _.append('"'); _.append(k1.toString()); _.append('"').append(':');
+                s_.append('"'); s_.append(k1.toString()); s_.append('"').append(':');
                 java.lang.Byte v1 = dictI08Iter.getValue(); /* nest.v */
-                _.append(v1.toString());
-                if (dictI08Idx != dictI08Size) { _.append(','); }
+                s_.append(v1.toString());
+                if (dictI08Idx != dictI08Size) { s_.append(','); }
             }
-            _.append('}');
+            s_.append('}');
         }
-        _.append('}');
+        s_.append('}');
     } /* TestRefer::writeJSON(...) */
 
     public String toStringXML()

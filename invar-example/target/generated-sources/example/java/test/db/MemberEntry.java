@@ -211,47 +211,47 @@ invar.lib.InvarCodec.XMLEncode
         return code.toString();
     }
 
-    public void writeJSON(StringBuilder _)
+    public void writeJSON(StringBuilder s_)
     {
-        _.append('{');
+        s_.append('{');
         char comma = '\0';
-        _.append('"').append("id").append('"').append(':');
-        _.append(id.toString()); comma = ',';
+        s_.append('"').append("id").append('"').append(':');
+        s_.append(id.toString()); comma = ',';
         boolean phoneExists = phone != null && phone.length() > 0;
-        if ('\0' != comma && phoneExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && phoneExists) { s_.append(comma); comma = '\0'; }
         if (phoneExists) {
-            _.append('"').append("phone").append('"').append(':'); comma = ','; _.append('"').append(phone.toString()).append('"');
+            s_.append('"').append("phone").append('"').append(':'); comma = ','; s_.append('"').append(phone.toString()).append('"');
         }
         boolean nickNameExists = nickName != null && nickName.length() > 0;
-        if ('\0' != comma && nickNameExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && nickNameExists) { s_.append(comma); comma = '\0'; }
         if (nickNameExists) {
-            _.append('"').append("nickName").append('"').append(':'); comma = ','; _.append('"').append(nickName.toString()).append('"');
+            s_.append('"').append("nickName").append('"').append(':'); comma = ','; s_.append('"').append(nickName.toString()).append('"');
         }
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("createTime").append('"').append(':');
-        _.append(createTime.toString()); comma = ',';
-        if ('\0' != comma) { _.append(comma); comma = '\0'; }
-        _.append('"').append("updateTime").append('"').append(':');
-        _.append(updateTime.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("createTime").append('"').append(':');
+        s_.append(createTime.toString()); comma = ',';
+        if ('\0' != comma) { s_.append(comma); comma = '\0'; }
+        s_.append('"').append("updateTime").append('"').append(':');
+        s_.append(updateTime.toString()); comma = ',';
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
-        if ('\0' != comma && hotfixExists) { _.append(comma); comma = '\0'; }
+        if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
-                _.append('{');
+                s_.append('{');
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
                     java.lang.String k1 = hotfixIter.getKey(); /* nest.k */
-                    _.append('"').append(k1.toString()).append('"'); _.append(':');
+                    s_.append('"').append(k1.toString()).append('"'); s_.append(':');
                     java.lang.String v1 = hotfixIter.getValue(); /* nest.v */
-                    _.append('"').append(v1.toString()).append('"');
-                    if (hotfixIdx != hotfixSize) { _.append(','); }
+                    s_.append('"').append(v1.toString()).append('"');
+                    if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
-                _.append('}');
+                s_.append('}');
             } comma = ',';
         }
-        _.append('}');
+        s_.append('}');
     } /* MemberEntry::writeJSON(...) */
 
     public String toStringXML()
