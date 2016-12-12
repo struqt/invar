@@ -17,6 +17,7 @@ import test.enums.Color;
 import test.list.NestedList3D;
 import test.list.SimpleList;
 import test.list.SimpleListDict;
+import test.misc.TestPointer;
 import test.simple.Numbers;
 import test.sql.SimpleRecord;
 
@@ -86,7 +87,7 @@ public class TestXmlMapper {
 
     @Test
     public void test_010_boolean() throws Exception {
-        String xml = "<x><bool10><![CDATA[ TRUE ]]></bool10></x>";
+        String xml = "<x><bool10 value=\"false\"><![CDATA[ TRUE ]]></bool10></x>";
         printLine(xml);
         SimpleRecord o = mapper.map(SimpleRecord.Create(), xml);
         Assert.assertEquals(true, o.getBool10());
@@ -237,6 +238,21 @@ public class TestXmlMapper {
         SimpleDict o = mapper.map(SimpleDict.Create(), xml);
         mapper.setShortenMapEntry(true);
     }
+
+    @Test
+    public void test_033_dict_pointer() throws Exception {
+        String xml
+            = "<x><dict14>"
+            + "<a>50</a>"
+            + "<b>51</b>"
+            + "<c>52</c>"
+            + "</dict14></x>";
+        printLine(xml);
+        TestPointer o = mapper.map(TestPointer.Create(), xml);
+    }
+
+
+
 
 
     static private void printLine(String s) {

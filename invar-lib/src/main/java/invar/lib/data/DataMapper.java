@@ -5,17 +5,16 @@
 
 package invar.lib.data;
 
-import invar.lib.InvarEnum;
-import invar.lib.InvarRule;
-
 import java.io.*;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.*;
 
 /**
- * Created by wangkang on 11/14/16
+ * Created by wangkang on 11/15/2016
  */
 public class DataMapper {
 
@@ -27,16 +26,15 @@ public class DataMapper {
         return new DataMapper(new DataParserXml()).setVerbose(false);
     }
 
+    static public void setMaxRecursiveFiles(int maxRecursiveFiles) {
+        DataMapper.maxRecursiveFiles = Math.max(1, maxRecursiveFiles);
+    }
+
     static public void mapFiles(Object root, String dir, final String suffix) throws Exception {
         File file = new File(dir);
-        if (!file.exists())
+        if (!file.exists()) {
             throw new IOException("Path doesn't exist:\n" + file.getAbsolutePath());
-        if (aliasBasics == null)
-            throw new Exception("InvarReadData.aliasBasics is null");
-        if (aliasEnums == null)
-            throw new Exception("InvarReadData.aliasEnums is null");
-        if (aliasStructs == null)
-            throw new Exception("InvarReadData.aliasStructs is null");
+        }
         FilenameFilter filter = new FilenameFilter() {
             //@Override
             public boolean accept(File dir, String name) {
@@ -62,7 +60,7 @@ public class DataMapper {
     }
 
     static private void recursiveReadFile(List<File> all, File file, FilenameFilter filter) {
-        if (all.size() > 1024) {
+        if (all.size() > maxRecursiveFiles) {
             return;
         }
         if (file.isFile()) {
@@ -76,10 +74,6 @@ public class DataMapper {
         }
     }
 
-    static final public Charset UTF8 = Charset.forName("utf-8");
-    static public HashMap<String, Class<?>> aliasBasics = null;
-    static public HashMap<String, Class<?>> aliasEnums = null;
-    static public HashMap<String, Class<?>> aliasStructs = null;
 
     private final DataParser parser;
 
@@ -195,22 +189,24 @@ public class DataMapper {
         final int len = n.numChildren();
         if (shortenMapEntry) {
             for (int i = 0; i < len; i++) {
+                DataNode kn = null;
                 DataNode vn = n.getChild(i);
-                Object k = vn.getFieldName();
                 if (vn.numChildren() > 0) {
                     int size = vn.numChildren();
                     for (int j = 0; j < size; j++) {
                         DataNode node = vn.getChild(j);
                         if (ATTR_MAP_KEY.equals(node.getFieldName())) {
-                            k = parseGenericChildAny(node, ClsK, typeNames[0], debug + ".k");
+                            //k = parseGenericChildAny(node, ClsK, typeNames[0], debug + ".k");
+                            kn = node;
                             break;
                         }
                     }
                 }
-                if (k == null) {
-                    onError("No key for map: ", debug);
+                if (kn == null) {
+                    kn = DataNode.createString().setValue(vn.getFieldName());
                 }
-                Object v = parseGenericChild(vn, ClsV, typeNames[1], debug + ".v");
+                Object k = parseGenericChildAny(kn, ClsK, typeNames[0], debug + ".k");
+                Object v = parseGenericChildAny(vn, ClsV, typeNames[1], debug + ".v");
                 map.put(k, v);
                 if (getVerbose()) {
                     log(debug + "." + k + ": " + v);
@@ -234,8 +230,35 @@ public class DataMapper {
     }
 
     @SuppressWarnings("unchecked")
+    private Object parseGenericChild(DataNode cn, Class<?> Cls, String rule, String debug) throws Exception {
+        DataNode.TypeId id = cn.getTypeId();
+        if (DataNode.TypeId.ANY.equals(id)) {
+            return parseGenericChildAny(cn, Cls, rule, debug);
+        }
+        switch (id) {
+            case NULL:
+                return null;
+            case BOOL:
+                return cn.getValue();
+            case BIGINT:
+                return cn.getValue();
+            case STRING:
+                return parseGenericChildAny(cn, Cls, rule, debug);
+            case INT64:
+                return parseGenericChildAny(cn, Cls, rule, debug);
+            case DOUBLE:
+                return parseGenericChildAny(cn, Cls, rule, debug);
+            case OBJECT:
+            case ARRAY:
+                Object co = Cls.newInstance();
+                parse(co, cn, rule, debug);
+                return co;
+            default:
+                return null;
+        }
+    }
+
     private Object parseGenericChildAny(DataNode cn, Class<?> Cls, String rule, String debug) throws Exception {
-        final int radix = 10;
         if (!isSimple(Cls)) {
             Object co = Cls.newInstance();
             parse(co, cn, rule, debug);
@@ -259,96 +282,103 @@ public class DataMapper {
         if (o == null) {
             onError("No value for: " + debug);
         }
-        if (!(o instanceof String)) {
-            onError("Need string value for: " + debug);
-            return null;
-        }
-        String s = (String) o;
-        if (s.length() <= 0) {
-            return s;
-        }
-        if (aliasEnums.containsValue(Cls)) {
-            char head = s.charAt(0);
-            if (head == '-' || Character.isDigit(s.charAt(0))) {
-                Integer i = Integer.valueOf(s, radix);
-                return EnumFromInt(i, (Class<? extends InvarEnum>) Cls);
-            } else {
-                return EnumFromString(s, (Class<? extends InvarEnum>) Cls);
-            }
-        } else {
-            if ("int8".equals(rule)) {
-                return Byte.valueOf(s, radix);
-            } else if ("int16".equals(rule)) {
-                return Short.valueOf(s, radix);
-            } else if ("int32".equals(rule)) {
-                return Integer.valueOf(s, radix);
-            } else if ("int64".equals(rule)) {
-                return Long.valueOf(s, radix);
-            } else if ("uint8".equals(rule)) {
-                return Integer.valueOf(s, radix);
-            } else if ("uint16".equals(rule)) {
-                return Integer.valueOf(s, radix);
-            } else if ("uint32".equals(rule)) {
-                return Long.valueOf(s, radix);
-            } else if ("uint64".equals(rule)) {
-                return new BigInteger(s, radix);
-            } else if ("float".equals(rule)) {
-                return Float.valueOf(s);
-            } else if ("double".equals(rule)) {
-                return Double.valueOf(s);
-            } else if ("string".equals(rule)) {
+        return parseSimpleAny(o, Cls, cn, debug);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private Object parseSimpleAny(Object o, Class<?> Cls, DataNode cn, String debug) throws Exception {
+        final int radix = 10;
+        if (o instanceof String) {
+            String s = (String) o;
+            if (s.length() <= 0) {
                 return s;
-            } else if ("bool".equals(rule)) {
+            }
+            if (Cls == Byte.class) {
+                return Byte.valueOf(s, radix);
+            } else if (Cls == Short.class) {
+                return Short.valueOf(s, radix);
+            } else if (Cls == Integer.class) {
+                return Integer.valueOf(s, radix);
+            } else if (Cls == Long.class) {
+                return Long.valueOf(s, radix);
+            } else if (Cls == BigInteger.class) {
+                return new BigInteger(s, radix);
+            } else if (Cls == Float.class) {
+                return Float.valueOf(s);
+            } else if (Cls == Double.class) {
+                return Double.valueOf(s);
+            } else if (Cls == String.class) {
+                return s;
+            } else if (Cls == Boolean.class) {
                 return Boolean.valueOf(s.trim());
+            } else if (Cls.isEnum()) {
+                char head = s.charAt(0);
+                if (head == '-' || Character.isDigit(s.charAt(0))) {
+                    Integer i = Integer.valueOf(s, radix);
+                    return EnumFromInt(i, (Class<? extends Enum>) Cls);
+                } else {
+                    return EnumFromString(s, (Class<? extends Enum>) Cls);
+                }
             } else {
                 onError(debug);
                 return null;
             }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private Object parseGenericChild(DataNode cn, Class<?> Cls, String rule, String debug) throws Exception {
-        DataNode.TypeId id = cn.getTypeId();
-        if (DataNode.TypeId.ANY.equals(id)) {
-            return parseGenericChildAny(cn, Cls, rule, debug);
-        }
-        switch (id) {
-            case NULL:
+        } else if (o instanceof Long) {
+            Long v = (Long) o;
+            if (Cls == Byte.class) {
+                return v.byteValue();
+            } else if (Cls == Short.class) {
+                return v.shortValue();
+            } else if (Cls == Integer.class) {
+                return v.intValue();
+            } else if (Cls == Long.class) {
+                return v;
+            } else if (Cls == BigInteger.class) {
+                return BigInteger.valueOf(v);
+            } else if (Cls == Float.class) {
+                return Float.valueOf(v);
+            } else if (Cls == Double.class) {
+                return Double.valueOf(v);
+            } else if (Cls == String.class) {
+                return v.toString();
+            } else if (Cls == Boolean.class) {
+                return v != 0;
+            } else if (Cls.isEnum()) {
+                return EnumFromInt(v.intValue(), (Class<? extends Enum>) Cls);
+            } else {
+                onError(debug, cn);
                 return null;
-            case BOOL:
-                return cn.getValue();
-            case BIGINT:
-                return cn.getValue();
-            case STRING:
-                if (aliasEnums.containsValue(Cls)) {
-                    return EnumFromString((String) cn.getValue(),
-                        (Class<? extends InvarEnum>) Cls);
-                } else {
-                    return cn.getValue();
-                }
-            case INT64:
-                if (aliasEnums.containsValue(Cls)) {
-                    return EnumFromInt(((Long) cn.getValue()).intValue(),
-                        (Class<? extends InvarEnum>) Cls);
-                } else {
-                    Long s = (Long) cn.getValue();
-                    return determineInteger(s, cn, rule, debug);
-                }
-            case DOUBLE:
-                if ("float".equals(rule)) {
-                    Double v = (Double) cn.getValue();
-                    return v.floatValue();
-                } else {
-                    return cn.getValue();
-                }
-            case OBJECT:
-            case ARRAY:
-                Object co = Cls.newInstance();
-                parse(co, cn, rule, debug);
-                return co;
-            default:
+            }
+        } else if (o instanceof Double) {
+            Double v = (Double) o;
+            if (Cls == Byte.class) {
+                return v.byteValue();
+            } else if (Cls == Short.class) {
+                return v.shortValue();
+            } else if (Cls == Integer.class) {
+                return v.intValue();
+            } else if (Cls == Long.class) {
+                return v.longValue();
+            } else if (Cls == BigInteger.class) {
+                return BigInteger.valueOf(v.longValue());
+            } else if (Cls == Float.class) {
+                return v.floatValue();
+            } else if (Cls == Double.class) {
+                return v;
+            } else if (Cls == String.class) {
+                return v.toString();
+            } else if (Cls == Boolean.class) {
+                return v != 0;
+            } else if (Cls.isEnum()) {
+                return EnumFromInt(v.intValue(), (Class<? extends Enum>) Cls);
+            } else {
+                onError(debug, cn);
                 return null;
+            }
+        } else {
+            onError(debug);
+            return null;
         }
     }
 
@@ -383,14 +413,9 @@ public class DataMapper {
         return this;
     }
 
-    private Class<?> loadGenericClass(String rule) throws Exception {
+    private Class<?> loadGenericClass(String rule) throws ClassNotFoundException {
         String name = ruleLeft(rule);
-        Class<?> Cls = getClassByAlias(name);
-        if (Cls == null)
-            Cls = Class.forName(name);
-        if (Cls == null)
-            onError("No Class matches this rule: " + rule);
-        return Cls;
+        return Class.forName(name.trim());
     }
 
     private Object invokeGetter(String key, Object o, Object node) throws Exception {
@@ -405,40 +430,6 @@ public class DataMapper {
             }
         }
         return method.invoke(o);
-    }
-
-    private Object determineInteger(Long v, DataNode n, String rule, String debug) throws Exception {
-        if ("int8".equals(rule)) {
-            checkInteger(v, -0x80L, 0x7FL, debug, n);
-            return v.byteValue();
-        } else if ("int16".equals(rule)) {
-            checkInteger(v, -0x8000L, 0x7FFFL, debug, n);
-            return v.shortValue();
-        } else if ("int32".equals(rule)) {
-            checkInteger(v, -0x80000000L, 0x7FFFFFFFL, debug, n);
-            return v.intValue();
-        } else if ("int64".equals(rule)) {
-            return v;
-        } else if ("uint8".equals(rule)) {
-            checkInteger(v, 0L, 0xFFL, debug, n);
-            return v.shortValue();
-        } else if ("uint16".equals(rule)) {
-            checkInteger(v, 0L, 0xFFFFL, debug, n);
-            return v.intValue();
-        } else if ("uint32".equals(rule)) {
-            checkInteger(v, 0L, 0xFFFFFFFFL, debug, n);
-            return v;
-        } else if ("uint64".equals(rule)) {
-            return BigInteger.valueOf(v);
-        } else {
-            return v;
-        }
-    }
-
-    private void checkInteger(Long v, Long min, Long max, String debug, DataNode x) throws Exception {
-        if (v < min || v > max) {
-            onError(debug + " = " + v + ". Number is out of range [" + min + ", " + max + "]", x);
-        }
     }
 
     private void onError(String hint) throws Exception {
@@ -474,9 +465,12 @@ public class DataMapper {
             return null;
         }
         String rule = method.getGenericReturnType().toString();
-        InvarRule a = method.getAnnotation(InvarRule.class);
-        if (a != null)
-            rule = a.T();
+        Type genericType = method.getGenericReturnType();
+        if (genericType instanceof Class) {
+            rule = (((Class) genericType).getName());
+        } else if (genericType instanceof ParameterizedType) {
+            rule = (((ParameterizedType) genericType)).toString();
+        }
         return rule;
     }
 
@@ -487,7 +481,6 @@ public class DataMapper {
             String nameSetter = PREFIX_SETTER + upperHeadChar(key);
             method = map.get(nameSetter);
             if (method == null) {
-                //onError("No setter named \"" + nameSetter + "()\" in " + o.getClass(), n);
                 return;
             }
         }
@@ -504,10 +497,15 @@ public class DataMapper {
     }
 
 
+    private static int maxRecursiveFiles = 8096;
+    private static final Charset UTF8 = Charset.forName("utf-8");
     private static final HashMap<Class<?>, HashMap<String, Method>>
         mapClassSetters = new HashMap<Class<?>, HashMap<String, Method>>();
     private static final HashMap<Class<?>, HashMap<String, Method>>
         mapClassGetters = new HashMap<Class<?>, HashMap<String, Method>>();
+    private static final HashMap<Class<?>, Method>
+        mapEnumGetters = new HashMap<Class<?>, Method>();
+
     private static final String GENERIC_SPLIT = ",";
     private static final String GENERIC_LEFT = "<";
     private static final String GENERIC_RIGHT = ">";
@@ -524,11 +522,6 @@ public class DataMapper {
             for (Method method : meths) {
                 if (method.getName().startsWith(PREFIX_SETTER)) {
                     methods.put(method.getName(), method);
-                    InvarRule anno = method.getAnnotation(InvarRule.class);
-                    if (anno != null) {
-                        String shortName = anno.S();
-                        methods.put(shortName, method);
-                    }
                 }
             }
             mapClassSetters.put(ClsO, methods);
@@ -544,11 +537,6 @@ public class DataMapper {
             for (Method method : meths) {
                 if (method.getName().startsWith(PREFIX_GETTER)) {
                     methods.put(method.getName(), method);
-                    InvarRule a = method.getAnnotation(InvarRule.class);
-                    if (a != null) {
-                        String shortName = a.S();
-                        methods.put(shortName, method);
-                    }
                 }
             }
             mapClassGetters.put(ClsO, methods);
@@ -574,29 +562,39 @@ public class DataMapper {
         return null;
     }
 
-    private static Class<?> getClassByAlias(String name) {
-        Class<?> ClsN = aliasBasics.get(name);
-        if (ClsN == null)
-            ClsN = aliasEnums.get(name);
-        if (ClsN == null)
-            ClsN = aliasStructs.get(name);
-        return ClsN;
-    }
-
     private static String upperHeadChar(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
     }
 
-    private static <T extends InvarEnum> Object EnumFromInt(int v, Class<T> clazz) {
+    private static <T extends Enum> Object EnumFromInt(int v, Class<T> clazz) {
+        Method m = mapEnumGetters.get(clazz);
+        if (m == null) {
+            try {
+                m = clazz.getMethod("value");
+                mapEnumGetters.put(clazz, m);
+            } catch (Exception ignored) {
+            }
+        }
         for (T t : clazz.getEnumConstants()) {
-            if (t.value().equals(v)) {
-                return t;
+            if (m != null) {
+                Object i = null;
+                try {
+                    i = m.invoke(t);
+                } catch (Exception ignored) {
+                }
+                if (i != null && i.equals(v)) {
+                    return t;
+                }
+            } else {
+                if (t.ordinal() == v) {
+                    return t;
+                }
             }
         }
         return null;
     }
 
-    private static <T extends InvarEnum> T EnumFromString(String v, Class<T> clazz) {
+    private static <T extends Enum> T EnumFromString(String v, Class<T> clazz) {
         for (T t : clazz.getEnumConstants()) {
             if (t.name().equals(v.trim())) {
                 return t;
@@ -605,13 +603,17 @@ public class DataMapper {
         return null;
     }
 
-    private static boolean isSimple(Class<?> Cls) {
-        return aliasEnums.containsValue(Cls)
-            || aliasBasics.containsValue(Cls)
-            && LinkedList.class != Cls
-            && HashMap.class != Cls
-            && LinkedHashMap.class != Cls
-            && !aliasStructs.containsValue(Cls)
+    private static boolean isSimple(Class<?> C) {
+        return C.isEnum()
+            || C == String.class
+            || C == Boolean.class
+            || C == Float.class
+            || C == Double.class
+            || C == Byte.class
+            || C == Short.class
+            || C == Integer.class
+            || C == Long.class
+            || C == BigInteger.class
             ;
     }
 

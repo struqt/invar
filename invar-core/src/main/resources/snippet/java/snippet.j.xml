@@ -775,9 +775,9 @@
     (#tab)(#tab)(#tab)return;
     (#tab)(#tab)}
     (#tab)(#tab)inited = true;
-    (#tab)(#tab)InvarReadData.aliasBasics = DataMapper.aliasBasics = aliasBasic();
-    (#tab)(#tab)InvarReadData.aliasEnums = DataMapper.aliasEnums = aliasEnum();
-    (#tab)(#tab)InvarReadData.aliasStructs = DataMapper.aliasStructs = aliasStruct();
+    (#tab)(#tab)InvarReadData.aliasBasics = aliasBasic();
+    (#tab)(#tab)InvarReadData.aliasEnums = aliasEnum();
+    (#tab)(#tab)InvarReadData.aliasStructs = aliasStruct();
     (#tab)}
     (#blank)
     (#tab)static public <T> void parse(T root, java.io.InputStream input) throws Exception
