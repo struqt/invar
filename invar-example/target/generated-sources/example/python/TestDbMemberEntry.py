@@ -14,7 +14,7 @@ from InvarCodec import DataReader
 class MemberEntry(object):
 
     """名字冲突的类型"""
-    CRC32_ = 0x240151
+    CRC32_ = 0x00240151
     SIZE_  = 29
 
     __slots__ = (

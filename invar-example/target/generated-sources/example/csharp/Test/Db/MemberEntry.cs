@@ -18,7 +18,7 @@ public sealed class MemberEntry
 , Invar.JSONEncode
 , Invar.XMLEncode
 {
-    public const uint CRC32 = 0x240151;
+    public const uint CRC32 = 0x00240151;
 
     private UInt32                    id         = 0; // 主键，自增长.
     private String                    phone      = ""; // 手机号码.

@@ -184,7 +184,7 @@ public final class InvarWriteCode extends InvarWrite {
 
     public String codeCRC32(TypeStruct type) {
         type.codecRule();
-        return Long.toHexString(type.getCodecRuleCRC32()).toUpperCase();
+        return type.getCodecRuleCRC32String().toUpperCase();
     }
 
     public String codeBasicSize(TypeStruct type) {

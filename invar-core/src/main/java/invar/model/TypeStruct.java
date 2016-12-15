@@ -20,6 +20,7 @@ public class TypeStruct extends InvarType {
     private Boolean noHotfix = false;
 
     private long encodeSizeBasic = Long.MIN_VALUE;
+    private String codecRuleCRC32Str = null;
     private String codecRule = "";
     private long codecRuleCRC32 = 0L;
     private HashSet<TypeStruct> depends = new HashSet<TypeStruct>(16);
@@ -151,6 +152,20 @@ public class TypeStruct extends InvarType {
 
     public long getCodecRuleCRC32() {
         return codecRuleCRC32;
+    }
+
+    public String getCodecRuleCRC32String() {
+        if (codecRuleCRC32Str != null) {
+            return codecRuleCRC32Str;
+        }
+        String s = Long.toHexString(getCodecRuleCRC32());
+        if (s.length() < 8) {
+            int len = 8 - s.length();
+            for (int i = 0; i < len; i++) {
+                s = "0" + s;
+            }
+        }
+        return codecRuleCRC32Str = s;
     }
 
     public TypeProtocol getProtoc() {

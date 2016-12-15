@@ -14,7 +14,7 @@ use \invar\BinaryWriter;
 
 final class MemberEntry
 {
-    const CRC32 = 0x240151;
+    const CRC32 = 0x00240151;
 
     static public function &CreateFromBytes (& $str)
     {

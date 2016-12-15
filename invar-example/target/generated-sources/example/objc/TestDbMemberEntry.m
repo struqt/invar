@@ -10,7 +10,7 @@
 
 #import "TestDbMemberEntry.h"
 
-#define CRC32__ 0x240151
+#define CRC32__ 0x00240151
 #define SIZE__  29L
 
 @interface MemberEntry ()

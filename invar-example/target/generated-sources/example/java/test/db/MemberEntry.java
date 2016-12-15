@@ -25,7 +25,7 @@ invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
 invar.lib.InvarCodec.XMLEncode
 {
-    static public final long CRC32 = 0x240151L;
+    static public final long CRC32 = 0x00240151L;
 
     static public MemberEntry Create()
     {
