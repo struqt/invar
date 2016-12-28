@@ -139,6 +139,7 @@ invar.lib.InvarCodec.XMLEncode
         char comma = '\0';
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
         if (hotfixExists) {
+            s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
                 s_.append('{');
@@ -152,7 +153,7 @@ invar.lib.InvarCodec.XMLEncode
                     if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
                 s_.append('}');
-            } comma = ',';
+            }
         }
         s_.append('}');
     } /* Protoc2C::writeJSON(...) */

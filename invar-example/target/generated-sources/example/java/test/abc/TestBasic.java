@@ -403,9 +403,9 @@ invar.lib.InvarCodec.XMLEncode
         attrs.append(' ').append("stringValue").append('=').append('"');
         attrs.append(stringValue).append('"');
         attrs.append(' ').append("enumValue").append('=').append('"');
-        attrs.append(nodes.append(enumValue.value())).append('"');
+        attrs.append(enumValue.value()).append('"');
         attrs.append(' ').append("enumDeft").append('=').append('"');
-        attrs.append(nodes.append(enumDeft.value())).append('"');
+        attrs.append(enumDeft.value()).append('"');
         result_.append('<').append(name_).append(attrs);
         if (nodes.length() == 0) {
             result_.append('/').append('>');

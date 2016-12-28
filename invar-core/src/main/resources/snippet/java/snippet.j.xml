@@ -564,7 +564,7 @@
     (#tab)(#tab)}
     (#tab)} /* (#type)::writeXML(...) */ ]]></template>
   <template key="toxml.any">   <![CDATA[ (#name).toString() ]]></template>
-  <template key="toxml.enum"><![CDATA[ (#arg).append((#name).value()) ]]></template>
+  <template key="toxml.enum"><![CDATA[ (#name).value() ]]></template>
   <template key="toxml.string"><![CDATA[ (#name) ]]></template>
   <template key="toxml.struct"><![CDATA[
     (#name).writeXML((#arg), "(#name)")]]></template>
@@ -725,7 +725,8 @@
     }
   ]]></template>
   <template key="tojson.ptr.vec | tojson.ptr.map"><![CDATA[
-    if ((#namer)Exists) {(#bodyindent) comma = ',';
+    if ((#namer)Exists) {
+    (#tab)(#arg).append('"').append("(#namer)").append('"').append(':'); comma = ',';(#bodyindent)
     }
   ]]></template>
   <template key="tojson.field.head.string"><![CDATA[

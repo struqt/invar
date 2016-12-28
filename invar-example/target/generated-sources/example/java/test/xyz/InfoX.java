@@ -914,6 +914,7 @@ invar.lib.InvarCodec.XMLEncode
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
+            s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
                 s_.append('{');
@@ -927,7 +928,7 @@ invar.lib.InvarCodec.XMLEncode
                     if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
                 s_.append('}');
-            } comma = ',';
+            }
         }
         s_.append('}');
     } /* InfoX::writeJSON(...) */
@@ -1050,7 +1051,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("k1").append('>');
                 for (Gender n2 : k1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(nodes.append(n2.value())).append('"').append('/').append('>');
+                    nodes.append(n2.value()).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("k1").append('>');
                 Info v1 = mveiIter.getValue();
@@ -1067,7 +1068,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("v1").append('>');
                 for (Gender n2 : v1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(nodes.append(n2.value())).append('"').append('/').append('>');
+                    nodes.append(n2.value()).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("v1").append('>');
             }
@@ -1086,7 +1087,7 @@ invar.lib.InvarCodec.XMLEncode
                 nodes.append('<').append("v1").append('>');
                 for (Gender n2 : v1) {
                     nodes.append('<').append("n2").append(' ').append("value").append('=').append('"');
-                    nodes.append(nodes.append(n2.value())).append('"').append('/').append('>');
+                    nodes.append(n2.value()).append('"').append('/').append('>');
                 }
                 nodes.append('<').append('/').append("v1").append('>');
             }
@@ -1107,7 +1108,7 @@ invar.lib.InvarCodec.XMLEncode
                     nodes.append('<').append("v2").append('>');
                     for (Gender n3 : v2) {
                         nodes.append('<').append("n3").append(' ').append("value").append('=').append('"');
-                        nodes.append(nodes.append(n3.value())).append('"').append('/').append('>');
+                        nodes.append(n3.value()).append('"').append('/').append('>');
                     }
                     nodes.append('<').append('/').append("v2").append('>');
                 }

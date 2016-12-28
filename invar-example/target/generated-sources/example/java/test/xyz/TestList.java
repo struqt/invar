@@ -681,7 +681,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append("listEnum").append('>');
             for (Gender n1 : listEnum) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
-                nodes.append(nodes.append(n1.value())).append('"').append('/').append('>');
+                nodes.append(n1.value()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("listEnum").append('>');
         }

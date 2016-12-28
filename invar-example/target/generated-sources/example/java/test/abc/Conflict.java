@@ -212,6 +212,7 @@ invar.lib.InvarCodec.XMLEncode
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
+            s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
                 s_.append('{');
@@ -225,7 +226,7 @@ invar.lib.InvarCodec.XMLEncode
                     if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
                 s_.append('}');
-            } comma = ',';
+            }
         }
         s_.append('}');
     } /* Conflict::writeJSON(...) */
@@ -242,7 +243,7 @@ invar.lib.InvarCodec.XMLEncode
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
         attrs.append(' ').append("key").append('=').append('"');
-        attrs.append(nodes.append(key.value())).append('"');
+        attrs.append(key.value()).append('"');
         attrs.append(' ').append("text").append('=').append('"');
         attrs.append(text).append('"');
         if (bytes.size() > 0) {

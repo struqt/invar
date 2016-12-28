@@ -380,7 +380,7 @@ invar.lib.InvarCodec.XMLEncode
         StringBuilder attrs  = new StringBuilder();
         StringBuilder nodes = new StringBuilder();
         attrs.append(' ').append("x").append('=').append('"');
-        attrs.append(nodes.append(x.value())).append('"');
+        attrs.append(x.value()).append('"');
         test_.writeXML(nodes, "test_");
         xyz.writeXML(nodes, "xyz");
         abc.writeXML(nodes, "abc");

@@ -703,6 +703,7 @@ invar.lib.InvarCodec.XMLEncode
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
+            s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
                 s_.append('{');
@@ -716,7 +717,7 @@ invar.lib.InvarCodec.XMLEncode
                     if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
                 s_.append('}');
-            } comma = ',';
+            }
         }
         s_.append('}');
     } /* Info::writeJSON(...) */
@@ -767,7 +768,7 @@ invar.lib.InvarCodec.XMLEncode
             nodes.append('<').append('/').append("world").append('>');
         }
         attrs.append(' ').append("gender").append('=').append('"');
-        attrs.append(nodes.append(gender.value())).append('"');
+        attrs.append(gender.value()).append('"');
         if (next != null) {
             next.writeXML(nodes, "next");
         }
@@ -794,7 +795,7 @@ invar.lib.InvarCodec.XMLEncode
                 k1.writeXML(nodes, "k1");
                 Gender v1 = mapInfoGIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(nodes.append(v1.value())).append('"').append('/').append('>');
+                nodes.append(v1.value()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("mapInfoG").append('>');
         }
@@ -803,7 +804,7 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) {
                 Gender k1 = mapGenderInfoIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(nodes.append(k1.value())).append('"').append('/').append('>');
+                nodes.append(k1.value()).append('"').append('/').append('>');
                 Info v1 = mapGenderInfoIter.getValue();
                 v1.writeXML(nodes, "v1");
             }

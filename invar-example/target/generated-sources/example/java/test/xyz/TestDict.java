@@ -720,6 +720,7 @@ invar.lib.InvarCodec.XMLEncode
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
+            s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
                 s_.append('{');
@@ -733,7 +734,7 @@ invar.lib.InvarCodec.XMLEncode
                     if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
                 s_.append('}');
-            } comma = ',';
+            }
         }
         s_.append('}');
     } /* TestDict::writeJSON(...) */
@@ -898,10 +899,10 @@ invar.lib.InvarCodec.XMLEncode
             for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) {
                 Gender k1 = dictEnumIter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
-                nodes.append(nodes.append(k1.value())).append('"').append('/').append('>');
+                nodes.append(k1.value()).append('"').append('/').append('>');
                 Gender v1 = dictEnumIter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
-                nodes.append(nodes.append(v1.value())).append('"').append('/').append('>');
+                nodes.append(v1.value()).append('"').append('/').append('>');
             }
             nodes.append('<').append('/').append("dictEnum").append('>');
         }

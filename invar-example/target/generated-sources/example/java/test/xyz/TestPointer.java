@@ -448,6 +448,7 @@ invar.lib.InvarCodec.XMLEncode
         boolean listI08Exists = (null != listI08 && listI08.size() > 0);
         if ('\0' != comma && listI08Exists) { s_.append(comma); comma = '\0'; }
         if (listI08Exists) {
+            s_.append('"').append("listI08").append('"').append(':'); comma = ',';
             int listI08Size = (null == listI08 ? 0 : listI08.size());
             if (listI08Size > 0) {
                 s_.append('[');
@@ -458,11 +459,12 @@ invar.lib.InvarCodec.XMLEncode
                     if (listI08Idx != listI08Size) { s_.append(','); }
                 }
                 s_.append(']');
-            } comma = ',';
+            }
         }
         boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
         if ('\0' != comma && dictI08Exists) { s_.append(comma); comma = '\0'; }
         if (dictI08Exists) {
+            s_.append('"').append("dictI08").append('"').append(':'); comma = ',';
             int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
             if (dictI08Size > 0) {
                 s_.append('{');
@@ -476,11 +478,12 @@ invar.lib.InvarCodec.XMLEncode
                     if (dictI08Idx != dictI08Size) { s_.append(','); }
                 }
                 s_.append('}');
-            } comma = ',';
+            }
         }
         boolean listNestedExists = (null != listNested && listNested.size() > 0);
         if ('\0' != comma && listNestedExists) { s_.append(comma); comma = '\0'; }
         if (listNestedExists) {
+            s_.append('"').append("listNested").append('"').append(':'); comma = ',';
             int listNestedSize = (null == listNested ? 0 : listNested.size());
             if (listNestedSize > 0) {
                 s_.append('[');
@@ -521,7 +524,7 @@ invar.lib.InvarCodec.XMLEncode
                     if (listNestedIdx != listNestedSize) { s_.append(','); }
                 }
                 s_.append(']');
-            } comma = ',';
+            }
         }
         if ('\0' != comma) { s_.append(comma); comma = '\0'; }
         s_.append('"').append("numberSingle").append('"').append(':');
@@ -532,6 +535,7 @@ invar.lib.InvarCodec.XMLEncode
         boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
+            s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
             int hotfixSize = (null == hotfix ? 0 : hotfix.size());
             if (hotfixSize > 0) {
                 s_.append('{');
@@ -545,7 +549,7 @@ invar.lib.InvarCodec.XMLEncode
                     if (hotfixIdx != hotfixSize) { s_.append(','); }
                 }
                 s_.append('}');
-            } comma = ',';
+            }
         }
         s_.append('}');
     } /* TestPointer::writeJSON(...) */
@@ -613,7 +617,7 @@ invar.lib.InvarCodec.XMLEncode
         attrs.append(' ').append("numberSingle").append('=').append('"');
         attrs.append(numberSingle.toString()).append('"');
         attrs.append(' ').append("enumValue").append('=').append('"');
-        attrs.append(nodes.append(enumValue.value())).append('"');
+        attrs.append(enumValue.value()).append('"');
         if (hotfix != null && hotfix.size() > 0) {
             nodes.append('<').append("hotfix").append('>');
             for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) {

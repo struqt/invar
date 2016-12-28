@@ -523,7 +523,7 @@ invar.lib.InvarCodec.XMLEncode
         attrs.append(' ').append("stringValue").append('=').append('"');
         attrs.append(stringValue).append('"');
         attrs.append(' ').append("enumValue").append('=').append('"');
-        attrs.append(nodes.append(enumValue.value())).append('"');
+        attrs.append(enumValue.value()).append('"');
         other.writeXML(nodes, "other");
         if (self != null) {
             self.writeXML(nodes, "self");
