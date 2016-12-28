@@ -358,7 +358,7 @@ public class TokenParser {
 
     private String getAttrOptional(TokenNode n, String key) {
         String s = n.getAttr(key);
-        return s == null ? STR_EMPTY : s;
+        return s == null ? STR_EMPTY : s.trim();
     }
 
     private String getAttr(TokenNode node, String key) throws Exception {
