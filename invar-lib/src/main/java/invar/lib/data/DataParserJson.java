@@ -53,6 +53,7 @@ public class DataParserJson implements DataParser {
     private void initParser(JsonParser parser) {
         parser.enable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
         parser.enable(JsonParser.Feature.IGNORE_UNDEFINED);
+        parser.enable(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS);
     }
 
     private void parse(JsonParser parser, DataNode root) throws IOException {
