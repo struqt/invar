@@ -20,7 +20,8 @@ public final class Custom
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0x355EC042L;
 
@@ -323,12 +324,12 @@ invar.lib.InvarCodec.XMLEncode
         if (abcExists) {
             s_.append('"').append("abc").append('"').append(':'); comma = ','; abc.writeJSON(s_);
         }
-        boolean childrenExists = (null != children && children.size() > 0);
+        boolean childrenExists = (null != children);
         if ('\0' != comma && childrenExists) { s_.append(comma); comma = '\0'; }
         if (childrenExists) { s_.append('"').append("children").append('"').append(':'); comma = ','; }
-        int childrenSize = (null == children ? 0 : children.size());
-        if (childrenSize > 0) {
+        if (null != children) {
             s_.append('[');
+            int childrenSize = children.size();
             int childrenIdx = 0;
             for (Custom n1 : children) { /* vec.for: children */
                 ++childrenIdx;

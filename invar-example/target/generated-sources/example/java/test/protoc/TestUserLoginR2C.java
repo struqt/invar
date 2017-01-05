@@ -23,7 +23,8 @@ implements
 invar.lib.InvarCodec.ProtocResponse,
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0xAE3BF274L;
 
@@ -291,12 +292,12 @@ invar.lib.InvarCodec.XMLEncode
         if (userNameExists) {
             s_.append('"').append("userName").append('"').append(':'); comma = ','; s_.append('"').append(userName.toString()).append('"');
         }
-        boolean rolesExists = (null != roles && roles.size() > 0);
+        boolean rolesExists = (null != roles);
         if ('\0' != comma && rolesExists) { s_.append(comma); comma = '\0'; }
         if (rolesExists) { s_.append('"').append("roles").append('"').append(':'); comma = ','; }
-        int rolesSize = (null == roles ? 0 : roles.size());
-        if (rolesSize > 0) {
+        if (null != roles) {
             s_.append('[');
+            int rolesSize = roles.size();
             int rolesIdx = 0;
             for (Integer n1 : roles) { /* vec.for: roles */
                 ++rolesIdx;
@@ -305,13 +306,13 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        boolean hotfixExists = (null != hotfix);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
-            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
-            if (hotfixSize > 0) {
+            if (null != hotfix) {
                 s_.append('{');
+                int hotfixSize = hotfix.size();
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;

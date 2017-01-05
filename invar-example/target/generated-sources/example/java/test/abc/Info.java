@@ -23,7 +23,8 @@ public final class Info
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0x120FDCDBL;
 
@@ -594,12 +595,12 @@ invar.lib.InvarCodec.XMLEncode
         if (sExists) {
             s_.append('"').append("s").append('"').append(':'); comma = ','; s_.append('"').append(s.toString()).append('"');
         }
-        boolean worldExists = (null != world && world.size() > 0);
+        boolean worldExists = (null != world);
         if ('\0' != comma && worldExists) { s_.append(comma); comma = '\0'; }
         if (worldExists) { s_.append('"').append("world").append('"').append(':'); comma = ','; }
-        int worldSize = (null == world ? 0 : world.size());
-        if (worldSize > 0) {
+        if (null != world) {
             s_.append('[');
+            int worldSize = world.size();
             int worldIdx = 0;
             for (java.lang.String n1 : world) { /* vec.for: world */
                 ++worldIdx;
@@ -621,12 +622,12 @@ invar.lib.InvarCodec.XMLEncode
         if (conflictExists) {
             s_.append('"').append("conflict").append('"').append(':'); comma = ','; conflict.writeJSON(s_);
         }
-        boolean conflictsExists = (null != conflicts && conflicts.size() > 0);
+        boolean conflictsExists = (null != conflicts);
         if ('\0' != comma && conflictsExists) { s_.append(comma); comma = '\0'; }
         if (conflictsExists) { s_.append('"').append("conflicts").append('"').append(':'); comma = ','; }
-        int conflictsSize = (null == conflicts ? 0 : conflicts.size());
-        if (conflictsSize > 0) {
+        if (null != conflicts) {
             s_.append('[');
+            int conflictsSize = conflicts.size();
             int conflictsIdx = 0;
             for (test.xyz.Conflict n1 : conflicts) { /* vec.for: conflicts */
                 ++conflictsIdx;
@@ -635,12 +636,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean numbersExists = (null != numbers && numbers.size() > 0);
+        boolean numbersExists = (null != numbers);
         if ('\0' != comma && numbersExists) { s_.append(comma); comma = '\0'; }
         if (numbersExists) { s_.append('"').append("numbers").append('"').append(':'); comma = ','; }
-        int numbersSize = (null == numbers ? 0 : numbers.size());
-        if (numbersSize > 0) {
+        if (null != numbers) {
             s_.append('[');
+            int numbersSize = numbers.size();
             int numbersIdx = 0;
             for (java.lang.Double n1 : numbers) { /* vec.for: numbers */
                 ++numbersIdx;
@@ -649,12 +650,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean mapInfoGExists = (null != mapInfoG && mapInfoG.size() > 0);
+        boolean mapInfoGExists = (null != mapInfoG);
         if ('\0' != comma && mapInfoGExists) { s_.append(comma); comma = '\0'; }
         if (mapInfoGExists) { s_.append('"').append("mapInfoG").append('"').append(':'); comma = ','; }
-        int mapInfoGSize = (null == mapInfoG ? 0 : mapInfoG.size());
-        if (mapInfoGSize > 0) {
+        if (null != mapInfoG) {
             s_.append('{');
+            int mapInfoGSize = mapInfoG.size();
             int mapInfoGIdx = 0;
             for (Map.Entry<Info,Gender> mapInfoGIter : mapInfoG.entrySet()) { /* map.for: mapInfoG */
                 ++mapInfoGIdx;
@@ -666,12 +667,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean mapGenderInfoExists = (null != mapGenderInfo && mapGenderInfo.size() > 0);
+        boolean mapGenderInfoExists = (null != mapGenderInfo);
         if ('\0' != comma && mapGenderInfoExists) { s_.append(comma); comma = '\0'; }
         if (mapGenderInfoExists) { s_.append('"').append("mapGenderInfo").append('"').append(':'); comma = ','; }
-        int mapGenderInfoSize = (null == mapGenderInfo ? 0 : mapGenderInfo.size());
-        if (mapGenderInfoSize > 0) {
+        if (null != mapGenderInfo) {
             s_.append('{');
+            int mapGenderInfoSize = mapGenderInfo.size();
             int mapGenderInfoIdx = 0;
             for (Map.Entry<Gender,Info> mapGenderInfoIter : mapGenderInfo.entrySet()) { /* map.for: mapGenderInfo */
                 ++mapGenderInfoIdx;
@@ -683,12 +684,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean mapDoubleExists = (null != mapDouble && mapDouble.size() > 0);
+        boolean mapDoubleExists = (null != mapDouble);
         if ('\0' != comma && mapDoubleExists) { s_.append(comma); comma = '\0'; }
         if (mapDoubleExists) { s_.append('"').append("mapDouble").append('"').append(':'); comma = ','; }
-        int mapDoubleSize = (null == mapDouble ? 0 : mapDouble.size());
-        if (mapDoubleSize > 0) {
+        if (null != mapDouble) {
             s_.append('{');
+            int mapDoubleSize = mapDouble.size();
             int mapDoubleIdx = 0;
             for (Map.Entry<Integer,java.lang.Double> mapDoubleIter : mapDouble.entrySet()) { /* map.for: mapDouble */
                 ++mapDoubleIdx;
@@ -700,13 +701,13 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        boolean hotfixExists = (null != hotfix);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
-            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
-            if (hotfixSize > 0) {
+            if (null != hotfix) {
                 s_.append('{');
+                int hotfixSize = hotfix.size();
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;

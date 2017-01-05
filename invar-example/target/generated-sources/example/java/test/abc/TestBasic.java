@@ -20,7 +20,8 @@ public final class TestBasic
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0xF60C9915L;
 

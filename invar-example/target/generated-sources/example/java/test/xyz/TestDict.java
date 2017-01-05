@@ -24,7 +24,8 @@ public final class TestDict
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0x969046DEL;
 
@@ -480,11 +481,11 @@ invar.lib.InvarCodec.XMLEncode
     {
         s_.append('{');
         char comma = '\0';
-        boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
+        boolean dictI08Exists = (null != dictI08);
         if (dictI08Exists) { s_.append('"').append("dictI08").append('"').append(':'); comma = ','; }
-        int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
-        if (dictI08Size > 0) {
+        if (null != dictI08) {
             s_.append('{');
+            int dictI08Size = dictI08.size();
             int dictI08Idx = 0;
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                 ++dictI08Idx;
@@ -496,12 +497,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictI16Exists = (null != dictI16 && dictI16.size() > 0);
+        boolean dictI16Exists = (null != dictI16);
         if ('\0' != comma && dictI16Exists) { s_.append(comma); comma = '\0'; }
         if (dictI16Exists) { s_.append('"').append("dictI16").append('"').append(':'); comma = ','; }
-        int dictI16Size = (null == dictI16 ? 0 : dictI16.size());
-        if (dictI16Size > 0) {
+        if (null != dictI16) {
             s_.append('{');
+            int dictI16Size = dictI16.size();
             int dictI16Idx = 0;
             for (Map.Entry<Short,Short> dictI16Iter : dictI16.entrySet()) { /* map.for: dictI16 */
                 ++dictI16Idx;
@@ -513,12 +514,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictI32Exists = (null != dictI32 && dictI32.size() > 0);
+        boolean dictI32Exists = (null != dictI32);
         if ('\0' != comma && dictI32Exists) { s_.append(comma); comma = '\0'; }
         if (dictI32Exists) { s_.append('"').append("dictI32").append('"').append(':'); comma = ','; }
-        int dictI32Size = (null == dictI32 ? 0 : dictI32.size());
-        if (dictI32Size > 0) {
+        if (null != dictI32) {
             s_.append('{');
+            int dictI32Size = dictI32.size();
             int dictI32Idx = 0;
             for (Map.Entry<Integer,Integer> dictI32Iter : dictI32.entrySet()) { /* map.for: dictI32 */
                 ++dictI32Idx;
@@ -530,12 +531,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictI64Exists = (null != dictI64 && dictI64.size() > 0);
+        boolean dictI64Exists = (null != dictI64);
         if ('\0' != comma && dictI64Exists) { s_.append(comma); comma = '\0'; }
         if (dictI64Exists) { s_.append('"').append("dictI64").append('"').append(':'); comma = ','; }
-        int dictI64Size = (null == dictI64 ? 0 : dictI64.size());
-        if (dictI64Size > 0) {
+        if (null != dictI64) {
             s_.append('{');
+            int dictI64Size = dictI64.size();
             int dictI64Idx = 0;
             for (Map.Entry<Long,Long> dictI64Iter : dictI64.entrySet()) { /* map.for: dictI64 */
                 ++dictI64Idx;
@@ -547,12 +548,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictU08Exists = (null != dictU08 && dictU08.size() > 0);
+        boolean dictU08Exists = (null != dictU08);
         if ('\0' != comma && dictU08Exists) { s_.append(comma); comma = '\0'; }
         if (dictU08Exists) { s_.append('"').append("dictU08").append('"').append(':'); comma = ','; }
-        int dictU08Size = (null == dictU08 ? 0 : dictU08.size());
-        if (dictU08Size > 0) {
+        if (null != dictU08) {
             s_.append('{');
+            int dictU08Size = dictU08.size();
             int dictU08Idx = 0;
             for (Map.Entry<Integer/*U08*/,Integer/*U08*/> dictU08Iter : dictU08.entrySet()) { /* map.for: dictU08 */
                 ++dictU08Idx;
@@ -564,12 +565,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictU16Exists = (null != dictU16 && dictU16.size() > 0);
+        boolean dictU16Exists = (null != dictU16);
         if ('\0' != comma && dictU16Exists) { s_.append(comma); comma = '\0'; }
         if (dictU16Exists) { s_.append('"').append("dictU16").append('"').append(':'); comma = ','; }
-        int dictU16Size = (null == dictU16 ? 0 : dictU16.size());
-        if (dictU16Size > 0) {
+        if (null != dictU16) {
             s_.append('{');
+            int dictU16Size = dictU16.size();
             int dictU16Idx = 0;
             for (Map.Entry<Integer/*U16*/,Integer/*U16*/> dictU16Iter : dictU16.entrySet()) { /* map.for: dictU16 */
                 ++dictU16Idx;
@@ -581,12 +582,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictU32Exists = (null != dictU32 && dictU32.size() > 0);
+        boolean dictU32Exists = (null != dictU32);
         if ('\0' != comma && dictU32Exists) { s_.append(comma); comma = '\0'; }
         if (dictU32Exists) { s_.append('"').append("dictU32").append('"').append(':'); comma = ','; }
-        int dictU32Size = (null == dictU32 ? 0 : dictU32.size());
-        if (dictU32Size > 0) {
+        if (null != dictU32) {
             s_.append('{');
+            int dictU32Size = dictU32.size();
             int dictU32Idx = 0;
             for (Map.Entry<Long/*U32*/,Long/*U32*/> dictU32Iter : dictU32.entrySet()) { /* map.for: dictU32 */
                 ++dictU32Idx;
@@ -598,12 +599,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictU64Exists = (null != dictU64 && dictU64.size() > 0);
+        boolean dictU64Exists = (null != dictU64);
         if ('\0' != comma && dictU64Exists) { s_.append(comma); comma = '\0'; }
         if (dictU64Exists) { s_.append('"').append("dictU64").append('"').append(':'); comma = ','; }
-        int dictU64Size = (null == dictU64 ? 0 : dictU64.size());
-        if (dictU64Size > 0) {
+        if (null != dictU64) {
             s_.append('{');
+            int dictU64Size = dictU64.size();
             int dictU64Idx = 0;
             for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) { /* map.for: dictU64 */
                 ++dictU64Idx;
@@ -615,12 +616,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictSingleExists = (null != dictSingle && dictSingle.size() > 0);
+        boolean dictSingleExists = (null != dictSingle);
         if ('\0' != comma && dictSingleExists) { s_.append(comma); comma = '\0'; }
         if (dictSingleExists) { s_.append('"').append("dictSingle").append('"').append(':'); comma = ','; }
-        int dictSingleSize = (null == dictSingle ? 0 : dictSingle.size());
-        if (dictSingleSize > 0) {
+        if (null != dictSingle) {
             s_.append('{');
+            int dictSingleSize = dictSingle.size();
             int dictSingleIdx = 0;
             for (Map.Entry<Float,Float> dictSingleIter : dictSingle.entrySet()) { /* map.for: dictSingle */
                 ++dictSingleIdx;
@@ -632,12 +633,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictDoubleExists = (null != dictDouble && dictDouble.size() > 0);
+        boolean dictDoubleExists = (null != dictDouble);
         if ('\0' != comma && dictDoubleExists) { s_.append(comma); comma = '\0'; }
         if (dictDoubleExists) { s_.append('"').append("dictDouble").append('"').append(':'); comma = ','; }
-        int dictDoubleSize = (null == dictDouble ? 0 : dictDouble.size());
-        if (dictDoubleSize > 0) {
+        if (null != dictDouble) {
             s_.append('{');
+            int dictDoubleSize = dictDouble.size();
             int dictDoubleIdx = 0;
             for (Map.Entry<java.lang.Double,java.lang.Double> dictDoubleIter : dictDouble.entrySet()) { /* map.for: dictDouble */
                 ++dictDoubleIdx;
@@ -649,12 +650,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictBooleanExists = (null != dictBoolean && dictBoolean.size() > 0);
+        boolean dictBooleanExists = (null != dictBoolean);
         if ('\0' != comma && dictBooleanExists) { s_.append(comma); comma = '\0'; }
         if (dictBooleanExists) { s_.append('"').append("dictBoolean").append('"').append(':'); comma = ','; }
-        int dictBooleanSize = (null == dictBoolean ? 0 : dictBoolean.size());
-        if (dictBooleanSize > 0) {
+        if (null != dictBoolean) {
             s_.append('{');
+            int dictBooleanSize = dictBoolean.size();
             int dictBooleanIdx = 0;
             for (Map.Entry<java.lang.Boolean,java.lang.Boolean> dictBooleanIter : dictBoolean.entrySet()) { /* map.for: dictBoolean */
                 ++dictBooleanIdx;
@@ -666,12 +667,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictStringExists = (null != dictString && dictString.size() > 0);
+        boolean dictStringExists = (null != dictString);
         if ('\0' != comma && dictStringExists) { s_.append(comma); comma = '\0'; }
         if (dictStringExists) { s_.append('"').append("dictString").append('"').append(':'); comma = ','; }
-        int dictStringSize = (null == dictString ? 0 : dictString.size());
-        if (dictStringSize > 0) {
+        if (null != dictString) {
             s_.append('{');
+            int dictStringSize = dictString.size();
             int dictStringIdx = 0;
             for (Map.Entry<java.lang.String,java.lang.String> dictStringIter : dictString.entrySet()) { /* map.for: dictString */
                 ++dictStringIdx;
@@ -683,12 +684,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictEnumExists = (null != dictEnum && dictEnum.size() > 0);
+        boolean dictEnumExists = (null != dictEnum);
         if ('\0' != comma && dictEnumExists) { s_.append(comma); comma = '\0'; }
         if (dictEnumExists) { s_.append('"').append("dictEnum").append('"').append(':'); comma = ','; }
-        int dictEnumSize = (null == dictEnum ? 0 : dictEnum.size());
-        if (dictEnumSize > 0) {
+        if (null != dictEnum) {
             s_.append('{');
+            int dictEnumSize = dictEnum.size();
             int dictEnumIdx = 0;
             for (Map.Entry<Gender,Gender> dictEnumIter : dictEnum.entrySet()) { /* map.for: dictEnum */
                 ++dictEnumIdx;
@@ -700,12 +701,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean dictStructExists = (null != dictStruct && dictStruct.size() > 0);
+        boolean dictStructExists = (null != dictStruct);
         if ('\0' != comma && dictStructExists) { s_.append(comma); comma = '\0'; }
         if (dictStructExists) { s_.append('"').append("dictStruct").append('"').append(':'); comma = ','; }
-        int dictStructSize = (null == dictStruct ? 0 : dictStruct.size());
-        if (dictStructSize > 0) {
+        if (null != dictStruct) {
             s_.append('{');
+            int dictStructSize = dictStruct.size();
             int dictStructIdx = 0;
             for (Map.Entry<Custom,Custom> dictStructIter : dictStruct.entrySet()) { /* map.for: dictStruct */
                 ++dictStructIdx;
@@ -717,13 +718,13 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        boolean hotfixExists = (null != hotfix);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
-            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
-            if (hotfixSize > 0) {
+            if (null != hotfix) {
                 s_.append('{');
+                int hotfixSize = hotfix.size();
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;

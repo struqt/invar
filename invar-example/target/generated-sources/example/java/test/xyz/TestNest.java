@@ -23,7 +23,8 @@ public final class TestNest
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0x6F0C2598L;
 
@@ -217,17 +218,17 @@ invar.lib.InvarCodec.XMLEncode
     {
         s_.append('{');
         char comma = '\0';
-        boolean listDictExists = (null != listDict && listDict.size() > 0);
+        boolean listDictExists = (null != listDict);
         if (listDictExists) { s_.append('"').append("listDict").append('"').append(':'); comma = ','; }
-        int listDictSize = (null == listDict ? 0 : listDict.size());
-        if (listDictSize > 0) {
+        if (null != listDict) {
             s_.append('[');
+            int listDictSize = listDict.size();
             int listDictIdx = 0;
             for (LinkedHashMap<java.lang.String,Custom> n1 : listDict) { /* vec.for: listDict */
                 ++listDictIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('{');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (Map.Entry<java.lang.String,Custom> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
@@ -243,19 +244,19 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean dictListExists = (null != dictList && dictList.size() > 0);
+        boolean dictListExists = (null != dictList);
         if ('\0' != comma && dictListExists) { s_.append(comma); comma = '\0'; }
         if (dictListExists) { s_.append('"').append("dictList").append('"').append(':'); comma = ','; }
-        int dictListSize = (null == dictList ? 0 : dictList.size());
-        if (dictListSize > 0) {
+        if (null != dictList) {
             s_.append('{');
+            int dictListSize = dictList.size();
             int dictListIdx = 0;
             for (Map.Entry<LinkedList<java.lang.String>,LinkedList<Custom>> dictListIter : dictList.entrySet()) { /* map.for: dictList */
                 ++dictListIdx;
                 LinkedList<java.lang.String> k1 = dictListIter.getKey();
-                int k1Size = (null == k1 ? 0 : k1.size());
-                if (k1Size > 0) {
+                if (null != k1) {
                     s_.append('[');
+                    int k1Size = k1.size();
                     int k1Idx = 0;
                     for (java.lang.String n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
@@ -265,9 +266,9 @@ invar.lib.InvarCodec.XMLEncode
                     s_.append(']');
                 }
                 LinkedList<Custom> v1 = dictListIter.getValue();
-                int v1Size = (null == v1 ? 0 : v1.size());
-                if (v1Size > 0) {
+                if (null != v1) {
                     s_.append('[');
+                    int v1Size = v1.size();
                     int v1Idx = 0;
                     for (Custom n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
@@ -280,36 +281,36 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean list5dExists = (null != list5d && list5d.size() > 0);
+        boolean list5dExists = (null != list5d);
         if ('\0' != comma && list5dExists) { s_.append(comma); comma = '\0'; }
         if (list5dExists) { s_.append('"').append("list5d").append('"').append(':'); comma = ','; }
-        int list5dSize = (null == list5d ? 0 : list5d.size());
-        if (list5dSize > 0) {
+        if (null != list5d) {
             s_.append('[');
+            int list5dSize = list5d.size();
             int list5dIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Custom>>>> n1 : list5d) { /* vec.for: list5d */
                 ++list5dIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('[');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Custom>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
-                        int n2Size = (null == n2 ? 0 : n2.size());
-                        if (n2Size > 0) {
+                        if (null != n2) {
                             s_.append('[');
+                            int n2Size = n2.size();
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Custom>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
-                                int n3Size = (null == n3 ? 0 : n3.size());
-                                if (n3Size > 0) {
+                                if (null != n3) {
                                     s_.append('[');
+                                    int n3Size = n3.size();
                                     int n3Idx = 0;
                                     for (LinkedList<Custom> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
-                                        int n4Size = (null == n4 ? 0 : n4.size());
-                                        if (n4Size > 0) {
+                                        if (null != n4) {
                                             s_.append('[');
+                                            int n4Size = n4.size();
                                             int n4Idx = 0;
                                             for (Custom n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;

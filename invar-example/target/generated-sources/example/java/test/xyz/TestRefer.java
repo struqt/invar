@@ -25,7 +25,8 @@ public final class TestRefer
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0xBBD63AFDL;
 
@@ -453,12 +454,12 @@ invar.lib.InvarCodec.XMLEncode
         if (selfExists) {
             s_.append('"').append("self").append('"').append(':'); comma = ','; self.writeJSON(s_);
         }
-        boolean listI08Exists = (null != listI08 && listI08.size() > 0);
+        boolean listI08Exists = (null != listI08);
         if ('\0' != comma && listI08Exists) { s_.append(comma); comma = '\0'; }
         if (listI08Exists) { s_.append('"').append("listI08").append('"').append(':'); comma = ','; }
-        int listI08Size = (null == listI08 ? 0 : listI08.size());
-        if (listI08Size > 0) {
+        if (null != listI08) {
             s_.append('[');
+            int listI08Size = listI08.size();
             int listI08Idx = 0;
             for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                 ++listI08Idx;
@@ -467,12 +468,12 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
+        boolean dictI08Exists = (null != dictI08);
         if ('\0' != comma && dictI08Exists) { s_.append(comma); comma = '\0'; }
         if (dictI08Exists) { s_.append('"').append("dictI08").append('"').append(':'); comma = ','; }
-        int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
-        if (dictI08Size > 0) {
+        if (null != dictI08) {
             s_.append('{');
+            int dictI08Size = dictI08.size();
             int dictI08Idx = 0;
             for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                 ++dictI08Idx;

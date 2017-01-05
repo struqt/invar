@@ -24,7 +24,8 @@ public final class InfoX
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0xF55867E1L;
 
@@ -554,35 +555,35 @@ invar.lib.InvarCodec.XMLEncode
     {
         s_.append('{');
         char comma = '\0';
-        boolean infosExists = (null != infos && infos.size() > 0);
+        boolean infosExists = (null != infos);
         if (infosExists) { s_.append('"').append("infos").append('"').append(':'); comma = ','; }
-        int infosSize = (null == infos ? 0 : infos.size());
-        if (infosSize > 0) {
+        if (null != infos) {
             s_.append('[');
+            int infosSize = infos.size();
             int infosIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : infos) { /* vec.for: infos */
                 ++infosIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('[');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
-                        int n2Size = (null == n2 ? 0 : n2.size());
-                        if (n2Size > 0) {
+                        if (null != n2) {
                             s_.append('[');
+                            int n2Size = n2.size();
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Info>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
-                                int n3Size = (null == n3 ? 0 : n3.size());
-                                if (n3Size > 0) {
+                                if (null != n3) {
                                     s_.append('[');
+                                    int n3Size = n3.size();
                                     int n3Idx = 0;
                                     for (LinkedList<Info> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
-                                        int n4Size = (null == n4 ? 0 : n4.size());
-                                        if (n4Size > 0) {
+                                        if (null != n4) {
                                             s_.append('[');
+                                            int n4Size = n4.size();
                                             int n4Idx = 0;
                                             for (Info n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
@@ -617,12 +618,12 @@ invar.lib.InvarCodec.XMLEncode
         if (conflict_aExists) {
             s_.append('"').append("conflict_a").append('"').append(':'); comma = ','; conflict_a.writeJSON(s_);
         }
-        boolean mConflictExists = (null != mConflict && mConflict.size() > 0);
+        boolean mConflictExists = (null != mConflict);
         if ('\0' != comma && mConflictExists) { s_.append(comma); comma = '\0'; }
         if (mConflictExists) { s_.append('"').append("mConflict").append('"').append(':'); comma = ','; }
-        int mConflictSize = (null == mConflict ? 0 : mConflict.size());
-        if (mConflictSize > 0) {
+        if (null != mConflict) {
             s_.append('{');
+            int mConflictSize = mConflict.size();
             int mConflictIdx = 0;
             for (Map.Entry<Integer,test.abc.Conflict> mConflictIter : mConflict.entrySet()) { /* map.for: mConflict */
                 ++mConflictIdx;
@@ -634,18 +635,18 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean info2dExists = (null != info2d && info2d.size() > 0);
+        boolean info2dExists = (null != info2d);
         if ('\0' != comma && info2dExists) { s_.append(comma); comma = '\0'; }
         if (info2dExists) { s_.append('"').append("info2d").append('"').append(':'); comma = ','; }
-        int info2dSize = (null == info2d ? 0 : info2d.size());
-        if (info2dSize > 0) {
+        if (null != info2d) {
             s_.append('[');
+            int info2dSize = info2d.size();
             int info2dIdx = 0;
             for (LinkedList<Info> n1 : info2d) { /* vec.for: info2d */
                 ++info2dIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('[');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (Info n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
@@ -658,24 +659,24 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean info3dExists = (null != info3d && info3d.size() > 0);
+        boolean info3dExists = (null != info3d);
         if ('\0' != comma && info3dExists) { s_.append(comma); comma = '\0'; }
         if (info3dExists) { s_.append('"').append("info3d").append('"').append(':'); comma = ','; }
-        int info3dSize = (null == info3d ? 0 : info3d.size());
-        if (info3dSize > 0) {
+        if (null != info3d) {
             s_.append('[');
+            int info3dSize = info3d.size();
             int info3dIdx = 0;
             for (LinkedList<LinkedList<Info>> n1 : info3d) { /* vec.for: info3d */
                 ++info3dIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('[');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (LinkedList<Info> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
-                        int n2Size = (null == n2 ? 0 : n2.size());
-                        if (n2Size > 0) {
+                        if (null != n2) {
                             s_.append('[');
+                            int n2Size = n2.size();
                             int n2Idx = 0;
                             for (Info n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
@@ -692,36 +693,36 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean info5dExists = (null != info5d && info5d.size() > 0);
+        boolean info5dExists = (null != info5d);
         if ('\0' != comma && info5dExists) { s_.append(comma); comma = '\0'; }
         if (info5dExists) { s_.append('"').append("info5d").append('"').append(':'); comma = ','; }
-        int info5dSize = (null == info5d ? 0 : info5d.size());
-        if (info5dSize > 0) {
+        if (null != info5d) {
             s_.append('[');
+            int info5dSize = info5d.size();
             int info5dIdx = 0;
             for (LinkedList<LinkedList<LinkedList<LinkedList<Info>>>> n1 : info5d) { /* vec.for: info5d */
                 ++info5dIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('[');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (LinkedList<LinkedList<LinkedList<Info>>> n2 : n1) { /* vec.for: n1 */
                         ++n1Idx;
-                        int n2Size = (null == n2 ? 0 : n2.size());
-                        if (n2Size > 0) {
+                        if (null != n2) {
                             s_.append('[');
+                            int n2Size = n2.size();
                             int n2Idx = 0;
                             for (LinkedList<LinkedList<Info>> n3 : n2) { /* vec.for: n2 */
                                 ++n2Idx;
-                                int n3Size = (null == n3 ? 0 : n3.size());
-                                if (n3Size > 0) {
+                                if (null != n3) {
                                     s_.append('[');
+                                    int n3Size = n3.size();
                                     int n3Idx = 0;
                                     for (LinkedList<Info> n4 : n3) { /* vec.for: n3 */
                                         ++n3Idx;
-                                        int n4Size = (null == n4 ? 0 : n4.size());
-                                        if (n4Size > 0) {
+                                        if (null != n4) {
                                             s_.append('[');
+                                            int n4Size = n4.size();
                                             int n4Idx = 0;
                                             for (Info n5 : n4) { /* vec.for: n4 */
                                                 ++n4Idx;
@@ -746,18 +747,18 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean infovmExists = (null != infovm && infovm.size() > 0);
+        boolean infovmExists = (null != infovm);
         if ('\0' != comma && infovmExists) { s_.append(comma); comma = '\0'; }
         if (infovmExists) { s_.append('"').append("infovm").append('"').append(':'); comma = ','; }
-        int infovmSize = (null == infovm ? 0 : infovm.size());
-        if (infovmSize > 0) {
+        if (null != infovm) {
             s_.append('[');
+            int infovmSize = infovm.size();
             int infovmIdx = 0;
             for (LinkedHashMap<Short,Info> n1 : infovm) { /* vec.for: infovm */
                 ++infovmIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('{');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (Map.Entry<Short,Info> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
@@ -773,19 +774,19 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean mveiExists = (null != mvei && mvei.size() > 0);
+        boolean mveiExists = (null != mvei);
         if ('\0' != comma && mveiExists) { s_.append(comma); comma = '\0'; }
         if (mveiExists) { s_.append('"').append("mvei").append('"').append(':'); comma = ','; }
-        int mveiSize = (null == mvei ? 0 : mvei.size());
-        if (mveiSize > 0) {
+        if (null != mvei) {
             s_.append('{');
+            int mveiSize = mvei.size();
             int mveiIdx = 0;
             for (Map.Entry<LinkedList<Gender>,Info> mveiIter : mvei.entrySet()) { /* map.for: mvei */
                 ++mveiIdx;
                 LinkedList<Gender> k1 = mveiIter.getKey();
-                int k1Size = (null == k1 ? 0 : k1.size());
-                if (k1Size > 0) {
+                if (null != k1) {
                     s_.append('[');
+                    int k1Size = k1.size();
                     int k1Idx = 0;
                     for (Gender n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
@@ -800,21 +801,21 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean miveExists = (null != mive && mive.size() > 0);
+        boolean miveExists = (null != mive);
         if ('\0' != comma && miveExists) { s_.append(comma); comma = '\0'; }
         if (miveExists) { s_.append('"').append("mive").append('"').append(':'); comma = ','; }
-        int miveSize = (null == mive ? 0 : mive.size());
-        if (miveSize > 0) {
+        if (null != mive) {
             s_.append('{');
+            int miveSize = mive.size();
             int miveIdx = 0;
             for (Map.Entry<Info,LinkedList<Gender>> miveIter : mive.entrySet()) { /* map.for: mive */
                 ++miveIdx;
                 Info k1 = miveIter.getKey(); /* nest.k */
                 s_.append('"'); k1.writeJSON(s_); s_.append('"').append(':');
                 LinkedList<Gender> v1 = miveIter.getValue();
-                int v1Size = (null == v1 ? 0 : v1.size());
-                if (v1Size > 0) {
+                if (null != v1) {
                     s_.append('[');
+                    int v1Size = v1.size();
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
@@ -827,19 +828,19 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean mviveExists = (null != mvive && mvive.size() > 0);
+        boolean mviveExists = (null != mvive);
         if ('\0' != comma && mviveExists) { s_.append(comma); comma = '\0'; }
         if (mviveExists) { s_.append('"').append("mvive").append('"').append(':'); comma = ','; }
-        int mviveSize = (null == mvive ? 0 : mvive.size());
-        if (mviveSize > 0) {
+        if (null != mvive) {
             s_.append('{');
+            int mviveSize = mvive.size();
             int mviveIdx = 0;
             for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> mviveIter : mvive.entrySet()) { /* map.for: mvive */
                 ++mviveIdx;
                 LinkedList<Info> k1 = mviveIter.getKey();
-                int k1Size = (null == k1 ? 0 : k1.size());
-                if (k1Size > 0) {
+                if (null != k1) {
                     s_.append('[');
+                    int k1Size = k1.size();
                     int k1Idx = 0;
                     for (Info n2 : k1) { /* vec.for: k1 */
                         ++k1Idx;
@@ -849,9 +850,9 @@ invar.lib.InvarCodec.XMLEncode
                     s_.append(']');
                 }
                 LinkedList<Gender> v1 = mviveIter.getValue();
-                int v1Size = (null == v1 ? 0 : v1.size());
-                if (v1Size > 0) {
+                if (null != v1) {
                     s_.append('[');
+                    int v1Size = v1.size();
                     int v1Idx = 0;
                     for (Gender n2 : v1) { /* vec.for: v1 */
                         ++v1Idx;
@@ -864,25 +865,25 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append('}');
         }
-        boolean vmviveExists = (null != vmvive && vmvive.size() > 0);
+        boolean vmviveExists = (null != vmvive);
         if ('\0' != comma && vmviveExists) { s_.append(comma); comma = '\0'; }
         if (vmviveExists) { s_.append('"').append("vmvive").append('"').append(':'); comma = ','; }
-        int vmviveSize = (null == vmvive ? 0 : vmvive.size());
-        if (vmviveSize > 0) {
+        if (null != vmvive) {
             s_.append('[');
+            int vmviveSize = vmvive.size();
             int vmviveIdx = 0;
             for (LinkedHashMap<LinkedList<Info>,LinkedList<Gender>> n1 : vmvive) { /* vec.for: vmvive */
                 ++vmviveIdx;
-                int n1Size = (null == n1 ? 0 : n1.size());
-                if (n1Size > 0) {
+                if (null != n1) {
                     s_.append('{');
+                    int n1Size = n1.size();
                     int n1Idx = 0;
                     for (Map.Entry<LinkedList<Info>,LinkedList<Gender>> n1Iter : n1.entrySet()) { /* map.for: n1 */
                         ++n1Idx;
                         LinkedList<Info> k2 = n1Iter.getKey();
-                        int k2Size = (null == k2 ? 0 : k2.size());
-                        if (k2Size > 0) {
+                        if (null != k2) {
                             s_.append('[');
+                            int k2Size = k2.size();
                             int k2Idx = 0;
                             for (Info n3 : k2) { /* vec.for: k2 */
                                 ++k2Idx;
@@ -892,9 +893,9 @@ invar.lib.InvarCodec.XMLEncode
                             s_.append(']');
                         }
                         LinkedList<Gender> v2 = n1Iter.getValue();
-                        int v2Size = (null == v2 ? 0 : v2.size());
-                        if (v2Size > 0) {
+                        if (null != v2) {
                             s_.append('[');
+                            int v2Size = v2.size();
                             int v2Idx = 0;
                             for (Gender n3 : v2) { /* vec.for: v2 */
                                 ++v2Idx;
@@ -911,13 +912,13 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        boolean hotfixExists = (null != hotfix);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
-            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
-            if (hotfixSize > 0) {
+            if (null != hotfix) {
                 s_.append('{');
+                int hotfixSize = hotfix.size();
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;

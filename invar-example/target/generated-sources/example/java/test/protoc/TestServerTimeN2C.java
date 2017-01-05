@@ -22,7 +22,8 @@ implements
 invar.lib.InvarCodec.ProtocNotify,
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0x85E08773L;
 
@@ -223,13 +224,13 @@ invar.lib.InvarCodec.XMLEncode
         if ('\0' != comma) { s_.append(comma); comma = '\0'; }
         s_.append('"').append("time").append('"').append(':');
         s_.append(time.toString()); comma = ',';
-        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        boolean hotfixExists = (null != hotfix);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
-            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
-            if (hotfixSize > 0) {
+            if (null != hotfix) {
                 s_.append('{');
+                int hotfixSize = hotfix.size();
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;

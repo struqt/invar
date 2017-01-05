@@ -22,7 +22,8 @@ public final class Conflict
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0xCC7A29B9L;
 
@@ -195,12 +196,12 @@ invar.lib.InvarCodec.XMLEncode
         if (textExists) {
             s_.append('"').append("text").append('"').append(':'); comma = ','; s_.append('"').append(text.toString()).append('"');
         }
-        boolean bytesExists = (null != bytes && bytes.size() > 0);
+        boolean bytesExists = (null != bytes);
         if ('\0' != comma && bytesExists) { s_.append(comma); comma = '\0'; }
         if (bytesExists) { s_.append('"').append("bytes").append('"').append(':'); comma = ','; }
-        int bytesSize = (null == bytes ? 0 : bytes.size());
-        if (bytesSize > 0) {
+        if (null != bytes) {
             s_.append('[');
+            int bytesSize = bytes.size();
             int bytesIdx = 0;
             for (java.lang.Byte n1 : bytes) { /* vec.for: bytes */
                 ++bytesIdx;
@@ -209,13 +210,13 @@ invar.lib.InvarCodec.XMLEncode
             }
             s_.append(']');
         }
-        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        boolean hotfixExists = (null != hotfix);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
-            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
-            if (hotfixSize > 0) {
+            if (null != hotfix) {
                 s_.append('{');
+                int hotfixSize = hotfix.size();
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;

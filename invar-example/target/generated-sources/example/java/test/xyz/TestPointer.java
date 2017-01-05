@@ -24,7 +24,8 @@ public final class TestPointer
 implements
 invar.lib.InvarCodec.BinaryDecode,
 invar.lib.InvarCodec.BinaryEncode,
-invar.lib.InvarCodec.XMLEncode
+invar.lib.InvarCodec.XMLEncode,
+invar.lib.InvarCodec.JSONEncode
 {
     static public final long CRC32 = 0x6348C9B7L;
 
@@ -445,13 +446,13 @@ invar.lib.InvarCodec.XMLEncode
         if (otherExists) {
             s_.append('"').append("other").append('"').append(':'); comma = ','; other.writeJSON(s_);
         }
-        boolean listI08Exists = (null != listI08 && listI08.size() > 0);
+        boolean listI08Exists = (null != listI08);
         if ('\0' != comma && listI08Exists) { s_.append(comma); comma = '\0'; }
         if (listI08Exists) {
             s_.append('"').append("listI08").append('"').append(':'); comma = ',';
-            int listI08Size = (null == listI08 ? 0 : listI08.size());
-            if (listI08Size > 0) {
+            if (null != listI08) {
                 s_.append('[');
+                int listI08Size = listI08.size();
                 int listI08Idx = 0;
                 for (java.lang.Byte n1 : listI08) { /* vec.for: listI08 */
                     ++listI08Idx;
@@ -461,13 +462,13 @@ invar.lib.InvarCodec.XMLEncode
                 s_.append(']');
             }
         }
-        boolean dictI08Exists = (null != dictI08 && dictI08.size() > 0);
+        boolean dictI08Exists = (null != dictI08);
         if ('\0' != comma && dictI08Exists) { s_.append(comma); comma = '\0'; }
         if (dictI08Exists) {
             s_.append('"').append("dictI08").append('"').append(':'); comma = ',';
-            int dictI08Size = (null == dictI08 ? 0 : dictI08.size());
-            if (dictI08Size > 0) {
+            if (null != dictI08) {
                 s_.append('{');
+                int dictI08Size = dictI08.size();
                 int dictI08Idx = 0;
                 for (Map.Entry<java.lang.Byte,java.lang.Byte> dictI08Iter : dictI08.entrySet()) { /* map.for: dictI08 */
                     ++dictI08Idx;
@@ -480,31 +481,31 @@ invar.lib.InvarCodec.XMLEncode
                 s_.append('}');
             }
         }
-        boolean listNestedExists = (null != listNested && listNested.size() > 0);
+        boolean listNestedExists = (null != listNested);
         if ('\0' != comma && listNestedExists) { s_.append(comma); comma = '\0'; }
         if (listNestedExists) {
             s_.append('"').append("listNested").append('"').append(':'); comma = ',';
-            int listNestedSize = (null == listNested ? 0 : listNested.size());
-            if (listNestedSize > 0) {
+            if (null != listNested) {
                 s_.append('[');
+                int listNestedSize = listNested.size();
                 int listNestedIdx = 0;
                 for (LinkedList<LinkedList<LinkedList<TestPointer>>> n1 : listNested) { /* vec.for: listNested */
                     ++listNestedIdx;
-                    int n1Size = (null == n1 ? 0 : n1.size());
-                    if (n1Size > 0) {
+                    if (null != n1) {
                         s_.append('[');
+                        int n1Size = n1.size();
                         int n1Idx = 0;
                         for (LinkedList<LinkedList<TestPointer>> n2 : n1) { /* vec.for: n1 */
                             ++n1Idx;
-                            int n2Size = (null == n2 ? 0 : n2.size());
-                            if (n2Size > 0) {
+                            if (null != n2) {
                                 s_.append('[');
+                                int n2Size = n2.size();
                                 int n2Idx = 0;
                                 for (LinkedList<TestPointer> n3 : n2) { /* vec.for: n2 */
                                     ++n2Idx;
-                                    int n3Size = (null == n3 ? 0 : n3.size());
-                                    if (n3Size > 0) {
+                                    if (null != n3) {
                                         s_.append('[');
+                                        int n3Size = n3.size();
                                         int n3Idx = 0;
                                         for (TestPointer n4 : n3) { /* vec.for: n3 */
                                             ++n3Idx;
@@ -532,13 +533,13 @@ invar.lib.InvarCodec.XMLEncode
         if ('\0' != comma) { s_.append(comma); comma = '\0'; }
         s_.append('"').append("enumValue").append('"').append(':');
         s_.append(enumValue.value()); comma = ',';
-        boolean hotfixExists = (null != hotfix && hotfix.size() > 0);
+        boolean hotfixExists = (null != hotfix);
         if ('\0' != comma && hotfixExists) { s_.append(comma); comma = '\0'; }
         if (hotfixExists) {
             s_.append('"').append("hotfix").append('"').append(':'); comma = ',';
-            int hotfixSize = (null == hotfix ? 0 : hotfix.size());
-            if (hotfixSize > 0) {
+            if (null != hotfix) {
                 s_.append('{');
+                int hotfixSize = hotfix.size();
                 int hotfixIdx = 0;
                 for (Map.Entry<java.lang.String,java.lang.String> hotfixIter : hotfix.entrySet()) { /* map.for: hotfix */
                     ++hotfixIdx;
