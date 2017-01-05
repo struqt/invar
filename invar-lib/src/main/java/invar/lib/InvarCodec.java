@@ -38,7 +38,8 @@ public abstract class InvarCodec {
         void writeXML(StringBuilder s, String name);
     }
 
-    public interface InvarProtoc extends BinaryDecode, BinaryEncode, JSONEncode {
+    public interface InvarProtoc
+        extends BinaryDecode, BinaryEncode, XMLEncode, JSONEncode {
 
         Integer getProtocId();
 

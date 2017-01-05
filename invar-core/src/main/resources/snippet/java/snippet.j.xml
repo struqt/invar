@@ -178,7 +178,8 @@
     implements(#protoc-type)
     invar.lib.InvarCodec.BinaryDecode,
     invar.lib.InvarCodec.BinaryEncode,
-    invar.lib.InvarCodec.XMLEncode
+    invar.lib.InvarCodec.XMLEncode,
+    invar.lib.InvarCodec.JSONEncode
     {
     (#tab)static public final long CRC32 = 0x[#codeCRC32(struct)]L;
     (#blank)
@@ -675,9 +676,9 @@
     (#arg).append('"').append((#name).toString()).append('"') ]]></template>
   <template key="tojson.struct"><![CDATA[ (#name).writeJSON((#arg)) ]]></template>
   <template key="tojson.vec.for"><![CDATA[
-    int (#namer)Size = (null == (#name) ? 0 : (#name).size());
-    if ((#namer)Size > 0) {
+    if (null != (#name)) {
     (#tab)(#arg).append('[');
+    (#tab)int (#namer)Size = (#name).size();
     (#tab)int (#namer)Idx = 0;
     (#tab)for ((#typer) (#value) : (#name)) { /* vec.for: (#name) */
     (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
@@ -687,9 +688,9 @@
     }
   ]]></template>
   <template key="tojson.map.for"><![CDATA[
-    int (#namer)Size = (null == (#name) ? 0 : (#name).size());
-    if ((#namer)Size > 0) {
+    if (null != (#name)) {
     (#tab)(#arg).append('{');
+    (#tab)int (#namer)Size = (#name).size();
     (#tab)int (#namer)Idx = 0;
     (#tab)for (Map.Entry<(#typer)> (#namer)Iter : (#name).entrySet()) { /* map.for: (#name) */
     (#tab)(#tab)++(#namer)Idx;(#concat)(#bodyindent)
@@ -736,7 +737,7 @@
     boolean (#namer)Exists = (null != (#name));
   ]]></template>
   <template key="tojson.field.head.vec | tojson.field.head.map"><![CDATA[
-    boolean (#namer)Exists = (null != (#name) && (#name).size() > 0);
+    boolean (#namer)Exists = (null != (#name));
   ]]></template>
   <template key="tojson.field.space.any"><![CDATA[
     if ('\\0' != comma) { (#arg).append(comma); comma = '\\0'; }
