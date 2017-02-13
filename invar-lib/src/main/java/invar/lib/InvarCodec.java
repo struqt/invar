@@ -56,7 +56,7 @@ public abstract class InvarCodec {
 
         Integer getProtocError();
 
-        void setProtocError(int value);
+        void setProtocError(Integer value);
     }
 
     public interface ResponseSender {
