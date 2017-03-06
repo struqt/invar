@@ -166,6 +166,9 @@ public class DataMapper {
         for (int i = 0; i < len; i++) {
             final String d = debug + "[" + list.size() + "]";
             DataNode vn = n.getChild(i);
+            if (ATTR_MAP_KEY.equals(vn.getFieldName())) {
+                continue;
+            }
             Object v = parseGenericChild(vn, Cls, R, d);
             list.add(v);
             if (getVerbose()) {
@@ -439,7 +442,17 @@ public class DataMapper {
         throw new Exception("\n" + hint);
     }
 
-    private void onError(String hint, Object n) throws Exception {
+    private void onError(String hint, Object n) {
+        try {
+            onError(hint, n, false);
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void onError(String hint, Object n, boolean silent) throws Exception {
+        if (silent) {
+            return;
+        }
         if (n != null) {
             hint += "\n" + n;
         }

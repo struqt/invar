@@ -86,6 +86,13 @@ public class TestXmlMapper {
     }
 
     @Test
+    public void test_005_uncharted_value() throws Exception {
+        String xml = "<x number=\"10\"></x>";
+        printLine(xml);
+        mapper.map(Numbers.Create(), xml);
+    }
+
+    @Test
     public void test_010_boolean() throws Exception {
         String xml = "<x><bool10 value=\"false\"><![CDATA[ TRUE ]]></bool10></x>";
         printLine(xml);
