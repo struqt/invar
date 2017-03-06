@@ -26,14 +26,14 @@ invar.lib.InvarCodec.BinaryEncode,
 invar.lib.InvarCodec.XMLEncode,
 invar.lib.InvarCodec.JSONEncode
 {
-    static public final long CRC32 = 0xAE3BF274L;
+    static public final long CRC32 = 0x3840542AL;
 
     static public TestUserLoginR2C Create()
     {
         return new TestUserLoginR2C();
     }
 
-    private Integer/*U16*/               protocError;/* [AutoAdd] Protocol error code */
+    private Integer                      protocError;/* [AutoAdd] Protocol error code */
     private Integer/*U16*/               protocId   ;/* [AutoAdd] ProtocolID */
     private Long/*U32*/                  protocCRC  ;/* [AutoAdd] Protocol CRC32 */
     private Protoc2C                     protoc2C   ;/* [AutoAdd] 服务端响应的公共数据 */
@@ -72,8 +72,8 @@ invar.lib.InvarCodec.JSONEncode
     }
 
     /** [AutoAdd] Protocol error code */
-    @invar.lib.InvarRule(T="uint16", S="f0")
-    public Integer/*U16*/ getProtocError() { return protocError; }
+    @invar.lib.InvarRule(T="int32", S="f0")
+    public Integer getProtocError() { return protocError; }
     /** [AutoAdd] ProtocolID */
     @invar.lib.InvarRule(T="uint16", S="f1")
     public Integer/*U16*/ getProtocId() { return protocId; }
@@ -97,14 +97,8 @@ invar.lib.InvarCodec.JSONEncode
     public LinkedHashMap<java.lang.String,java.lang.String> getHotfix() { return hotfix; }
 
     /** [AutoAdd] Protocol error code */
-    @invar.lib.InvarRule(T="uint16", S="f0")
-    public void setProtocError(int value) throws NumberFormatException
-    {
-        if (value < 0 || value > 0xFFFF) {
-            throw new NumberFormatException("uint16 value out of range: " + value);
-        }
-        this.protocError = value;
-    }
+    @invar.lib.InvarRule(T="int32", S="f0")
+    public void setProtocError(Integer value) { this.protocError = value; }
     /** [AutoAdd] 服务端响应的公共数据 */
     @invar.lib.InvarRule(T="test.protoc.Protoc2C", S="f3")
     public void setProtoc2C(Protoc2C value) { this.protoc2C = value; }
@@ -153,7 +147,7 @@ invar.lib.InvarCodec.JSONEncode
 
     public void read(DataInput from_) throws IOException, CodecError
     {
-        protocError = from_.readUnsignedShort();
+        protocError = from_.readInt();
         if (protocError != 0) {
             throw new CodecError(protocError);
         }
@@ -196,7 +190,7 @@ invar.lib.InvarCodec.JSONEncode
 
     public void write(DataOutput dest_) throws IOException
     {
-        dest_.writeShort(protocError);
+        dest_.writeInt(protocError);
         dest_.writeShort(protocId);
         dest_.writeInt(protocCRC.intValue());
         if (protoc2C != null) {

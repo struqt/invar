@@ -15,7 +15,7 @@ use \invar\BinaryWriter;
 
 final class TestUserLoginR2C
 {
-    const CRC32 = 0xAE3BF274;
+    const CRC32 = 0x3840542A;
 
     static public function &CreateFromBytes (& $str)
     {
@@ -24,7 +24,7 @@ final class TestUserLoginR2C
         return $o;
     }
 
-    private $protocError ;/*  uint16 // [AutoAdd] Protocol error code */
+    private $protocError ;/*  int32 // [AutoAdd] Protocol error code */
     private $protocId    ;/*  uint16 // [AutoAdd] ProtocolID */
     private $protocCRC   ;/*  uint32 // [AutoAdd] Protocol CRC32 */
     private $protoc2C    ;/*  test.protoc.Protoc2C // [AutoAdd] 服务端响应的公共数据 */
@@ -78,7 +78,7 @@ final class TestUserLoginR2C
 
     public function &read (& $r)
     {
-        $this->protocError = $r->readUInt16();
+        $this->protocError = $r->readInt32();
         if ($this->protocError != 0) {
             throw new \Exception('Protoc read error: The code is ' . $this->protocError, $this->protocError);
         }
@@ -118,7 +118,7 @@ final class TestUserLoginR2C
 
     public function write (& $str)
     {
-        BinaryWriter::writeUInt16($this->protocError, $str);
+        BinaryWriter::writeInt32($this->protocError, $str);
         if ($this->protocError != 0) { return; }
         BinaryWriter::writeUInt16($this->protocId, $str);
         BinaryWriter::writeUInt32($this->protocCRC, $str);

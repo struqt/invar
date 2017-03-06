@@ -10,12 +10,12 @@
 
 #import "TestProtocTestHeartBeatR2S.h"
 
-#define CRC32__ 0xA13D5F14
-#define SIZE__  10L
+#define CRC32__ 0x16268A9A
+#define SIZE__  12L
 
 @interface TestHeartBeatR2S ()
 {
-    uint16_t              _protocError; /*  &-uint16 */
+    int32_t               _protocError; /*  &-int32 */
     uint16_t              _protocId   ; /*  &-uint16 */
     uint32_t              _protocCRC  ; /*  &-uint32 */
     Protoc2S            * _protoc2S   ; /*  *-Test.Protoc.Protoc2S */
@@ -55,20 +55,20 @@
 }
 /* TestHeartBeatR2S::copyWithZone */
 
-- (uint16_t             ) protocError { return _protocError; }
+- (int32_t              ) protocError { return _protocError; }
 - (uint16_t             ) protocId    { return _protocId   ; }
 - (uint32_t             ) protocCRC   { return _protocCRC  ; }
 - (Protoc2S            *) protoc2S    { return _protoc2S   ; }
 - (NSMutableDictionary *) hotfix      { return _hotfix     ; }
 
-- (TestHeartBeatR2S *) setProtocError : (uint16_t             )v { _protocError = v; return self; }
+- (TestHeartBeatR2S *) setProtocError : (int32_t              )v { _protocError = v; return self; }
 - (TestHeartBeatR2S *) setProtoc2S    : (Protoc2S            *)v { _protoc2S    = v; return self; }
 - (TestHeartBeatR2S *) setHotfix      : (NSMutableDictionary *)v { _hotfix      = v; return self; }
 
 - (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
-    _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocError = [r readInt32:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocId = [r readUInt16:&eof];
     if (65533 != _protocId) { _protocId = 65533; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
@@ -97,7 +97,7 @@
 
 - (NSInteger)write:(DataWriter *)w
 {
-    [w writeUInt16:_protocError];
+    [w writeInt32:_protocError];
     if (_protocError != 0) { return _protocError; }
     [w writeUInt16:_protocId];
     [w writeUInt32:_protocCRC];
@@ -183,7 +183,7 @@
 
 @end /* @implementation TestHeartBeatR2S */
 /*
-1@test.protoc.TestHeartBeatR2S/uint16/uint16/uint32/test.protoc.Protoc2S/map-string-string
+1@test.protoc.TestHeartBeatR2S/int32/uint16/uint32/test.protoc.Protoc2S/map-string-string
 +@test.protoc.Protoc2S/string/map-string-string
 */
 

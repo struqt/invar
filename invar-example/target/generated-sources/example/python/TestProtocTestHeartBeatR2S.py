@@ -15,8 +15,8 @@ from InvarCodec import DataReader
 class TestHeartBeatR2S(object):
 
     """服务端请求,客户端响应"""
-    CRC32_ = 0xA13D5F14
-    SIZE_  = 10
+    CRC32_ = 0x16268A9A
+    SIZE_  = 12
 
     __slots__ = (
         '_protocError',
@@ -94,7 +94,7 @@ class TestHeartBeatR2S(object):
    #def __len__
 
     def read(r):
-        self._protocError = r.readUInt16()
+        self._protocError = r.readInt32()
         if self._protocError != 0:
             raise InvarError(self._protocError, "Protoc read error: The code is " + self._protocError)
         self._protocId = r.readUInt16()
@@ -128,7 +128,7 @@ class TestHeartBeatR2S(object):
    #def read
 
     def write(w):
-        w.writeUInt16(self._protocError)
+        w.writeInt32(self._protocError)
         if self._protocError != 0:
             return
         w.writeUInt16(self._protocId)

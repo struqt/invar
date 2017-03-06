@@ -19,17 +19,17 @@ public sealed class TestHeartBeatR2S
 , Invar.XMLEncode
 , Invar.ProtocResponse
 {
-    public const uint CRC32 = 0xA13D5F14;
+    public const uint CRC32 = 0x16268A9A;
 
-    private UInt16                    protocError = 0; // [AutoAdd] Protocol error code.
+    private Int32                     protocError = 0; // [AutoAdd] Protocol error code.
     private UInt16                    protocId    = 65533; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC   = CRC32; // [AutoAdd] Protocol CRC32.
     private Protoc2S                  protoc2S    = null; // [AutoAdd] 客户端请求的公共数据.
     private Dictionary<String,String> hotfix      = null; // [AutoAdd] Hotfix.
 
     /// [AutoAdd] Protocol error code.
-    [Invar.InvarRule("uint16", "")]
-    public UInt16 GetProtocError() { return this.protocError; }
+    [Invar.InvarRule("int32", "")]
+    public Int32 GetProtocError() { return this.protocError; }
 
     /// [AutoAdd] ProtocolID.
     [Invar.InvarRule("uint16", "")]
@@ -48,8 +48,8 @@ public sealed class TestHeartBeatR2S
     public Dictionary<String,String> GetHotfix() { return this.hotfix; }
 
     /// [AutoAdd] Protocol error code.
-    [Invar.InvarRule("uint16", "")]
-    public TestHeartBeatR2S SetProtocError(UInt16 value) { this.protocError = value; return this; }
+    [Invar.InvarRule("int32", "")]
+    public TestHeartBeatR2S SetProtocError(Int32 value) { this.protocError = value; return this; }
 
     /// [AutoAdd] 客户端请求的公共数据.
     [Invar.InvarRule("Test.Protoc.Protoc2S", "")]
@@ -97,7 +97,7 @@ public sealed class TestHeartBeatR2S
 
     public void Read(BinaryReader r)
     {
-        this.protocError = r.ReadUInt16();
+        this.protocError = r.ReadInt32();
         if (this.protocError != 0) {
             throw new IOException("Protoc read error: The code is " + this.protocError, this.protocError);
         }
@@ -359,7 +359,7 @@ public sealed class TestHeartBeatR2S
 
 } /* class: TestHeartBeatR2S */
 /*
-1@test.protoc.TestHeartBeatR2S/uint16/uint16/uint32/test.protoc.Protoc2S/map-string-string
+1@test.protoc.TestHeartBeatR2S/int32/uint16/uint32/test.protoc.Protoc2S/map-string-string
 +@test.protoc.Protoc2S/string/map-string-string
 */
 } //namespace: Test.Protoc

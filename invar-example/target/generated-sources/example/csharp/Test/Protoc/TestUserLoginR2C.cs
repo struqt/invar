@@ -19,9 +19,9 @@ public sealed class TestUserLoginR2C
 , Invar.XMLEncode
 , Invar.ProtocResponse
 {
-    public const uint CRC32 = 0xAE3BF274;
+    public const uint CRC32 = 0x3840542A;
 
-    private UInt16                    protocError = 0; // [AutoAdd] Protocol error code.
+    private Int32                     protocError = 0; // [AutoAdd] Protocol error code.
     private UInt16                    protocId    = 65528; // [AutoAdd] ProtocolID.
     private UInt32                    protocCRC   = CRC32; // [AutoAdd] Protocol CRC32.
     private Protoc2C                  protoc2C    = null; // [AutoAdd] 服务端响应的公共数据.
@@ -31,8 +31,8 @@ public sealed class TestUserLoginR2C
     private Dictionary<String,String> hotfix      = null; // [AutoAdd] Hotfix.
 
     /// [AutoAdd] Protocol error code.
-    [Invar.InvarRule("uint16", "")]
-    public UInt16 GetProtocError() { return this.protocError; }
+    [Invar.InvarRule("int32", "")]
+    public Int32 GetProtocError() { return this.protocError; }
 
     /// [AutoAdd] ProtocolID.
     [Invar.InvarRule("uint16", "")]
@@ -63,8 +63,8 @@ public sealed class TestUserLoginR2C
     public Dictionary<String,String> GetHotfix() { return this.hotfix; }
 
     /// [AutoAdd] Protocol error code.
-    [Invar.InvarRule("uint16", "")]
-    public TestUserLoginR2C SetProtocError(UInt16 value) { this.protocError = value; return this; }
+    [Invar.InvarRule("int32", "")]
+    public TestUserLoginR2C SetProtocError(Int32 value) { this.protocError = value; return this; }
 
     /// [AutoAdd] 服务端响应的公共数据.
     [Invar.InvarRule("Test.Protoc.Protoc2C", "")]
@@ -127,7 +127,7 @@ public sealed class TestUserLoginR2C
 
     public void Read(BinaryReader r)
     {
-        this.protocError = r.ReadUInt16();
+        this.protocError = r.ReadInt32();
         if (this.protocError != 0) {
             throw new IOException("Protoc read error: The code is " + this.protocError, this.protocError);
         }
@@ -495,8 +495,8 @@ public sealed class TestUserLoginR2C
 
 } /* class: TestUserLoginR2C */
 /*
-1@test.protoc.TestUserLoginR2C/uint16/uint16/uint32/test.protoc.Protoc2C/string/string/vec-int32/map
-  -string-string
+1@test.protoc.TestUserLoginR2C/int32/uint16/uint32/test.protoc.Protoc2C/string/string/vec-int32/map-
+  string-string
 +@test.protoc.Protoc2C/map-string-string
 */
 } //namespace: Test.Protoc

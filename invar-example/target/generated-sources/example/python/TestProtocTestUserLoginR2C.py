@@ -15,8 +15,8 @@ from InvarCodec import DataReader
 class TestUserLoginR2C(object):
 
     """客户端请求,服务端响应"""
-    CRC32_ = 0xAE3BF274
-    SIZE_  = 22
+    CRC32_ = 0x3840542A
+    SIZE_  = 24
 
     __slots__ = (
         '_protocError',
@@ -125,7 +125,7 @@ class TestUserLoginR2C(object):
    #def __len__
 
     def read(r):
-        self._protocError = r.readUInt16()
+        self._protocError = r.readInt32()
         if self._protocError != 0:
             raise InvarError(self._protocError, "Protoc read error: The code is " + self._protocError)
         self._protocId = r.readUInt16()
@@ -167,7 +167,7 @@ class TestUserLoginR2C(object):
    #def read
 
     def write(w):
-        w.writeUInt16(self._protocError)
+        w.writeInt32(self._protocError)
         if self._protocError != 0:
             return
         w.writeUInt16(self._protocId)

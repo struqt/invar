@@ -10,12 +10,12 @@
 
 #import "TestProtocTestUserLoginR2C.h"
 
-#define CRC32__ 0xAE3BF274
-#define SIZE__  22L
+#define CRC32__ 0x3840542A
+#define SIZE__  24L
 
 @interface TestUserLoginR2C ()
 {
-    uint16_t              _protocError; /*  &-uint16 */
+    int32_t               _protocError; /*  &-int32 */
     uint16_t              _protocId   ; /*  &-uint16 */
     uint32_t              _protocCRC  ; /*  &-uint32 */
     Protoc2C            * _protoc2C   ; /*  *-Test.Protoc.Protoc2C */
@@ -64,7 +64,7 @@
 }
 /* TestUserLoginR2C::copyWithZone */
 
-- (uint16_t             ) protocError { return _protocError; }
+- (int32_t              ) protocError { return _protocError; }
 - (uint16_t             ) protocId    { return _protocId   ; }
 - (uint32_t             ) protocCRC   { return _protocCRC  ; }
 - (Protoc2C            *) protoc2C    { return _protoc2C   ; }
@@ -73,7 +73,7 @@
 - (NSMutableArray      *) roles       { return _roles      ; }
 - (NSMutableDictionary *) hotfix      { return _hotfix     ; }
 
-- (TestUserLoginR2C *) setProtocError : (uint16_t             )v { _protocError = v; return self; }
+- (TestUserLoginR2C *) setProtocError : (int32_t              )v { _protocError = v; return self; }
 - (TestUserLoginR2C *) setProtoc2C    : (Protoc2C            *)v { _protoc2C    = v; return self; }
 - (TestUserLoginR2C *) setUserId      : (NSString            *)v { _userId      = v; return self; }
 - (TestUserLoginR2C *) setUserName    : (NSString            *)v { _userName    = v; return self; }
@@ -82,7 +82,7 @@
 - (NSInteger)read:(const DataReader * const)r
 {
     BOOL eof = false;
-    _protocError = [r readUInt16:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
+    _protocError = [r readInt32:&eof];if (_protocError != 0) { return _protocError; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocId = [r readUInt16:&eof];
     if (65528 != _protocId) { _protocId = 65528; return INVAR_ERR_PROTOC_INVALID_ID; } if (eof) { return INVAR_ERR_DECODE_EOF; }
     _protocCRC = [r readUInt32:&eof]; if (CRC32__ != _protocCRC) { return INVAR_ERR_PROTOC_CRC_MISMATCH; } if (eof) { return INVAR_ERR_DECODE_EOF; }
@@ -118,7 +118,7 @@
 
 - (NSInteger)write:(DataWriter *)w
 {
-    [w writeUInt16:_protocError];
+    [w writeInt32:_protocError];
     if (_protocError != 0) { return _protocError; }
     [w writeUInt16:_protocId];
     [w writeUInt32:_protocCRC];
@@ -241,8 +241,8 @@
 
 @end /* @implementation TestUserLoginR2C */
 /*
-1@test.protoc.TestUserLoginR2C/uint16/uint16/uint32/test.protoc.Protoc2C/string/string/vec-int32/map
-  -string-string
+1@test.protoc.TestUserLoginR2C/int32/uint16/uint32/test.protoc.Protoc2C/string/string/vec-int32/map-
+  string-string
 +@test.protoc.Protoc2C/map-string-string
 */
 
