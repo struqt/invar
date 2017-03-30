@@ -379,6 +379,8 @@ public class DataMapper {
                 onError(debug, cn);
                 return null;
             }
+        } else if (o instanceof Boolean) {
+            return o;
         } else {
             onError(debug);
             return null;
