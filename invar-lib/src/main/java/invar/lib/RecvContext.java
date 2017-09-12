@@ -9,6 +9,8 @@ import java.net.SocketAddress;
 
 public interface RecvContext {
 
+    String handlerId();
+
     String getSessionId();
 
     String clientName();
