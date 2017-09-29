@@ -47,7 +47,7 @@ public abstract class RecvRequest<
 
     public abstract void handle(T request, R response, RecvContext context);
 
-    private String id;
+    private String id = null;
 
     protected void setHandlerId(String id) {
         if (this.id != null) {
