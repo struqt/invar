@@ -262,6 +262,9 @@ public class DataMapper {
     }
 
     private Object parseGenericChildAny(DataNode cn, Class<?> Cls, String rule, String debug) throws Exception {
+        if (Cls == Object.class) {
+            return cn.getValue();
+        }
         if (!isSimple(Cls)) {
             Object co = Cls.newInstance();
             parse(co, cn, rule, debug);
