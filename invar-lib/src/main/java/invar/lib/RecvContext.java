@@ -7,7 +7,7 @@ package invar.lib;
 
 import java.net.SocketAddress;
 
-public interface RecvContext {
+public interface RecvContext extends SendContext {
 
     String handlerId();
 

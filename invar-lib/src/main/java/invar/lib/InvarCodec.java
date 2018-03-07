@@ -62,6 +62,7 @@ public abstract class InvarCodec {
     public interface ResponseSender {
 
         void sendResponse(ProtocResponse resp) throws IOException;
+
     }
 
 }

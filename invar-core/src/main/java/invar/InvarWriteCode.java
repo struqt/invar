@@ -820,20 +820,28 @@ public final class InvarWriteCode extends InvarWrite {
     }
 
     private String makeRuntimeProtocHandleBlock(TreeSet<String> imps) {
-        String name2c = snippetTryGet(Key.RUNTIME_PROTOC_HANDLE_2C);
+        String head2s = snippetTryGet(Key.RUNTIME_PROTOC_HEAD_2S);
         String name2s = snippetTryGet(Key.RUNTIME_PROTOC_HANDLE_2S);
+        if (!empty.equals(head2s)) {
+            head2s = replace(head2s, Token.Name, name2s);
+        }
+        String name2c = snippetTryGet(Key.RUNTIME_PROTOC_HANDLE_2C);
+        String head2c = snippetTryGet(Key.RUNTIME_PROTOC_HEAD_2C);
+        if (!empty.equals(head2c)) {
+            head2c = replace(head2c, Token.Name, name2c);
+        }
         String result = empty;
         if (!empty.equals(name2s)) {
-            result += makeRuntimeProtocHandleFunc(Key.RUNTIME_PROTOC_HANDLE_2S, imps, TypeProtocol.clientIds(), false, true);
+            result += makeRuntimeProtocHandleFunc(Key.RUNTIME_PROTOC_HANDLE_2S, head2s, imps, TypeProtocol.clientIds(), false, true);
         }
         if (!empty.equals(name2c)) {
-            result += makeRuntimeProtocHandleFunc(Key.RUNTIME_PROTOC_HANDLE_2C, imps, TypeProtocol.serverIds(), true, false);
+            result += makeRuntimeProtocHandleFunc(Key.RUNTIME_PROTOC_HANDLE_2C, head2c, imps, TypeProtocol.serverIds(), true, false);
         }
         return result;
     }
 
     private String makeRuntimeProtocHandleFunc(
-        String key, TreeSet<String> imps, Iterator<Integer> protocIds, Boolean isServer, Boolean isClient) {
+        String key, String head, TreeSet<String> imps, Iterator<Integer> protocIds, Boolean isServer, Boolean isClient) {
         if (isClient && isServer) {
             return empty;
         }
@@ -897,8 +905,8 @@ public final class InvarWriteCode extends InvarWrite {
             s = replace(s, Token.TypeFull, full);
             block.append(s);
         }
-
         String s = snippetGet(Key.RUNTIME_PROTOC_HANDLE_M);
+        s = replace(s, Token.Head, head);
         s = replace(s, Token.Name, name);
         s = replace(s, Token.Body, block.toString());
         s = replace(s, Token.Invoke, invoke);

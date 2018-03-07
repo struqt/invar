@@ -5,30 +5,41 @@
 
 package invar.lib;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class RecvResponse<R extends InvarCodec.ProtocResponse> {
+public abstract class RecvResponse<
+    T extends InvarCodec.ProtocRequest,
+    R extends InvarCodec.ProtocResponse> {
 
-    static Map<Class<?>, RecvResponse> map = new HashMap<Class<?>, RecvResponse>(256);
+    static private final Map<Object, RecvResponse> map = new ConcurrentHashMap<Object, RecvResponse>(256);
 
     @SuppressWarnings("unchecked")
     static public <
-        T extends InvarCodec.ProtocResponse,
-        C extends RecvContext> int recv(C ctx, T resp) {
-
-        if (map.containsKey(resp.getClass())) {
-            map.get(resp.getClass()).handle(resp, ctx);
-            return CodecError.ERR_NONE;
-        } else {
-            return CodecError.ERR_PROTOC_NO_HANDLER;
+        R extends InvarCodec.ProtocResponse,
+        C extends SendContext> int recv(C ctx, R resp) {
+        assert ctx != null;
+        Object req = ctx.getRequest();
+        if (req == null) {
+            return CodecError.ERR_UNKNOWN;
         }
+        RecvResponse recv;
+        synchronized (RecvResponse.class) {
+            if (map.containsKey(req)) {
+                recv = map.get(req);
+                map.remove(req);
+            } else {
+                return CodecError.ERR_PROTOC_NO_HANDLER;
+            }
+        }
+        recv.handle(resp, ctx);
+        return CodecError.ERR_NONE;
     }
 
-    public RecvResponse(Class<R> rClass) {
-        map.put(rClass, this);
+    public RecvResponse(T request) {
+        map.put(request, this);
     }
 
-    public abstract void handle(R response, RecvContext context);
+    public abstract void handle(R response, SendContext context);
 
 }

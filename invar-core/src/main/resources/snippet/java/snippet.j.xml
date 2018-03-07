@@ -806,12 +806,21 @@
     (#tab)(#tab)case (#key): /* (#doc) */ {
     (#tab)(#tab)(#type) (#name) = (#req).Create(); (#resp) resp = (#resp).Create();
     (#tab)(#tab)(#name).read(r); RecvRequest.recv(ctx, (#name), resp); sender.sendResponse(resp); error = 0;} break; ]]></template>
-  <template key="runtime.protoc.handle.method"><![CDATA[
-    (#blank)
+  <template key="runtime.protoc.head.client"><![CDATA[
     (#tab)static public <
     (#tab)(#tab)C extends RecvContext,
     (#tab)(#tab)S extends InvarCodec.ResponseSender>
     (#tab)void (#name)(int id, java.io.DataInput r, C ctx, S sender) throws CodecError
+  ]]></template>
+  <template key="runtime.protoc.head.server"><![CDATA[
+    (#tab)static public <
+    (#tab)(#tab)C extends RecvContext,
+    (#tab)(#tab)S extends InvarCodec.ResponseSender>
+    (#tab)void (#name)(int id, java.io.DataInput r, C ctx, S sender) throws CodecError
+  ]]></template>
+  <template key="runtime.protoc.handle.method"><![CDATA[
+    (#blank)
+    (#head)(#concat)
     (#tab){
     (#tab)(#tab)int error = CodecError.ERR_NONE;
     (#tab)(#tab)try {

@@ -258,6 +258,8 @@ final public class InvarSnippet {
         final static String RUNTIME_TYPE_FULL = "runtime.type.full";
         final static String RUNTIME_PROTOC_HANDLE_2S = "runtime.protoc.handle.client";
         final static String RUNTIME_PROTOC_HANDLE_2C = "runtime.protoc.handle.server";
+        final static String RUNTIME_PROTOC_HEAD_2S = "runtime.protoc.head.client";
+        final static String RUNTIME_PROTOC_HEAD_2C = "runtime.protoc.head.server";
         final static String RUNTIME_PROTOC_HANDLE_M = "runtime.protoc.handle.method";
         final static String RUNTIME_PROTOC_HANDLE_NTF = "runtime.protoc.handle.notify";
         final static String RUNTIME_PROTOC_HANDLE_RESP = "runtime.protoc.handle.response";
