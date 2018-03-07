@@ -4,7 +4,7 @@
   <parent>
     <artifactId>invar</artifactId>
     <groupId>com.struqt</groupId>
-    <version>1.0.12-SNAPSHOT</version>
+    <version>1.0.12</version>
   </parent>
 
   <artifactId>invar-lib</artifactId>
