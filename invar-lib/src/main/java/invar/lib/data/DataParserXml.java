@@ -101,6 +101,9 @@ public class DataParserXml implements DataParser {
         if (stack.empty() || n == null) {
             throw new XMLStreamException("No DataNode to store value :" + value);
         }
+        if (value.trim().length() <= 0 && n.getValue() != null) {
+            return;
+        }
         n.setValue(value);
     }
 

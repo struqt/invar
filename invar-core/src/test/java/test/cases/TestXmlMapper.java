@@ -78,7 +78,7 @@ public class TestXmlMapper {
 
     @Test
     public void test_004_nested_value() throws Exception {
-        String xml = "<x number0=\"10\"><number0>127</number0><number1><![CDATA[200]]></number1></x>";
+        String xml = "<x number0=\"10\"><number1>\n11<![CDATA[200]]>\n </number1><number0>127</number0></x>";
         printLine(xml);
         Numbers o = mapper.map(Numbers.Create(), xml);
         Assert.assertEquals(127, o.getNumber0().intValue());
@@ -257,9 +257,6 @@ public class TestXmlMapper {
         printLine(xml);
         TestPointer o = mapper.map(TestPointer.Create(), xml);
     }
-
-
-
 
 
     static private void printLine(String s) {
