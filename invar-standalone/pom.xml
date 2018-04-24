@@ -5,7 +5,7 @@
   <parent>
     <artifactId>invar</artifactId>
     <groupId>com.struqt</groupId>
-    <version>1.0.13-SNAPSHOT</version>
+    <version>1.0.13</version>
   </parent>
 
   <artifactId>invar-standalone</artifactId>
