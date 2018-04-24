@@ -13,7 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
+import java.math.BigInteger/*U64*/;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import test.abc.Custom;
@@ -34,21 +34,21 @@ invar.lib.InvarCodec.JSONEncode
         return new TestDict();
     }
 
-    private LinkedHashMap<Byte,Byte>                     dictI08    ;/* 有符号的8位整数 */
-    private LinkedHashMap<Short,Short>                   dictI16    ;/* 有符号的16位整数 */
-    private LinkedHashMap<Integer,Integer>               dictI32    ;/* 有符号的32位整数 */
-    private LinkedHashMap<Long,Long>                     dictI64    ;/* 有符号的64位整数 */
-    private LinkedHashMap<Integer/*U08*/,Integer/*U08*/> dictU08    ;/* 无符号的8位整数 */
-    private LinkedHashMap<Integer/*U16*/,Integer/*U16*/> dictU16    ;/* 无符号的16位整数 */
-    private LinkedHashMap<Long/*U32*/,Long/*U32*/>       dictU32    ;/* 无符号的32位整数 */
-    private LinkedHashMap<BigInteger,BigInteger>         dictU64    ;/* 无符号的64位整数 */
-    private LinkedHashMap<Float,Float>                   dictSingle ;/* 单精度浮点小数 */
-    private LinkedHashMap<Double,Double>                 dictDouble ;/* 双精度浮点小数 */
-    private LinkedHashMap<Boolean,Boolean>               dictBoolean;/* 布尔值 */
-    private LinkedHashMap<String,String>                 dictString ;/* 字符串 */
-    private LinkedHashMap<Gender,Gender>                 dictEnum   ;/* 枚举值 */
-    private LinkedHashMap<Custom,Custom>                 dictStruct ;/* 自定义结构 */
-    private LinkedHashMap<String,String>                 hotfix     ;/* [AutoAdd] Hotfix */
+    private LinkedHashMap<Byte,Byte>                           dictI08    ;/* 有符号的8位整数 */
+    private LinkedHashMap<Short,Short>                         dictI16    ;/* 有符号的16位整数 */
+    private LinkedHashMap<Integer,Integer>                     dictI32    ;/* 有符号的32位整数 */
+    private LinkedHashMap<Long,Long>                           dictI64    ;/* 有符号的64位整数 */
+    private LinkedHashMap<Short/*U08*/,Short/*U08*/>           dictU08    ;/* 无符号的8位整数 */
+    private LinkedHashMap<Integer/*U16*/,Integer/*U16*/>       dictU16    ;/* 无符号的16位整数 */
+    private LinkedHashMap<Long/*U32*/,Long/*U32*/>             dictU32    ;/* 无符号的32位整数 */
+    private LinkedHashMap<BigInteger/*U64*/,BigInteger/*U64*/> dictU64    ;/* 无符号的64位整数 */
+    private LinkedHashMap<Float,Float>                         dictSingle ;/* 单精度浮点小数 */
+    private LinkedHashMap<Double,Double>                       dictDouble ;/* 双精度浮点小数 */
+    private LinkedHashMap<Boolean,Boolean>                     dictBoolean;/* 布尔值 */
+    private LinkedHashMap<String,String>                       dictString ;/* 字符串 */
+    private LinkedHashMap<Gender,Gender>                       dictEnum   ;/* 枚举值 */
+    private LinkedHashMap<Custom,Custom>                       dictStruct ;/* 自定义结构 */
+    private LinkedHashMap<String,String>                       hotfix     ;/* [AutoAdd] Hotfix */
 
     public TestDict()
     {
@@ -56,10 +56,10 @@ invar.lib.InvarCodec.JSONEncode
         dictI16     = new LinkedHashMap<Short,Short>();
         dictI32     = new LinkedHashMap<Integer,Integer>();
         dictI64     = new LinkedHashMap<Long,Long>();
-        dictU08     = new LinkedHashMap<Integer/*U08*/,Integer/*U08*/>();
+        dictU08     = new LinkedHashMap<Short/*U08*/,Short/*U08*/>();
         dictU16     = new LinkedHashMap<Integer/*U16*/,Integer/*U16*/>();
         dictU32     = new LinkedHashMap<Long/*U32*/,Long/*U32*/>();
-        dictU64     = new LinkedHashMap<BigInteger,BigInteger>();
+        dictU64     = new LinkedHashMap<BigInteger/*U64*/,BigInteger/*U64*/>();
         dictSingle  = new LinkedHashMap<Float,Float>();
         dictDouble  = new LinkedHashMap<Double,Double>();
         dictBoolean = new LinkedHashMap<Boolean,Boolean>();
@@ -105,7 +105,7 @@ invar.lib.InvarCodec.JSONEncode
     public LinkedHashMap<Long,Long> getDictI64() { return dictI64; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="map<uint8,uint8>", S="f4")
-    public LinkedHashMap<Integer/*U08*/,Integer/*U08*/> getDictU08() { return dictU08; }
+    public LinkedHashMap<Short/*U08*/,Short/*U08*/> getDictU08() { return dictU08; }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="map<uint16,uint16>", S="f5")
     public LinkedHashMap<Integer/*U16*/,Integer/*U16*/> getDictU16() { return dictU16; }
@@ -114,7 +114,7 @@ invar.lib.InvarCodec.JSONEncode
     public LinkedHashMap<Long/*U32*/,Long/*U32*/> getDictU32() { return dictU32; }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="map<uint64,uint64>", S="f7")
-    public LinkedHashMap<BigInteger,BigInteger> getDictU64() { return dictU64; }
+    public LinkedHashMap<BigInteger/*U64*/,BigInteger/*U64*/> getDictU64() { return dictU64; }
     /** 单精度浮点小数 */
     @invar.lib.InvarRule(T="map<float,float>", S="f8")
     public LinkedHashMap<Float,Float> getDictSingle() { return dictSingle; }
@@ -223,8 +223,8 @@ invar.lib.InvarCodec.JSONEncode
         dictU08.clear();
         Long lenDictU08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long/*U32*/ iDictU08 = 0L; iDictU08 < lenDictU08; ++iDictU08) {
-            Integer/*U08*/ k1 = from_.readUnsignedByte();
-            Integer/*U08*/ v1 = from_.readUnsignedByte();
+            Short/*U08*/ k1 = Integer.valueOf(from_.readUnsignedByte()).shortValue();
+            Short/*U08*/ v1 = Integer.valueOf(from_.readUnsignedByte()).shortValue();
             dictU08.put(k1,v1);
         }
         dictU16.clear();
@@ -245,9 +245,9 @@ invar.lib.InvarCodec.JSONEncode
         Long lenDictU64 = from_.readInt() & 0xFFFFFFFFL;
         for (Long/*U32*/ iDictU64 = 0L; iDictU64 < lenDictU64; ++iDictU64) {
             byte[] k1Bytes = new byte[8]; from_.readFully(k1Bytes, 0, 8);
-            BigInteger k1 = new BigInteger(1, k1Bytes);
+            BigInteger/*U64*/ k1 = new BigInteger/*U64*/(1, k1Bytes);
             byte[] v1Bytes = new byte[8]; from_.readFully(v1Bytes, 0, 8);
-            BigInteger v1 = new BigInteger(1, v1Bytes);
+            BigInteger/*U64*/ v1 = new BigInteger/*U64*/(1, v1Bytes);
             dictU64.put(k1,v1);
         }
         dictSingle.clear();
@@ -344,10 +344,10 @@ invar.lib.InvarCodec.JSONEncode
             dest_.writeLong(v1);
         }
         dest_.writeInt(dictU08.size());
-        for (Map.Entry<Integer/*U08*/,Integer/*U08*/> dictU08Iter : dictU08.entrySet()) {
-            Integer/*U08*/ k1 = dictU08Iter.getKey();
+        for (Map.Entry<Short/*U08*/,Short/*U08*/> dictU08Iter : dictU08.entrySet()) {
+            Short/*U08*/ k1 = dictU08Iter.getKey();
             dest_.writeByte(k1);
-            Integer/*U08*/ v1 = dictU08Iter.getValue();
+            Short/*U08*/ v1 = dictU08Iter.getValue();
             dest_.writeByte(v1);
         }
         dest_.writeInt(dictU16.size());
@@ -365,10 +365,10 @@ invar.lib.InvarCodec.JSONEncode
             dest_.writeInt(v1.intValue());
         }
         dest_.writeInt(dictU64.size());
-        for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) {
-            BigInteger k1 = dictU64Iter.getKey();
+        for (Map.Entry<BigInteger/*U64*/,BigInteger/*U64*/> dictU64Iter : dictU64.entrySet()) {
+            BigInteger/*U64*/ k1 = dictU64Iter.getKey();
             dest_.writeLong(k1.longValue());
-            BigInteger v1 = dictU64Iter.getValue();
+            BigInteger/*U64*/ v1 = dictU64Iter.getValue();
             dest_.writeLong(v1.longValue());
         }
         dest_.writeInt(dictSingle.size());
@@ -555,11 +555,11 @@ invar.lib.InvarCodec.JSONEncode
             s_.append('{');
             int dictU08Size = dictU08.size();
             int dictU08Idx = 0;
-            for (Map.Entry<Integer/*U08*/,Integer/*U08*/> dictU08Iter : dictU08.entrySet()) { /* map.for: dictU08 */
+            for (Map.Entry<Short/*U08*/,Short/*U08*/> dictU08Iter : dictU08.entrySet()) { /* map.for: dictU08 */
                 ++dictU08Idx;
-                Integer/*U08*/ k1 = dictU08Iter.getKey(); /* nest.k */
+                Short/*U08*/ k1 = dictU08Iter.getKey(); /* nest.k */
                 s_.append('"'); s_.append(k1.toString()); s_.append('"').append(':');
-                Integer/*U08*/ v1 = dictU08Iter.getValue(); /* nest.v */
+                Short/*U08*/ v1 = dictU08Iter.getValue(); /* nest.v */
                 s_.append(v1.toString());
                 if (dictU08Idx != dictU08Size) { s_.append(','); }
             }
@@ -606,11 +606,11 @@ invar.lib.InvarCodec.JSONEncode
             s_.append('{');
             int dictU64Size = dictU64.size();
             int dictU64Idx = 0;
-            for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) { /* map.for: dictU64 */
+            for (Map.Entry<BigInteger/*U64*/,BigInteger/*U64*/> dictU64Iter : dictU64.entrySet()) { /* map.for: dictU64 */
                 ++dictU64Idx;
-                BigInteger k1 = dictU64Iter.getKey(); /* nest.k */
+                BigInteger/*U64*/ k1 = dictU64Iter.getKey(); /* nest.k */
                 s_.append('"'); s_.append(k1.toString()); s_.append('"').append(':');
-                BigInteger v1 = dictU64Iter.getValue(); /* nest.v */
+                BigInteger/*U64*/ v1 = dictU64Iter.getValue(); /* nest.v */
                 s_.append(v1.toString());
                 if (dictU64Idx != dictU64Size) { s_.append(','); }
             }
@@ -801,11 +801,11 @@ invar.lib.InvarCodec.JSONEncode
         }
         if (dictU08.size() > 0) {
             nodes.append('<').append("dictU08").append('>');
-            for (Map.Entry<Integer/*U08*/,Integer/*U08*/> dictU08Iter : dictU08.entrySet()) {
-                Integer/*U08*/ k1 = dictU08Iter.getKey();
+            for (Map.Entry<Short/*U08*/,Short/*U08*/> dictU08Iter : dictU08.entrySet()) {
+                Short/*U08*/ k1 = dictU08Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
                 nodes.append(k1.toString()).append('"').append('/').append('>');
-                Integer/*U08*/ v1 = dictU08Iter.getValue();
+                Short/*U08*/ v1 = dictU08Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
                 nodes.append(v1.toString()).append('"').append('/').append('>');
             }
@@ -837,11 +837,11 @@ invar.lib.InvarCodec.JSONEncode
         }
         if (dictU64.size() > 0) {
             nodes.append('<').append("dictU64").append('>');
-            for (Map.Entry<BigInteger,BigInteger> dictU64Iter : dictU64.entrySet()) {
-                BigInteger k1 = dictU64Iter.getKey();
+            for (Map.Entry<BigInteger/*U64*/,BigInteger/*U64*/> dictU64Iter : dictU64.entrySet()) {
+                BigInteger/*U64*/ k1 = dictU64Iter.getKey();
                 nodes.append('<').append("k1").append(' ').append("value").append('=').append('"');
                 nodes.append(k1.toString()).append('"').append('/').append('>');
-                BigInteger v1 = dictU64Iter.getValue();
+                BigInteger/*U64*/ v1 = dictU64Iter.getValue();
                 nodes.append('<').append("v1").append(' ').append("value").append('=').append('"');
                 nodes.append(v1.toString()).append('"').append('/').append('>');
             }

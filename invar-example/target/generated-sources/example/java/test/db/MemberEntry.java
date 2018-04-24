@@ -84,6 +84,10 @@ invar.lib.InvarCodec.JSONEncode
 
     /** 主键，自增长 */
     @invar.lib.InvarRule(T="uint32", S="f0")
+    public void setId(Long/*U32*/ value)
+    {
+        setId(value.longValue());
+    }
     public void setId(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {

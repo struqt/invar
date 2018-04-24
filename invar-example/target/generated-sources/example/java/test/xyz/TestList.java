@@ -13,7 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
+import java.math.BigInteger/*U64*/;
 import java.util.LinkedList;
 import test.abc.Custom;
 import test.abc.Gender;
@@ -33,20 +33,20 @@ invar.lib.InvarCodec.JSONEncode
         return new TestList();
     }
 
-    private LinkedList<Byte>           listI08    ;/* 有符号的8位整数 */
-    private LinkedList<Short>          listI16    ;/* 有符号的16位整数 */
-    private LinkedList<Integer>        listI32    ;/* 有符号的32位整数 */
-    private LinkedList<Long>           listI64    ;/* 有符号的64位整数 */
-    private LinkedList<Integer/*U08*/> listU08    ;/* 无符号的8位整数 */
-    private LinkedList<Integer/*U16*/> listU16    ;/* 无符号的16位整数 */
-    private LinkedList<Long/*U32*/>    listU32    ;/* 无符号的32位整数 */
-    private LinkedList<BigInteger>     listU64    ;/* 无符号的64位整数 */
-    private LinkedList<Float>          listSingle ;/* 单精度浮点小数 */
-    private LinkedList<Double>         listDouble ;/* 双精度浮点小数 */
-    private LinkedList<Boolean>        listBoolean;/* 布尔值 */
-    private LinkedList<String>         listString ;/* 字符串 */
-    private LinkedList<Gender>         listEnum   ;/* 枚举值 */
-    private LinkedList<Custom>         listStruct ;/* 自定义结构 */
+    private LinkedList<Byte>              listI08    ;/* 有符号的8位整数 */
+    private LinkedList<Short>             listI16    ;/* 有符号的16位整数 */
+    private LinkedList<Integer>           listI32    ;/* 有符号的32位整数 */
+    private LinkedList<Long>              listI64    ;/* 有符号的64位整数 */
+    private LinkedList<Short/*U08*/>      listU08    ;/* 无符号的8位整数 */
+    private LinkedList<Integer/*U16*/>    listU16    ;/* 无符号的16位整数 */
+    private LinkedList<Long/*U32*/>       listU32    ;/* 无符号的32位整数 */
+    private LinkedList<BigInteger/*U64*/> listU64    ;/* 无符号的64位整数 */
+    private LinkedList<Float>             listSingle ;/* 单精度浮点小数 */
+    private LinkedList<Double>            listDouble ;/* 双精度浮点小数 */
+    private LinkedList<Boolean>           listBoolean;/* 布尔值 */
+    private LinkedList<String>            listString ;/* 字符串 */
+    private LinkedList<Gender>            listEnum   ;/* 枚举值 */
+    private LinkedList<Custom>            listStruct ;/* 自定义结构 */
 
     public TestList()
     {
@@ -54,10 +54,10 @@ invar.lib.InvarCodec.JSONEncode
         listI16     = new LinkedList<Short>();
         listI32     = new LinkedList<Integer>();
         listI64     = new LinkedList<Long>();
-        listU08     = new LinkedList<Integer/*U08*/>();
+        listU08     = new LinkedList<Short/*U08*/>();
         listU16     = new LinkedList<Integer/*U16*/>();
         listU32     = new LinkedList<Long/*U32*/>();
-        listU64     = new LinkedList<BigInteger>();
+        listU64     = new LinkedList<BigInteger/*U64*/>();
         listSingle  = new LinkedList<Float>();
         listDouble  = new LinkedList<Double>();
         listBoolean = new LinkedList<Boolean>();
@@ -99,7 +99,7 @@ invar.lib.InvarCodec.JSONEncode
     public LinkedList<Long> getListI64() { return listI64; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="vec<uint8>", S="f4")
-    public LinkedList<Integer/*U08*/> getListU08() { return listU08; }
+    public LinkedList<Short/*U08*/> getListU08() { return listU08; }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="vec<uint16>", S="f5")
     public LinkedList<Integer/*U16*/> getListU16() { return listU16; }
@@ -108,7 +108,7 @@ invar.lib.InvarCodec.JSONEncode
     public LinkedList<Long/*U32*/> getListU32() { return listU32; }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="vec<uint64>", S="f7")
-    public LinkedList<BigInteger> getListU64() { return listU64; }
+    public LinkedList<BigInteger/*U64*/> getListU64() { return listU64; }
     /** 单精度浮点小数 */
     @invar.lib.InvarRule(T="vec<float>", S="f8")
     public LinkedList<Float> getListSingle() { return listSingle; }
@@ -199,7 +199,7 @@ invar.lib.InvarCodec.JSONEncode
         listU08.clear();
         Long lenListU08 = from_.readInt() & 0xFFFFFFFFL;
         for (Long/*U32*/ iListU08 = 0L; iListU08 < lenListU08; ++iListU08) {
-            Integer/*U08*/ n1 = from_.readUnsignedByte();
+            Short/*U08*/ n1 = Integer.valueOf(from_.readUnsignedByte()).shortValue();
             listU08.add(n1);
         }
         listU16.clear();
@@ -218,7 +218,7 @@ invar.lib.InvarCodec.JSONEncode
         Long lenListU64 = from_.readInt() & 0xFFFFFFFFL;
         for (Long/*U32*/ iListU64 = 0L; iListU64 < lenListU64; ++iListU64) {
             byte[] n1Bytes = new byte[8]; from_.readFully(n1Bytes, 0, 8);
-            BigInteger n1 = new BigInteger(1, n1Bytes);
+            BigInteger/*U64*/ n1 = new BigInteger/*U64*/(1, n1Bytes);
             listU64.add(n1);
         }
         listSingle.clear();
@@ -284,7 +284,7 @@ invar.lib.InvarCodec.JSONEncode
             dest_.writeLong(n1);
         }
         dest_.writeInt(listU08.size());
-        for (Integer/*U08*/ n1 : listU08) {
+        for (Short/*U08*/ n1 : listU08) {
             dest_.writeByte(n1);
         }
         dest_.writeInt(listU16.size());
@@ -296,7 +296,7 @@ invar.lib.InvarCodec.JSONEncode
             dest_.writeInt(n1.intValue());
         }
         dest_.writeInt(listU64.size());
-        for (BigInteger n1 : listU64) {
+        for (BigInteger/*U64*/ n1 : listU64) {
             dest_.writeLong(n1.longValue());
         }
         dest_.writeInt(listSingle.size());
@@ -435,7 +435,7 @@ invar.lib.InvarCodec.JSONEncode
             s_.append('[');
             int listU08Size = listU08.size();
             int listU08Idx = 0;
-            for (Integer/*U08*/ n1 : listU08) { /* vec.for: listU08 */
+            for (Short/*U08*/ n1 : listU08) { /* vec.for: listU08 */
                 ++listU08Idx;
                 s_.append(n1.toString());
                 if (listU08Idx != listU08Size) { s_.append(','); }
@@ -477,7 +477,7 @@ invar.lib.InvarCodec.JSONEncode
             s_.append('[');
             int listU64Size = listU64.size();
             int listU64Idx = 0;
-            for (BigInteger n1 : listU64) { /* vec.for: listU64 */
+            for (BigInteger/*U64*/ n1 : listU64) { /* vec.for: listU64 */
                 ++listU64Idx;
                 s_.append(n1.toString());
                 if (listU64Idx != listU64Size) { s_.append(','); }
@@ -616,7 +616,7 @@ invar.lib.InvarCodec.JSONEncode
         }
         if (listU08.size() > 0) {
             nodes.append('<').append("listU08").append('>');
-            for (Integer/*U08*/ n1 : listU08) {
+            for (Short/*U08*/ n1 : listU08) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
                 nodes.append(n1.toString()).append('"').append('/').append('>');
             }
@@ -640,7 +640,7 @@ invar.lib.InvarCodec.JSONEncode
         }
         if (listU64.size() > 0) {
             nodes.append('<').append("listU64").append('>');
-            for (BigInteger n1 : listU64) {
+            for (BigInteger/*U64*/ n1 : listU64) {
                 nodes.append('<').append("n1").append(' ').append("value").append('=').append('"');
                 nodes.append(n1.toString()).append('"').append('/').append('>');
             }

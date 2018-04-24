@@ -53,8 +53,8 @@ class TestModels {
         info.setNumber3(new Random().nextLong());
         info.setNumber4(new Random().nextInt() & 0xFF);
         info.setNumber5(new Random().nextInt() & 0xFFFF);
-        info.setNumber6(new Random().nextInt() & 0x0FFFFFFF);
-        info.setNumber7(BigInteger.valueOf(new Random().nextLong()));
+        info.setNumber6(new Random().nextLong() & 0xFFFFFFFFL);
+        info.setNumber7(BigInteger.valueOf(0xFFFFFFFFL & new Random().nextInt()));
         info.setNumber8(Float.MAX_VALUE);
         info.setNumber9(Double.MAX_VALUE);
         return info;

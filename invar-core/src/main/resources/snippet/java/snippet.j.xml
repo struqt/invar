@@ -26,10 +26,10 @@
     <int16 pack="  java.lang" type="Short        " initValue="-1"/>
     <int32 pack="  java.lang" type="Integer      " initValue="-1"/>
     <int64 pack="  java.lang" type="Long         " initValue="-1"/>
-    <uint8 pack="  java.lang" type="Integer/*U08*/   " initValue="0"/>
-    <uint16 pack=" java.lang" type="Integer/*U16*/  " initValue="0"/>
-    <uint32 pack=" java.lang" type="Long/*U32*/     " initValue="0"/>
-    <uint64 pack=" java.math" type="BigInteger   " initValue="0"/>
+    <uint8 pack="  java.lang" type="Short/*U08*/     " initValue="0"/>
+    <uint16 pack=" java.lang" type="Integer/*U16*/   " initValue="0"/>
+    <uint32 pack=" java.lang" type="Long/*U32*/      " initValue="0"/>
+    <uint64 pack=" java.math" type="BigInteger/*U64*/" initValue="0"/>
     <float pack="  java.lang" type="Float        " initValue="0.0"/>
     <double pack=" java.lang" type="Double       " initValue="0.00"/>
     <string pack=" java.lang" type="String       " initValue=""/>
@@ -330,7 +330,10 @@
   <template key="setter.any | setter.vec | setter.map"><![CDATA[
     public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; } ]]></template>
   <template key="setter.int8"><![CDATA[
-    public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; }
+    public void set[#upperHeadChar( (#name) )]((#type) value)
+    {
+    (#tab)set[#upperHeadChar( (#name) )](value.intValue());
+    }
     (#blank)
     public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
@@ -341,7 +344,10 @@
     }
   ]]></template>
   <template key="setter.int16"><![CDATA[
-    public void set[#upperHeadChar( (#name) )]((#type) value) { this.(#name) = value; }
+    public void set[#upperHeadChar( (#name) )]((#type) value)
+    {
+    (#tab)set[#upperHeadChar( (#name) )](value.intValue());
+    }
     (#blank)
     public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
@@ -352,15 +358,25 @@
     }
   ]]></template>
   <template key="setter.uint8"><![CDATA[
+    public void set[#upperHeadChar( (#name) )]((#type) value)
+    {
+    (#tab)set[#upperHeadChar( (#name) )](value.intValue());
+    }
+    (#blank)
     public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
     (#tab)if (value < 0 || value > 0xFF) {
     (#tab)(#tab)throw new NumberFormatException("uint8 value out of range: " + value);
     (#tab)}
-    (#tab)this.(#name) = value;
+    (#tab)this.(#name) = Integer.valueOf(value).shortValue();
     }
   ]]></template>
   <template key="setter.uint16"><![CDATA[
+    public void set[#upperHeadChar( (#name) )]((#type) value)
+    {
+    (#tab)set[#upperHeadChar( (#name) )](value.intValue());
+    }
+    (#blank)
     public void set[#upperHeadChar( (#name) )](int value) throws NumberFormatException
     {
     (#tab)if (value < 0 || value > 0xFFFF) {
@@ -370,10 +386,24 @@
     }
   ]]></template>
   <template key="setter.uint32"><![CDATA[
+    public void set[#upperHeadChar( (#name) )]((#type) value)
+    {
+    (#tab)set[#upperHeadChar( (#name) )](value.longValue());
+    }
+    (#blank)
     public void set[#upperHeadChar( (#name) )](long value) throws NumberFormatException
     {
     (#tab)if (value < 0 || value > 0xFFFFFFFFL) {
     (#tab)(#tab)throw new NumberFormatException("uint32 value out of range: " + value);
+    (#tab)}
+    (#tab)this.(#name) = value;
+    }
+  ]]></template>
+  <template key="setter.uint64"><![CDATA[
+    public void set[#upperHeadChar( (#name) )]((#type) value) throws NumberFormatException
+    {
+    (#tab)if (invar.lib.InvarCodec.overRangeUInt64(value)) {
+    (#tab)(#tab)throw new NumberFormatException("uint64 value out of range: " + value);
     (#tab)}
     (#tab)this.(#name) = value;
     }
@@ -400,7 +430,7 @@
   <template key="read.int32"> <![CDATA[ (#arg).readInt()     ]]></template>
   <template key="read.int64"> <![CDATA[ (#arg).readLong()    ]]></template>
   <template key="read.uint8">
-    <![CDATA[ (#arg).readUnsignedByte()  ]]></template>
+    <![CDATA[ Integer.valueOf((#arg).readUnsignedByte()).shortValue() ]]></template>
   <template key="read.uint16">
     <![CDATA[ (#arg).readUnsignedShort() ]]></template>
   <template key="read.uint32">
@@ -924,6 +954,5 @@
     (#tab)map.put("(#alias)", "(#namer)"); ]]></template>
   <template key="sql.alias.ref.enum | sql.alias.ptr.enum"><![CDATA[
     (#tab)map.put("(#alias)", "(#namer)V"); ]]></template>
-
 
 </tns:root>

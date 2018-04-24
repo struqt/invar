@@ -6,8 +6,16 @@
 package invar.lib;
 
 import java.io.*;
+import java.math.BigInteger;
 
 public abstract class InvarCodec {
+
+    private static BigInteger UINT64_MAX = new BigInteger("FFFFFFFFFFFFFFFF", 16);
+
+    public static boolean overRangeUInt64(BigInteger value) {
+        return value.compareTo(BigInteger.ZERO) < 0
+            || value.compareTo(UINT64_MAX) > 0;
+    }
 
     public interface BinaryEncode {
 

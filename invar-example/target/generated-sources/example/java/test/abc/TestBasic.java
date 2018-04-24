@@ -13,7 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
+import java.math.BigInteger/*U64*/;
 
 /** 基础类型 */
 public final class TestBasic
@@ -30,20 +30,20 @@ invar.lib.InvarCodec.JSONEncode
         return new TestBasic();
     }
 
-    private Byte           numberI08   ;/* 有符号的8位整数 */
-    private Short          numberI16   ;/* 有符号的16位整数 */
-    private Integer        numberI32   ;/* 有符号的32位整数 */
-    private Long           numberI64   ;/* 有符号的64位整数 */
-    private Integer/*U08*/ numberU08   ;/* 无符号的8位整数 */
-    private Integer/*U16*/ numberU16   ;/* 无符号的16位整数 */
-    private Long/*U32*/    numberU32   ;/* 无符号的32位整数 */
-    private BigInteger     numberU64   ;/* 无符号的64位整数 */
-    private Float          numberSingle;/* 单精度浮点小数 */
-    private Double         numberDouble;/* 双精度浮点小数 */
-    private Boolean        boolValue   ;/* 布尔值 */
-    private String         stringValue ;/* 字符串 */
-    private Gender         enumValue   ;/* 枚举值 */
-    private Gender         enumDeft    ;/* 枚举值制定默认值 */
+    private Byte              numberI08   ;/* 有符号的8位整数 */
+    private Short             numberI16   ;/* 有符号的16位整数 */
+    private Integer           numberI32   ;/* 有符号的32位整数 */
+    private Long              numberI64   ;/* 有符号的64位整数 */
+    private Short/*U08*/      numberU08   ;/* 无符号的8位整数 */
+    private Integer/*U16*/    numberU16   ;/* 无符号的16位整数 */
+    private Long/*U32*/       numberU32   ;/* 无符号的32位整数 */
+    private BigInteger/*U64*/ numberU64   ;/* 无符号的64位整数 */
+    private Float             numberSingle;/* 单精度浮点小数 */
+    private Double            numberDouble;/* 双精度浮点小数 */
+    private Boolean           boolValue   ;/* 布尔值 */
+    private String            stringValue ;/* 字符串 */
+    private Gender            enumValue   ;/* 枚举值 */
+    private Gender            enumDeft    ;/* 枚举值制定默认值 */
 
     public TestBasic()
     {
@@ -96,7 +96,7 @@ invar.lib.InvarCodec.JSONEncode
     public Long getNumberI64() { return numberI64; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="uint8", S="f4")
-    public Integer/*U08*/ getNumberU08() { return numberU08; }
+    public Short/*U08*/ getNumberU08() { return numberU08; }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="uint16", S="f5")
     public Integer/*U16*/ getNumberU16() { return numberU16; }
@@ -105,7 +105,7 @@ invar.lib.InvarCodec.JSONEncode
     public Long/*U32*/ getNumberU32() { return numberU32; }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="uint64", S="f7")
-    public BigInteger getNumberU64() { return numberU64; }
+    public BigInteger/*U64*/ getNumberU64() { return numberU64; }
     /** 单精度浮点小数 */
     @invar.lib.InvarRule(T="float", S="f8")
     public Float getNumberSingle() { return numberSingle; }
@@ -129,7 +129,10 @@ invar.lib.InvarCodec.JSONEncode
 
     /** 有符号的8位整数 */
     @invar.lib.InvarRule(T="int8", S="f0")
-    public void setNumberI08(Byte value) { this.numberI08 = value; }
+    public void setNumberI08(Byte value)
+    {
+        setNumberI08(value.intValue());
+    }
     public void setNumberI08(int value) throws NumberFormatException
     {
         if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
@@ -139,7 +142,10 @@ invar.lib.InvarCodec.JSONEncode
     }
     /** 有符号的16位整数 */
     @invar.lib.InvarRule(T="int16", S="f1")
-    public void setNumberI16(Short value) { this.numberI16 = value; }
+    public void setNumberI16(Short value)
+    {
+        setNumberI16(value.intValue());
+    }
     public void setNumberI16(int value) throws NumberFormatException
     {
         if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
@@ -155,15 +161,23 @@ invar.lib.InvarCodec.JSONEncode
     public void setNumberI64(Long value) { this.numberI64 = value; }
     /** 无符号的8位整数 */
     @invar.lib.InvarRule(T="uint8", S="f4")
+    public void setNumberU08(Short/*U08*/ value)
+    {
+        setNumberU08(value.intValue());
+    }
     public void setNumberU08(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
             throw new NumberFormatException("uint8 value out of range: " + value);
         }
-        this.numberU08 = value;
+        this.numberU08 = Integer.valueOf(value).shortValue();
     }
     /** 无符号的16位整数 */
     @invar.lib.InvarRule(T="uint16", S="f5")
+    public void setNumberU16(Integer/*U16*/ value)
+    {
+        setNumberU16(value.intValue());
+    }
     public void setNumberU16(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
@@ -173,6 +187,10 @@ invar.lib.InvarCodec.JSONEncode
     }
     /** 无符号的32位整数 */
     @invar.lib.InvarRule(T="uint32", S="f6")
+    public void setNumberU32(Long/*U32*/ value)
+    {
+        setNumberU32(value.longValue());
+    }
     public void setNumberU32(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
@@ -182,7 +200,13 @@ invar.lib.InvarCodec.JSONEncode
     }
     /** 无符号的64位整数 */
     @invar.lib.InvarRule(T="uint64", S="f7")
-    public void setNumberU64(BigInteger value) { this.numberU64 = value; }
+    public void setNumberU64(BigInteger/*U64*/ value) throws NumberFormatException
+    {
+        if (invar.lib.InvarCodec.overRangeUInt64(value)) {
+            throw new NumberFormatException("uint64 value out of range: " + value);
+        }
+        this.numberU64 = value;
+    }
     /** 单精度浮点小数 */
     @invar.lib.InvarRule(T="float", S="f8")
     public void setNumberSingle(Float value) { this.numberSingle = value; }
@@ -238,11 +262,11 @@ invar.lib.InvarCodec.JSONEncode
         numberI16 = from_.readShort();
         numberI32 = from_.readInt();
         numberI64 = from_.readLong();
-        numberU08 = from_.readUnsignedByte();
+        numberU08 = Integer.valueOf(from_.readUnsignedByte()).shortValue();
         numberU16 = from_.readUnsignedShort();
         numberU32 = from_.readInt() & 0xFFFFFFFFL;
         byte[] numberU64Bytes = new byte[8]; from_.readFully(numberU64Bytes, 0, 8);
-        numberU64 = new BigInteger(1, numberU64Bytes);
+        numberU64 = new BigInteger/*U64*/(1, numberU64Bytes);
         numberSingle = from_.readFloat();
         numberDouble = from_.readDouble();
         boolValue = from_.readBoolean();

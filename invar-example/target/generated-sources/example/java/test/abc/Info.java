@@ -13,7 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
+import java.math.BigInteger/*U64*/;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -38,10 +38,10 @@ invar.lib.InvarCodec.JSONEncode
     private Short                         number02     ;
     private Integer                       number03     ;
     private Long                          number04     ;/* Test field comments */
-    private Integer/*U08*/                number05     ;
+    private Short/*U08*/                  number05     ;
     private Integer/*U16*/                number06     ;
     private Long/*U32*/                   number07     ;
-    private BigInteger                    number08     ;
+    private BigInteger/*U64*/             number08     ;
     private Float                         number09     ;
     private Double                        number10     ;
     private Boolean                       isReal       ;
@@ -133,7 +133,7 @@ invar.lib.InvarCodec.JSONEncode
     public Long getNumber04() { return number04; }
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f5")
-    public Integer/*U08*/ getNumber05() { return number05; }
+    public Short/*U08*/ getNumber05() { return number05; }
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f6")
     public Integer/*U16*/ getNumber06() { return number06; }
@@ -142,7 +142,7 @@ invar.lib.InvarCodec.JSONEncode
     public Long/*U32*/ getNumber07() { return number07; }
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f8")
-    public BigInteger getNumber08() { return number08; }
+    public BigInteger/*U64*/ getNumber08() { return number08; }
     /**  */
     @invar.lib.InvarRule(T="float", S="f9")
     public Float getNumber09() { return number09; }
@@ -192,7 +192,10 @@ invar.lib.InvarCodec.JSONEncode
     public void setKey(Integer value) { this.key = value; }
     /**  */
     @invar.lib.InvarRule(T="int8", S="f1")
-    public void setNumber01(Byte value) { this.number01 = value; }
+    public void setNumber01(Byte value)
+    {
+        setNumber01(value.intValue());
+    }
     public void setNumber01(int value) throws NumberFormatException
     {
         if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
@@ -202,7 +205,10 @@ invar.lib.InvarCodec.JSONEncode
     }
     /**  */
     @invar.lib.InvarRule(T="int16", S="f2")
-    public void setNumber02(Short value) { this.number02 = value; }
+    public void setNumber02(Short value)
+    {
+        setNumber02(value.intValue());
+    }
     public void setNumber02(int value) throws NumberFormatException
     {
         if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
@@ -218,15 +224,23 @@ invar.lib.InvarCodec.JSONEncode
     public void setNumber04(Long value) { this.number04 = value; }
     /**  */
     @invar.lib.InvarRule(T="uint8", S="f5")
+    public void setNumber05(Short/*U08*/ value)
+    {
+        setNumber05(value.intValue());
+    }
     public void setNumber05(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFF) {
             throw new NumberFormatException("uint8 value out of range: " + value);
         }
-        this.number05 = value;
+        this.number05 = Integer.valueOf(value).shortValue();
     }
     /**  */
     @invar.lib.InvarRule(T="uint16", S="f6")
+    public void setNumber06(Integer/*U16*/ value)
+    {
+        setNumber06(value.intValue());
+    }
     public void setNumber06(int value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFF) {
@@ -236,6 +250,10 @@ invar.lib.InvarCodec.JSONEncode
     }
     /**  */
     @invar.lib.InvarRule(T="uint32", S="f7")
+    public void setNumber07(Long/*U32*/ value)
+    {
+        setNumber07(value.longValue());
+    }
     public void setNumber07(long value) throws NumberFormatException
     {
         if (value < 0 || value > 0xFFFFFFFFL) {
@@ -245,7 +263,13 @@ invar.lib.InvarCodec.JSONEncode
     }
     /**  */
     @invar.lib.InvarRule(T="uint64", S="f8")
-    public void setNumber08(BigInteger value) { this.number08 = value; }
+    public void setNumber08(BigInteger/*U64*/ value) throws NumberFormatException
+    {
+        if (invar.lib.InvarCodec.overRangeUInt64(value)) {
+            throw new NumberFormatException("uint64 value out of range: " + value);
+        }
+        this.number08 = value;
+    }
     /**  */
     @invar.lib.InvarRule(T="float", S="f9")
     public void setNumber09(Float value) { this.number09 = value; }
@@ -332,11 +356,11 @@ invar.lib.InvarCodec.JSONEncode
         number02 = from_.readShort();
         number03 = from_.readInt();
         number04 = from_.readLong();
-        number05 = from_.readUnsignedByte();
+        number05 = Integer.valueOf(from_.readUnsignedByte()).shortValue();
         number06 = from_.readUnsignedShort();
         number07 = from_.readInt() & 0xFFFFFFFFL;
         byte[] number08Bytes = new byte[8]; from_.readFully(number08Bytes, 0, 8);
-        number08 = new BigInteger(1, number08Bytes);
+        number08 = new BigInteger/*U64*/(1, number08Bytes);
         number09 = from_.readFloat();
         number10 = from_.readDouble();
         isReal = from_.readBoolean();
