@@ -226,6 +226,14 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <!-- Prevent gpg from using pinentry programs -->
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+              <!-- https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md -->
+            </configuration>
           </plugin>
         </plugins>
       </build>
